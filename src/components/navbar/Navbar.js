@@ -55,6 +55,10 @@ export default function MenuAppBar() {
     history.push("/dashboard");
     setAnchorEl(null);
   };
+  const handleLogout = () => {
+    history.push("/");
+    setAnchorEl(null);
+  };
 
   return (
     <div className={classes.root}>
@@ -111,7 +115,8 @@ export default function MenuAppBar() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleOrdersPage}>Orders</MenuItem>
-                <MenuItem onClick={handleAccountPage}>My account</MenuItem>
+                <MenuItem onClick={handleAccountPage}>Account</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
           )}

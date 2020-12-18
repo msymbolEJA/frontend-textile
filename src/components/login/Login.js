@@ -73,6 +73,8 @@ export default function SignInSide() {
     validate();
     if (validate()) {
       history.push("/dashboard");
+    } else {
+      alert("Invalid Pasword or Email!");
     }
   };
 
