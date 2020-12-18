@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MenuAppBar() {
-  const classes = useStyles();
+  const classes = useStyles(); // eslint-disable-next-line
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -51,6 +51,10 @@ export default function MenuAppBar() {
   };
   const handleLogout = () => {
     history.push("/");
+    setAnchorEl(null);
+  };
+  const handleNewOrderPage = () => {
+    history.push("/new-order");
     setAnchorEl(null);
   };
 
@@ -98,6 +102,7 @@ export default function MenuAppBar() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleOrdersPage}>Orders</MenuItem>
+                <MenuItem onClick={handleNewOrderPage}>New Order</MenuItem>
                 <MenuItem onClick={handleAccountPage}>Account</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>

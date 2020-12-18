@@ -4,6 +4,7 @@ import Orders from "../components/orders/Orders";
 import Account from "../components/account/Account";
 import Login from "../components/login/Login";
 import Navbar from "../components/navbar/Navbar";
+import NewOrder from "../components/orders/new/NewOrder";
 
 const AppRouter = () => {
   return (
@@ -22,6 +23,7 @@ const DefaultContainer = () => (
     <Route path="/dashboard" component={Dashboard} />
     <Route path="/orders" component={Orders} />
     <Route path="/account" component={Account} />
+    <Route path="/new-order" component={NewOrder} />
   </div>
 );
 
