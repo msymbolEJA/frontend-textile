@@ -24,5 +24,3 @@ const AppRouter = () => {
 // );
 
 export default AppRouter;
-
-// Zz.12345678Github
