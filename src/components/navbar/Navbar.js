@@ -51,6 +51,10 @@ export default function MenuAppBar() {
     history.push("/orders");
     setAnchorEl(null);
   };
+  const handleMainPage = () => {
+    history.push("/dashboard");
+    setAnchorEl(null);
+  };
 
   return (
     <div className={classes.root}>
@@ -73,6 +77,7 @@ export default function MenuAppBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            onClick={handleMainPage}
           >
             <StoreIcon />
           </IconButton>
