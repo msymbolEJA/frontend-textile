@@ -93,9 +93,6 @@ export default function SignInSide() {
     if (!values.password) {
       errors.password = "Enter Your Password";
       return false;
-    } else if (values.password.length < 8) {
-      errors.password = "Password must be min 8 characters!";
-      return false;
     }
     return true;
   };
