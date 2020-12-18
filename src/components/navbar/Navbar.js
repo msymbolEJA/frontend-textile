@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -29,6 +30,7 @@ export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const history = useHistory();
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -38,7 +40,15 @@ export default function MenuAppBar() {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleAccountPage = () => {
+    history.push("/account");
+    setAnchorEl(null);
+  };
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleOrdersPage = () => {
+    history.push("/orders");
     setAnchorEl(null);
   };
 
@@ -95,8 +105,8 @@ export default function MenuAppBar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleOrdersPage}>Orders</MenuItem>
+                <MenuItem onClick={handleAccountPage}>My account</MenuItem>
               </Menu>
             </div>
           )}
