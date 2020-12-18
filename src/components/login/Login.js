@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -63,6 +64,40 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
+  const history = useHistory();
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+  });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    validate();
+    if (validate()) {
+      history.push("/dashboard");
+    }
+  };
+
+  const validate = (e) => {
+    const errors = {};
+    if (!values.email) {
+      errors.email = "Fill the Email Address";
+      return false;
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = "Invalid Email Address";
+      return false;
+    }
+
+    if (!values.password) {
+      errors.password = "Enter Your Password";
+      return false;
+    } else if (values.password.length < 8) {
+      errors.password = "Password must be min 8 characters!";
+      return false;
+    }
+    return true;
+  };
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -76,7 +111,7 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Log In
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -86,6 +121,7 @@ export default function SignInSide() {
               label="Email Address"
               name="email"
               autoComplete="email"
+              onChange={(e) => setValues({ ...values, email: e.target.value })}
               autoFocus
             />
             <TextField
@@ -98,6 +134,9 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) =>
+                setValues({ ...values, password: e.target.value })
+              }
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
