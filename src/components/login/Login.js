@@ -12,6 +12,7 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import LocalMallIcon from "@material-ui/icons/LocalMall";
 
 function Copyright() {
   return (
@@ -70,10 +71,10 @@ export default function SignInSide() {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <LocalMallIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Login
+            Log In
           </Typography>
           <form className={classes.form} noValidate>
             <TextField
@@ -109,7 +110,7 @@ export default function SignInSide() {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              Log In
             </Button>
             <Grid container>
               <Grid item xs>

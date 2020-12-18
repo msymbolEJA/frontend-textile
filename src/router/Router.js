@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Dashboard from "../components/dashboard/Dashboard";
 import Orders from "../components/orders/Orders";
+import Account from "../components/account/Account";
 import Login from "../components/login/Login";
 import Navbar from "../components/navbar/Navbar";
 
@@ -20,6 +21,7 @@ const DefaultContainer = () => (
     <Navbar />
     <Route path="/dashboard" component={Dashboard} />
     <Route path="/orders" component={Orders} />
+    <Route path="/account" component={Account} />
   </div>
 );
 
