@@ -46,7 +46,7 @@ function NewOrder() {
   const [info, setInfo] = useState({
     id: "",
     desert: "",
-    calories: null,
+    calories: "",
     fat: "",
     carbs: "",
     protein: "",
@@ -64,6 +64,14 @@ function NewOrder() {
       ...list,
       { id: new Date().getTime(), desert, calories, fat, carbs, protein },
     ]);
+    setInfo({
+      id: "",
+      desert: "",
+      calories: "",
+      fat: "",
+      carbs: "",
+      protein: "",
+    });
   };
   const handleChange = (e) => {
     // console.log(info);
@@ -74,7 +82,11 @@ function NewOrder() {
   }, [list]);
   return (
     <div className="App">
-      <Form handleSubmit={handleSubmit} handleChange={handleChange} />
+      <Form
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        info={info}
+      />
       <Table list={list} />
     </div>
   );

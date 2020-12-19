@@ -1,17 +1,10 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import LocalMallIcon from "@material-ui/icons/LocalMall";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,12 +43,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function InputForm({ handleSubmit, handleChange }) {
+export default function InputForm({ handleSubmit, handleChange, info }) {
   const classes = useStyles();
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-  });
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -77,6 +66,7 @@ export default function InputForm({ handleSubmit, handleChange }) {
               autoComplete="desert"
               onChange={handleChange}
               autoFocus
+              value={info.desert}
             />
             <TextField
               variant="outlined"
@@ -89,6 +79,7 @@ export default function InputForm({ handleSubmit, handleChange }) {
               id="calories"
               autoComplete="calories"
               onChange={handleChange}
+              value={info.calories}
             />
             <TextField
               variant="outlined"
@@ -101,6 +92,7 @@ export default function InputForm({ handleSubmit, handleChange }) {
               id="fat"
               autoComplete="fat"
               onChange={handleChange}
+              value={info.fat}
             />
             <TextField
               variant="outlined"
@@ -110,9 +102,10 @@ export default function InputForm({ handleSubmit, handleChange }) {
               name="carbs"
               label="Carbs"
               type="number"
-              id="calories"
-              autoComplete="calories"
+              id="carbs"
+              autoComplete="carbs"
               onChange={handleChange}
+              value={info.carbs}
             />
             <TextField
               variant="outlined"
@@ -125,6 +118,7 @@ export default function InputForm({ handleSubmit, handleChange }) {
               id="protein"
               autoComplete="protein"
               onChange={handleChange}
+              value={info.protein}
             />
             <Button
               type="submit"
