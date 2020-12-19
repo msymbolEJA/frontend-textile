@@ -10,8 +10,8 @@ const InputForm = ({ handleSubmit, handleChange }) => {
         <br />
         <input
           type="number"
-          name="calory"
-          id="calory"
+          name="calories"
+          id="calories"
           onChange={handleChange}
         />
         <br />
@@ -21,7 +21,7 @@ const InputForm = ({ handleSubmit, handleChange }) => {
         <br />
         <label>Carbs:</label>
         <br />
-        <input type="number" name="carb" id="carb" onChange={handleChange} />
+        <input type="number" name="carbs" id="carbs" onChange={handleChange} />
         <br />
         <label>Protein:</label>
         <br />

@@ -35,16 +35,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const createData = (name, calories, fat, carbs, protein) => ({
-  id: name.replace(" ", "_"),
-  name,
-  calories,
-  fat,
-  carbs,
-  protein,
-  isEditMode: false,
-});
-
 const CustomTableCell = ({ row, name, onChange }) => {
   const classes = useStyles();
   const { isEditMode } = row;
@@ -64,13 +54,9 @@ const CustomTableCell = ({ row, name, onChange }) => {
   );
 };
 
-function Orders() {
+function Orders({ list }) {
   // get list with props and map => createData(item)
-  const [rows, setRows] = React.useState([
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-  ]);
+  const [rows, setRows] = React.useState(list);
   const [previous, setPrevious] = React.useState({});
   const classes = useStyles();
 
@@ -116,6 +102,11 @@ function Orders() {
     onToggleEditMode(id);
   };
 
+  React.useEffect(() => {
+    // console.log("list_table", list);
+    setRows(list);
+  }, [list]);
+
   return (
     <Paper className={classes.root}>
       <Table className={classes.table} aria-label="caption table">
@@ -158,7 +149,7 @@ function Orders() {
                   </IconButton>
                 )}
               </TableCell>
-              <CustomTableCell {...{ row, name: "name", onChange }} />
+              <CustomTableCell {...{ row, name: "desert", onChange }} />
               <CustomTableCell {...{ row, name: "calories", onChange }} />
               <CustomTableCell {...{ row, name: "fat", onChange }} />
               <CustomTableCell {...{ row, name: "carbs", onChange }} />
@@ -172,37 +163,3 @@ function Orders() {
 }
 
 export default Orders;
-
-// ----------------------------------------------------------------
-
-// import React from "react";
-
-// const PhoneList = ({ list }) => {
-//   return (
-//     <div>
-//       <h1>Order List</h1>
-//       <table style={{ width: "80%", margin: "5vh" }}>
-//         <thead>
-//           <tr>
-//             <th>Desert</th>
-//             <th>Calories</th>
-//             <th>Fat(g)</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {list.length === 0
-//             ? null
-//             : list.map((item, index) => (
-//                 <tr key={index}>
-//                   <td>{item.desert}</td>
-//                   <td>{item.calory}</td>
-//                   <td>{item.fat}</td>
-//                 </tr>
-//               ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-// export default PhoneList;
