@@ -11,35 +11,20 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     height: "auto",
-    marginTop: "0.8rem",
-  },
-  image: {
-    backgroundImage:
-      "url(https://images.unsplash.com/photo-1548142723-aae7678afa53?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=635&q=80)",
-    backgroundRepeat: "no-repeat",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+    marginTop: "0.7rem",
   },
   paper: {
-    margin: theme.spacing(4, 4),
+    margin: theme.spacing(3, 6),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(2, 0, 1),
   },
 }));
 
@@ -57,7 +42,7 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
           <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
-              margin="normal"
+              margin="dense"
               required
               fullWidth
               id="desert"
@@ -70,7 +55,7 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
             />
             <TextField
               variant="outlined"
-              margin="normal"
+              margin="dense"
               required
               fullWidth
               name="calories"
@@ -83,7 +68,7 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
             />
             <TextField
               variant="outlined"
-              margin="normal"
+              margin="dense"
               required
               fullWidth
               name="fat"
@@ -96,7 +81,7 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
             />
             <TextField
               variant="outlined"
-              margin="normal"
+              margin="dense"
               required
               fullWidth
               name="carbs"
@@ -109,7 +94,7 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
             />
             <TextField
               variant="outlined"
-              margin="normal"
+              margin="dense"
               required
               fullWidth
               name="protein"
