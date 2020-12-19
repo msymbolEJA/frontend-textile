@@ -87,6 +87,7 @@ export default function MenuAppBar() {
                 <AccountCircle />
               </IconButton>
               <Menu
+                style={{ marginTop: "3.2rem" }}
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
