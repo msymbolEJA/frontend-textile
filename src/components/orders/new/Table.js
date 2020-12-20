@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -12,6 +12,24 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
 import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -113,17 +131,19 @@ function Orders({ list }) {
         <caption>A barbone structure table example with a caption</caption>
         <TableHead>
           <TableRow>
-            <TableCell align="left" />
-            <TableCell align="left">Dessert (100g serving)</TableCell>
-            <TableCell align="left">Calories</TableCell>
-            <TableCell align="left">Fat&nbsp;(g)</TableCell>
-            <TableCell align="left">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="left">Protein&nbsp;(g)</TableCell>
+            <StyledTableCell align="left" />
+            <StyledTableCell align="left">
+              Dessert (100g serving)
+            </StyledTableCell>
+            <StyledTableCell align="left">Calories</StyledTableCell>
+            <StyledTableCell align="left">Fat&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="left">Carbs&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="left">Protein&nbsp;(g)</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.id}>
+            <StyledTableRow key={row.id}>
               <TableCell className={classes.selectTableCell}>
                 {row.isEditMode ? (
                   <>
@@ -154,7 +174,7 @@ function Orders({ list }) {
               <CustomTableCell {...{ row, name: "fat", onChange }} />
               <CustomTableCell {...{ row, name: "carbs", onChange }} />
               <CustomTableCell {...{ row, name: "protein", onChange }} />
-            </TableRow>
+            </StyledTableRow>
           ))}
         </TableBody>
       </Table>
