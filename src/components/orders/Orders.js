@@ -117,7 +117,7 @@ function Orders() {
 
   return (
     <Paper className={classes.root}>
-      <Table className={classes.table} aria-label="caption table">
+      <Table className={classes.table} aria-label="caption table" size="small">
         <caption>A barbone structure table example with a caption</caption>
         <TableHead>
           <TableRow>
