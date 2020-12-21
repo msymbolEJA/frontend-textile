@@ -5,6 +5,7 @@ import AwaitingOrders from "./AwaitingOrders";
 import AllOrders from "./AllOrders";
 import DeliveredOrders from "./DeliveredOrders";
 import SentOrders from "./SentOrders";
+import NewOrders from "./NewOrders";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +29,7 @@ const Dashboard = () => {
           <AllOrders />
           <DeliveredOrders />
           <SentOrders />
+          <NewOrders />
         </Grid>
       </div>
     </div>

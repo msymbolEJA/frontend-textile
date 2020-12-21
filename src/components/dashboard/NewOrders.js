@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import AllInboxIcon from "@material-ui/icons/AllInbox";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,14 +18,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AllOrders() {
+export default function NewOrders() {
   const classes = useStyles();
 
+  const handleClick = () => {
+    console.log("New Orders");
+  };
+
   return (
-    <Grid item xs={12} md={6}>
+    <Grid item xs={12} md={12} onClick={handleClick}>
       <Paper className={classes.paper}>
-        <AllInboxIcon className={classes.icon} color="primary" />
-        <h1>All Orders</h1>
+        <AddCircleIcon className={classes.icon} color="primary" />
+        <h1>New Order</h1>
       </Paper>
     </Grid>
   );
