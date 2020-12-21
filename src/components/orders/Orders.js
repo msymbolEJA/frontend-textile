@@ -71,10 +71,11 @@ const useStyles = makeStyles((theme) => ({
     width: 130,
     height: 40,
   },
+  buttonGroup: {
+    marginBottom: theme.spacing(1),
+  },
   button: {
-    "& > *": {
-      marginBottom: theme.spacing(1),
-    },
+    padding: 0,
   },
 }));
 
@@ -249,13 +250,14 @@ function Orders() {
   return (
     <Paper className={classes.root}>
       <ButtonGroup
-        className={classes.button}
+        className={classes.buttonGroup}
         variant="contained"
         color="primary"
         aria-label="contained primary button group"
       >
         {tagsData.map((tag) => (
           <Button
+            className={classes.button}
             key={tag}
             checked={selectedTag.indexOf(tag) > -1}
             onClick={(e) => handleTagChange(e)}
@@ -275,7 +277,7 @@ function Orders() {
           <TableRow>
             <StyledTableCell align="left" />
             <StyledTableCell align="left">Name&nbsp;</StyledTableCell>
-            <StyledTableCell align="left">Miles Per Gallon</StyledTableCell>
+            <StyledTableCell align="left">MPG</StyledTableCell>
             <StyledTableCell align="left">Cylinders</StyledTableCell>
             <StyledTableCell align="left">Displacement</StyledTableCell>
             <StyledTableCell align="left">Horsepower</StyledTableCell>
