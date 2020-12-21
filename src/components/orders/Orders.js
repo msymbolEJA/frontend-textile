@@ -192,6 +192,7 @@ function Orders() {
   const handleTagChange = (e) => {
     setSelectedTag(e.target.innerHTML);
     console.log(e.target.innerHTML);
+    setPage(0);
   };
 
   const handleChangePage = (event, newPage) => {
