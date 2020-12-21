@@ -228,21 +228,15 @@ function Orders() {
         <TableHead>
           <TableRow>
             <StyledTableCell align="left" />
-            <StyledTableCell align="left">Name</StyledTableCell>
-            <StyledTableCell align="left">
-              Miles Per Gallon&nbsp;(g)
-            </StyledTableCell>
-            <StyledTableCell align="left">Cylinders&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="left">
-              Displacement&nbsp;(g)
-            </StyledTableCell>
-            <StyledTableCell align="left">Horsepower&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="left">Weight(lb)&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="left">
-              Acceleration&nbsp;(g)
-            </StyledTableCell>
-            <StyledTableCell align="left">Year&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="left">Origin&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="left">Name&nbsp;</StyledTableCell>
+            <StyledTableCell align="left">Miles Per Gallon</StyledTableCell>
+            <StyledTableCell align="left">Cylinders</StyledTableCell>
+            <StyledTableCell align="left">Displacement</StyledTableCell>
+            <StyledTableCell align="left">Horsepower</StyledTableCell>
+            <StyledTableCell align="left">Weight(lb)</StyledTableCell>
+            <StyledTableCell align="left">Acceleration</StyledTableCell>
+            <StyledTableCell align="left">Year</StyledTableCell>
+            <StyledTableCell align="left">Origin</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -295,7 +289,7 @@ function Orders() {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={6}
+              colSpan={10}
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}

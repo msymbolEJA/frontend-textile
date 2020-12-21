@@ -21,7 +21,7 @@ const data = [
     Weight_in_lbs: 3693,
     Acceleration: 11.5,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "TR",
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const data = [
     Weight_in_lbs: 3436,
     Acceleration: 11,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "TR",
   },
   {
     id: 4,
@@ -45,7 +45,7 @@ const data = [
     Weight_in_lbs: 3433,
     Acceleration: 12,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "DE",
   },
   {
     id: 5,
@@ -57,7 +57,7 @@ const data = [
     Weight_in_lbs: 3449,
     Acceleration: 10.5,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "DE",
   },
   {
     id: 6,
@@ -69,7 +69,7 @@ const data = [
     Weight_in_lbs: 4341,
     Acceleration: 10,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "DE",
   },
   {
     id: 7,
@@ -81,7 +81,7 @@ const data = [
     Weight_in_lbs: 4354,
     Acceleration: 9,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "FR",
   },
   {
     id: 8,
@@ -105,7 +105,7 @@ const data = [
     Weight_in_lbs: 4425,
     Acceleration: 10,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "FR",
   },
   {
     id: 10,
@@ -117,7 +117,7 @@ const data = [
     Weight_in_lbs: 3850,
     Acceleration: 8.5,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "FR",
   },
   {
     id: 11,
@@ -129,7 +129,7 @@ const data = [
     Weight_in_lbs: 3090,
     Acceleration: 17.5,
     Year: "1970-01-01",
-    Origin: "Europe",
+    Origin: "FR",
   },
   {
     id: 12,
@@ -165,7 +165,7 @@ const data = [
     Weight_in_lbs: 4166,
     Acceleration: 10.5,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "TR",
   },
   {
     id: 15,
@@ -177,7 +177,7 @@ const data = [
     Weight_in_lbs: 3850,
     Acceleration: 11,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "DE",
   },
   {
     id: 16,
@@ -189,7 +189,7 @@ const data = [
     Weight_in_lbs: 3563,
     Acceleration: 10,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "NL",
   },
   {
     id: 17,
@@ -201,7 +201,7 @@ const data = [
     Weight_in_lbs: 3609,
     Acceleration: 8,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "NL",
   },
   {
     id: 18,
@@ -237,7 +237,7 @@ const data = [
     Weight_in_lbs: 3086,
     Acceleration: 10,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "NL",
   },
   {
     id: 21,
@@ -249,7 +249,7 @@ const data = [
     Weight_in_lbs: 2372,
     Acceleration: 15,
     Year: "1970-01-01",
-    Origin: "Japan",
+    Origin: "JP",
   },
   {
     id: 22,
@@ -261,7 +261,7 @@ const data = [
     Weight_in_lbs: 2833,
     Acceleration: 15.5,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "JP",
   },
   {
     id: 23,
@@ -273,7 +273,7 @@ const data = [
     Weight_in_lbs: 2774,
     Acceleration: 15.5,
     Year: "1970-01-01",
-    Origin: "USA",
+    Origin: "JP",
   },
   {
     id: 24,
@@ -297,7 +297,7 @@ const data = [
     Weight_in_lbs: 2130,
     Acceleration: 14.5,
     Year: "1970-01-01",
-    Origin: "Japan",
+    Origin: "JP",
   },
   {
     id: 26,
@@ -309,7 +309,7 @@ const data = [
     Weight_in_lbs: 1835,
     Acceleration: 20.5,
     Year: "1970-01-01",
-    Origin: "Europe",
+    Origin: "DE",
   },
   {
     id: 27,
@@ -321,7 +321,7 @@ const data = [
     Weight_in_lbs: 2672,
     Acceleration: 17.5,
     Year: "1970-01-01",
-    Origin: "Europe",
+    Origin: "FR",
   },
 ];
 

@@ -287,7 +287,7 @@ function Orders({ list }) {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={6}
+              colSpan={10}
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
