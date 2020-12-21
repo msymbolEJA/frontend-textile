@@ -197,7 +197,7 @@ function Orders() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
@@ -245,7 +245,12 @@ function Orders() {
 
   return (
     <Paper className={classes.root}>
-      <Table className={classes.table} aria-label="caption table" size="small">
+      <Table
+        className={classes.table}
+        stickyHeader
+        aria-label="sticky table"
+        size="small"
+      >
         <caption>A barbone structure table example with a caption</caption>
         <TableHead>
           <TableRow>
@@ -260,40 +265,42 @@ function Orders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.id}>
-              <TableCell className={classes.selectTableCell}>
-                {row.isEditMode ? (
-                  <>
+          {rows
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row) => (
+              <StyledTableRow key={row.id}>
+                <TableCell className={classes.selectTableCell}>
+                  {row.isEditMode ? (
+                    <>
+                      <IconButton
+                        aria-label="done"
+                        onClick={() => onToggleEditMode(row.id)}
+                      >
+                        <DoneIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="revert"
+                        onClick={() => onRevert(row.id)}
+                      >
+                        <RevertIcon />
+                      </IconButton>
+                    </>
+                  ) : (
                     <IconButton
-                      aria-label="done"
+                      aria-label="delete"
                       onClick={() => onToggleEditMode(row.id)}
                     >
-                      <DoneIcon />
+                      <EditIcon />
                     </IconButton>
-                    <IconButton
-                      aria-label="revert"
-                      onClick={() => onRevert(row.id)}
-                    >
-                      <RevertIcon />
-                    </IconButton>
-                  </>
-                ) : (
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => onToggleEditMode(row.id)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                )}
-              </TableCell>
-              <CustomTableCell {...{ row, name: "name", onChange }} />
-              <CustomTableCell {...{ row, name: "calories", onChange }} />
-              <CustomTableCell {...{ row, name: "fat", onChange }} />
-              <CustomTableCell {...{ row, name: "carbs", onChange }} />
-              <CustomTableCell {...{ row, name: "protein", onChange }} />
-            </StyledTableRow>
-          ))}
+                  )}
+                </TableCell>
+                <CustomTableCell {...{ row, name: "name", onChange }} />
+                <CustomTableCell {...{ row, name: "calories", onChange }} />
+                <CustomTableCell {...{ row, name: "fat", onChange }} />
+                <CustomTableCell {...{ row, name: "carbs", onChange }} />
+                <CustomTableCell {...{ row, name: "protein", onChange }} />
+              </StyledTableRow>
+            ))}
         </TableBody>
         <TableFooter>
           <TableRow>
