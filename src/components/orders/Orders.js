@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withStyles, makeStyles, useTheme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -11,6 +11,8 @@ import TableFooter from "@material-ui/core/TableFooter";
 import Input from "@material-ui/core/Input";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 // Icons
 import LastPageIcon from "@material-ui/icons/LastPage";
 import FirstPageIcon from "@material-ui/icons/FirstPage";
@@ -21,6 +23,8 @@ import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
 import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
 // Local Data
 import DATA from "../../helper/Data";
+
+const tagsData = ["All", "USA", "TR", "DE", "FR", "NL", "JP"];
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -66,6 +70,11 @@ const useStyles = makeStyles((theme) => ({
   input: {
     width: 130,
     height: 40,
+  },
+  button: {
+    "& > *": {
+      marginBottom: theme.spacing(1),
+    },
   },
 }));
 
@@ -159,11 +168,31 @@ TablePaginationActions.propTypes = {
 };
 
 function Orders() {
-  const [rows, setRows] = React.useState(DATA);
-  const [previous, setPrevious] = React.useState({});
+  const [rows, setRows] = useState(DATA);
+  const [previous, setPrevious] = useState({});
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const [selectedTag, setSelectedTag] = useState("All");
+  const [filteredList, setFilteredList] = useState(DATA);
+
+  useEffect(() => {
+    const newList =
+      selectedTag === "All"
+        ? rows
+        : rows.filter((item) => {
+            return item?.Origin === selectedTag.toUpperCase();
+          });
+    setFilteredList(newList);
+    // console.log(newList);
+    // console.log(filteredList);
+  }, [rows, selectedTag]);
+
+  const handleTagChange = (e) => {
+    setSelectedTag(e.target.innerHTML);
+    console.log(e.target.innerHTML);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -218,6 +247,22 @@ function Orders() {
 
   return (
     <Paper className={classes.root}>
+      <ButtonGroup
+        className={classes.button}
+        variant="contained"
+        color="primary"
+        aria-label="contained primary button group"
+      >
+        {tagsData.map((tag) => (
+          <Button
+            key={tag}
+            checked={selectedTag.indexOf(tag) > -1}
+            onClick={(e) => handleTagChange(e)}
+          >
+            {tag}
+          </Button>
+        ))}
+      </ButtonGroup>
       <Table
         className={classes.table}
         stickyHeader
@@ -240,7 +285,7 @@ function Orders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows
+          {filteredList
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => (
               <StyledTableRow key={row.id}>
