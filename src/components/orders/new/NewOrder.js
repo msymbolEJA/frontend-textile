@@ -1,85 +1,77 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Table from "./Table";
 import Form from "./Form";
-
-const data = [
-  {
-    id: 1,
-    desert: "Frozen yoghurt",
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    isEditMode: false,
-  },
-  {
-    id: 2,
-    desert: "Ice cream sandwich",
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    isEditMode: false,
-  },
-  {
-    id: 3,
-    desert: "Eclair",
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    isEditMode: false,
-  },
-  {
-    id: 4,
-    desert: "Baklava",
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    isEditMode: false,
-  },
-];
+import DATA from "../../../helper/Data";
 
 function NewOrder() {
-  const [list, setList] = useState(data);
+  const [list, setList] = useState(DATA);
   const [info, setInfo] = useState({
-    id: "",
-    desert: "",
-    calories: "",
-    fat: "",
-    carbs: "",
-    protein: "",
+    Name: "",
+    Miles_per_Gallon: "",
+    Cylinders: "",
+    Displacement: "",
+    Horsepower: "",
+    Weight_in_lbs: "",
+    Acceleration: "",
+    Year: "",
+    Origin: "",
   });
+
+  //console.log(DATA);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("HandleSubmit Button");
-    let { desert, calories, fat, carbs, protein } = info;
-    calories = Number(calories);
-    fat = Number(fat);
-    carbs = Number(carbs);
-    protein = Number(protein);
+    // console.log("HandleSubmit Button");
+    let {
+      Name,
+      Miles_per_Gallon,
+      Cylinders,
+      Displacement,
+      Horsepower,
+      Weight_in_lbs,
+      Acceleration,
+      Year,
+      Origin,
+    } = info;
+    Miles_per_Gallon = Number(Miles_per_Gallon);
+    Cylinders = Number(Cylinders);
+    Displacement = Number(Displacement);
+    Horsepower = Number(Horsepower);
+    Weight_in_lbs = Number(Weight_in_lbs);
+    Acceleration = Number(Acceleration);
+
     setList([
       ...list,
-      { id: new Date().getTime(), desert, calories, fat, carbs, protein },
+      {
+        id: new Date().getTime(),
+        Name,
+        Miles_per_Gallon,
+        Cylinders,
+        Displacement,
+        Horsepower,
+        Weight_in_lbs,
+        Acceleration,
+        Year,
+        Origin,
+      },
     ]);
     setInfo({
-      id: "",
-      desert: "",
-      calories: "",
-      fat: "",
-      carbs: "",
-      protein: "",
+      Name: "",
+      Miles_per_Gallon: "",
+      Cylinders: "",
+      Displacement: "",
+      Horsepower: "",
+      Weight_in_lbs: "",
+      Acceleration: "",
+      Year: "",
+      Origin: "",
     });
   };
   const handleChange = (e) => {
     // console.log(info);
     setInfo({ ...info, [e.target.name]: e.target.value });
   };
-  useEffect(() => {
-    console.log("list", list);
-  }, [list]);
+
   return (
     <div className="App">
       <Form

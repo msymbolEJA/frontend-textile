@@ -19,6 +19,8 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
 import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
+// Local Data
+import DATA from "../../helper/Data";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -66,16 +68,6 @@ const useStyles = makeStyles((theme) => ({
     height: 40,
   },
 }));
-
-const createData = (name, calories, fat, carbs, protein) => ({
-  id: name.replace(" ", "_"),
-  name,
-  calories,
-  fat,
-  carbs,
-  protein,
-  isEditMode: false,
-});
 
 const CustomTableCell = ({ row, name, onChange }) => {
   const classes = useStyles();
@@ -167,30 +159,11 @@ TablePaginationActions.propTypes = {
 };
 
 function Orders() {
-  const [rows, setRows] = React.useState([
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-  ]);
+  const [rows, setRows] = React.useState(DATA);
   const [previous, setPrevious] = React.useState({});
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -255,13 +228,21 @@ function Orders() {
         <TableHead>
           <TableRow>
             <StyledTableCell align="left" />
+            <StyledTableCell align="left">Name</StyledTableCell>
             <StyledTableCell align="left">
-              Dessert (100g serving)
+              Miles Per Gallon&nbsp;(g)
             </StyledTableCell>
-            <StyledTableCell align="left">Calories</StyledTableCell>
-            <StyledTableCell align="left">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="left">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="left">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="left">Cylinders&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="left">
+              Displacement&nbsp;(g)
+            </StyledTableCell>
+            <StyledTableCell align="left">Horsepower&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="left">Weight(lb)&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="left">
+              Acceleration&nbsp;(g)
+            </StyledTableCell>
+            <StyledTableCell align="left">Year&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="left">Origin&nbsp;(g)</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -294,11 +275,19 @@ function Orders() {
                     </IconButton>
                   )}
                 </TableCell>
-                <CustomTableCell {...{ row, name: "name", onChange }} />
-                <CustomTableCell {...{ row, name: "calories", onChange }} />
-                <CustomTableCell {...{ row, name: "fat", onChange }} />
-                <CustomTableCell {...{ row, name: "carbs", onChange }} />
-                <CustomTableCell {...{ row, name: "protein", onChange }} />
+                <CustomTableCell {...{ row, name: "Name", onChange }} />
+                <CustomTableCell
+                  {...{ row, name: "Miles_per_Gallon", onChange }}
+                />
+                <CustomTableCell {...{ row, name: "Cylinders", onChange }} />
+                <CustomTableCell {...{ row, name: "Displacement", onChange }} />
+                <CustomTableCell {...{ row, name: "Horsepower", onChange }} />
+                <CustomTableCell
+                  {...{ row, name: "Weight_in_lbs", onChange }}
+                />
+                <CustomTableCell {...{ row, name: "Acceleration", onChange }} />
+                <CustomTableCell {...{ row, name: "Year", onChange }} />
+                <CustomTableCell {...{ row, name: "Origin", onChange }} />
               </StyledTableRow>
             ))}
         </TableBody>

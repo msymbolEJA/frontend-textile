@@ -226,50 +226,62 @@ function Orders({ list }) {
         <TableHead>
           <TableRow>
             <StyledTableCell align="left" />
-            <StyledTableCell align="left">
-              Dessert (100g serving)
-            </StyledTableCell>
-            <StyledTableCell align="left">Calories</StyledTableCell>
-            <StyledTableCell align="left">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="left">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="left">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell align="left">Name</StyledTableCell>
+            <StyledTableCell align="left">Miles Per Gallon</StyledTableCell>
+            <StyledTableCell align="left">Cylinders&nbsp;</StyledTableCell>
+            <StyledTableCell align="left">Displacement&nbsp;</StyledTableCell>
+            <StyledTableCell align="left">Horsepower&nbsp;</StyledTableCell>
+            <StyledTableCell align="left">Weight(lbs)&nbsp;</StyledTableCell>
+            <StyledTableCell align="left">Acceleration&nbsp;</StyledTableCell>
+            <StyledTableCell align="left">Year&nbsp;</StyledTableCell>
+            <StyledTableCell align="left">Origin&nbsp;</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.id}>
-              <TableCell className={classes.selectTableCell}>
-                {row.isEditMode ? (
-                  <>
+          {rows
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row) => (
+              <StyledTableRow key={row.id}>
+                <TableCell className={classes.selectTableCell}>
+                  {row.isEditMode ? (
+                    <>
+                      <IconButton
+                        aria-label="done"
+                        onClick={() => onToggleEditMode(row.id)}
+                      >
+                        <DoneIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="revert"
+                        onClick={() => onRevert(row.id)}
+                      >
+                        <RevertIcon />
+                      </IconButton>
+                    </>
+                  ) : (
                     <IconButton
-                      aria-label="done"
+                      aria-label="delete"
                       onClick={() => onToggleEditMode(row.id)}
                     >
-                      <DoneIcon />
+                      <EditIcon />
                     </IconButton>
-                    <IconButton
-                      aria-label="revert"
-                      onClick={() => onRevert(row.id)}
-                    >
-                      <RevertIcon />
-                    </IconButton>
-                  </>
-                ) : (
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => onToggleEditMode(row.id)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                )}
-              </TableCell>
-              <CustomTableCell {...{ row, name: "desert", onChange }} />
-              <CustomTableCell {...{ row, name: "calories", onChange }} />
-              <CustomTableCell {...{ row, name: "fat", onChange }} />
-              <CustomTableCell {...{ row, name: "carbs", onChange }} />
-              <CustomTableCell {...{ row, name: "protein", onChange }} />
-            </StyledTableRow>
-          ))}
+                  )}
+                </TableCell>
+                <CustomTableCell {...{ row, name: "Name", onChange }} />
+                <CustomTableCell
+                  {...{ row, name: "Miles_per_Gallon", onChange }}
+                />
+                <CustomTableCell {...{ row, name: "Cylinders", onChange }} />
+                <CustomTableCell {...{ row, name: "Displacement", onChange }} />
+                <CustomTableCell {...{ row, name: "Horsepower", onChange }} />
+                <CustomTableCell
+                  {...{ row, name: "Weight_in_lbs", onChange }}
+                />
+                <CustomTableCell {...{ row, name: "Acceleration", onChange }} />
+                <CustomTableCell {...{ row, name: "Year", onChange }} />
+                <CustomTableCell {...{ row, name: "Origin", onChange }} />
+              </StyledTableRow>
+            ))}
         </TableBody>
         <TableFooter>
           <TableRow>

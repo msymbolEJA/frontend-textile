@@ -45,65 +45,117 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               margin="dense"
               required
               fullWidth
-              id="desert"
-              label="Desert"
-              name="desert"
-              autoComplete="desert"
+              id="Name"
+              label="Name"
+              name="Name"
+              autoComplete="Name"
               onChange={handleChange}
               autoFocus
-              value={info.desert}
+              value={info.Name}
             />
             <TextField
               variant="outlined"
               margin="dense"
               required
               fullWidth
-              name="calories"
-              label="Calories"
+              name="Miles_per_Gallon"
+              label="Miles per Gallon"
               type="number"
-              id="calories"
-              autoComplete="calories"
+              id="Miles_per_Gallon"
+              autoComplete="Miles_per_Gallon"
               onChange={handleChange}
-              value={info.calories}
+              value={info.Miles_per_Gallon}
             />
             <TextField
               variant="outlined"
               margin="dense"
               required
               fullWidth
-              name="fat"
-              label="Fat"
+              name="Cylinders"
+              label="Cylinders"
               type="number"
-              id="fat"
-              autoComplete="fat"
+              id="Cylinders"
+              autoComplete="Cylinders"
               onChange={handleChange}
-              value={info.fat}
+              value={info.Cylinders}
             />
             <TextField
               variant="outlined"
               margin="dense"
               required
               fullWidth
-              name="carbs"
-              label="Carbs"
+              name="Displacement"
+              label="Displacement"
               type="number"
-              id="carbs"
-              autoComplete="carbs"
+              id="Displacement"
+              autoComplete="Displacement"
               onChange={handleChange}
-              value={info.carbs}
+              value={info.Displacement}
             />
             <TextField
               variant="outlined"
               margin="dense"
               required
               fullWidth
-              name="protein"
-              label="Protein"
+              name="Horsepower"
+              label="Horsepower"
               type="number"
-              id="protein"
-              autoComplete="protein"
+              id="Horsepower"
+              autoComplete="Horsepower"
               onChange={handleChange}
-              value={info.protein}
+              value={info.Horsepower}
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="Weight_in_lbs"
+              label="Weight(lbs)"
+              type="number"
+              id="Weight_in_lbs"
+              autoComplete="Weight_in_lbs"
+              onChange={handleChange}
+              value={info.Weight_in_lbs}
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="Acceleration"
+              label="Acceleration"
+              type="number"
+              id="Acceleration"
+              autoComplete="Acceleration"
+              onChange={handleChange}
+              value={info.Acceleration}
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="Year"
+              label="Year"
+              type="text"
+              id="Year"
+              autoComplete="Year"
+              onChange={handleChange}
+              value={info.Year}
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="Origin"
+              label="Origin"
+              type="text"
+              id="Origin"
+              autoComplete="Origin"
+              onChange={handleChange}
+              value={info.Origin}
             />
             <Button
               type="submit"
