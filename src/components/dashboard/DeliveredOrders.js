@@ -7,6 +7,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    cursor: "pointer",
   },
   paper: {
     padding: theme.spacing(2),
@@ -26,10 +27,10 @@ export default function DeliveredOrders() {
   };
 
   return (
-    <Grid item xs={12} md={6} onClick={handleClick}>
+    <Grid item xs={12} md={6} onClick={handleClick} className={classes.root}>
       <Paper className={classes.paper}>
         <CheckCircleIcon className={classes.icon} color="primary" />
-        <h1>DeliveredOrders</h1>
+        <h1>Delivered Orders</h1>
       </Paper>
     </Grid>
   );

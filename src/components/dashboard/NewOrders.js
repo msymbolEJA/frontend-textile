@@ -7,6 +7,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    cursor: "pointer",
   },
   paper: {
     padding: theme.spacing(2),
@@ -26,7 +27,7 @@ export default function NewOrders() {
   };
 
   return (
-    <Grid item xs={12} md={12} onClick={handleClick}>
+    <Grid item xs={12} md={12} onClick={handleClick} className={classes.root}>
       <Paper className={classes.paper}>
         <AddCircleIcon className={classes.icon} color="primary" />
         <h1>New Order</h1>
