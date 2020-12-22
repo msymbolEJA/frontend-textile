@@ -13,6 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import TableContainer from "@material-ui/core/TableContainer";
 // Icons
 import LastPageIcon from "@material-ui/icons/LastPage";
 import FirstPageIcon from "@material-ui/icons/FirstPage";
@@ -56,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginTop: theme.spacing(3),
     overflowX: "auto",
+  },
+
+  container: {
+    maxHeight: "83vh",
   },
   table: {
     minWidth: 650,
@@ -266,92 +271,98 @@ function Orders() {
           </Button>
         ))}
       </ButtonGroup>
-      <Table
-        className={classes.table}
-        stickyHeader
-        aria-label="sticky table"
-        size="small"
-      >
-        <caption>A barbone structure table example with a caption</caption>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="left" />
-            <StyledTableCell align="left">Name&nbsp;</StyledTableCell>
-            <StyledTableCell align="left">MPG</StyledTableCell>
-            <StyledTableCell align="left">Cylinders</StyledTableCell>
-            <StyledTableCell align="left">Displacement</StyledTableCell>
-            <StyledTableCell align="left">Horsepower</StyledTableCell>
-            <StyledTableCell align="left">Weight(lb)</StyledTableCell>
-            <StyledTableCell align="left">Acceleration</StyledTableCell>
-            <StyledTableCell align="left">Year</StyledTableCell>
-            <StyledTableCell align="left">Origin</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {filteredList
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row) => (
-              <StyledTableRow key={row.id}>
-                <TableCell className={classes.selectTableCell}>
-                  {row.isEditMode ? (
-                    <>
+      <TableContainer className={classes.container}>
+        <Table
+          className={classes.table}
+          stickyHeader
+          aria-label="sticky table"
+          size="small"
+        >
+          <caption>A barbone structure table example with a caption</caption>
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="left" />
+              <StyledTableCell align="left">Name&nbsp;</StyledTableCell>
+              <StyledTableCell align="left">MPG</StyledTableCell>
+              <StyledTableCell align="left">Cylinders</StyledTableCell>
+              <StyledTableCell align="left">Displacement</StyledTableCell>
+              <StyledTableCell align="left">Horsepower</StyledTableCell>
+              <StyledTableCell align="left">Weight(lb)</StyledTableCell>
+              <StyledTableCell align="left">Acceleration</StyledTableCell>
+              <StyledTableCell align="left">Year</StyledTableCell>
+              <StyledTableCell align="left">Origin</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredList
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => (
+                <StyledTableRow key={row.id}>
+                  <TableCell className={classes.selectTableCell}>
+                    {row.isEditMode ? (
+                      <>
+                        <IconButton
+                          aria-label="done"
+                          onClick={() => onToggleEditMode(row.id)}
+                        >
+                          <DoneIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="revert"
+                          onClick={() => onRevert(row.id)}
+                        >
+                          <RevertIcon />
+                        </IconButton>
+                      </>
+                    ) : (
                       <IconButton
-                        aria-label="done"
+                        aria-label="delete"
                         onClick={() => onToggleEditMode(row.id)}
                       >
-                        <DoneIcon />
+                        <EditIcon />
                       </IconButton>
-                      <IconButton
-                        aria-label="revert"
-                        onClick={() => onRevert(row.id)}
-                      >
-                        <RevertIcon />
-                      </IconButton>
-                    </>
-                  ) : (
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => onToggleEditMode(row.id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  )}
-                </TableCell>
-                <CustomTableCell {...{ row, name: "Name", onChange }} />
-                <CustomTableCell
-                  {...{ row, name: "Miles_per_Gallon", onChange }}
-                />
-                <CustomTableCell {...{ row, name: "Cylinders", onChange }} />
-                <CustomTableCell {...{ row, name: "Displacement", onChange }} />
-                <CustomTableCell {...{ row, name: "Horsepower", onChange }} />
-                <CustomTableCell
-                  {...{ row, name: "Weight_in_lbs", onChange }}
-                />
-                <CustomTableCell {...{ row, name: "Acceleration", onChange }} />
-                <CustomTableCell {...{ row, name: "Year", onChange }} />
-                <CustomTableCell {...{ row, name: "Origin", onChange }} />
-              </StyledTableRow>
-            ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={10}
-              count={filteredList.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: { "aria-label": "rows per page" },
-                native: true,
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
+                    )}
+                  </TableCell>
+                  <CustomTableCell {...{ row, name: "Name", onChange }} />
+                  <CustomTableCell
+                    {...{ row, name: "Miles_per_Gallon", onChange }}
+                  />
+                  <CustomTableCell {...{ row, name: "Cylinders", onChange }} />
+                  <CustomTableCell
+                    {...{ row, name: "Displacement", onChange }}
+                  />
+                  <CustomTableCell {...{ row, name: "Horsepower", onChange }} />
+                  <CustomTableCell
+                    {...{ row, name: "Weight_in_lbs", onChange }}
+                  />
+                  <CustomTableCell
+                    {...{ row, name: "Acceleration", onChange }}
+                  />
+                  <CustomTableCell {...{ row, name: "Year", onChange }} />
+                  <CustomTableCell {...{ row, name: "Origin", onChange }} />
+                </StyledTableRow>
+              ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                colSpan={10}
+                count={filteredList.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
     </Paper>
   );
 }
