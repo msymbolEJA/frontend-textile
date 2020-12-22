@@ -3,25 +3,22 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import AccountBoxRoundedIcon from "@material-ui/icons/AccountBoxRounded";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Modal from "@material-ui/core/Modal";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -46,10 +43,126 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     fontSize: 80,
   },
+  modalpaper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    borderRadius: 10,
+  },
+  modalButton: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  info: {
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
+
+const accountData = {
+  accountName: "Admin",
+  email: "admin@example.com",
+};
 
 export default function Account() {
   const classes = useStyles();
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const body = (
+    <div style={modalStyle} className={classes.modalpaper}>
+      <form className={classes.form} noValidate>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              autoComplete="userName"
+              name="userName"
+              variant="outlined"
+              required
+              fullWidth
+              id="userName"
+              label="Username"
+              autoFocus
+              defaultValue={accountData.accountName}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              defaultValue={accountData.email}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              name="password"
+              label="Current Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              name="newPassword"
+              label="New Password"
+              type="password"
+              id="newPassword"
+              autoComplete="current-password"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              id="confirmPassword"
+              autoComplete="current-password"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button variant="contained" fullWidth component="label">
+              Update Profile Picture
+              <input type="file" hidden />
+            </Button>
+          </Grid>
+        </Grid>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+        >
+          Update
+        </Button>
+      </form>
+    </div>
+  );
 
   return (
     <Container component="main" maxWidth="xs">
@@ -58,69 +171,33 @@ export default function Account() {
         <Avatar className={classes.avatar}>
           <AccountBoxRoundedIcon className={classes.icon} />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Account Name
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete="userName"
-                name="userName"
-                variant="outlined"
-                required
-                fullWidth
-                id="userName"
-                label="Username"
-                autoFocus
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </Grid>
-          </Grid>
+        <div className={classes.info}>
+          <Typography component="h1" variant="h5">
+            {accountData.accountName}
+          </Typography>
+          <Typography variant="h6">{accountData.email}</Typography>
+        </div>
+        <div>
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            onClick={handleOpen}
+            className={classes.modalButton}
           >
-            Sign Up
+            Update Profile
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+            {body}
+          </Modal>
+        </div>
       </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }
