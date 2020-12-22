@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,9 +22,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DeliveredOrders() {
   const classes = useStyles();
+  const history = useHistory();
 
   const handleClick = () => {
-    console.log("Delivered Orders");
+    history.push("/orders");
   };
 
   return (

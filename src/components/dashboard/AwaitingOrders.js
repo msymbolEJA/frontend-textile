@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import HourglassEmptyIcon from "@material-ui/icons/HourglassEmpty";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,8 +22,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AwaitingOrders() {
   const classes = useStyles();
+  const history = useHistory();
+
   const handleClick = () => {
-    console.log("Awaiting Orders");
+    history.push("/orders");
   };
 
   return (

@@ -2,7 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import AllInboxIcon from "@material-ui/icons/AllInbox";
+import HorizontalSplitRoundedIcon from "@material-ui/icons/HorizontalSplitRounded";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,14 +22,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AllOrders() {
   const classes = useStyles();
+  const history = useHistory();
+
   const handleClick = () => {
-    console.log("All Orders");
+    history.push("/orders");
   };
 
   return (
     <Grid item xs={12} md={6} onClick={handleClick} className={classes.root}>
       <Paper className={classes.paper}>
-        <AllInboxIcon className={classes.icon} color="primary" />
+        <HorizontalSplitRoundedIcon className={classes.icon} color="primary" />
         <h1>All Orders</h1>
       </Paper>
     </Grid>
