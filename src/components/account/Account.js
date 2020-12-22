@@ -10,17 +10,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 
-function getModalStyle() {
-  const top = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -44,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 80,
   },
   modalpaper: {
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     position: "absolute",
     width: 400,
     backgroundColor: theme.palette.background.paper,
@@ -67,7 +59,6 @@ const accountData = {
 
 export default function Account() {
   const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => {
@@ -79,7 +70,7 @@ export default function Account() {
   };
 
   const body = (
-    <div style={modalStyle} className={classes.modalpaper}>
+    <div className={classes.modalpaper}>
       <form className={classes.form} noValidate>
         <Grid container spacing={2}>
           <Grid item xs={12}>
