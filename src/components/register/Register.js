@@ -45,8 +45,18 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
   },
   error: {
-    color: "#cc3300",
-    backgroundColor: "#ffcc00",
+    color: "#8b0000",
+    backgroundColor: "#FDECEA",
+    borderRadius: "5px",
+    height: "2rem",
+    fontSize: "1rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  succes: {
+    color: "#678468",
+    backgroundColor: "#EDF7ED",
     borderRadius: "5px",
     height: "2rem",
     fontSize: "1rem",
@@ -85,23 +95,23 @@ export default function Register() {
 
   const body = (
     <div className={classes.modalpaper}>
-      <form className={classes.form} noValidate>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            Regisered Succesfully!
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <div className={classes.succes}>
+            <span>Regisered Succesfully!</span>
+          </div>
         </Grid>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          onClick={handleMainPage}
-        >
-          Ok
-        </Button>
-      </form>
+      </Grid>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        className={classes.submit}
+        onClick={handleMainPage}
+      >
+        Go to Dashboard
+      </Button>
     </div>
   );
 
@@ -122,13 +132,13 @@ export default function Register() {
     let result = validate();
     if (Object.keys(result).length === 0 && result.constructor === Object) {
       //alert(JSON.stringify(validate()));
-      console.log(values);
+      // console.log(values);
       handleOpen();
     } else {
-      console.log("Invalid");
+      // console.log("Invalid");
       setFormErrors(validate());
-      console.log("Errors", formErrors);
-      console.log("userName", formErrors.userName);
+      // console.log("Errors", formErrors);
+      // console.log("userName", formErrors.userName);
     }
   };
 
@@ -136,21 +146,21 @@ export default function Register() {
     let errors = {};
 
     if (!values.userName) {
-      errors.userName = "Fill the Username";
+      errors.userName = "Fill the Username!";
     } else if (!values.email) {
-      errors.email = "Fill the Email Address";
+      errors.email = "Fill the Email Address!";
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
     ) {
-      errors.email = "Invalid Email Address";
+      errors.email = "Invalid Email Address!";
     } else if (!values.password) {
-      errors.password = "Enter Your Password";
+      errors.password = "Enter Password!";
     } else if (values.password.length < 8) {
       errors.password = "Password must be min 8 characters!";
     } else if (!values.confirmPassword) {
-      errors.confirmPassword = "Confirm Password";
+      errors.confirmPassword = "Confirm Password!";
     } else if (!(values.password === values.confirmPassword)) {
-      errors.confirmPassword = "Didn't Match Password";
+      errors.confirmPassword = "Passwords must be matched!";
     } else if (!values.policy) {
       errors.policy = "You should accept Privacy Policy!";
     }
@@ -263,7 +273,7 @@ export default function Register() {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Register
           </Button>
           <Modal
             open={open}
@@ -276,7 +286,7 @@ export default function Register() {
           <Grid container>
             <Grid item xs>
               <Link href="/" variant="body2">
-                Do have an account? Login
+                Already have an account? Login
               </Link>
             </Grid>
           </Grid>
