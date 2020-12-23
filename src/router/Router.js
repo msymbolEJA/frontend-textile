@@ -5,12 +5,14 @@ import Account from "../components/account/Account";
 import Login from "../components/login/Login";
 import Navbar from "../components/navbar/Navbar";
 import NewOrder from "../components/orders/new/NewOrder";
+import Register from "../components/register/Register";
 
 const AppRouter = () => {
   return (
     <Router>
       <Switch>
         <Route exact path="/" component={Login} />
+        <Route path="/register" component={Register} />
         <Route component={DefaultContainer} />
       </Switch>
     </Router>
