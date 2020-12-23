@@ -71,7 +71,7 @@ const CustomTableCell = ({ row, name, onChange }) => {
   const classes = useStyles();
   const { isEditMode } = row;
   return (
-    <TableCell align="left" className={classes.tableCell}>
+    <TableCell align="center" className={classes.tableCell}>
       {isEditMode ? (
         <Input
           value={row[name]}
@@ -222,19 +222,19 @@ function Orders({ list }) {
   return (
     <Paper className={classes.root}>
       <Table className={classes.table} aria-label="caption table" size="small">
-        <caption>A barbone structure table example with a caption</caption>
+        <caption>Can be added Company Name!</caption>
         <TableHead>
           <TableRow>
-            <StyledTableCell align="left" />
-            <StyledTableCell align="left">Name</StyledTableCell>
-            <StyledTableCell align="left">Miles Per Gallon</StyledTableCell>
-            <StyledTableCell align="left">Cylinders&nbsp;</StyledTableCell>
-            <StyledTableCell align="left">Displacement&nbsp;</StyledTableCell>
-            <StyledTableCell align="left">Horsepower&nbsp;</StyledTableCell>
-            <StyledTableCell align="left">Weight(lbs)&nbsp;</StyledTableCell>
-            <StyledTableCell align="left">Acceleration&nbsp;</StyledTableCell>
-            <StyledTableCell align="left">Year&nbsp;</StyledTableCell>
-            <StyledTableCell align="left">Origin&nbsp;</StyledTableCell>
+            <StyledTableCell align="center" />
+            <StyledTableCell align="center">Name</StyledTableCell>
+            <StyledTableCell align="center">Miles Per Gallon</StyledTableCell>
+            <StyledTableCell align="center">Cylinders</StyledTableCell>
+            <StyledTableCell align="center">Displacement</StyledTableCell>
+            <StyledTableCell align="center">Horsepower</StyledTableCell>
+            <StyledTableCell align="center">Weight(lbs)</StyledTableCell>
+            <StyledTableCell align="center">Acceleration</StyledTableCell>
+            <StyledTableCell align="center">Year</StyledTableCell>
+            <StyledTableCell align="center">Origin</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

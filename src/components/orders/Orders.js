@@ -22,7 +22,7 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
 import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
-// Local Data
+// Local Sample Data
 import DATA from "../../helper/Data";
 
 const tagsData = ["All", "USA", "TR", "DE", "FR", "NL", "JP"];
@@ -88,7 +88,7 @@ const CustomTableCell = ({ row, name, onChange }) => {
   const classes = useStyles();
   const { isEditMode } = row;
   return (
-    <TableCell align="left" className={classes.tableCell}>
+    <TableCell align="center" className={classes.tableCell}>
       {isEditMode ? (
         <Input
           value={row[name]}
@@ -278,19 +278,19 @@ function Orders() {
           aria-label="sticky table"
           size="small"
         >
-          <caption>A barbone structure table example with a caption</caption>
+          <caption>Can be added Company Name!</caption>
           <TableHead>
             <TableRow>
-              <StyledTableCell align="left" />
-              <StyledTableCell align="left">Name&nbsp;</StyledTableCell>
-              <StyledTableCell align="left">MPG</StyledTableCell>
-              <StyledTableCell align="left">Cylinders</StyledTableCell>
-              <StyledTableCell align="left">Displacement</StyledTableCell>
-              <StyledTableCell align="left">Horsepower</StyledTableCell>
-              <StyledTableCell align="left">Weight(lb)</StyledTableCell>
-              <StyledTableCell align="left">Acceleration</StyledTableCell>
-              <StyledTableCell align="left">Year</StyledTableCell>
-              <StyledTableCell align="left">Origin</StyledTableCell>
+              <StyledTableCell align="center" />
+              <StyledTableCell align="center">Name&nbsp;</StyledTableCell>
+              <StyledTableCell align="center">MPG</StyledTableCell>
+              <StyledTableCell align="center">Cylinders</StyledTableCell>
+              <StyledTableCell align="center">Displacement</StyledTableCell>
+              <StyledTableCell align="center">Horsepower</StyledTableCell>
+              <StyledTableCell align="center">Weight(lb)</StyledTableCell>
+              <StyledTableCell align="center">Acceleration</StyledTableCell>
+              <StyledTableCell align="center">Year</StyledTableCell>
+              <StyledTableCell align="center">Origin</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
