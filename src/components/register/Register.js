@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -34,6 +34,59 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Register() {
   const classes = useStyles();
+  const [values, setValues] = useState({
+    userName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    policy: false,
+  });
+
+  const handleChange = (e) => {
+    // console.log(info);
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const handlePolicyChange = (e) => {
+    setValues({ ...values, policy: e.target.checked });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // validate();
+    if (!validate()) {
+      //alert(JSON.stringify(validate()));
+      console.log(values);
+    }
+  };
+
+  const validate = () => {
+    const errors = {};
+
+    if (!values.userName) {
+      return (errors.userName = "Fill the Username");
+    }
+    if (!values.email) {
+      return (errors.email = "Fill the Email Address");
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      return (errors.email = "Invalid Email Address");
+    }
+    if (!values.password) {
+      return (errors.password = "Enter Your Password");
+    } else if (values.password.length < 8) {
+      return (errors.password = "Password must be min 8 characters!");
+    } else if (!values.confirmPassword) {
+      return (errors.password = "Confirm Password");
+    } else if (!(values.password === values.confirmPassword)) {
+      return (errors.password = "Didn't Match Password");
+    }
+    if (!values.policy) {
+      return (errors.policy = "You should accept Privacy Policy!");
+    }
+    return false;
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -45,7 +98,7 @@ export default function Register() {
         <Typography component="h1" variant="h5">
           Register
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -53,6 +106,8 @@ export default function Register() {
             fullWidth
             id="userName"
             label="Username"
+            onChange={handleChange}
+            defaultValue={values.userName}
             name="userName"
             autoComplete="userName"
             autoFocus
@@ -65,6 +120,8 @@ export default function Register() {
             id="email"
             label="Email Address"
             name="email"
+            onChange={handleChange}
+            defaultValue={values.email}
             autoComplete="email"
             autoFocus
           />
@@ -77,6 +134,8 @@ export default function Register() {
             label="Password"
             type="password"
             id="password"
+            onChange={handleChange}
+            defaultValue={values.password}
             autoComplete="current-password"
           />
           <TextField
@@ -88,10 +147,19 @@ export default function Register() {
             label="Confirm Password"
             type="password"
             id="confirmPassword"
+            onChange={handleChange}
+            defaultValue={values.confirmPassword}
             autoComplete="current-password"
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              <Checkbox
+                value="remember"
+                defaultValue={values.policy}
+                color="primary"
+                onChange={handlePolicyChange}
+              />
+            }
             label="I accept Privacy Policy"
           />
           <Button
