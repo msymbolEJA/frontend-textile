@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  accountCheck: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 export default function SignInSide() {
@@ -155,9 +158,11 @@ export default function SignInSide() {
                   Forgot password?
                 </Link>
               </Grid>
-              <Grid item>
+            </Grid>
+            <Grid container>
+              <Grid item xs className={classes.accountCheck}>
                 <Link href="/register" variant="body2">
-                  {"Don't have an account? Register"}
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
