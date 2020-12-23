@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,6 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Modal from "@material-ui/core/Modal";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,10 +32,34 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  modalpaper: {
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    borderRadius: 10,
+  },
+  error: {
+    color: "#cc3300",
+    backgroundColor: "#ffcc00",
+    borderRadius: "5px",
+    height: "2rem",
+    fontSize: "1rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));
 
 export default function Register() {
   const classes = useStyles();
+  const history = useHistory();
+  const [formErrors, setFormErrors] = useState({});
   const [values, setValues] = useState({
     userName: "",
     email: "",
@@ -41,6 +67,45 @@ export default function Register() {
     confirmPassword: "",
     policy: false,
   });
+
+  // Modal
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleMainPage = () => {
+    history.push("/dashboard");
+  };
+
+  const body = (
+    <div className={classes.modalpaper}>
+      <form className={classes.form} noValidate>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            Regisered Succesfully!
+          </Grid>
+        </Grid>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          onClick={handleMainPage}
+        >
+          Ok
+        </Button>
+      </form>
+    </div>
+  );
+
+  // Validation
 
   const handleChange = (e) => {
     // console.log(info);
@@ -54,38 +119,42 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // validate();
-    if (!validate()) {
+    let result = validate();
+    if (Object.keys(result).length === 0 && result.constructor === Object) {
       //alert(JSON.stringify(validate()));
       console.log(values);
+      handleOpen();
+    } else {
+      console.log("Invalid");
+      setFormErrors(validate());
+      console.log("Errors", formErrors);
+      console.log("userName", formErrors.userName);
     }
   };
 
   const validate = () => {
-    const errors = {};
+    let errors = {};
 
     if (!values.userName) {
-      return (errors.userName = "Fill the Username");
-    }
-    if (!values.email) {
-      return (errors.email = "Fill the Email Address");
+      errors.userName = "Fill the Username";
+    } else if (!values.email) {
+      errors.email = "Fill the Email Address";
     } else if (
       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
     ) {
-      return (errors.email = "Invalid Email Address");
-    }
-    if (!values.password) {
-      return (errors.password = "Enter Your Password");
+      errors.email = "Invalid Email Address";
+    } else if (!values.password) {
+      errors.password = "Enter Your Password";
     } else if (values.password.length < 8) {
-      return (errors.password = "Password must be min 8 characters!");
+      errors.password = "Password must be min 8 characters!";
     } else if (!values.confirmPassword) {
-      return (errors.password = "Confirm Password");
+      errors.confirmPassword = "Confirm Password";
     } else if (!(values.password === values.confirmPassword)) {
-      return (errors.password = "Didn't Match Password");
+      errors.confirmPassword = "Didn't Match Password";
+    } else if (!values.policy) {
+      errors.policy = "You should accept Privacy Policy!";
     }
-    if (!values.policy) {
-      return (errors.policy = "You should accept Privacy Policy!");
-    }
-    return false;
+    return errors;
   };
 
   return (
@@ -112,6 +181,11 @@ export default function Register() {
             autoComplete="userName"
             autoFocus
           />
+          {formErrors.userName && (
+            <div className={classes.error}>
+              <span>{formErrors.userName}</span>
+            </div>
+          )}
           <TextField
             variant="outlined"
             margin="normal"
@@ -125,6 +199,11 @@ export default function Register() {
             autoComplete="email"
             autoFocus
           />
+          {formErrors.email && (
+            <div className={classes.error}>
+              <span>{formErrors.email}</span>
+            </div>
+          )}
           <TextField
             variant="outlined"
             margin="normal"
@@ -138,6 +217,11 @@ export default function Register() {
             defaultValue={values.password}
             autoComplete="current-password"
           />
+          {formErrors.password && (
+            <div className={classes.error}>
+              <span>{formErrors.password}</span>
+            </div>
+          )}
           <TextField
             variant="outlined"
             margin="normal"
@@ -151,6 +235,11 @@ export default function Register() {
             defaultValue={values.confirmPassword}
             autoComplete="current-password"
           />
+          {formErrors.confirmPassword && (
+            <div className={classes.error}>
+              <span>{formErrors.confirmPassword}</span>
+            </div>
+          )}
           <FormControlLabel
             control={
               <Checkbox
@@ -162,6 +251,11 @@ export default function Register() {
             }
             label="I accept Privacy Policy"
           />
+          {formErrors.policy && (
+            <div className={classes.error}>
+              <span>{formErrors.policy}</span>
+            </div>
+          )}
           <Button
             type="submit"
             fullWidth
@@ -171,6 +265,14 @@ export default function Register() {
           >
             Sign In
           </Button>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+            {body}
+          </Modal>
           <Grid container>
             <Grid item xs>
               <Link href="/" variant="body2">
