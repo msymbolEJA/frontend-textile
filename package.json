@@ -27,6 +27,7 @@
       "react-app/jest"
     ]
   },
+  "proxy" : "http://144.202.67.136:8080",
   "browserslist": {
     "production": [
       ">0.2%",

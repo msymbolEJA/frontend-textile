@@ -13,6 +13,8 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
+// Post Data
+import {postData} from "../../helper/PostData"
 
 function Copyright() {
   return (
@@ -68,14 +70,18 @@ export default function SignInSide() {
   const classes = useStyles();
   const history = useHistory();
   const [values, setValues] = useState({
-    email: "",
+    userName: "",
     password: "",
   });
   const handleSubmit = (e) => {
     e.preventDefault();
     validate();
     if (validate()) {
-      history.push("/dashboard");
+         postData("http://144.202.67.136:8080/account/login/", values).then((data)=>{
+         console.log("Data", data)
+         })
+       console.log(values)
+       history.push("/dashboard");
     } else {
       alert("Invalid Pasword or Email!");
     }
@@ -83,17 +89,10 @@ export default function SignInSide() {
 
   const validate = (e) => {
     const errors = {};
-    if (!values.email) {
-      errors.email = "Fill the Email Address";
+    if (!values.userName) {
+      errors.userName = "Fill the User Name";
       return false;
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-      errors.email = "Invalid Email Address";
-      return false;
-    }
-
-    if (!values.password) {
+    } else if (!values.password) {
       errors.password = "Enter Your Password";
       return false;
     }
@@ -118,11 +117,11 @@ export default function SignInSide() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              onChange={(e) => setValues({ ...values, email: e.target.value })}
+              id="text"
+              label="User Name"
+              name="userName"
+              autoComplete="userName"
+              onChange={(e) => setValues({ ...values, userName: e.target.value })}
               autoFocus
             />
             <TextField
