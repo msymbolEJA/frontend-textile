@@ -90,7 +90,7 @@ export default function Register() {
   };
 
   const handleMainPage = () => {
-    history.push("/dashboard");
+    history.push("/");
   };
 
   const body = (
@@ -98,7 +98,7 @@ export default function Register() {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <div className={classes.succes}>
-            <span>Regisered Succesfully!</span>
+            <span>Regisered Succesfully! Wait for Account Verificitain.</span>
           </div>
         </Grid>
       </Grid>
@@ -110,7 +110,7 @@ export default function Register() {
         className={classes.submit}
         onClick={handleMainPage}
       >
-        Go to Dashboard
+        Login Page
       </Button>
     </div>
   );
@@ -145,7 +145,11 @@ export default function Register() {
   const validate = () => {
     let errors = {};
 
-    if (!values.userName) {
+    if (!values.firstName) {
+      errors.firstName = "Fill the First Name!";
+    } else if (!values.lastName) {
+      errors.lastName = "Fill the Last Name!";
+    } else if (!values.userName) {
       errors.userName = "Fill the Username!";
     } else if (!values.email) {
       errors.email = "Fill the Email Address!";
@@ -178,6 +182,42 @@ export default function Register() {
           Register
         </Typography>
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="firstName"
+            label="First Name"
+            onChange={handleChange}
+            defaultValue={values.firstName}
+            name="firstName"
+            autoComplete="firstName"
+            autoFocus
+          />
+          {formErrors.firstName && (
+            <div className={classes.error}>
+              <span>{formErrors.firstName}</span>
+            </div>
+          )}
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="lastName"
+            label="Last Name"
+            onChange={handleChange}
+            defaultValue={values.lastName}
+            name="lastName"
+            autoComplete="lastName"
+            autoFocus
+          />
+          {formErrors.lastName && (
+            <div className={classes.error}>
+              <span>{formErrors.lastName}</span>
+            </div>
+          )}
           <TextField
             variant="outlined"
             margin="normal"
