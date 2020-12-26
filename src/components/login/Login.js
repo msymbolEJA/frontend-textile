@@ -70,7 +70,7 @@ export default function SignInSide() {
   const classes = useStyles();
   const history = useHistory();
   const [values, setValues] = useState({
-    userName: "",
+    username: "",
     password: "",
   });
   const handleSubmit = (e) => {
@@ -89,8 +89,8 @@ export default function SignInSide() {
 
   const validate = (e) => {
     const errors = {};
-    if (!values.userName) {
-      errors.userName = "Fill the User Name";
+    if (!values.username) {
+      errors.username = "Fill the User Name";
       return false;
     } else if (!values.password) {
       errors.password = "Enter Your Password";
@@ -119,9 +119,9 @@ export default function SignInSide() {
               fullWidth
               id="text"
               label="User Name"
-              name="userName"
-              autoComplete="userName"
-              onChange={(e) => setValues({ ...values, userName: e.target.value })}
+              name="username"
+              autoComplete="username"
+              onChange={(e) => setValues({ ...values, username: e.target.value })}
               autoFocus
             />
             <TextField

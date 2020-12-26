@@ -6,6 +6,7 @@ import Login from "../components/login/Login";
 import Navbar from "../components/navbar/Navbar";
 import NewOrder from "../components/orders/new/NewOrder";
 import Register from "../components/register/Register";
+import DueDate from "../components/orders/duedate/DueDate"
 
 const AppRouter = () => {
   return (
@@ -26,6 +27,7 @@ const DefaultContainer = () => (
     <Route path="/orders" component={Orders} />
     <Route path="/account" component={Account} />
     <Route path="/new-order" component={NewOrder} />
+    <Route path="/due-date" component={DueDate} />
   </div>
 );
 
