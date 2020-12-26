@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 // Post Data
 import {postData} from "../../helper/PostData"
+import Modal from "@material-ui/core/Modal";
 
 function Copyright() {
   return (
@@ -64,26 +65,98 @@ const useStyles = makeStyles((theme) => ({
   accountCheck: {
     marginTop: theme.spacing(2),
   },
+  modalpaper: {
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    borderRadius: 10,
+  },
+  error: {
+    color: "#8b0000",
+    backgroundColor: "#FDECEA",
+    borderRadius: "5px",
+    height: "2rem",
+    fontSize: "1rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));
 
 export default function SignInSide() {
   const classes = useStyles();
   const history = useHistory();
+  const [open, setOpen] = useState(false);
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleMainPage = () => {
+    handleClose()
+  };
+
+  const body = (
+    <div className={classes.modalpaper}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <div className={classes.error}>
+            <span>User account is not verified from admin!</span>
+          </div>
+        </Grid>
+      </Grid>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        className={classes.submit}
+        onClick={handleMainPage}
+      >
+        Ok
+      </Button>
+    </div>
+  );
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     validate();
     if (validate()) {
-         postData("http://144.202.67.136:8080/account/login/", values).then((data)=>{
-         console.log("Data", data)
-         })
+        postData("http://144.202.67.136:8080/account/login/", values).then((data)=>{
+        console.log("Data",data)
+        const response = data?.user?.is_active
+        console.log(response)
+        if(response){
+          //localStorage.setItem("token", data?.token)
+          //console.log("Token", localStorage.getItem("token"))
+          history.push("/dashboard");
+        }else{
+          console.log("Your account is not verified!")
+      
+        }
+        }).catch((error) => {
+          handleOpen()
+          console.log("Error" , error)
+        })
        console.log(values)
-       history.push("/dashboard");
+      
     } else {
-      alert("Invalid Pasword or Email!");
+      alert("Fill Pasword and Email!");
     }
   };
 
@@ -98,6 +171,7 @@ export default function SignInSide() {
     }
     return true;
   };
+
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -151,6 +225,14 @@ export default function SignInSide() {
             >
               Log In
             </Button>
+            <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+            {body}
+          </Modal>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -174,3 +256,28 @@ export default function SignInSide() {
     </Grid>
   );
 }
+
+
+/*
+if (validate()) {
+      try {
+        postData("http://144.202.67.136:8080/account/login/", values).then((data)=>{
+        console.log("Data",data)
+        const response = data?.user?.is_active
+        console.log(response)
+        if(response){
+          //localStorage.setItem("token", data?.token)
+          //console.log("Token", localStorage.getItem("token"))
+          history.push("/dashboard");
+        }else{
+          console.log("Your account is not verified!")
+        }
+        })
+       console.log(values)
+      } catch (error) {
+        console.log("Error",error)
+      }
+    } else {
+      alert("Fill Pasword and Email!");
+    }
+*/
