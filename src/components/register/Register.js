@@ -13,6 +13,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import CreateIcon from "@material-ui/icons/Create";
+// PostDAta
+import { postData } from '../../helper/PostData'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -71,7 +73,9 @@ export default function Register() {
   const history = useHistory();
   const [formErrors, setFormErrors] = useState({});
   const [values, setValues] = useState({
-    userName: "",
+    username: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -131,6 +135,21 @@ export default function Register() {
     // validate();
     let result = validate();
     if (Object.keys(result).length === 0 && result.constructor === Object) {
+      postData("http://144.202.67.136:8080/account/register/", values).then((data) => {
+        console.log("Data", data)
+        //if (response) {
+        //  localStorage.setItem("token", data?.token)
+        //  console.log("Token", localStorage.getItem("token"))
+        //  history.push("/dashboard");
+        //} else {
+        //  console.log("Your account is not verified!")
+        //}
+      }).catch((error) => {
+        handleOpen()
+        console.log("Error", error)
+      })
+      console.log(values)
+
       //alert(JSON.stringify(validate()));
       // console.log(values);
       handleOpen();
@@ -138,19 +157,19 @@ export default function Register() {
       // console.log("Invalid");
       setFormErrors(validate());
       // console.log("Errors", formErrors);
-      // console.log("userName", formErrors.userName);
+      // console.log("username", formErrors.username);
     }
   };
 
   const validate = () => {
     let errors = {};
 
-    if (!values.firstName) {
-      errors.firstName = "Fill the First Name!";
-    } else if (!values.lastName) {
-      errors.lastName = "Fill the Last Name!";
-    } else if (!values.userName) {
-      errors.userName = "Fill the Username!";
+    if (!values.first_name) {
+      errors.first_name = "Fill the First Name!";
+    } else if (!values.last_name) {
+      errors.last_name = "Fill the Last Name!";
+    } else if (!values.username) {
+      errors.username = "Fill the username!";
     } else if (!values.email) {
       errors.email = "Fill the Email Address!";
     } else if (
@@ -187,17 +206,17 @@ export default function Register() {
             margin="normal"
             required
             fullWidth
-            id="firstName"
+            id="first_name"
             label="First Name"
             onChange={handleChange}
-            defaultValue={values.firstName}
-            name="firstName"
-            autoComplete="firstName"
+            defaultValue={values.first_name}
+            name="first_name"
+            autoComplete="first_name"
             autoFocus
           />
-          {formErrors.firstName && (
+          {formErrors.first_name && (
             <div className={classes.error}>
-              <span>{formErrors.firstName}</span>
+              <span>{formErrors.first_name}</span>
             </div>
           )}
           <TextField
@@ -205,17 +224,17 @@ export default function Register() {
             margin="normal"
             required
             fullWidth
-            id="lastName"
+            id="last_name"
             label="Last Name"
             onChange={handleChange}
-            defaultValue={values.lastName}
-            name="lastName"
-            autoComplete="lastName"
+            defaultValue={values.last_name}
+            name="last_name"
+            autoComplete="last_name"
             autoFocus
           />
-          {formErrors.lastName && (
+          {formErrors.last_name && (
             <div className={classes.error}>
-              <span>{formErrors.lastName}</span>
+              <span>{formErrors.last_name}</span>
             </div>
           )}
           <TextField
@@ -223,17 +242,17 @@ export default function Register() {
             margin="normal"
             required
             fullWidth
-            id="userName"
-            label="Username"
+            id="username"
+            label="username"
             onChange={handleChange}
-            defaultValue={values.userName}
-            name="userName"
-            autoComplete="userName"
+            defaultValue={values.username}
+            name="username"
+            autoComplete="username"
             autoFocus
           />
-          {formErrors.userName && (
+          {formErrors.username && (
             <div className={classes.error}>
-              <span>{formErrors.userName}</span>
+              <span>{formErrors.username}</span>
             </div>
           )}
           <TextField

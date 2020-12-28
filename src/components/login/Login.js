@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 // Post Data
-import {postData} from "../../helper/PostData"
+import { postData } from "../../helper/PostData"
 import Modal from "@material-ui/core/Modal";
 
 function Copyright() {
@@ -137,24 +137,24 @@ export default function SignInSide() {
     e.preventDefault();
     validate();
     if (validate()) {
-        postData("http://144.202.67.136:8080/account/login/", values).then((data)=>{
-        console.log("Data",data)
+      postData("http://144.202.67.136:8080/account/login/", values).then((data) => {
+        console.log("Data", data)
         const response = data?.user?.is_active
         console.log(response)
-        if(response){
-          //localStorage.setItem("token", data?.token)
-          //console.log("Token", localStorage.getItem("token"))
+        if (response) {
+          localStorage.setItem("token", data?.token)
+          console.log("Token", localStorage.getItem("token"))
           history.push("/dashboard");
-        }else{
+        } else {
           console.log("Your account is not verified!")
-      
+
         }
-        }).catch((error) => {
-          handleOpen()
-          console.log("Error" , error)
-        })
-       console.log(values)
-      
+      }).catch((error) => {
+        handleOpen()
+        console.log("Error", error)
+      })
+      console.log(values)
+
     } else {
       alert("Fill Pasword and Email!");
     }
@@ -226,13 +226,13 @@ export default function SignInSide() {
               Log In
             </Button>
             <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-          >
-            {body}
-          </Modal>
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
+            >
+              {body}
+            </Modal>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
