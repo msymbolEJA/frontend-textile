@@ -115,7 +115,7 @@ export default function SignInSide() {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <div className={classes.error}>
-            <span>User account is not verified from admin!</span>
+            <span>Invalid Credentials!</span>
           </div>
         </Grid>
       </Grid>
@@ -147,7 +147,7 @@ export default function SignInSide() {
           history.push("/dashboard");
         } else {
           console.log("Your account is not verified!")
-
+          handleOpen()
         }
       }).catch((error) => {
         handleOpen()
