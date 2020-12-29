@@ -256,28 +256,3 @@ export default function SignInSide() {
     </Grid>
   );
 }
-
-
-/*
-if (validate()) {
-      try {
-        postData("http://144.202.67.136:8080/account/login/", values).then((data)=>{
-        console.log("Data",data)
-        const response = data?.user?.is_active
-        console.log(response)
-        if(response){
-          //localStorage.setItem("token", data?.token)
-          //console.log("Token", localStorage.getItem("token"))
-          history.push("/dashboard");
-        }else{
-          console.log("Your account is not verified!")
-        }
-        })
-       console.log(values)
-      } catch (error) {
-        console.log("Error",error)
-      }
-    } else {
-      alert("Fill Pasword and Email!");
-    }
-*/

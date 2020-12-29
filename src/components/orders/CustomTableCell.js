@@ -26,8 +26,8 @@ const CustomTableCell = ({ row, name, onChange }) => {
           className={classes.input}
         />
       ) : (
-        row[name]
-      )}
+          row[name]
+        )}
     </TableCell>
   );
 };

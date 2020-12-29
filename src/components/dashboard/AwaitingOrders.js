@@ -25,7 +25,7 @@ export default function AwaitingOrders() {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push("/orders");
+    history.push("/order-prep");
   };
 
   return (
