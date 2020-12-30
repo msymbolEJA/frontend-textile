@@ -25,7 +25,7 @@ export default function DeliveredOrders() {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push("/orders");
+    history.push("/edit-cell");
   };
 
   return (

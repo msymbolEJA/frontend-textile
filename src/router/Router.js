@@ -9,14 +9,15 @@ import Register from "../components/register/Register";
 import DueDate from "../components/orders/duedate/DueDate"
 import OrderPrep from "../components/orders/orderprep/OrderPrep"
 import PrivateRouter from './PrivateRouter';
+import EditableCell from '../components/editablecell/EditableCell'
 
 const AppRouter = () => {
   return (
     <Router>
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route path="/register" component={Register} />
         <Route component={DefaultContainer} />
+        <Route path="/register" component={Register} />
       </Switch>
     </Router>
   );
@@ -31,7 +32,7 @@ const DefaultContainer = () => (
     <PrivateRouter exact path="/new-order" component={NewOrder} />
     <PrivateRouter exact path="/due-date" component={DueDate} />
     <PrivateRouter exact path="/order-prep" component={OrderPrep} />
-
+    <PrivateRouter exact path="/edit-cell" component={EditableCell} />
   </div>
 );
 
