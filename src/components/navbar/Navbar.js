@@ -52,6 +52,7 @@ export default function MenuAppBar() {
   const handleLogout = () => {
     history.push("/");
     setAnchorEl(null);
+    localStorage.removeItem("x-auth-token")
   };
   const handleNewOrderPage = () => {
     history.push("/new-order");
