@@ -8,6 +8,7 @@ import NewOrder from "../components/orders/new/NewOrder";
 import Register from "../components/register/Register";
 import DueDate from "../components/orders/duedate/DueDate"
 import OrderPrep from "../components/orders/orderprep/OrderPrep"
+import PrivateRouter from './PrivateRouter';
 
 const AppRouter = () => {
   return (
@@ -24,12 +25,12 @@ const AppRouter = () => {
 const DefaultContainer = () => (
   <div>
     <Navbar />
-    <Route path="/dashboard" component={Dashboard} />
-    <Route path="/orders" component={Orders} />
-    <Route path="/account" component={Account} />
-    <Route path="/new-order" component={NewOrder} />
-    <Route path="/due-date" component={DueDate} />
-    <Route path="/order-prep" component={OrderPrep} />
+    <PrivateRouter exact path="/dashboard" component={Dashboard} />
+    <PrivateRouter exact path="/orders" component={Orders} />
+    <PrivateRouter exact path="/account" component={Account} />
+    <PrivateRouter exact path="/new-order" component={NewOrder} />
+    <PrivateRouter exact path="/due-date" component={DueDate} />
+    <PrivateRouter exact path="/order-prep" component={OrderPrep} />
 
   </div>
 );

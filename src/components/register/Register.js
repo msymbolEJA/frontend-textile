@@ -137,27 +137,14 @@ export default function Register() {
     if (Object.keys(result).length === 0 && result.constructor === Object) {
       postData("http://144.202.67.136:8080/account/register/", values).then((data) => {
         console.log("Data", data)
-        //if (response) {
-        //  localStorage.setItem("token", data?.token)
-        //  console.log("Token", localStorage.getItem("token"))
-        //  history.push("/dashboard");
-        //} else {
-        //  console.log("Your account is not verified!")
-        //}
       }).catch((error) => {
         handleOpen()
         console.log("Error", error)
       })
       console.log(values)
-
-      //alert(JSON.stringify(validate()));
-      // console.log(values);
       handleOpen();
     } else {
-      // console.log("Invalid");
       setFormErrors(validate());
-      // console.log("Errors", formErrors);
-      // console.log("username", formErrors.username);
     }
   };
 
@@ -230,7 +217,6 @@ export default function Register() {
             defaultValue={values.last_name}
             name="last_name"
             autoComplete="last_name"
-            autoFocus
           />
           {formErrors.last_name && (
             <div className={classes.error}>
@@ -248,7 +234,6 @@ export default function Register() {
             defaultValue={values.username}
             name="username"
             autoComplete="username"
-            autoFocus
           />
           {formErrors.username && (
             <div className={classes.error}>
@@ -266,7 +251,6 @@ export default function Register() {
             onChange={handleChange}
             defaultValue={values.email}
             autoComplete="email"
-            autoFocus
           />
           {formErrors.email && (
             <div className={classes.error}>
