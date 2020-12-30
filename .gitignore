@@ -6,6 +6,7 @@
 .pnp.js
 .eslintcache
 willBeDeleted.js
+issues.txt
 
 # testing
 /coverage
