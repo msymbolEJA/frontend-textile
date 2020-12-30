@@ -60,9 +60,6 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup: {
     marginBottom: theme.spacing(1),
   },
-  button: {
-    padding: 0,
-  },
 }));
 
 function Orders() {
@@ -80,16 +77,17 @@ function Orders() {
       selectedTag === "All"
         ? rows
         : rows.filter((item) => {
-            return item?.Origin === selectedTag.toUpperCase();
-          });
+          return item?.Origin === selectedTag.toUpperCase();
+        });
     setFilteredList(newList);
     // console.log(newList);
     // console.log(filteredList);
   }, [rows, selectedTag]);
 
   const handleTagChange = (e) => {
-    setSelectedTag(e.target.innerHTML);
-    console.log(e.target.innerHTML);
+    setSelectedTag(e.currentTarget.id);
+    /* console.log(e.target.innerHTML);
+    console.log(e.currentTarget.id); */
     setPage(0);
   };
 
@@ -154,7 +152,7 @@ function Orders() {
       >
         {tagsData.map((tag) => (
           <Button
-            className={classes.button}
+            id={tag}
             key={tag}
             checked={selectedTag.indexOf(tag) > -1}
             onClick={(e) => handleTagChange(e)}
@@ -207,13 +205,13 @@ function Orders() {
                         </IconButton>
                       </>
                     ) : (
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => onToggleEditMode(row.id)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    )}
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => onToggleEditMode(row.id)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      )}
                   </TableCell>
                   <CustomTableCell {...{ row, name: "Name", onChange }} />
                   <CustomTableCell

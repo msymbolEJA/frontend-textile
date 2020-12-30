@@ -55,9 +55,6 @@ const useStyles = makeStyles((theme) => ({
     buttonGroup: {
         marginBottom: theme.spacing(1),
     },
-    button: {
-        padding: 0,
-    },
 }));
 
 function OrderPrep() {
@@ -81,8 +78,10 @@ function OrderPrep() {
     }, [rows, selectedTag]);
 
     const handleTagChange = (e) => {
-        setSelectedTag(e.target.innerHTML);
-        console.log(e.target.innerHTML);
+        setSelectedTag(e.currentTarget.id);
+        // console.log(e.target.innerHTML);
+        // console.log("target : ", e.target.id);
+        // console.log("cT : ", e.currentTarget.id);
         setPage(0);
     };
 
@@ -152,9 +151,16 @@ function OrderPrep() {
     return (
         <Paper className={classes.root}>
             <h3>Order Preparation</h3>
-            <ButtonGroup className={classes.buttonGroup} variant="contained" >
-                <Button className={classes.button} onClick={(e) => handleTagChange(e)} id="notReady">All</Button>
-                <Button onClick={(e) => handleTagChange(e)} id="All">Not Ready</Button>
+            <ButtonGroup className={classes.buttonGroup}
+                variant="contained"
+                color="primary"
+                aria-label="contained primary button group" >
+                <Button onClick={(e) => handleTagChange(e)} id="All">
+                    All
+                </Button>
+                <Button onClick={(e) => handleTagChange(e)} id="notReady">
+                    Not Ready
+                </Button>
 
             </ButtonGroup>
             <TableContainer className={classes.container}>
