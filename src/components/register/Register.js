@@ -78,7 +78,7 @@ export default function Register() {
     last_name: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    confirm_password: "",
     policy: false,
   });
 
@@ -167,10 +167,10 @@ export default function Register() {
       errors.password = "Enter Password!";
     } else if (values.password.length < 8) {
       errors.password = "Password must be min 8 characters!";
-    } else if (!values.confirmPassword) {
-      errors.confirmPassword = "Confirm Password!";
-    } else if (!(values.password === values.confirmPassword)) {
-      errors.confirmPassword = "Passwords must be matched!";
+    } else if (!values.confirm_password) {
+      errors.confirm_password = "Confirm Password!";
+    } else if (!(values.password === values.confirm_password)) {
+      errors.confirm_password = "Passwords must be matched!";
     } else if (!values.policy) {
       errors.policy = "You should accept Privacy Policy!";
     }
@@ -280,17 +280,17 @@ export default function Register() {
             margin="normal"
             required
             fullWidth
-            name="confirmPassword"
+            name="confirm_password"
             label="Confirm Password"
             type="password"
-            id="confirmPassword"
+            id="confirm_password"
             onChange={handleChange}
-            defaultValue={values.confirmPassword}
+            defaultValue={values.confirm_password}
             autoComplete="current-password"
           />
-          {formErrors.confirmPassword && (
+          {formErrors.confirm_password && (
             <div className={classes.error}>
-              <span>{formErrors.confirmPassword}</span>
+              <span>{formErrors.confirm_password}</span>
             </div>
           )}
           <FormControlLabel
