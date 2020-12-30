@@ -138,12 +138,11 @@ export default function SignInSide() {
     validate();
     if (validate()) {
       postData("http://144.202.67.136:8080/account/login/", values).then((data) => {
-        console.log("Data", data)
-        const response = data?.user?.is_active
-        console.log(response)
+        const response = data?.access
         if (response) {
-          localStorage.setItem("token", data?.token)
-          console.log("Token", localStorage.getItem("token"))
+          localStorage.setItem("x-auth-token", response)
+          //console.log("Token", localStorage.getItem("x-auth-token"))
+          console.log("Logged in succesfully!");
           history.push("/dashboard");
         } else {
           console.log("Your account is not verified!")
@@ -153,8 +152,6 @@ export default function SignInSide() {
         handleOpen()
         console.log("Error", error)
       })
-      console.log(values)
-
     } else {
       alert("Fill Pasword and Email!");
     }
