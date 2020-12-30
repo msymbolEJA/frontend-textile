@@ -16,9 +16,8 @@ import DATA from "../../../helper/OrderPrepData";
 import TablePaginationActions from "../TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import OrderStatus from './CustomSelectCell'
-import CustomCheckbox from "./Customcheckbox"
+import CustomCheckbox from "./CustomCheckbox"
 
-const tagsData = ["All", "USA", "TR", "DE", "FR", "NL", "JP"];
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -76,11 +75,9 @@ function OrderPrep() {
             selectedTag === "All"
                 ? rows
                 : rows.filter((item) => {
-                    return item?.Origin === selectedTag.toUpperCase();
+                    return item?.ready === false;
                 });
         setFilteredList(newList);
-        // console.log(newList);
-        // console.log(filteredList);
     }, [rows, selectedTag]);
 
     const handleTagChange = (e) => {
@@ -116,26 +113,49 @@ function OrderPrep() {
         setRows(newRows);
     };
 
+    const onCheckboxChange = (e, row) => {
+        if (!previous[row.id]) {
+            setPrevious((state) => ({ ...state, [row.id]: row }));
+        }
+        const value = (e.target.checked);
+        const name = e.target.name;
+        const { id } = row;
+        const newRows = rows.map((row) => {
+            if (row.id === id) {
+                return { ...row, [name]: value };
+            }
+            return row;
+        });
+        setRows(newRows);
+        /* console.log("name", name); */
+    }
+
+    const onSelectChange = (e, row) => {
+        if (!previous[row.id]) {
+            setPrevious((state) => ({ ...state, [row.id]: row }));
+        }
+        const value = e.target.value;
+        const name = e.target.name;
+        const { id } = row;
+        const newRows = rows.map((row) => {
+            if (row.id === id) {
+                return { ...row, [name]: value };
+            }
+            return row;
+        });
+        setRows(newRows);
+        console.log("name", name);
+        console.log("value", value);
+        console.log(newRows);
+    }
 
     return (
         <Paper className={classes.root}>
             <h3>Order Preparation</h3>
-            <ButtonGroup
-                className={classes.buttonGroup}
-                variant="contained"
-                color="primary"
-                aria-label="contained primary button group"
-            >
-                {tagsData.map((tag) => (
-                    <Button
-                        className={classes.button}
-                        key={tag}
-                        checked={selectedTag.indexOf(tag) > -1}
-                        onClick={(e) => handleTagChange(e)}
-                    >
-                        {tag}
-                    </Button>
-                ))}
+            <ButtonGroup className={classes.buttonGroup} variant="contained" >
+                <Button className={classes.button} onClick={(e) => handleTagChange(e)} id="notReady">All</Button>
+                <Button onClick={(e) => handleTagChange(e)} id="All">Not Ready</Button>
+
             </ButtonGroup>
             <TableContainer className={classes.container}>
                 <Table
@@ -175,7 +195,7 @@ function OrderPrep() {
                                     <CustomTableCell {...{ row, name: "orderDate", onChange }} />
                                     <CustomTableCell {...{ row, name: "orderBuyer", onChange }} />
                                     <td>
-                                        <OrderStatus {...{ row, isEdit: true, name: "status", onChange }} />
+                                        <OrderStatus {...{ row, name: "status", onSelectChange }} />
                                     </td>
                                     <CustomTableCell {...{ row, isEdit: true, name: "supplier", onChange }} />
                                     <CustomTableCell {...{ row, name: "orderName", onChange }} />
@@ -186,7 +206,7 @@ function OrderPrep() {
                                     <CustomTableCell {...{ row, name: "start", onChange }} />
                                     <CustomTableCell {...{ row, name: "gap", onChange }} />
                                     <td>
-                                        <CustomCheckbox {...{ row, name: "ready", onChange }} />
+                                        <CustomCheckbox {...{ row, name: "ready", onCheckboxChange }} />
                                     </td>
                                     <CustomTableCell {...{ row, name: "explanation", onChange }} />
                                     <CustomTableCell {...{ row, name: "personalization", onChange }} />

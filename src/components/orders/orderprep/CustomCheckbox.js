@@ -10,18 +10,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const CustomCheckbox = ({ row, name, onChange }) => {
+const CustomCheckbox = ({ row, name, onCheckboxChange }) => {
     const classes = useStyles();
-    const checkedB = row[name]
+    const checked = row[name]
 
     return (
         <FormGroup className={classes.formStyle} >
             <FormControlLabel
                 control={
                     <Checkbox
-                        checked={checkedB}
-                        onChange={onChange}
-                        name="checkedB"
+                        checked={checked}
+                        onChange={(e) => onCheckboxChange(e, row)}
+                        name="ready"
                         color="primary"
                     />
                 }

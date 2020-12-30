@@ -9,22 +9,17 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(0),
         minWidth: 80,
     },
-    selectEmpty: {
-        marginTop: theme.spacing(1),
-    },
 }));
 
-const OrderStatus = ({ isEdit, row, name, onChange }) => {
+const OrderStatus = ({ row, name, onSelectChange }) => {
     const classes = useStyles();
 
     return (
         <FormControl className={classes.formControl}>
             <Select
+                name={name}
                 value={row[name]}
-                onChange={onChange}
-                displayEmpty
-                className={classes.selectEmpty}
-                inputProps={{ 'aria-label': 'Without label' }}
+                onChange={onSelectChange}
             >
                 <MenuItem value="awaiting">awaiting</MenuItem>
                 <MenuItem value="sent">sent</MenuItem>
