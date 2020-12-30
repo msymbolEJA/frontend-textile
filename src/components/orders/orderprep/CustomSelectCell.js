@@ -17,9 +17,9 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
     return (
         <FormControl className={classes.formControl}>
             <Select
-                name={name}
                 value={row[name]}
-                onChange={onSelectChange}
+                name={name}
+                onChange={(e) => onSelectChange(e, row)}
             >
                 <MenuItem value="awaiting">awaiting</MenuItem>
                 <MenuItem value="sent">sent</MenuItem>
