@@ -14,8 +14,20 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 // Post Data
-import { postData } from "../../helper/PostData"
+import { postData } from "../../helper/PostData";
 import Modal from "@material-ui/core/Modal";
+import { useFormik } from "formik";
+import * as yup from "yup";
+
+const validationSchema = yup.object({
+  username: yup.string("Enter your username")
+    .min(2, "Username should be of minimum 2 characters length.")
+    .required("Username is required"),
+  password: yup
+    .string("Enter your password")
+    .min(5, "Password should be of minimum 8 characters length")
+    .required("Password is required")
+});
 
 function Copyright() {
   return (
@@ -32,7 +44,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
+    height: "100vh"
   },
   image: {
     backgroundImage:
@@ -43,27 +55,27 @@ const useStyles = makeStyles((theme) => ({
         ? theme.palette.grey[50]
         : theme.palette.grey[900],
     backgroundSize: "cover",
-    backgroundPosition: "center",
+    backgroundPosition: "center"
   },
   paper: {
     margin: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "center"
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 2)
   },
   accountCheck: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   modalpaper: {
     top: "50%",
@@ -75,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    borderRadius: 10,
+    borderRadius: 10
   },
   error: {
     color: "#8b0000",
@@ -85,8 +97,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
-  },
+    alignItems: "center"
+  }
 }));
 
 export default function SignInSide() {
@@ -95,7 +107,7 @@ export default function SignInSide() {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({
     username: "",
-    password: "",
+    password: ""
   });
 
   const handleOpen = () => {
@@ -107,7 +119,7 @@ export default function SignInSide() {
   };
 
   const handleMainPage = () => {
-    handleClose()
+    handleClose();
   };
 
   const body = (
@@ -132,11 +144,13 @@ export default function SignInSide() {
     </div>
   );
 
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    validate();
-    if (validate()) {
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: ""
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
       postData("http://144.202.67.136:8080/account/login/", values).then((data) => {
         const response = data?.access
         if (response) {
@@ -152,23 +166,8 @@ export default function SignInSide() {
         handleOpen()
         console.log("Error", error)
       })
-    } else {
-      alert("Fill Pasword and Email!");
     }
-  };
-
-  const validate = (e) => {
-    const errors = {};
-    if (!values.username) {
-      errors.username = "Fill the User Name";
-      return false;
-    } else if (!values.password) {
-      errors.password = "Enter Your Password";
-      return false;
-    }
-    return true;
-  };
-
+  });
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -182,32 +181,36 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Log In
           </Typography>
-          <form className={classes.form} onSubmit={handleSubmit}>
+          <form className={classes.form} onSubmit={formik.handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
-              required
               fullWidth
-              id="text"
+              id="username"
               label="User Name"
               name="username"
               autoComplete="username"
-              onChange={(e) => setValues({ ...values, username: e.target.value })}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               autoFocus
+              value={formik.values.username}
+              error={formik.touched.username && Boolean(formik.errors.username)}
+              helperText={formik.touched.username && formik.errors.username}
             />
             <TextField
               variant="outlined"
               margin="normal"
-              required
               fullWidth
               name="password"
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
-              onChange={(e) =>
-                setValues({ ...values, password: e.target.value })
-              }
+              autoComplete="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
