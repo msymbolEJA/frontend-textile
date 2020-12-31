@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -7,12 +7,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Input from "@material-ui/core/Input";
 import Paper from "@material-ui/core/Paper";
+import DATA from '../../helper/Data'
+import TableContainer from "@material-ui/core/TableContainer";
 
 const useStyles = makeStyles(theme => ({
     root: {
         width: "100%",
         marginTop: theme.spacing(3),
         overflowX: "auto"
+    },
+    container: {
+        maxHeight: "83vh",
     },
     table: {
         minWidth: 650
@@ -30,15 +35,15 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const createData = (name, calories, fat, carbs, protein) => ({
-    id: name.replace(" ", "_"),
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    isEditMode: false
-});
+const StyledTableCell = withStyles((theme) => ({
+    head: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    body: {
+        fontSize: 14,
+    },
+}))(TableCell);
 
 const CustomTableCell = ({ row, name, onChange }) => {
     const classes = useStyles();
@@ -60,11 +65,7 @@ const CustomTableCell = ({ row, name, onChange }) => {
 };
 
 function App() {
-    const [rows, setRows] = React.useState([
-        createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-        createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-        createData("Eclair", 262, 16.0, 24, 6.0)
-    ]);
+    const [rows, setRows] = React.useState(DATA);
     const [previous, setPrevious] = React.useState({});
     const classes = useStyles();
 
@@ -84,8 +85,9 @@ function App() {
         setRows(newRows);
     };
 
-    const handleRowClick = (e) => {
-        const id = e.currentTarget.id
+    const handleRowClick = (id) => {
+        /* const id = e.currentTarget.id
+        console.log(id); */
         setRows(state => {
             return rows.map(row => {
                 if (row.id === id) {
@@ -94,12 +96,11 @@ function App() {
                 return row;
             });
         });
-        //onToggleEditMode(e.currentTarget.id)
+        // onToggleEditMode(e)
     }
 
-    const handleRowKeyDown = (e) => {
+    const handleRowKeyDown = (e, id) => {
         if (e.key === 'Enter') {
-            const id = e.currentTarget.id
             setRows(state => {
                 return rows.map(row => {
                     if (row.id === id) {
@@ -111,8 +112,7 @@ function App() {
         }
     }
 
-    const handleRowBlur = (e) => {
-        const id = e.currentTarget.id
+    const handleRowBlur = (id) => {
         setRows(state => {
             return rows.map(row => {
                 if (row.id === id) {
@@ -125,33 +125,43 @@ function App() {
 
     return (
         <Paper className={classes.root}>
-            <Table className={classes.table} aria-label="caption table">
-                <caption>A barbone structure table example with a caption</caption>
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="center">Dessert (100g serving)</TableCell>
-                        <TableCell align="center">Calories</TableCell>
-                        <TableCell align="center">Fat&nbsp;(g)</TableCell>
-                        <TableCell align="center">Carbs&nbsp;(g)</TableCell>
-                        <TableCell align="center">Protein&nbsp;(g)</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map(row => (
-                        <TableRow key={row.id} id={row.id}
-                            onClick={(e) => handleRowClick(e)}
-                            onBlur={(e) => handleRowBlur(e)}
-                            onKeyDown={(e) => handleRowKeyDown(e)}
-                        >
-                            <CustomTableCell {...{ row, name: "name", onChange }} />
-                            <CustomTableCell {...{ row, name: "calories", onChange }} />
-                            <CustomTableCell {...{ row, name: "fat", onChange }} />
-                            <CustomTableCell {...{ row, name: "carbs", onChange }} />
-                            <CustomTableCell {...{ row, name: "protein", onChange }} />
+            <TableContainer className={classes.container}>
+                <Table className={classes.table} stickyHeader aria-label="caption table">
+                    <caption>A barbone structure table example with a caption</caption>
+                    <TableHead>
+                        <TableRow>
+                            <StyledTableCell align="center">Name&nbsp;</StyledTableCell>
+                            <StyledTableCell align="center">MPG</StyledTableCell>
+                            <StyledTableCell align="center">Cylinders</StyledTableCell>
+                            <StyledTableCell align="center">Displacement</StyledTableCell>
+                            <StyledTableCell align="center">Horsepower</StyledTableCell>
+                            <StyledTableCell align="center">Weight(lb)</StyledTableCell>
+                            <StyledTableCell align="center">Acceleration</StyledTableCell>
+                            <StyledTableCell align="center">Year</StyledTableCell>
+                            <StyledTableCell align="center">Origin</StyledTableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map(row => (
+                            <TableRow key={row.id} id={row.id}
+                                onClick={(e) => handleRowClick(row.id)}
+                                onBlur={(e) => handleRowBlur(row.id)}
+                                onKeyDown={(e) => handleRowKeyDown(e, row.id)}
+                            >
+                                <CustomTableCell {...{ row, name: "Name", onChange }} />
+                                <CustomTableCell {...{ row, name: "Miles_per_Gallon", onChange }} />
+                                <CustomTableCell {...{ row, name: "Cylinders", onChange }} />
+                                <CustomTableCell {...{ row, name: "Displacement", onChange }} />
+                                <CustomTableCell {...{ row, name: "Horsepower", onChange }} />
+                                <CustomTableCell {...{ row, name: "Weight_in_lbs", onChange }} />
+                                <CustomTableCell {...{ row, name: "Acceleration", onChange }} />
+                                <CustomTableCell {...{ row, name: "Year", onChange }} />
+                                <CustomTableCell {...{ row, name: "Origin", onChange }} />
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Paper>
     );
 }

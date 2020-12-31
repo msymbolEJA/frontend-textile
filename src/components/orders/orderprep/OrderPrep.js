@@ -143,9 +143,9 @@ function OrderPrep() {
             return row;
         });
         setRows(newRows);
-        console.log("name", name);
-        console.log("value", value);
-        console.log(newRows);
+        // console.log("name", name);
+        // console.log("value", value);
+        // console.log(newRows);
     }
 
     return (
