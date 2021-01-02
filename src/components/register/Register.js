@@ -149,7 +149,7 @@ export default function Register() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            postData("http://144.202.67.136:8080/account/register/", values).then((data) => {
+            postData("https://144.202.67.136:8081/account/register/", values).then((data) => {
                 handleOpen()
                 history.push("/");
             }).catch((error) => {
