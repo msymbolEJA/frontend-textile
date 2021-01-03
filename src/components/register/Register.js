@@ -32,7 +32,7 @@ const validationSchema = yup.object({
         .string("Enter your password")
         .min(5, "Password should be of minimum 5 characters length")
         .required("Password is required"),
-    passwordConfirmation: yup.string()
+    password2: yup.string()
         .oneOf([yup.ref('password'), null], 'Passwords must match')
         .required("Confirm Password")
 });
@@ -144,12 +144,13 @@ export default function Register() {
             last_name: "",
             email: "",
             password: "",
-            passwordConfirmation: "",
+            password2: "",
             registerPrivacy: false
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            postData("https://144.202.67.136:8081/account/register/", values).then((data) => {
+            postData("http://144.202.67.136:8080/account/register/", values).then((data) => {
+                console.log(data)
                 handleOpen()
                 history.push("/");
             }).catch((error) => {
@@ -246,15 +247,15 @@ export default function Register() {
                         variant="outlined"
                         margin="normal"
                         fullWidth
-                        name="passwordConfirmation"
+                        name="password2"
                         label="Confirm Password"
                         type="password"
-                        id="passwordConfirmation"
-                        value={formik.values.passwordConfirmation}
+                        id="password2"
+                        value={formik.values.password2}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        error={formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
-                        helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
+                        error={formik.touched.password2 && Boolean(formik.errors.password2)}
+                        helperText={formik.touched.password2 && formik.errors.password2}
                     />
                     <Button
                         type="submit"
