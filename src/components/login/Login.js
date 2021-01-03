@@ -145,7 +145,7 @@ export default function SignInSide() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      postData("http://144.202.67.136:8081/account/login/", values).then((data) => {
+      postData("http://144.202.67.136:8080/account/login/", values).then((data) => {
         const response = data?.access
         if (response) {
           localStorage.setItem("x-auth-token", response)
