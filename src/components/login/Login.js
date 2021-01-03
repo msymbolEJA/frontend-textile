@@ -13,7 +13,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 // Post Data
 import { postData } from "../../helper/PostData";
-import Modal from "@material-ui/core/Modal";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -102,41 +101,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignInSide() {
   const classes = useStyles();
   const history = useHistory();
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleMainPage = () => {
-    handleClose();
-  };
-
-  const body = (
-    <div className={classes.modalpaper}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <div className={classes.error}>
-            <span>Invalid Credentials!</span>
-          </div>
-        </Grid>
-      </Grid>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        className={classes.submit}
-        onClick={handleMainPage}
-      >
-        Ok
-      </Button>
-    </div>
-  );
+  const [loginFailed, setLoginFailed] = useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -154,10 +119,10 @@ export default function SignInSide() {
           history.push("/dashboard");
         } else {
           console.log("Your account is not verified!")
-          handleOpen()
+          setLoginFailed(true)
         }
       }).catch((error) => {
-        handleOpen()
+        setLoginFailed(true)
         console.log("Error", error)
       })
     }
@@ -206,6 +171,11 @@ export default function SignInSide() {
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
             />
+            {loginFailed && (
+              <div className={classes.error}>
+                <span>Wrong Password or Email!</span>
+              </div>
+            )}
             <Button
               type="submit"
               fullWidth
@@ -215,14 +185,6 @@ export default function SignInSide() {
             >
               Log In
             </Button>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-            >
-              {body}
-            </Modal>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
