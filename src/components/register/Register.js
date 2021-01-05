@@ -101,6 +101,7 @@ export default function Register() {
     const classes = useStyles();
     const history = useHistory();
     const [open, setOpen] = useState(false);
+    const [loginFailed, setLoginFailed] = useState(false)
 
     const handleOpen = () => {
         setOpen(true);
@@ -150,13 +151,13 @@ export default function Register() {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             postData("http://144.202.67.136:8080/account/register/", values).then((data) => {
-                console.log(data)
+                console.log("DATA : ", data)
                 handleOpen()
                 history.push("/");
             }).catch((error) => {
                 console.log("Error", error)
+                setLoginFailed(true)
             })
-            handleOpen()
         }
     });
 
@@ -257,6 +258,11 @@ export default function Register() {
                         error={formik.touched.password2 && Boolean(formik.errors.password2)}
                         helperText={formik.touched.password2 && formik.errors.password2}
                     />
+                    {loginFailed && (
+                        <div className={classes.error}>
+                            <span>Username or email already exist!</span>
+                        </div>
+                    )}
                     <Button
                         type="submit"
                         fullWidth
