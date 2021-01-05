@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
         color: "#8b0000",
         backgroundColor: "#FDECEA",
         borderRadius: "5px",
-        height: "2rem",
+        height: "auto",
         fontSize: "1rem",
         display: "flex",
         justifyContent: "center",
@@ -101,6 +101,7 @@ export default function Register() {
     const classes = useStyles();
     const history = useHistory();
     const [open, setOpen] = useState(false);
+    const [loginError, setLoginError] = useState("")
     const [loginFailed, setLoginFailed] = useState(false)
 
     const handleOpen = () => {
@@ -154,8 +155,13 @@ export default function Register() {
                 console.log("DATA : ", data)
                 handleOpen()
                 history.push("/");
-            }).catch((error) => {
-                console.log("Error", error)
+            }).catch(({ response }) => {
+                //console.log("Err", response.data.password)
+                if (response.data.username) {
+                    setLoginError(response.data.username)
+                } else if (response.data.password) {
+                    setLoginError(response.data.password[0])
+                }
                 setLoginFailed(true)
             })
         }
@@ -260,7 +266,7 @@ export default function Register() {
                     />
                     {loginFailed && (
                         <div className={classes.error}>
-                            <span>Username already exist or password is so simple!</span>
+                            <span>{loginError}</span>
                         </div>
                     )}
                     <Button

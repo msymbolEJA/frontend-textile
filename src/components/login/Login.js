@@ -123,7 +123,7 @@ export default function SignInSide() {
         }
       }).catch((error) => {
         setLoginFailed(true)
-        console.log("Error", error)
+        //console.log("Error", error)
       })
     }
   });
