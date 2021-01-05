@@ -30,7 +30,7 @@ const validationSchema = yup.object({
     email: yup.string().email('Invalid email').required('Required'),
     password: yup
         .string("Enter your password")
-        .min(5, "Password should be of minimum 5 characters length")
+        .min(8, "Password should be of minimum 8 characters length")
         .required("Password is required"),
     password2: yup.string()
         .oneOf([yup.ref('password'), null], 'Passwords must match')
@@ -260,7 +260,7 @@ export default function Register() {
                     />
                     {loginFailed && (
                         <div className={classes.error}>
-                            <span>Username or email already exist!</span>
+                            <span>Username already exist or password is so simple!</span>
                         </div>
                     )}
                     <Button
