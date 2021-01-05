@@ -161,6 +161,8 @@ export default function Register() {
                     setLoginError(response.data.username)
                 } else if (response.data.password) {
                     setLoginError(response.data.password[0])
+                } else {
+                    setLoginError('Something went wrong! Try again!')
                 }
                 setLoginFailed(true)
             })
@@ -286,8 +288,6 @@ export default function Register() {
                     >
                         {body}
                     </Modal>
-                    <Grid container>
-                    </Grid>
                     <Grid container>
                         <Grid item xs className={classes.accountCheck}>
                             <Link href="/" variant="body2">
