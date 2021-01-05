@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+// Pages
 import Dashboard from "../components/dashboard/Dashboard";
 import Orders from "../components/orders/Orders";
 import Account from "../components/account/Account";
@@ -8,6 +9,8 @@ import NewOrder from "../components/orders/new/NewOrder";
 import Register from "../components/register/Register";
 import DueDate from "../components/orders/duedate/DueDate"
 import OrderPrep from "../components/orders/orderprep/OrderPrep"
+import ForgetPassword from "../components/forgetpassword/ForgetPassword"
+// Private Router
 import PrivateRouter from './PrivateRouter';
 import EditableCell from '../components/editablecell/EditableCell'
 
@@ -16,6 +19,7 @@ const AppRouter = () => {
     <Router>
       <Switch>
         <Route path="/register" component={Register} />
+        <Route path="/forgot" component={ForgetPassword} />
         <Route exact path="/" component={Login} />
         <Route component={DefaultContainer} />
       </Switch>
