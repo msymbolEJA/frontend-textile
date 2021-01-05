@@ -7,5 +7,5 @@ export const postData = async (path, data) => {
             'Content-Type': 'application/json'
         }
     })
-    return response?.data
+    return response
 }
