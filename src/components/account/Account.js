@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
+import { AppContext } from "../../context/Context"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,16 +53,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const accountData = {
-  accountName: "Admin",
-  email: "admin@example.com",
-};
 
 export default function Account() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [user, setUser] = useContext(AppContext)
+  const [accountData, setAccountData] = useState({
+    username: user.username,
+    email: user.email,
+  })
 
-  const handleOpen = () => {
+  //console.log(user.username);
+
+  const updateUser = (e) => {
+    e.preventDefault()
+    setUser({ ...user, username: "test4" })
+    setOpen(false);
+    console.log(accountData);
+  }
+
+  const changeHandler = (e) => {
+    setAccountData({ ...accountData, [e.target.name]: e.target.value })
+  }
+
+  const handleOpen = (e) => {
+    e.preventDefault()
     setOpen(true);
   };
 
@@ -75,18 +91,18 @@ export default function Account() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              autoComplete="userName"
-              name="userName"
+              autoComplete="username"
+              name="username"
               variant="outlined"
               required
               fullWidth
-              id="userName"
+              id="username"
               label="Username"
               autoFocus
-              defaultValue={accountData.accountName}
+              defaultValue={accountData.username}
+              onChange={(e) => changeHandler(e)}
             />
           </Grid>
-
           <Grid item xs={12}>
             <TextField
               variant="outlined"
@@ -97,6 +113,7 @@ export default function Account() {
               name="email"
               autoComplete="email"
               defaultValue={accountData.email}
+              onChange={(e) => changeHandler(e)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -109,6 +126,7 @@ export default function Account() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => changeHandler(e)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -121,6 +139,7 @@ export default function Account() {
               type="password"
               id="newPassword"
               autoComplete="current-password"
+              onChange={(e) => changeHandler(e)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -133,6 +152,7 @@ export default function Account() {
               type="password"
               id="confirmPassword"
               autoComplete="current-password"
+              onChange={(e) => changeHandler(e)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -148,6 +168,7 @@ export default function Account() {
           variant="contained"
           color="primary"
           className={classes.submit}
+          onClick={e => updateUser(e)}
         >
           Update
         </Button>
@@ -164,7 +185,7 @@ export default function Account() {
         </Avatar>
         <div className={classes.info}>
           <Typography component="h1" variant="h5">
-            {accountData.accountName}
+            {accountData.username}
           </Typography>
           <Typography variant="h6">{accountData.email}</Typography>
         </div>
@@ -174,7 +195,7 @@ export default function Account() {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={handleOpen}
+            onClick={(e) => handleOpen(e)}
             className={classes.modalButton}
           >
             Update Profile
