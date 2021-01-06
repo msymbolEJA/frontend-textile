@@ -1,10 +1,13 @@
 import "./App.css";
 import AppRouter from "./router/Router";
+import { ContextProvider } from "./context/Context"
 
 function App() {
   return (
     <div className="App">
-      <AppRouter />
+      <ContextProvider>
+        <AppRouter />
+      </ContextProvider>
     </div>
   );
 }
