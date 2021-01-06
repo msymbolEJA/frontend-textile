@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -15,6 +15,7 @@ import LocalMallIcon from "@material-ui/icons/LocalMall";
 import { postData } from "../../helper/PostData";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { AppContext } from "../../context/Context"
 
 const validationSchema = yup.object({
   username: yup.string("Enter your username")
@@ -101,6 +102,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
+  const [user, setUser] = useContext(AppContext)
   const [loginFailed, setLoginFailed] = useState(false)
 
   const formik = useFormik({
@@ -111,9 +113,11 @@ export default function Login() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       postData("http://144.202.67.136:8080/account/login/", values).then((data) => {
-        const response = data?.data?.access
-        if (response) {
-          localStorage.setItem("x-auth-token", response)
+        //console.log(values.username)
+        setUser({ ...user, username: values.username })
+        const token = data?.data?.access
+        if (token) {
+          localStorage.setItem("x-auth-token", token)
           //console.log("Token", localStorage.getItem("x-auth-token"))
           console.log("Logged in succesfully!");
           history.push("/dashboard");
