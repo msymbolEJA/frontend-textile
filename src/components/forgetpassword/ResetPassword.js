@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -74,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Register(props) {
     const classes = useStyles();
-    //const history = useHistory();
+    const history = useHistory();
 
     const token = props.match.params.id
     //console.log(token);
@@ -91,6 +92,7 @@ export default function Register(props) {
             axios.post('http://144.202.67.136:8080/account/change_password', values).then(
                 res => {
                     console.log(res);
+                    history.push("/");
                 }
             ).catch((error) => {
                 console.log(error);
