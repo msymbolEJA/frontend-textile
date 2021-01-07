@@ -120,8 +120,8 @@ export default function Login() {
           localStorage.setItem("x-auth-token", token)
           //console.log("Token", localStorage.getItem("x-auth-token"))
           console.log("Logged in succesfully!");
-          history.push("/dashboard");
           setAuth(true)
+          history.push("/dashboard");
         } else {
           console.log("Your account is not verified!")
           setLoginFailed(true)
