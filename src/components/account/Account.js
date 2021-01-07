@@ -53,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function Account() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);

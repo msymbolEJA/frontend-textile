@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
+//import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import HelpIcon from '@material-ui/icons/Help';
 // Post Data
-import { postData } from "../../helper/PostData";
+//import { postData } from "../../helper/PostData";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from 'axios'
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ForgetPassword() {
     const classes = useStyles();
-    const history = useHistory();
+    //const history = useHistory();
     /*     const [loginError, setLoginError] = useState("")
         const [loginFailed, setLoginFailed] = useState(false) */
 
