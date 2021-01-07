@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
-  const [user, setUser] = useContext(AppContext)
+  const { user, setUser, setAuth } = useContext(AppContext)
   const [loginFailed, setLoginFailed] = useState(false)
 
   const formik = useFormik({
@@ -121,6 +121,7 @@ export default function Login() {
           //console.log("Token", localStorage.getItem("x-auth-token"))
           console.log("Logged in succesfully!");
           history.push("/dashboard");
+          setAuth(true)
         } else {
           console.log("Your account is not verified!")
           setLoginFailed(true)

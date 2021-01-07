@@ -7,8 +7,9 @@ export const ContextProvider = (props) => {
         username: "admin",
         email: "admin@admin.com"
     })
+    const [auth, setAuth] = useState(false)
     return (
-        <AppContext.Provider value={[user, setUser]}>
+        <AppContext.Provider value={{ user, setUser, auth, setAuth }}>
             {props.children}
         </AppContext.Provider>
     )

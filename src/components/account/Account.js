@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Account() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [user, setUser] = useContext(AppContext)
+  const { user, setUser } = useContext(AppContext)
   const [accountData, setAccountData] = useState({
     username: user.username,
     email: user.email,
@@ -68,7 +68,7 @@ export default function Account() {
     e.preventDefault()
     setUser({ ...user, username: "test4" })
     setOpen(false);
-    console.log(accountData);
+    //console.log(accountData);
   }
 
   const changeHandler = (e) => {
