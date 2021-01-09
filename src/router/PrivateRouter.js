@@ -7,7 +7,7 @@ const PrivateRouter = ({ component: Component, ...rest }) => {
 
     return (<Route
         {...rest}
-        render={props => (localStorage.getItem("x-auth-token") && auth) ?
+        render={props => (localStorage.getItem("x-auth-token") && true) ?
             (
                 <Component {...props} />
             ) : (
@@ -21,3 +21,8 @@ const PrivateRouter = ({ component: Component, ...rest }) => {
 }
 
 export default PrivateRouter
+
+
+/*
+render={props => (localStorage.getItem("x-auth-token") && auth) ?
+*/

@@ -11,6 +11,7 @@ import DueDate from "../components/orders/duedate/DueDate"
 import OrderPrep from "../components/orders/orderprep/OrderPrep"
 import ForgetPassword from "../components/forgetpassword/ForgetPassword"
 import ResetPassword from "../components/forgetpassword/ResetPassword"
+import AllOrdersTable from '../components/orders/allorders/AllOrdersTable'
 // Private Router
 import PrivateRouter from './PrivateRouter';
 import EditableCell from '../components/editablecell/EditableCell'
@@ -34,6 +35,7 @@ const DefaultContainer = () => (
     <Navbar />
     <PrivateRouter exact path="/dashboard" component={Dashboard} />
     <PrivateRouter exact path="/orders" component={Orders} />
+    <PrivateRouter exact path="/all-orders" component={AllOrdersTable} />
     <PrivateRouter exact path="/account" component={Account} />
     <PrivateRouter exact path="/new-order" component={NewOrder} />
     <PrivateRouter exact path="/due-date" component={DueDate} />

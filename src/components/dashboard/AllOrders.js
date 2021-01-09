@@ -25,7 +25,7 @@ export default function AllOrders() {
   const history = useHistory();
 
   const handleClick = () => {
-    history.push("/orders");
+    history.push("/all-orders");
   };
 
   return (
