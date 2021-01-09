@@ -14,6 +14,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import DATA from "../../../helper/Data";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
+import Typography from '@material-ui/core/Typography';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -51,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
     buttonGroup: {
         marginBottom: theme.spacing(1),
     },
+    header: {
+        fontSize: "1.5rem"
+    }
 }));
 
 function AllOrdersTable() {
@@ -109,6 +113,7 @@ function AllOrdersTable() {
 
     return (
         <Paper className={classes.root}>
+            <Typography className={classes.header}>All Orders</Typography>
             <TableContainer className={classes.container}>
                 <Table
                     className={classes.table}
@@ -121,10 +126,28 @@ function AllOrdersTable() {
                         <TableRow>
                             <StyledTableCell align="center">Receipt Id</StyledTableCell>
                             <StyledTableCell align="center">created_date</StyledTableCell>
+                            <StyledTableCell align="center">created_tsz</StyledTableCell>
                             <StyledTableCell align="center">Buyer</StyledTableCell>
                             <StyledTableCell align="center">SKU</StyledTableCell>
                             <StyledTableCell align="center">seller_user_id</StyledTableCell>
-                            <StyledTableCell align="center">message_from_buyer</StyledTableCell>
+                            <StyledTableCell align="center">Color</StyledTableCell>
+                            <StyledTableCell align="center">Explanation</StyledTableCell>
+                            <StyledTableCell align="center">Ready</StyledTableCell>
+                            <StyledTableCell align="center">item_index</StyledTableCell>
+                            <StyledTableCell align="center">last_updated</StyledTableCell>
+                            <StyledTableCell align="center">length</StyledTableCell>
+                            <StyledTableCell align="center">Note</StyledTableCell>
+                            <StyledTableCell align="center">personalization</StyledTableCell>
+                            <StyledTableCell align="center">Quantity</StyledTableCell>
+                            <StyledTableCell align="center">Ready Data</StyledTableCell>
+                            <StyledTableCell align="center">Size</StyledTableCell>
+                            <StyledTableCell align="center">Last Updated</StyledTableCell>
+                            <StyledTableCell align="center">Space</StyledTableCell>
+                            <StyledTableCell align="center">Start</StyledTableCell>
+                            <StyledTableCell align="center">Status</StyledTableCell>
+                            <StyledTableCell align="center">Transaction Id</StyledTableCell>
+                            <StyledTableCell align="center">Type</StyledTableCell>
+                            <StyledTableCell align="center">Message From Buyer</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -132,9 +155,27 @@ function AllOrdersTable() {
                             <StyledTableRow key={row.id}>
                                 <CustomTableCell {...{ row, name: "receipt_id", onChange }} />
                                 <CustomTableCell {...{ row, name: "created_date", onChange }} />
+                                <CustomTableCell {...{ row, name: "creation_tsz", onChange }} />
                                 <CustomTableCell {...{ row, name: "buyer", onChange }} />
                                 <CustomTableCell {...{ row, name: "sku", onChange }} />
                                 <CustomTableCell {...{ row, name: "seller_user_id", onChange }} />
+                                <CustomTableCell {...{ row, name: "color", onChange }} />
+                                <CustomTableCell {...{ row, name: "explanation", onChange }} />
+                                <CustomTableCell {...{ row, name: "is_ready", onChange }} />
+                                <CustomTableCell {...{ row, name: "item_index", onChange }} />
+                                <CustomTableCell {...{ row, name: "last_updated", onChange }} />
+                                <CustomTableCell {...{ row, name: "length", onChange }} />
+                                <CustomTableCell {...{ row, name: "note", onChange }} />
+                                <CustomTableCell {...{ row, name: "personalization", onChange }} />
+                                <CustomTableCell {...{ row, name: "qty", onChange }} />
+                                <CustomTableCell {...{ row, name: "ready_date", onChange }} />
+                                <CustomTableCell {...{ row, name: "size", onChange }} />
+                                <CustomTableCell {...{ row, name: "last_updated", onChange }} />
+                                <CustomTableCell {...{ row, name: "space", onChange }} />
+                                <CustomTableCell {...{ row, name: "start", onChange }} />
+                                <CustomTableCell {...{ row, name: "status", onChange }} />
+                                <CustomTableCell {...{ row, name: "transaction_id", onChange }} />
+                                <CustomTableCell {...{ row, name: "type", onChange }} />
                                 <CustomTableCell {...{ row, name: "message_from_buyer", onChange }} />
                             </StyledTableRow>
                         ))}
@@ -145,7 +186,7 @@ function AllOrdersTable() {
                             <td>{count}</td>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25, 100]}
-                                colSpan={8}
+                                colSpan={22}
                                 count={Math.ceil(count / rows.length)}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
