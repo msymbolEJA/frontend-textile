@@ -120,13 +120,10 @@ function AllOrdersTable() {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell align="center">Receipt Id</StyledTableCell>
-                            <StyledTableCell align="center">Date</StyledTableCell>
+                            <StyledTableCell align="center">created_date</StyledTableCell>
                             <StyledTableCell align="center">Buyer</StyledTableCell>
-                            <StyledTableCell align="center">was_shipped</StyledTableCell>
+                            <StyledTableCell align="center">SKU</StyledTableCell>
                             <StyledTableCell align="center">seller_user_id</StyledTableCell>
-                            <StyledTableCell align="center">shipped_date</StyledTableCell>
-                            <StyledTableCell align="center">Acceleration</StyledTableCell>
-                            <StyledTableCell align="center">Year</StyledTableCell>
                             <StyledTableCell align="center">message_from_buyer</StyledTableCell>
                         </TableRow>
                     </TableHead>
@@ -134,22 +131,21 @@ function AllOrdersTable() {
                         {rows?.map((row) => (
                             <StyledTableRow key={row.id}>
                                 <CustomTableCell {...{ row, name: "receipt_id", onChange }} />
-                                <CustomTableCell {...{ row, name: "createddate", onChange }} />
+                                <CustomTableCell {...{ row, name: "created_date", onChange }} />
                                 <CustomTableCell {...{ row, name: "buyer", onChange }} />
-                                <CustomTableCell {...{ row, name: "was_shipped", onChange }} />
+                                <CustomTableCell {...{ row, name: "sku", onChange }} />
                                 <CustomTableCell {...{ row, name: "seller_user_id", onChange }} />
-                                <CustomTableCell {...{ row, name: "Weight_in_lbs", onChange }} />
-                                <CustomTableCell {...{ row, name: "shipped_date", onChange }} />
-                                <CustomTableCell {...{ row, name: "Year", onChange }} />
                                 <CustomTableCell {...{ row, name: "message_from_buyer", onChange }} />
                             </StyledTableRow>
                         ))}
                     </TableBody>
                     <TableFooter>
                         <TableRow>
+                            <td>Total Record :</td>
+                            <td>{count}</td>
                             <TablePagination
-                                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                                colSpan={10}
+                                rowsPerPageOptions={[5, 10, 25, 100]}
+                                colSpan={8}
                                 count={Math.ceil(count / rows.length)}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
