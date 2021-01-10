@@ -83,7 +83,7 @@ function AllOrdersTable() {
                 console.log(error);
             })
     }, [page, rowsPerPage])
-    //console.log("data rows : ", rows);
+    console.log("data rows : ", rows);
     //------------------------------
 
     const handleChangePage = (event, newPage) => {
@@ -187,7 +187,7 @@ function AllOrdersTable() {
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25, 100]}
                                 colSpan={22}
-                                count={Math.ceil(count / rows.length)}
+                                count={count}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 SelectProps={{
