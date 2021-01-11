@@ -12,6 +12,7 @@ import OrderPrep from "../components/orders/orderprep/OrderPrep"
 import ForgetPassword from "../components/forgetpassword/ForgetPassword"
 import ResetPassword from "../components/forgetpassword/ResetPassword"
 import AllOrdersTable from '../components/orders/allorders/AllOrdersTable'
+import Search from '../components/search/Search';
 // Private Router
 import PrivateRouter from './PrivateRouter';
 import EditableCell from '../components/editablecell/EditableCell'
@@ -41,6 +42,7 @@ const DefaultContainer = () => (
     <PrivateRouter exact path="/due-date" component={DueDate} />
     <PrivateRouter exact path="/order-prep" component={OrderPrep} />
     <PrivateRouter exact path="/edit-cell" component={EditableCell} />
+    <PrivateRouter exact path="/search" component={Search} />
   </div>
 );
 
