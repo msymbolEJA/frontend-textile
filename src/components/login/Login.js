@@ -104,6 +104,7 @@ export default function Login() {
   const history = useHistory();
   const { user, setUser, setAuth } = useContext(AppContext)
   const [loginFailed, setLoginFailed] = useState(false)
+  const [errorText, setErrorText] = useState("")
 
   const formik = useFormik({
     initialValues: {
@@ -122,13 +123,12 @@ export default function Login() {
           console.log("Logged in succesfully!");
           setAuth(true)
           history.push("/dashboard");
-        } else {
-          console.log("Your account is not verified!")
-          setLoginFailed(true)
         }
-      }).catch((error) => {
+      }).catch(({ response }) => {
         setLoginFailed(true)
-        //console.log("Error", error)
+        //console.log("Error", response)
+        console.log(response.data.non_field_errors[0])
+        setErrorText(response.data.non_field_errors[0])
       })
     }
   });
@@ -178,7 +178,7 @@ export default function Login() {
             />
             {loginFailed && (
               <div className={classes.error}>
-                <span>Wrong Password or Email!</span>
+                <span>{errorText}</span>
               </div>
             )}
             <Button
