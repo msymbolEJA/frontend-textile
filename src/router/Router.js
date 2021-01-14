@@ -14,6 +14,7 @@ import ResetPassword from "../components/forgetpassword/ResetPassword"
 import AllOrdersTable from '../components/orders/allorders/AllOrdersTable'
 import Search from '../components/search/Search';
 import ReadyOrders from '../components/orders/readyorders/ReadyOrders'
+import OrderDetails from '../components/orders/readyorders/orderdetails/OrderDetails'
 // Private Router
 import PrivateRouter from './PrivateRouter';
 import EditableCell from '../components/editablecell/EditableCell'
@@ -45,6 +46,7 @@ const DefaultContainer = () => (
     <PrivateRouter exact path="/edit-cell" component={EditableCell} />
     <PrivateRouter exact path="/search" component={Search} />
     <PrivateRouter exact path="/ready-orders" component={ReadyOrders} />
+    <PrivateRouter exact path="/order-details" component={OrderDetails} />
   </div>
 );
 
