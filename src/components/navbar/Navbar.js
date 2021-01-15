@@ -74,7 +74,7 @@ export default function MenuAppBar() {
             <StoreIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            E-Commerce Name
+            Shiny Store
           </Typography>
           {auth && (
             <div>

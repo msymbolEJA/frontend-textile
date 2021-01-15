@@ -20,7 +20,7 @@ import { tagsData } from "../../../helper/Constants"
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: theme.palette.common.black,
+        backgroundColor: "#001a33",
         color: theme.palette.common.white,
     },
     body: {
@@ -128,13 +128,13 @@ function AllOrdersTable() {
                     aria-label="sticky table"
                     size="small"
                 >
-                    <TableHead>
+                    <TableHead >
                         <TableRow>
                             <StyledTableCell align="center">Receipt Id</StyledTableCell>
                             <StyledTableCell align="center">Id</StyledTableCell>
-                            <StyledTableCell align="center">created_tsz</StyledTableCell>
-                            <StyledTableCell align="center">item_index</StyledTableCell>
-                            <StyledTableCell align="center">created_date</StyledTableCell>
+                            <StyledTableCell align="center">Created TSZ</StyledTableCell>
+                            <StyledTableCell align="center">Item Index</StyledTableCell>
+                            <StyledTableCell align="center">Created Date</StyledTableCell>
                             <StyledTableCell align="center">Buyer</StyledTableCell>
                             <StyledTableCell align="center">Supplier</StyledTableCell>
                             <StyledTableCell align="center">Type</StyledTableCell>
