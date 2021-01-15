@@ -125,10 +125,15 @@ export default function Login() {
           history.push("/dashboard");
         }
       }).catch(({ response }) => {
-        setLoginFailed(true)
-        //console.log("Error", response)
-        console.log(response.data.non_field_errors[0])
-        setErrorText(response.data.non_field_errors[0])
+        if (response) {
+          setLoginFailed(true)
+          //console.log("Error", response)
+          console.log(response.data.non_field_errors[0])
+          setErrorText(response.data.non_field_errors[0])
+        } else {
+          setLoginFailed(true)
+          setErrorText("Something went wrong!")
+        }
       })
     }
   });
