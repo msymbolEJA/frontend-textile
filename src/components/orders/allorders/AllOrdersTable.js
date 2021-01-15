@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
+import CustomButtonGroup from "./CustomButtonGroup"
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -14,7 +15,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import DATA from "../../../helper/Data";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
-import Typography from '@material-ui/core/Typography';
+import { tagsData } from "../../../helper/Constants"
+
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -52,9 +54,6 @@ const useStyles = makeStyles((theme) => ({
     buttonGroup: {
         marginBottom: theme.spacing(1),
     },
-    header: {
-        fontSize: "1.5rem"
-    }
 }));
 
 function AllOrdersTable() {
@@ -64,18 +63,20 @@ function AllOrdersTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [count, setCount] = useState(0)
+    const [selectedTag, setSelectedTag] = useState("All Orders");
+    const [url, setUrl] = useState(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
+
 
     //--------------- Get Orders
     useEffect(() => {
-        const myUrl = `http://144.202.67.136:8080/etsy/allordersList_view/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`
-        axios.get(myUrl)
+        axios.get(url)
             .then(res => {
                 setRows(res.data.results)
                 setCount(res.data.count)
             }).catch(error => {
                 console.log(error);
             })
-    }, [page, rowsPerPage])
+    }, [page, rowsPerPage, url])
     //console.log("data rows : ", rows);
     //------------------------------
 
@@ -104,9 +105,22 @@ function AllOrdersTable() {
         setRows(newRows);
     };
 
+    const handleTagChange = (e) => {
+        const statu = e.currentTarget.id
+        setSelectedTag(statu);
+        //console.log(e.target.innerHTML);
+        console.log(statu);
+        if (statu === 'all orders') {
+            setUrl(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
+        } else {
+            setUrl(`http://144.202.67.136:8080/etsy/orders/?status=${statu}&limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
+        }
+        setPage(0);
+    };
+
     return (
         <Paper className={classes.root}>
-            <Typography className={classes.header}>All Orders</Typography>
+            <CustomButtonGroup selectedTag={selectedTag} handleTagChange={handleTagChange} tagsData={tagsData} />
             <TableContainer className={classes.container}>
                 <Table
                     className={classes.table}
@@ -114,7 +128,6 @@ function AllOrdersTable() {
                     aria-label="sticky table"
                     size="small"
                 >
-                    <caption>Can be added Company Name!</caption>
                     <TableHead>
                         <TableRow>
                             <StyledTableCell align="center">Receipt Id</StyledTableCell>
