@@ -1,7 +1,6 @@
 import React from 'react'
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,12 +28,11 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
   const classes = useStyles();
+  console.log(selectedTag)
 
   return (
     <div>
-      <Typography className={classes.header}>{selectedTag === "all orders" ? selectedTag.toUpperCase() : selectedTag.toUpperCase().replace("_", " ") + " ORDERS"}</Typography>
-      <div className={classes.btnGroup}
-      >
+      <div className={classes.btnGroup}>
         {tagsData.map((tag) => (
           <Button
             className={classes.btn}
@@ -44,12 +42,13 @@ const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
             onClick={(e) => handleTagChange(e)}
             variant="contained"
             color="primary"
+            style={{ backgroundColor: selectedTag === tag ? "grey" : null }}
           >
             {tag.replace("_", " ")}
           </Button>
         ))}
       </div>
-    </div>
+    </div >
   )
 }
 
