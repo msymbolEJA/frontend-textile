@@ -63,7 +63,7 @@ function AllOrdersTable() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [count, setCount] = useState(0)
-    const [selectedTag, setSelectedTag] = useState("All Orders");
+    const [selectedTag, setSelectedTag] = useState("all orders");
     const [url, setUrl] = useState(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
 
 
@@ -131,58 +131,42 @@ function AllOrdersTable() {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell align="center">Receipt Id</StyledTableCell>
-                            <StyledTableCell align="center">created_date</StyledTableCell>
+                            <StyledTableCell align="center">Id</StyledTableCell>
                             <StyledTableCell align="center">created_tsz</StyledTableCell>
-                            <StyledTableCell align="center">Buyer</StyledTableCell>
-                            <StyledTableCell align="center">SKU</StyledTableCell>
-                            <StyledTableCell align="center">seller_user_id</StyledTableCell>
-                            <StyledTableCell align="center">Color</StyledTableCell>
-                            <StyledTableCell align="center">Explanation</StyledTableCell>
-                            <StyledTableCell align="center">Ready</StyledTableCell>
                             <StyledTableCell align="center">item_index</StyledTableCell>
-                            <StyledTableCell align="center">last_updated</StyledTableCell>
-                            <StyledTableCell align="center">length</StyledTableCell>
-                            <StyledTableCell align="center">Note</StyledTableCell>
-                            <StyledTableCell align="center">personalization</StyledTableCell>
-                            <StyledTableCell align="center">Quantity</StyledTableCell>
-                            <StyledTableCell align="center">Ready Data</StyledTableCell>
-                            <StyledTableCell align="center">Size</StyledTableCell>
-                            <StyledTableCell align="center">Last Updated</StyledTableCell>
-                            <StyledTableCell align="center">Space</StyledTableCell>
-                            <StyledTableCell align="center">Start</StyledTableCell>
-                            <StyledTableCell align="center">Status</StyledTableCell>
-                            <StyledTableCell align="center">Transaction Id</StyledTableCell>
+                            <StyledTableCell align="center">created_date</StyledTableCell>
+                            <StyledTableCell align="center">Buyer</StyledTableCell>
+                            <StyledTableCell align="center">Supplier</StyledTableCell>
                             <StyledTableCell align="center">Type</StyledTableCell>
-                            <StyledTableCell align="center">Message From Buyer</StyledTableCell>
+                            <StyledTableCell align="center">Length</StyledTableCell>
+                            <StyledTableCell align="center">Color</StyledTableCell>
+                            <StyledTableCell align="center">Quantity</StyledTableCell>
+                            <StyledTableCell align="center">Size</StyledTableCell>
+                            <StyledTableCell align="center">Start</StyledTableCell>
+                            <StyledTableCell align="center">Space</StyledTableCell>
+                            <StyledTableCell align="center">Explanation</StyledTableCell>
+                            <StyledTableCell align="center">Note</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {rows?.map((row) => (
                             <StyledTableRow key={row.id}>
                                 <CustomTableCell {...{ row, name: "receipt_id", onChange }} />
-                                <CustomTableCell {...{ row, name: "created_date", onChange }} />
+                                <CustomTableCell {...{ row, name: "id", onChange }} />
                                 <CustomTableCell {...{ row, name: "creation_tsz", onChange }} />
-                                <CustomTableCell {...{ row, name: "buyer", onChange }} />
-                                <CustomTableCell {...{ row, name: "sku", onChange }} />
-                                <CustomTableCell {...{ row, name: "seller_user_id", onChange }} />
-                                <CustomTableCell {...{ row, name: "color", onChange }} />
-                                <CustomTableCell {...{ row, name: "explanation", onChange }} />
-                                <CustomTableCell {...{ row, name: "is_ready", onChange }} />
                                 <CustomTableCell {...{ row, name: "item_index", onChange }} />
-                                <CustomTableCell {...{ row, name: "last_updated", onChange }} />
-                                <CustomTableCell {...{ row, name: "length", onChange }} />
-                                <CustomTableCell {...{ row, name: "note", onChange }} />
-                                <CustomTableCell {...{ row, name: "personalization", onChange }} />
-                                <CustomTableCell {...{ row, name: "qty", onChange }} />
-                                <CustomTableCell {...{ row, name: "ready_date", onChange }} />
-                                <CustomTableCell {...{ row, name: "size", onChange }} />
-                                <CustomTableCell {...{ row, name: "last_updated", onChange }} />
-                                <CustomTableCell {...{ row, name: "space", onChange }} />
-                                <CustomTableCell {...{ row, name: "start", onChange }} />
-                                <CustomTableCell {...{ row, name: "status", onChange }} />
-                                <CustomTableCell {...{ row, name: "transaction_id", onChange }} />
+                                <CustomTableCell {...{ row, name: "created_date", onChange }} />
+                                <CustomTableCell {...{ row, name: "buyer", onChange }} />
+                                <CustomTableCell {...{ row, name: "supplier", onChange }} />
                                 <CustomTableCell {...{ row, name: "type", onChange }} />
-                                <CustomTableCell {...{ row, name: "message_from_buyer", onChange }} />
+                                <CustomTableCell {...{ row, name: "length", onChange }} />
+                                <CustomTableCell {...{ row, name: "color", onChange }} />
+                                <CustomTableCell {...{ row, name: "qty", onChange }} />
+                                <CustomTableCell {...{ row, name: "size", onChange }} />
+                                <CustomTableCell {...{ row, name: "start", onChange }} />
+                                <CustomTableCell {...{ row, name: "space", onChange }} />
+                                <CustomTableCell {...{ row, name: "explanation", onChange }} />
+                                <CustomTableCell {...{ row, name: "note", onChange }} />
                             </StyledTableRow>
                         ))}
                     </TableBody>
