@@ -41,8 +41,7 @@ const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
             checked={selectedTag.indexOf(tag) > -1}
             onClick={(e) => handleTagChange(e)}
             variant="contained"
-            color="primary"
-            style={{ backgroundColor: selectedTag === tag ? "#515151" : null }}
+            style={{ backgroundColor: selectedTag === tag ? "#3F51B5" : null, color: selectedTag === tag ? "white" : null }}
           >
             {tag.replace("_", " ")}
           </Button>
