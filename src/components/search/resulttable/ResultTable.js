@@ -67,23 +67,17 @@ function ResultTable() {
 
     //--------------- Get Orders
     useEffect(() => {
-        const myUrl = `http://144.202.67.136:8080/etsy/allordersList/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`
+        const myUrl = `http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`
         axios.get(myUrl)
             .then(res => {
-                console.log("---------------------------");
-                console.log("DATA : ", res.data);
+
                 setRows(res.data.results)
                 setCount(res.data.count)
-                console.log("rowsPerPage : ", rowsPerPage);
-                console.log("page", page);
-                console.log("myUrl : ", myUrl);
-                console.log("nex url :", res.data.next)
-                console.log("---------------------------");
             }).catch(error => {
                 console.log(error);
             })
     }, [page, rowsPerPage])
-    console.log("data rows : ", rows);
+    //console.log("data rows : ", rows);
     //------------------------------
 
     const handleChangePage = (event, newPage) => {
