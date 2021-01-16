@@ -32,6 +32,10 @@ const StyledTableRow = withStyles((theme) => ({
         "&:nth-of-type(odd)": {
             backgroundColor: theme.palette.action.hover,
         },
+        '&:hover': {
+            cursor: "pointer",
+            boxShadow: "1px 2px",
+        },
     },
 }))(TableRow);
 
@@ -58,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
     sub: {
         fontSize: '1rem'
-    }
+    },
 }));
 
 function ReadyOrders() {
@@ -73,7 +77,7 @@ function ReadyOrders() {
 
     //--------------- Get Orders
     useEffect(() => {
-        const myUrl = `http://144.202.67.136:8080/etsy/allordersList_view/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`
+        const myUrl = `http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`
         axios.get(myUrl)
             .then(res => {
                 setRows(res.data.results)
@@ -125,7 +129,7 @@ function ReadyOrders() {
     return (
         <Paper className={classes.root}>
             <Typography className={classes.header}>Ready Orders</Typography>
-            <Typography className={classes.sub}><span className={classes.header}>{count}</span>  result found!</Typography>
+            <Typography className={classes.sub}><span className={classes.header}>{count}</span> result found!</Typography>
             <TableContainer className={classes.container}>
                 <Table
                     className={classes.table}
@@ -133,7 +137,6 @@ function ReadyOrders() {
                     aria-label="sticky table"
                     size="small"
                 >
-                    <caption>Can be added Company Name!</caption>
                     <TableHead>
                         <TableRow>
                             <StyledTableCell align="center">Order No</StyledTableCell>
@@ -151,7 +154,7 @@ function ReadyOrders() {
                     </TableHead>
                     <TableBody>
                         {rows?.map((row) => (
-                            <StyledTableRow key={row.id} id={row.id} onClick={() => handleRowClick(row.id)} >
+                            <StyledTableRow className={classes.rowStyle} key={row.id} id={row.id} onClick={() => handleRowClick(row.id)} >
                                 <CustomTableCell {...{ row, name: "receipt_id", onChange }} />
                                 <CustomTableCell {...{ row, name: "created_date", onChange }} />
                                 <CustomTableCell {...{ row, name: "creation_tsz", onChange }} />
