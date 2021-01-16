@@ -54,8 +54,12 @@ export default function MenuAppBar() {
     setAnchorEl(null);
     localStorage.removeItem("x-auth-token")
   };
-  const handleNewOrderPage = () => {
-    history.push("/new-order");
+  const handleReadyOrderPage = () => {
+    history.push("/ready-orders");
+    setAnchorEl(null);
+  };
+  const handleSearchPage = () => {
+    history.push("/search");
     setAnchorEl(null);
   };
 
@@ -104,7 +108,8 @@ export default function MenuAppBar() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleOrdersPage}>Orders</MenuItem>
-                <MenuItem onClick={handleNewOrderPage}>New Order</MenuItem>
+                <MenuItem onClick={handleSearchPage}>Search</MenuItem>
+                <MenuItem onClick={handleReadyOrderPage}>Ready Orders</MenuItem>
                 <MenuItem onClick={handleAccountPage}>Account</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
