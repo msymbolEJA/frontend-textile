@@ -77,7 +77,7 @@ function AllOrdersTable() {
                 console.log(error);
             })
     }, [page, rowsPerPage, url])
-    //console.log("data rows : ", rows);
+    console.log("data rows : ", rows);
     //------------------------------
 
     const handleChangePage = (event, newPage) => {
