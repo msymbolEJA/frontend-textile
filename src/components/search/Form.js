@@ -8,17 +8,19 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       marginTop: theme.spacing(2),
       margin: theme.spacing(1),
-      width: "15ch",
+      width: "8rem",
     },
+  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
+  btnItem : {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   height: "auto",
-  },
+  }
 }));
 
 export default function Register() {
@@ -27,9 +29,8 @@ export default function Register() {
   return (
     <div>
       <div>
-        <form className={classes.root} noValidate autoComplete="off">
+        <form className={classes.root} >
           <TextField
-            // minWidth="xs"
             variant="outlined"
             margin="dense"
             id="username"
