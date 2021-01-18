@@ -11,10 +11,6 @@ const useStyles = makeStyles((theme) => ({
       width: "8rem",
     },
   },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
   btn : {
     height: "2.5rem"
   }
