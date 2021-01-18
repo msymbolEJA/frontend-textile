@@ -15,11 +15,8 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  btnItem : {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "auto",
+  btn : {
+    height: "2.5rem"
   }
 }));
 
