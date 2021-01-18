@@ -109,7 +109,7 @@ function AllOrdersTable() {
         const statu = e.currentTarget.id
         setSelectedTag(statu);
         //console.log(e.target.innerHTML);
-        console.log(statu);
+        //console.log(statu);
         if (statu === 'all orders') {
             setUrl(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
         } else {
