@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
   const classes = useStyles();
-  console.log(selectedTag)
+  //console.log(selectedTag)
 
   return (
     <div>
