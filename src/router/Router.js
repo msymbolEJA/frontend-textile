@@ -17,7 +17,7 @@ import ReadyOrders from '../components/orders/readyorders/ReadyOrders'
 import OrderDetails from '../components/orders/readyorders/orderdetails/OrderDetails'
 // Private Router
 import PrivateRouter from './PrivateRouter';
-import EditableCell from '../components/editablecell/EditableCell'
+import Preparation from '../components/preparation/Preparation'
 
 const AppRouter = () => {
   return (
@@ -43,7 +43,7 @@ const DefaultContainer = () => (
     <PrivateRouter exact path="/new-order" component={NewOrder} />
     <PrivateRouter exact path="/due-date" component={DueDate} />
     <PrivateRouter exact path="/order-prep" component={OrderPrep} />
-    <PrivateRouter exact path="/edit-cell" component={EditableCell} />
+    <PrivateRouter exact path="/preparation" component={Preparation} />
     <PrivateRouter exact path="/search" component={Search} />
     <PrivateRouter exact path="/ready-orders" component={ReadyOrders} />
     <PrivateRouter exact path="/order-details" component={OrderDetails} />

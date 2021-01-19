@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -6,10 +6,13 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Input from "@material-ui/core/Input";
+import TableFooter from "@material-ui/core/TableFooter";
+import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
 import DATA from '../../helper/Data'
 import { putData, getData } from '../../helper/PostData'
 import TableContainer from "@material-ui/core/TableContainer";
+import TablePaginationActions from "../tableitems/TablePaginationActions";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -69,15 +72,21 @@ function App() {
     const [rows, setRows] = React.useState(DATA);
     const [previous, setPrevious] = React.useState({});
     const classes = useStyles();
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [count, setCount] = useState(0)
+
 
     useEffect(() => {
-       console.log("test")
        let data = ""
-       getData("http://144.202.67.136:8080/etsy/mapping/?limit=10&offset=0", data).then((response) => {
+       getData(`http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`, data).then((response) => {
            console.log(response.data.results)
            setRows(response.data.results)
+           setCount(response.data.count)
+       }).catch((error) => {
+           console.log(error)
        })
-    }, [])
+    }, [page,rowsPerPage])
 
     const onChange = (e, row) => {
         if (!previous[row.id]) {
@@ -93,6 +102,15 @@ function App() {
             return row;
         });
         setRows(newRows);
+    };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+    
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
     };
 
     const handleRowClick = (id) => {
@@ -184,6 +202,26 @@ function App() {
                             </TableRow>
                         ))}
                     </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <td>Total Record :</td>
+                            <td>{count}</td>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25, 100]}
+                                colSpan={22}
+                                count={count}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                SelectProps={{
+                                    inputProps: { "aria-label": "rows per page" },
+                                    native: true,
+                                }}
+                                onChangePage={handleChangePage}
+                                onChangeRowsPerPage={handleChangeRowsPerPage}
+                                ActionsComponent={TablePaginationActions}
+                            />
+                        </TableRow>
+                    </TableFooter>
                 </Table>
             </TableContainer>
         </Paper>
