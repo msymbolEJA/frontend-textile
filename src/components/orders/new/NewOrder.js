@@ -18,7 +18,7 @@ function NewOrder() {
   });
 
   //console.log(DATA);
-
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log("HandleSubmit Button");
@@ -59,12 +59,12 @@ function NewOrder() {
       Name: "",
       Miles_per_Gallon: "",
       Cylinders: "",
-      Displacement: "",
-      Horsepower: "",
-      Weight_in_lbs: "",
-      Acceleration: "",
-      Year: "",
-      Origin: "",
+      length: "",
+      qty: "",
+      size: "",
+      start: "",
+      space: "",
+      explanation: "",
     });
   };
   const handleChange = (e) => {

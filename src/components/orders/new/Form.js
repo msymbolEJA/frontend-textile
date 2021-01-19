@@ -26,69 +26,83 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(2, 0, 1),
   },
+  error: {
+    color: "#cc5500",
+    backgroundColor: "#FFF4E5",
+    borderRadius: "5px",
+    height: "2rem",
+    fontSize: "1rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  }
 }));
 
 export default function InputForm({ handleSubmit, handleChange, info }) {
   const classes = useStyles();
-
+ 
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            New Order
+            New Order Creation
           </Typography>
+          <div className={classes.error}>
+                <Typography>Please fill all the fields!</Typography>
+              </div>
           <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
               margin="dense"
               required
               fullWidth
-              id="Name"
-              label="Name"
-              name="Name"
-              autoComplete="Name"
+              id="customer"
+              label="Customer"
+              name="customer"
+              autoComplete="customer"
+              type="text"
               onChange={handleChange}
               autoFocus
-              value={info.Name}
+              value={info.customer}
             />
             <TextField
               variant="outlined"
               margin="dense"
               required
               fullWidth
-              name="Miles_per_Gallon"
-              label="Miles per Gallon"
-              type="number"
-              id="Miles_per_Gallon"
-              autoComplete="Miles_per_Gallon"
+              name="supplier"
+              label="Supplier"
+              type="text"
+              id="supplier"
+              autoComplete="supplier"
               onChange={handleChange}
-              value={info.Miles_per_Gallon}
+              value={info.supplier}
             />
             <TextField
               variant="outlined"
               margin="dense"
               required
               fullWidth
-              name="Cylinders"
-              label="Cylinders"
-              type="number"
-              id="Cylinders"
-              autoComplete="Cylinders"
+              name="type"
+              label="Type"
+              type="text"
+              id="type"
+              autoComplete="type"
               onChange={handleChange}
-              value={info.Cylinders}
+              value={info.type}
             />
             <TextField
               variant="outlined"
               margin="dense"
               required
               fullWidth
-              name="Displacement"
-              label="Displacement"
+              name="length"
+              label="Length"
               type="number"
-              id="Displacement"
-              autoComplete="Displacement"
+              id="length"
+              autoComplete="length"
               onChange={handleChange}
               value={info.Displacement}
             />
@@ -97,65 +111,78 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               margin="dense"
               required
               fullWidth
-              name="Horsepower"
-              label="Horsepower"
-              type="number"
-              id="Horsepower"
-              autoComplete="Horsepower"
-              onChange={handleChange}
-              value={info.Horsepower}
-            />
-            <TextField
-              variant="outlined"
-              margin="dense"
-              required
-              fullWidth
-              name="Weight_in_lbs"
-              label="Weight(lbs)"
-              type="number"
-              id="Weight_in_lbs"
-              autoComplete="Weight_in_lbs"
-              onChange={handleChange}
-              value={info.Weight_in_lbs}
-            />
-            <TextField
-              variant="outlined"
-              margin="dense"
-              required
-              fullWidth
-              name="Acceleration"
-              label="Acceleration"
-              type="number"
-              id="Acceleration"
-              autoComplete="Acceleration"
-              onChange={handleChange}
-              value={info.Acceleration}
-            />
-            <TextField
-              variant="outlined"
-              margin="dense"
-              required
-              fullWidth
-              name="Year"
-              label="Year"
+              name="color"
+              label="Color"
               type="text"
-              id="Year"
-              autoComplete="Year"
+              id="color"
+              autoComplete="color"
               onChange={handleChange}
-              value={info.Year}
+              value={info.color}
             />
             <TextField
               variant="outlined"
               margin="dense"
               required
               fullWidth
-              name="Origin"
-              label="Origin"
+              name="qty"
+              label="Qty"
               type="text"
-              id="Origin"
-              autoComplete="Origin"
+              id="qty"
+              autoComplete="qty"
               onChange={handleChange}
-              value={info.Origin}
+              value={info.qty}
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="size"
+              label="Size"
+              type="number"
+              id="size"
+              autoComplete="size"
+              onChange={handleChange}
+              value={info.size}
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="start"
+              label="Start"
+              type="text"
+              id="start"
+              autoComplete="start"
+              onChange={handleChange}
+              value={info.start}
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="space"
+              label="Space"
+              type="text"
+              id="space"
+              autoComplete="space"
+              onChange={handleChange}
+              value={info.space}
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="explanation"
+              label="Explanation"
+              type="text"
+              id="explanation"
+              autoComplete="explanation"
+              onChange={handleChange}
+              value={info.explanation}
             />
             <Button
               type="submit"
