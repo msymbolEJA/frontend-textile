@@ -86,8 +86,6 @@ function App() {
     };
 
     const handleRowClick = (id) => {
-        /* const id = e.currentTarget.id
-        console.log(id); */
         setRows(state => {
             return rows.map(row => {
                 if (row.id === id) {
@@ -96,31 +94,28 @@ function App() {
                 return row;
             });
         });
-        // onToggleEditMode(e)
     }
 
-    const handleRowKeyDown = (e, id) => {
-        if (e.key === 'Enter') {
-            setRows(state => {
-                return rows.map(row => {
-                    if (row.id === id) {
-                        return { ...row, isEditMode: false };
-                    }
-                    return row;
-                });
-            });
-        }
-    }
-
-    const handleRowBlur = (id) => {
+    const handleRowChange = (id) => {
         setRows(state => {
             return rows.map(row => {
                 if (row.id === id) {
+                    console.log(row)
                     return { ...row, isEditMode: false };
                 }
                 return row;
             });
         });
+    }
+
+    const handleRowKeyDown = (e, id) => {
+        if (e.key === 'Enter') {
+            handleRowChange(id)
+        }
+    }
+
+    const handleRowBlur = (id) => {
+        handleRowChange(id)
     }
 
     return (
