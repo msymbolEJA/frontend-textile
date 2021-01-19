@@ -19,3 +19,13 @@ export const putData = async(path,data) => {
     })
     return response
 }
+
+export const getData = async(path,data) => {
+    const response = await axios.get(`${path}`, data, {
+        headers:{
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+    return response
+}

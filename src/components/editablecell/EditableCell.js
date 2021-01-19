@@ -8,7 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Input from "@material-ui/core/Input";
 import Paper from "@material-ui/core/Paper";
 import DATA from '../../helper/Data'
-import { putData } from '../../helper/PostData'
+import { putData, getData } from '../../helper/PostData'
 import TableContainer from "@material-ui/core/TableContainer";
 
 const useStyles = makeStyles(theme => ({
@@ -72,6 +72,11 @@ function App() {
 
     useEffect(() => {
        console.log("test")
+       let data = ""
+       getData("http://144.202.67.136:8080/etsy/mapping/?limit=10&offset=0", data).then((response) => {
+           console.log(response.data.results)
+           setRows(response.data.results)
+       })
     }, [])
 
     const onChange = (e, row) => {
@@ -106,8 +111,8 @@ function App() {
             return rows.map(row => {
                 if (row.id === id) {
                     console.log(row)
-                    putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, row).then((data) => {
-                        console.log(data)
+                    putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, row).then((response) => {
+                        console.log(response)
                     }).catch((error) => {
                         console.log(error)
                     })
