@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -8,6 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Input from "@material-ui/core/Input";
 import Paper from "@material-ui/core/Paper";
 import DATA from '../../helper/Data'
+import { putData } from '../../helper/PostData'
 import TableContainer from "@material-ui/core/TableContainer";
 
 const useStyles = makeStyles(theme => ({
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
         height: 40
     },
     input: {
-        width: 130,
+        width: 100,
         height: 40
     }
 }));
@@ -52,7 +53,7 @@ const CustomTableCell = ({ row, name, onChange }) => {
         <TableCell align="center" className={classes.tableCell}>
             {isEditMode ? (
                 <Input
-                    value={row[name]}
+                    value={row[name] ? row[name] : ""}  // first : value={row[name]} // i've changed
                     name={name}
                     onChange={e => onChange(e, row)}
                     className={classes.input}
@@ -68,6 +69,10 @@ function App() {
     const [rows, setRows] = React.useState(DATA);
     const [previous, setPrevious] = React.useState({});
     const classes = useStyles();
+
+    useEffect(() => {
+       console.log("test")
+    }, [])
 
     const onChange = (e, row) => {
         if (!previous[row.id]) {
@@ -101,6 +106,11 @@ function App() {
             return rows.map(row => {
                 if (row.id === id) {
                     console.log(row)
+                    putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, row).then((data) => {
+                        console.log(data)
+                    }).catch((error) => {
+                        console.log(error)
+                    })
                     return { ...row, isEditMode: false };
                 }
                 return row;
@@ -125,15 +135,22 @@ function App() {
                     <caption>A barbone structure table example with a caption</caption>
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell align="center">Name&nbsp;</StyledTableCell>
-                            <StyledTableCell align="center">MPG</StyledTableCell>
-                            <StyledTableCell align="center">Cylinders</StyledTableCell>
-                            <StyledTableCell align="center">Displacement</StyledTableCell>
-                            <StyledTableCell align="center">Horsepower</StyledTableCell>
-                            <StyledTableCell align="center">Weight(lb)</StyledTableCell>
-                            <StyledTableCell align="center">Acceleration</StyledTableCell>
-                            <StyledTableCell align="center">Year</StyledTableCell>
-                            <StyledTableCell align="center">Origin</StyledTableCell>
+                            <StyledTableCell align="center">Recept</StyledTableCell>
+                            <StyledTableCell align="center">Id</StyledTableCell>
+                            <StyledTableCell align="center">Last Updated</StyledTableCell>
+                            <StyledTableCell align="center">Item Index</StyledTableCell>
+                            <StyledTableCell align="center">Created Date</StyledTableCell>
+                            <StyledTableCell align="center">Buyer</StyledTableCell>
+                            <StyledTableCell align="center">Supplier</StyledTableCell>
+                            <StyledTableCell align="center">Type</StyledTableCell>
+                            <StyledTableCell align="center">Length</StyledTableCell>
+                            <StyledTableCell align="center">Color</StyledTableCell>
+                            <StyledTableCell align="center">Quantity</StyledTableCell>
+                            <StyledTableCell align="center">Size</StyledTableCell>
+                            <StyledTableCell align="center">Start</StyledTableCell>
+                            <StyledTableCell align="center">Space</StyledTableCell>
+                            <StyledTableCell align="center">Explanation</StyledTableCell>
+                            <StyledTableCell align="center">Note</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -143,15 +160,22 @@ function App() {
                                 onBlur={(e) => handleRowBlur(row.id)}
                                 onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                             >
-                                <CustomTableCell {...{ row, name: "Name", onChange }} />
-                                <CustomTableCell {...{ row, name: "Miles_per_Gallon", onChange }} />
-                                <CustomTableCell {...{ row, name: "Cylinders", onChange }} />
-                                <CustomTableCell {...{ row, name: "Displacement", onChange }} />
-                                <CustomTableCell {...{ row, name: "Horsepower", onChange }} />
-                                <CustomTableCell {...{ row, name: "Weight_in_lbs", onChange }} />
-                                <CustomTableCell {...{ row, name: "Acceleration", onChange }} />
-                                <CustomTableCell {...{ row, name: "Year", onChange }} />
-                                <CustomTableCell {...{ row, name: "Origin", onChange }} />
+                                <CustomTableCell {...{ row, name: "receipt", onChange }} />
+                                <CustomTableCell {...{ row, name: "id", onChange }} />
+                                <CustomTableCell {...{ row, name: "last_updated", onChange }} />
+                                <CustomTableCell {...{ row, name: "item_index", onChange }} />
+                                <CustomTableCell {...{ row, name: "created_date", onChange }} />
+                                <CustomTableCell {...{ row, name: "buyer", onChange }} />
+                                <CustomTableCell {...{ row, name: "supplier", onChange }} />
+                                <CustomTableCell {...{ row, name: "type", onChange }} />
+                                <CustomTableCell {...{ row, name: "length", onChange }} />
+                                <CustomTableCell {...{ row, name: "color", onChange }} />
+                                <CustomTableCell {...{ row, name: "qty", onChange }} />
+                                <CustomTableCell {...{ row, name: "size", onChange }} />
+                                <CustomTableCell {...{ row, name: "start", onChange }} />
+                                <CustomTableCell {...{ row, name: "space", onChange }} />
+                                <CustomTableCell {...{ row, name: "explanation", onChange }} />
+                                <CustomTableCell {...{ row, name: "note", onChange }} />
                             </TableRow>
                         ))}
                     </TableBody>
