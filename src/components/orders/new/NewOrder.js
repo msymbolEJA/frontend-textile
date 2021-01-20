@@ -1,20 +1,21 @@
 import { useState } from "react";
 import Table from "./Table";
 import Form from "./Form";
-import DATA from "../../../helper/Data";
 
 function NewOrder() {
-  const [list, setList] = useState(DATA);
+  const [list, setList] = useState("");
   const [info, setInfo] = useState({
-    Name: "",
-    Miles_per_Gallon: "",
-    Cylinders: "",
-    Displacement: "",
-    Horsepower: "",
-    Weight_in_lbs: "",
-    Acceleration: "",
-    Year: "",
-    Origin: "",
+      temp_id:"",
+      customer: "",
+      supplier: "",
+      type: "",
+      length: "",
+      color: "",
+      qty: "",
+      size: "",
+      start: "",
+      space: "",
+      explanation: "",
   });
 
   //console.log(DATA);
@@ -23,43 +24,42 @@ function NewOrder() {
     e.preventDefault();
     // console.log("HandleSubmit Button");
     let {
-      Name,
-      Miles_per_Gallon,
-      Cylinders,
-      Displacement,
-      Horsepower,
-      Weight_in_lbs,
-      Acceleration,
-      Year,
-      Origin,
+      customer,
+      supplier,
+      type,
+      length,
+      color,
+      qty,
+      size,
+      start,
+      space,
+      explanation,
     } = info;
-    Miles_per_Gallon = Number(Miles_per_Gallon);
-    Cylinders = Number(Cylinders);
-    Displacement = Number(Displacement);
-    Horsepower = Number(Horsepower);
-    Weight_in_lbs = Number(Weight_in_lbs);
-    Acceleration = Number(Acceleration);
+    //Miles_per_Gallon = Number(Miles_per_Gallon);
 
     setList([
       ...list,
       {
-        id: new Date().getTime(),
-        Name,
-        Miles_per_Gallon,
-        Cylinders,
-        Displacement,
-        Horsepower,
-        Weight_in_lbs,
-        Acceleration,
-        Year,
-        Origin,
+        temp_id: new Date().getTime(),
+        customer,
+        supplier,
+        type,
+        length,
+        color,
+        qty,
+        size,
+        start,
+        space,
+        explanation,
       },
     ]);
     setInfo({
-      Name: "",
-      Miles_per_Gallon: "",
-      Cylinders: "",
+      temp_id:"",
+      customer: "",
+      supplier: "",
+      type: "",
       length: "",
+      color: "",
       qty: "",
       size: "",
       start: "",

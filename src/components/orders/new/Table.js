@@ -6,15 +6,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableFooter from "@material-ui/core/TableFooter";
-import IconButton from "@material-ui/core/IconButton";
-// Icons
-import EditIcon from "@material-ui/icons/EditOutlined";
-import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
-import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
 import CustomTableCell from "../CustomTableCell";
-import TablePaginationActions from "../TablePaginationActions";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -52,58 +44,23 @@ function Orders({ list }) {
   const [rows, setRows] = React.useState(list);
   const [previous, setPrevious] = React.useState({});
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const onToggleEditMode = (id) => {
-    setRows((state) => {
-      return rows.map((row) => {
-        if (row.id === id) {
-          return { ...row, isEditMode: !row.isEditMode };
-        }
-        return row;
-      });
-    });
-  };
+  //console.log("rows", rows)
 
   const onChange = (e, row) => {
-    if (!previous[row.id]) {
-      setPrevious((state) => ({ ...state, [row.id]: row }));
+    if (!previous[row.temp_id]) {
+      setPrevious((state) => ({ ...state, [row.temp_id]: row }));
     }
     const value = e.target.value;
     const name = e.target.name;
-    const { id } = row;
+    const { temp_id } = row;
     const newRows = rows.map((row) => {
-      if (row.id === id) {
+      if (row.temp_id === temp_id) {
         return { ...row, [name]: value };
       }
       return row;
     });
     setRows(newRows);
-  };
-
-  const onRevert = (id) => {
-    const newRows = rows.map((row) => {
-      if (row.id === id) {
-        return previous[id] ? previous[id] : row;
-      }
-      return row;
-    });
-    setRows(newRows);
-    setPrevious((state) => {
-      delete state[id];
-      return state;
-    });
-    onToggleEditMode(id);
   };
 
   React.useEffect(() => {
@@ -114,85 +71,40 @@ function Orders({ list }) {
   return (
     <Paper className={classes.root}>
       <Table className={classes.table} aria-label="caption table" size="small">
-        <caption>Can be added Company Name!</caption>
         <TableHead>
           <TableRow>
-            <StyledTableCell align="center" />
-            <StyledTableCell align="center">Name</StyledTableCell>
-            <StyledTableCell align="center">Miles Per Gallon</StyledTableCell>
-            <StyledTableCell align="center">Cylinders</StyledTableCell>
-            <StyledTableCell align="center">Displacement</StyledTableCell>
-            <StyledTableCell align="center">Horsepower</StyledTableCell>
-            <StyledTableCell align="center">Weight(lbs)</StyledTableCell>
-            <StyledTableCell align="center">Acceleration</StyledTableCell>
-            <StyledTableCell align="center">Year</StyledTableCell>
-            <StyledTableCell align="center">Origin</StyledTableCell>
+            <StyledTableCell align="center">Customer</StyledTableCell>
+            <StyledTableCell align="center">Supplier</StyledTableCell>
+            <StyledTableCell align="center">Type</StyledTableCell>
+            <StyledTableCell align="center">Length</StyledTableCell>
+            <StyledTableCell align="center">Color</StyledTableCell>
+            <StyledTableCell align="center">Qty</StyledTableCell>
+            <StyledTableCell align="center">Size</StyledTableCell>
+            <StyledTableCell align="center">Start</StyledTableCell>
+            <StyledTableCell align="center">Space</StyledTableCell>
+            <StyledTableCell align="center">Explanation</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row) => (
-              <StyledTableRow key={row.id}>
-                <TableCell className={classes.selectTableCell}>
-                  {row.isEditMode ? (
-                    <>
-                      <IconButton
-                        aria-label="done"
-                        onClick={() => onToggleEditMode(row.id)}
-                      >
-                        <DoneIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="revert"
-                        onClick={() => onRevert(row.id)}
-                      >
-                        <RevertIcon />
-                      </IconButton>
-                    </>
-                  ) : (
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => onToggleEditMode(row.id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  )}
-                </TableCell>
-                <CustomTableCell {...{ row, name: "Name", onChange }} />
+          {rows ? rows.map((row) => (
+              <StyledTableRow key={row.temp_id}>
+                <CustomTableCell {...{ row, name: "customer", onChange }} />
                 <CustomTableCell
-                  {...{ row, name: "Miles_per_Gallon", onChange }}
+                  {...{ row, name: "supplier", onChange }}
                 />
-                <CustomTableCell {...{ row, name: "Cylinders", onChange }} />
-                <CustomTableCell {...{ row, name: "Displacement", onChange }} />
-                <CustomTableCell {...{ row, name: "Horsepower", onChange }} />
+                <CustomTableCell {...{ row, name: "type", onChange }} />
+                <CustomTableCell {...{ row, name: "length", onChange }} />
+                <CustomTableCell {...{ row, name: "color", onChange }} />
                 <CustomTableCell
-                  {...{ row, name: "Weight_in_lbs", onChange }}
+                  {...{ row, name: "qty", onChange }}
                 />
-                <CustomTableCell {...{ row, name: "Acceleration", onChange }} />
-                <CustomTableCell {...{ row, name: "Year", onChange }} />
-                <CustomTableCell {...{ row, name: "Origin", onChange }} />
+                <CustomTableCell {...{ row, name: "size", onChange }} />
+                <CustomTableCell {...{ row, name: "start", onChange }} />
+                <CustomTableCell {...{ row, name: "space", onChange }} />
+                <CustomTableCell {...{ row, name: "explanation", onChange }} />
               </StyledTableRow>
-            ))}
+            )) : null }
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={10}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: { "aria-label": "rows per page" },
-                native: true,
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
       </Table>
     </Paper>
   );

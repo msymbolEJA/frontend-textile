@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(2, 0, 1),
   },
-  error: {
+  warn: {
     color: "#cc5500",
     backgroundColor: "#FFF4E5",
     borderRadius: "5px",
@@ -34,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    width: "15rem"
   }
 }));
 
@@ -49,7 +50,7 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
           <Typography component="h1" variant="h5">
             New Order Creation
           </Typography>
-          <div className={classes.error}>
+          <div className={classes.warn}>
                 <Typography>Please fill all the fields!</Typography>
               </div>
           <form className={classes.form} onSubmit={handleSubmit}>
@@ -100,11 +101,11 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               fullWidth
               name="length"
               label="Length"
-              type="number"
+              type="text"
               id="length"
               autoComplete="length"
               onChange={handleChange}
-              value={info.Displacement}
+              value={info.length}
             />
             <TextField
               variant="outlined"
@@ -139,7 +140,7 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               fullWidth
               name="size"
               label="Size"
-              type="number"
+              type="text"
               id="size"
               autoComplete="size"
               onChange={handleChange}
