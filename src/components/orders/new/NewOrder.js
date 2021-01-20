@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Table from "./Table";
 import Form from "./Form";
+import { postFormData } from '../../../helper/PostData'
 
 function NewOrder() {
   const [list, setList] = useState("");
   const [info, setInfo] = useState({
-      temp_id:"",
       customer: "",
       supplier: "",
       type: "",
@@ -17,6 +17,8 @@ function NewOrder() {
       space: "",
       explanation: "",
   });
+
+ 
 
   //console.log(DATA);
  
@@ -35,7 +37,15 @@ function NewOrder() {
       space,
       explanation,
     } = info;
-    //Miles_per_Gallon = Number(Miles_per_Gallon);
+    /*
+    TODO
+    POST DATA 
+    */
+   postFormData(`http://144.202.67.136:8080/etsy/manuel_orders/`,info).then((data)=> {
+     console.log(data)
+   }).catch((error)=> {
+     console.log(error)
+   })
 
     setList([
       ...list,
