@@ -129,6 +129,10 @@ function App() {
             return rows.map(row => {
                 if (row.id === id) {
                     console.log(row)
+                    // const newRow = {
+                    //     // Değişmeyenleri tespit
+                    //     status : "abc"
+                    // }
                     putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, row).then((response) => {
                         console.log(response)
                     }).catch((error) => {

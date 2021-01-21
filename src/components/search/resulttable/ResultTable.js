@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 function ResultTable({list}) {
     const classes = useStyles();
 
-    console.log("list", list)
+    //console.log("list", list)
 
     return (
         <Paper className={classes.root}>

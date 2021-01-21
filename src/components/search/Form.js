@@ -114,12 +114,12 @@ export default function SearchForm({handleSubmit, handleChange, info, fail, clea
             className={classes.item}
             variant="outlined"
             margin="dense"
-            name="receipt"
+            name="receipt_id"
             label="Receipt Id"
             type="nmuber"
-            id="receipt"
+            id="receipt_id"
             onChange={handleChange}
-            value={info.receipt}
+            value={info.receipt_id}
             />
           <TextField
             className={classes.item}
