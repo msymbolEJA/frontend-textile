@@ -43,4 +43,9 @@ export  const postFormData = async (path, dataObj) =>  {
       }
   })
   return response
-  }
+}
+
+export const queryData = async (path) => {
+    const response = await axios.get(`${path}`)
+    return response
+}
