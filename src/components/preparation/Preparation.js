@@ -75,6 +75,7 @@ function App() {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [count, setCount] = useState(0)
+    const [sendData, setSendData] = useState({})
 
 
     useEffect(() => {
@@ -97,6 +98,7 @@ function App() {
         const { id } = row;
         const newRows = rows.map(row => {
             if (row.id === id) {
+                setSendData({...sendData, [name]:value})
                 return { ...row, [name]: value };
             }
             return row;
@@ -128,16 +130,13 @@ function App() {
         setRows(state => {
             return rows.map(row => {
                 if (row.id === id) {
-                    console.log(row)
-                    // const newRow = {
-                    //     // Değişmeyenleri tespit
-                    //     status : "abc"
-                    // }
-                    putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, row).then((response) => {
-                        console.log(response)
+                    //console.log(sendData)
+                    putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, sendData).then((response) => {
+                        //console.log(response)
                     }).catch((error) => {
                         console.log(error)
                     })
+                    setSendData({})
                     return { ...row, isEditMode: false };
                 }
                 return row;
@@ -162,6 +161,8 @@ function App() {
                     <caption>A barbone structure table example with a caption</caption>
                     <TableHead>
                         <TableRow>
+                            <StyledTableCell align="center">Approved</StyledTableCell>
+                            <StyledTableCell align="center">Status</StyledTableCell>
                             <StyledTableCell align="center">Recept</StyledTableCell>
                             <StyledTableCell align="center">Id</StyledTableCell>
                             <StyledTableCell align="center">Last Updated</StyledTableCell>
@@ -187,6 +188,8 @@ function App() {
                                 onBlur={(e) => handleRowBlur(row.id)}
                                 onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                             >
+                                <CustomTableCell {...{ row, name: "receipt", onChange }} />
+                                <CustomTableCell {...{ row, name: "status", onChange }} />
                                 <CustomTableCell {...{ row, name: "receipt", onChange }} />
                                 <CustomTableCell {...{ row, name: "id", onChange }} />
                                 <CustomTableCell {...{ row, name: "last_updated", onChange }} />
