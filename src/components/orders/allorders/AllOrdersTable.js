@@ -15,7 +15,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import DATA from "../../../helper/Data";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
-import { tagsData } from "../../../helper/Constants"
+import { tagsData } from "../../../helper/Constants";
+import Button from '@material-ui/core/Button';
+import { getData } from "../../../helper/PostData";
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -54,6 +56,10 @@ const useStyles = makeStyles((theme) => ({
     buttonGroup: {
         marginBottom: theme.spacing(1),
     },
+    print:{
+        marginTop: "1rem",
+        marginBottom: "0.5rem",
+    }
 }));
 
 function AllOrdersTable() {
@@ -64,6 +70,8 @@ function AllOrdersTable() {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [count, setCount] = useState(0)
     const [selectedTag, setSelectedTag] = useState("all orders");
+    const [printFlag, setPrintFlag] = useState(false)
+    const [printError, setPrintError] = useState("")
     const [url, setUrl] = useState(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
 
 
@@ -116,7 +124,23 @@ function AllOrdersTable() {
             setUrl(`http://144.202.67.136:8080/etsy/orders/?status=${statu}&limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
         }
         setPage(0);
+        if(statu==="awaiting"){
+            setPrintFlag(true)
+        }else{
+            setPrintFlag(false)
+        }
     };
+
+    const printHandler = () => {
+        const data = ""
+        getData("http://144.202.67.136:8080/etsy/print/", data).then((data)=>{
+            console.log(data)
+            setPrintError("")
+        }).catch(({response})=> {
+            console.log(response.data.Failed)
+            setPrintError(response.data.Failed)
+        })
+    }
 
     return (
         <Paper className={classes.root}>
@@ -192,6 +216,19 @@ function AllOrdersTable() {
                     </TableFooter>
                 </Table>
             </TableContainer>
+            {
+                printFlag ? 
+                <Button variant="contained" color="primary" className={classes.print} onClick={printHandler}>
+                    Print
+                </Button> 
+                :
+                null
+            }{
+                printError ?
+                <h1>{printError} Nothing Found Awaiting Status</h1>
+                : 
+                null
+            }
         </Paper>
     );
 }
