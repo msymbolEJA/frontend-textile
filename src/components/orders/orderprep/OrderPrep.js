@@ -18,7 +18,6 @@ import CustomTableCell from "./CustomTableCell";
 import OrderStatus from './CustomSelectCell'
 import CustomCheckbox from "./CustomCheckbox"
 
-
 const StyledTableCell = withStyles((theme) => ({
     head: {
         backgroundColor: theme.palette.common.black,
@@ -84,6 +83,8 @@ function OrderPrep() {
         // console.log("cT : ", e.currentTarget.id);
         setPage(0);
     };
+
+    console.log(DATA)
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);

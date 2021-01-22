@@ -13,6 +13,8 @@ import DATA from '../../helper/Data'
 import { putData, getData } from '../../helper/PostData'
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
+import CustomCheckbox from "../tableitems/CustomCheckbox"
+import OrderStatus from '../tableitems/CustomSelectCell'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -36,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     input: {
         width: 100,
         height: 40
-    }
+    },
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -130,13 +132,13 @@ function App() {
         setRows(state => {
             return rows.map(row => {
                 if (row.id === id) {
-                    //console.log(sendData)
+                    console.log("hrcSendData",sendData)
                     putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, sendData).then((response) => {
                         //console.log(response)
                     }).catch((error) => {
                         console.log(error)
                     })
-                    setSendData({})
+                    //setSendData({})
                     return { ...row, isEditMode: false };
                 }
                 return row;
@@ -154,11 +156,56 @@ function App() {
         handleRowChange(id)
     }
 
+    const onCheckboxChange = (e, row) => {
+        if (!previous[row.id]) {
+            setPrevious((state) => ({ ...state, [row.id]: row }));
+        }
+        const value = (e.target.checked);
+        const name = e.target.name;
+        const { id } = row;
+        console.log("clicked checkbox")
+        console.log(name,value)
+        setSendData({[name]:value})
+        const newRows = rows.map((row) => {
+            if (row.id === id) {
+                console.log("sendData", sendData)
+                handleRowChange(id)
+                return { ...row, [name]: value };
+            }
+            return row;
+        });
+        setRows(newRows);
+        /* console.log("name", name); */
+    }
+    // Problem
+    // Checkbox activate when onblur or enter
+    const onSelectChange = (e, row) => {
+        e.preventDefault()
+        if (!previous[row.id]) {
+            setPrevious((state) => ({ ...state, [row.id]: row }));
+        }
+        const value = e.target.value;
+        const name = e.target.name;
+        const { id } = row;
+        console.log("name, value",name, value)
+        setSendData({...sendData, [name]:value})
+        const newRows = rows.map((row) => {
+            if (row.id === id) {
+                console.log("sendData", sendData)
+                handleRowChange(id)
+                return { ...row, [name]: value };
+            }
+            return row;
+        });
+        setRows(newRows);
+    }
+
+   
+
     return (
         <Paper className={classes.root}>
             <TableContainer className={classes.container}>
                 <Table className={classes.table} stickyHeader aria-label="caption table">
-                    <caption>A barbone structure table example with a caption</caption>
                     <TableHead>
                         <TableRow>
                             <StyledTableCell align="center">Approved</StyledTableCell>
@@ -188,8 +235,12 @@ function App() {
                                 onBlur={(e) => handleRowBlur(row.id)}
                                 onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                             >
-                                <CustomTableCell {...{ row, name: "receipt", onChange }} />
-                                <CustomTableCell {...{ row, name: "status", onChange }} />
+                                <td>
+                                    <CustomCheckbox {...{ row, name: "approved", onCheckboxChange }} />
+                                </td>
+                                <td>
+                                    <OrderStatus {...{ row, name: "status", onSelectChange }} />
+                                </td>
                                 <CustomTableCell {...{ row, name: "receipt", onChange }} />
                                 <CustomTableCell {...{ row, name: "id", onChange }} />
                                 <CustomTableCell {...{ row, name: "last_updated", onChange }} />
