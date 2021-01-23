@@ -139,7 +139,6 @@ function AllOrdersTable() {
         }else{
             setIsStatuReady(false)
         }
-        
     };
 
     const printHandler = () => {

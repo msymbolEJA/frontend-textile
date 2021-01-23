@@ -29,7 +29,7 @@ export default function NewOrders() {
   };
 
   return (
-    <Grid item xs={12} md={12} onClick={handleClick} className={classes.root}>
+    <Grid item xs={12} md={6} onClick={handleClick} className={classes.root}>
       <Paper className={classes.paper}>
         <AddCircleIcon className={classes.icon} color="primary" />
         <h1>New Order</h1>
