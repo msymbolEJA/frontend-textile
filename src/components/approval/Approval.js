@@ -170,7 +170,7 @@ function App() {
     // Checkbox activate when onblur or enter
     useEffect(() => {
         handleRowChange(globId)
-        console.log("useEffect")
+        //console.log("useEffect")
         // eslint-disable-next-line 
     }, [globId])
 
@@ -280,7 +280,7 @@ function App() {
                                 <CustomTableCell {...{ row, name: "start", onChange }} />
                                 <CustomTableCell {...{ row, name: "space", onChange }} />
                                 <td>
-                                <UploadFile {...{ row, name: "", uploadFile }} />
+                                <UploadFile {...{ row, name: "Image", uploadFile }} />
                                 </td>
                                 <CustomTableCell {...{ row, name: "explanation", onChange }} />
                                 <CustomTableCell {...{ row, name: "note", onChange }} />

@@ -17,7 +17,7 @@ import ReadyOrders from '../components/orders/readyorders/ReadyOrders'
 import OrderDetails from '../components/orders/readyorders/orderdetails/OrderDetails'
 // Private Router
 import PrivateRouter from './PrivateRouter';
-import Approval from '../components/preparation/Approval'
+import Approval from '../components/approval/Approval'
 
 const AppRouter = () => {
   return (
