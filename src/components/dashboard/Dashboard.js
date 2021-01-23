@@ -38,7 +38,6 @@ const Dashboard = () => {
           <AllOrders />
           <AwaitingOrders />
           <SearchOrders />
-          <DeliveredOrders />
           <NewOrders />
         </Grid>
       </div>
