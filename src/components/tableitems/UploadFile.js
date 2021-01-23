@@ -18,13 +18,17 @@ const useStyles = makeStyles(theme => ({
     },
     vFile:{
         marginLeft:"2.5rem",
+    },
+    btn:{
+        marginLeft:"2.5rem",
     }
 }));
  
-const UploadFile = ({uploadFile, row, name}) => {
+const UploadFile = ({uploadFile, row, name, fileSelectedHandler}) => {
     const classes = useStyles();
     const hasImage = !(row.Image === "http://144.202.67.136:8080/media/2021-01-21%2017%3A24%3A28.978287") | row.image === ""
     //console.log("Image", row.Image)
+    //console.log(row.id)
 
 
     return (
@@ -41,14 +45,15 @@ const UploadFile = ({uploadFile, row, name}) => {
             
             <>
             <label htmlFor="myInput">
-                <PublishIcon className={classes.icon} onClick={uploadFile} />
+                <PublishIcon className={classes.icon}  />
             </label>
             <input
-            onChange={uploadFile}
+            onChange={fileSelectedHandler}
             id="myInput"
             style={{display:'none'}}
             type={"file"}
             />
+            <button className={classes.btn} onClick={() => uploadFile(row.id)}>Send</button>
             </>
         }
         </div>

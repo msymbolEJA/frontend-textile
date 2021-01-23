@@ -16,6 +16,7 @@ import TablePaginationActions from "../tableitems/TablePaginationActions";
 import CustomCheckbox from "../tableitems/CustomCheckbox"
 import OrderStatus from '../tableitems/CustomSelectCell'
 import UploadFile from '../tableitems/UploadFile'
+import {putImage} from '../../helper/PostData'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -88,6 +89,7 @@ function App() {
     const [count, setCount] = useState(0)
     const [sendData, setSendData] = useState({})
     const [globId, setGlobId] = useState()
+    const [selectedFile, setSelectedFile] = useState(null)
 
 
     useEffect(() => {
@@ -218,8 +220,18 @@ function App() {
         setRows(newRows);
     }
 
-    const uploadFile = () => {
-        console.log("upload File Func")
+    const uploadFile = (id) => {
+        let path = `http://144.202.67.136:8080/etsy/mapping/${id}/`
+        putImage(path, selectedFile, selectedFile.name)
+        .then((res)=> {
+            console.log(res)
+        }).catch((err) =>{
+            console.log(err)
+        })
+    }
+    
+    const fileSelectedHandler =(e) => {
+        setSelectedFile(e.target.files[0])
     }
 
    
@@ -280,7 +292,7 @@ function App() {
                                 <CustomTableCell {...{ row, name: "start", onChange }} />
                                 <CustomTableCell {...{ row, name: "space", onChange }} />
                                 <td>
-                                <UploadFile {...{ row, name: "Image", uploadFile }} />
+                                <UploadFile {...{ row, name: "Image", uploadFile, fileSelectedHandler }} />
                                 </td>
                                 <CustomTableCell {...{ row, name: "explanation", onChange }} />
                                 <CustomTableCell {...{ row, name: "note", onChange }} />

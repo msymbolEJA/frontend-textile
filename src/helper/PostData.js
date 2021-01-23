@@ -49,3 +49,12 @@ export const queryData = async (path) => {
     const response = await axios.get(`${path}`)
     return response
 }
+
+export const putImage = async (path, image, imageName) => {
+    const fd = new FormData();
+    fd.append("Image", image, imageName)
+    const response = await axios.put(path, fd)
+    return response
+}
+
+   //     axios.put(`http://144.202.67.136:8080/etsy/mapping/${id}/`, fd)
