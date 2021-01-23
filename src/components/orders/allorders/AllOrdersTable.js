@@ -71,7 +71,7 @@ function AllOrdersTable() {
     const [count, setCount] = useState(0)
     const [selectedTag, setSelectedTag] = useState("all orders");
     const [printFlag, setPrintFlag] = useState(false)
-    const [printError, setPrintError] = useState("")
+    const [printError, setPrintError] = useState(false)
     const [url, setUrl] = useState(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
 
 
@@ -135,10 +135,12 @@ function AllOrdersTable() {
         const data = ""
         getData("http://144.202.67.136:8080/etsy/print/", data).then((data)=>{
             console.log(data)
-            setPrintError("")
+            setPrintError(false)
         }).catch(({response})=> {
             console.log(response.data.Failed)
             setPrintError(response.data.Failed)
+        }).finally(()=> {
+            //handleTagChange()
         })
     }
 
@@ -225,7 +227,7 @@ function AllOrdersTable() {
                 null
             }{
                 printError ?
-                <h1>{printError} Nothing Found Awaiting Status</h1>
+                <h1>{printError}</h1>
                 : 
                 null
             }
