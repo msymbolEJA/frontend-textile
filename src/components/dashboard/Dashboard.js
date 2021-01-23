@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import AwaitingOrders from "./AwaitingOrders";
 import AllOrders from "./AllOrders";
 import DeliveredOrders from "./DeliveredOrders";
-import SentOrders from "./SentOrders";
+import SearchOrders from "./SearchOrders";
 import NewOrders from "./NewOrders";
 // Icons
 import DashboardRoundedIcon from "@material-ui/icons/DashboardRounded";
@@ -37,7 +37,7 @@ const Dashboard = () => {
         <Grid container spacing={3}>
           <AllOrders />
           <AwaitingOrders />
-          <SentOrders />
+          <SearchOrders />
           <DeliveredOrders />
           <NewOrders />
         </Grid>
