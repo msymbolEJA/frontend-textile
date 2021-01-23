@@ -18,6 +18,7 @@ import CustomTableCell from "./CustomTableCell";
 import { tagsData } from "../../../helper/Constants";
 import Button from '@material-ui/core/Button';
 import { getData } from "../../../helper/PostData";
+import CargoPage from '../../otheritems/CargoPage'
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -72,6 +73,7 @@ function AllOrdersTable() {
     const [selectedTag, setSelectedTag] = useState("all orders");
     const [printFlag, setPrintFlag] = useState(false)
     const [printError, setPrintError] = useState(false)
+    const [isStatuReady, setIsStatuReady] = useState(false)
     const [url, setUrl] = useState(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
 
 
@@ -126,9 +128,18 @@ function AllOrdersTable() {
         setPage(0);
         if(statu==="awaiting"){
             setPrintFlag(true)
+            console.log("statu awaiting")
         }else{
             setPrintFlag(false)
+            setPrintFlag(false)
+            setPrintError(false)
         }
+        if(statu==="ready"){
+            setIsStatuReady(true)
+        }else{
+            setIsStatuReady(false)
+        }
+        
     };
 
     const printHandler = () => {
@@ -219,7 +230,7 @@ function AllOrdersTable() {
                 </Table>
             </TableContainer>
             {
-                printFlag ? 
+                printFlag & printFlag ? 
                 <Button variant="contained" color="primary" className={classes.print} onClick={printHandler}>
                     Print
                 </Button> 
@@ -229,6 +240,12 @@ function AllOrdersTable() {
                 printError ?
                 <h1>{printError}</h1>
                 : 
+                null
+            }
+            {
+                isStatuReady ?
+                <CargoPage/>
+                :
                 null
             }
         </Paper>
