@@ -1,5 +1,6 @@
 export const tagsData = [
     "all orders",
+    "pending",
     "awaiting",
     "in-progress",
     "ready",
@@ -8,7 +9,6 @@ export const tagsData = [
     "shipped",
     "repeat",
     "follow_up",
-    "pending"
 ];
 
 export const statusData = [
