@@ -15,6 +15,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
 import CustomCheckbox from "../tableitems/CustomCheckbox"
 import OrderStatus from '../tableitems/CustomSelectCell'
+import UploadFile from '../tableitems/UploadFile'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -40,6 +41,14 @@ const useStyles = makeStyles(theme => ({
         height: 40
     },
 }));
+
+const StyledTableRow = withStyles((theme) => ({
+    root: {
+        "&:nth-of-type(odd)": {
+            backgroundColor: theme.palette.action.hover,
+        },
+    },
+}))(TableRow);
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -78,6 +87,7 @@ function App() {
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [count, setCount] = useState(0)
     const [sendData, setSendData] = useState({})
+    const [globId, setGlobId] = useState()
 
 
     useEffect(() => {
@@ -156,6 +166,14 @@ function App() {
         handleRowChange(id)
     }
 
+    // Problem
+    // Checkbox activate when onblur or enter
+    useEffect(() => {
+        handleRowChange(globId)
+        console.log("useEffect")
+        // eslint-disable-next-line 
+    }, [globId])
+
     const onCheckboxChange = (e, row) => {
         if (!previous[row.id]) {
             setPrevious((state) => ({ ...state, [row.id]: row }));
@@ -169,7 +187,8 @@ function App() {
         const newRows = rows.map((row) => {
             if (row.id === id) {
                 console.log("sendData", sendData)
-                handleRowChange(id)
+                //handleRowChange(id)
+                setGlobId(id)
                 return { ...row, [name]: value };
             }
             return row;
@@ -177,8 +196,6 @@ function App() {
         setRows(newRows);
         /* console.log("name", name); */
     }
-    // Problem
-    // Checkbox activate when onblur or enter
     const onSelectChange = (e, row) => {
         e.preventDefault()
         if (!previous[row.id]) {
@@ -192,12 +209,17 @@ function App() {
         const newRows = rows.map((row) => {
             if (row.id === id) {
                 console.log("sendData", sendData)
-                handleRowChange(id)
+                setGlobId(id)
+                //handleRowChange(id)
                 return { ...row, [name]: value };
             }
             return row;
         });
         setRows(newRows);
+    }
+
+    const uploadFile = () => {
+        console.log("upload File Func")
     }
 
    
@@ -224,16 +246,18 @@ function App() {
                             <StyledTableCell align="center">Size</StyledTableCell>
                             <StyledTableCell align="center">Start</StyledTableCell>
                             <StyledTableCell align="center">Space</StyledTableCell>
+                            <StyledTableCell align="center">Upload File</StyledTableCell>
                             <StyledTableCell align="center">Explanation</StyledTableCell>
                             <StyledTableCell align="center">Note</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {rows.map(row => (
-                            <TableRow key={row.id} id={row.id}
+                            <StyledTableRow key={row.id} id={row.id}
                                 onClick={(e) => handleRowClick(row.id)}
                                 onBlur={(e) => handleRowBlur(row.id)}
                                 onKeyDown={(e) => handleRowKeyDown(e, row.id)}
+                                
                             >
                                 <td>
                                     <CustomCheckbox {...{ row, name: "approved", onCheckboxChange }} />
@@ -255,9 +279,12 @@ function App() {
                                 <CustomTableCell {...{ row, name: "size", onChange }} />
                                 <CustomTableCell {...{ row, name: "start", onChange }} />
                                 <CustomTableCell {...{ row, name: "space", onChange }} />
+                                <td>
+                                <UploadFile {...{ row, name: "", uploadFile }} />
+                                </td>
                                 <CustomTableCell {...{ row, name: "explanation", onChange }} />
                                 <CustomTableCell {...{ row, name: "note", onChange }} />
-                            </TableRow>
+                            </StyledTableRow>
                         ))}
                     </TableBody>
                     <TableFooter>
