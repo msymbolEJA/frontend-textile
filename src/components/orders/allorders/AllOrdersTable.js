@@ -147,11 +147,10 @@ function AllOrdersTable() {
         getData("http://144.202.67.136:8080/etsy/print/", data).then((data)=>{
             console.log(data)
             setPrintError(false)
+            setRows()
         }).catch(({response})=> {
             console.log(response.data.Failed)
             setPrintError(response.data.Failed)
-        }).finally(()=> {
-            //handleTagChange()
         })
     }
 
