@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import AwaitingOrders from "./AwaitingOrders";
 import AllOrders from "./AllOrders";
-import DeliveredOrders from "./DeliveredOrders";
 import SearchOrders from "./SearchOrders";
 import NewOrders from "./NewOrders";
 // Icons
