@@ -20,22 +20,37 @@ const useStyles = makeStyles(theme => ({
         marginLeft:"2.5rem",
     }
 }));
-
-const UploadFile = ({uploadFile}) => {
+ 
+const UploadFile = ({uploadFile, row, name}) => {
     const classes = useStyles();
+    const hasImage = !(row.Image === "http://144.202.67.136:8080/media/2021-01-21%2017%3A24%3A28.978287") | row.image === ""
+    //console.log("Image", row.Image)
+
 
     return (
         <div className={classes.root}>
-            <a href="http://144.202.67.136:8080/media/mapping/1/Screenshot_2.png" className={classes.vFile} target="_blank" rel="noreferrer">View File</a>
+            {
+                hasImage ? 
+                <a href={row.Image} 
+                className={classes.vFile} 
+                target="_blank" 
+                rel="noreferrer">
+                    View File
+                </a>
+                : 
+            
+            <>
             <label htmlFor="myInput">
                 <PublishIcon className={classes.icon} onClick={uploadFile} />
             </label>
             <input
-                onChange={uploadFile}
-                id="myInput"
-                style={{display:'none'}}
-                type={"file"}
+            onChange={uploadFile}
+            id="myInput"
+            style={{display:'none'}}
+            type={"file"}
             />
+            </>
+        }
         </div>
     )
 }
