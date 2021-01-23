@@ -5,9 +5,7 @@ import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: "100%",
-        marginTop: theme.spacing(3),
-        overflowX: "auto",
+        marginBottom: theme.spacing(5),
     },
     rootBottom: {
         backgroundColor: 'lightgrey',
@@ -39,7 +37,7 @@ const CargoPage = () => {
     const classes = useStyles();
 
     return (
-        <div>
+        <div className={classes.root}>
             <Paper className={classes.rootBottom}>
                 <h1>Create Post</h1><hr />
                 <h4>Reference Number</h4>
