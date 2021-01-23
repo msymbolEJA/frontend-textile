@@ -18,6 +18,7 @@ import CustomTableCell from "./CustomTableCell";
 import { tagsData } from "../../../helper/Constants";
 import Button from '@material-ui/core/Button';
 import { getData } from "../../../helper/PostData";
+import { useHistory } from "react-router-dom";
 import CargoPage from '../../otheritems/CargoPage'
 
 
@@ -35,6 +36,10 @@ const StyledTableRow = withStyles((theme) => ({
     root: {
         "&:nth-of-type(odd)": {
             backgroundColor: theme.palette.action.hover,
+        },
+        '&:hover': {
+            cursor: "pointer",
+            boxShadow: "1px 2px",
         },
     },
 }))(TableRow);
@@ -75,7 +80,7 @@ function AllOrdersTable() {
     const [printError, setPrintError] = useState(false)
     const [isStatuReady, setIsStatuReady] = useState(false)
     const [url, setUrl] = useState(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
-
+    const history = useHistory();
 
     //--------------- Get Orders
     useEffect(() => {
@@ -153,6 +158,19 @@ function AllOrdersTable() {
         })
     }
 
+    const handleRowClick = (id) => {
+        let res;
+        rows.forEach((row) => {
+            if (row.id === id) {
+                res = row
+            }
+        })
+        history.push({
+            pathname: '/order-details',
+            state: { data: res }
+        })
+    }
+
     return (
         <Paper className={classes.root}>
             <CustomButtonGroup selectedTag={selectedTag} handleTagChange={handleTagChange} tagsData={tagsData} />
@@ -185,7 +203,7 @@ function AllOrdersTable() {
                     </TableHead>
                     <TableBody>
                         {rows?.map((row) => (
-                            <StyledTableRow key={row.id}>
+                            <StyledTableRow className={classes.rowStyle} key={row.id} id={row.id} onClick={() => handleRowClick(row.id)} >
                                 <CustomTableCell {...{ row, name: "receipt_id", onChange }} />
                                 <CustomTableCell {...{ row, name: "id", onChange }} />
                                 <CustomTableCell {...{ row, name: "creation_tsz", onChange }} />

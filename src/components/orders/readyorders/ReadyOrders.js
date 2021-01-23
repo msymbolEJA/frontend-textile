@@ -116,7 +116,7 @@ function ReadyOrders() {
     const handleRowClick = (id) => {
         let res;
         rows.forEach((row) => {
-            if (row.id === id) {
+            if (row.id === id) { 
                 res = row
             }
         })
@@ -154,7 +154,7 @@ function ReadyOrders() {
                     </TableHead>
                     <TableBody>
                         {rows?.map((row) => (
-                            <StyledTableRow className={classes.rowStyle} key={row.id} id={row.id} onClick={() => handleRowClick(row.id)} >
+                            <StyledTableRow key={row.id} id={row.id} onClick={() => handleRowClick(row.id)} >
                                 <CustomTableCell {...{ row, name: "receipt_id", onChange }} />
                                 <CustomTableCell {...{ row, name: "created_date", onChange }} />
                                 <CustomTableCell {...{ row, name: "creation_tsz", onChange }} />
