@@ -227,6 +227,15 @@ function App() {
             console.log(res)
         }).catch((err) =>{
             console.log(err)
+        }).finally(()=>{
+            let data = ""
+            getData(`http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`, data).then((response) => {
+           console.log(response.data.results)
+           setRows(response.data.results)
+           setCount(response.data.count)
+            }).catch((error) => {
+           console.log(error)
+       })
         })
     }
     
