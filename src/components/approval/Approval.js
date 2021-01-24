@@ -93,9 +93,8 @@ function App() {
     const [selectedRowId, setSelectedRowId] = useState();
     
 
-
-    useEffect(() => {
-       let data = ""
+    const getDataFunc = () => {
+        let data = ""
        getData(`http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`, data).then((response) => {
            console.log(response.data.results)
            setRows(response.data.results)
@@ -103,6 +102,12 @@ function App() {
        }).catch((error) => {
            console.log(error)
        })
+    }
+
+
+    useEffect(() => {
+       getDataFunc()
+       // eslint-disable-next-line
     }, [page,rowsPerPage])
 
     const onChange = (e, row) => {
@@ -188,7 +193,16 @@ function App() {
         const { id } = row;
         //console.log("clicked checkbox")
         //console.log(name,value)
-        setSendData({[name]:value})
+        if(name === "approved" & value === true & row.status === "pending"){
+            setSendData({[name]:value, status: "awaiting"})
+            //getDataFunc()
+        }else if(name === "approved" & value === false & row.status === "awaiting"){
+            setSendData({[name]:value, status: "pending"})
+            //getDataFunc()
+        }else{
+            setSendData({[name]:value})
+        }
+
         const newRows = rows.map((row) => {
             if (row.id === id) {
                 //console.log("sendData", sendData)
@@ -233,14 +247,7 @@ function App() {
             }).catch((err) =>{
                 console.log(err)
             }).finally(()=>{
-                let data = ""
-                getData(`http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`, data).then((response) => {
-                    console.log(response.data.results)
-                    setRows(response.data.results)
-                    setCount(response.data.count)
-                }).catch((error) => {
-                    console.log(error)
-                })
+                getDataFunc()
             })
         } catch (error) {
             console.log("Select a file. Error: ", error)
