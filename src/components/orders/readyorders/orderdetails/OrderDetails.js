@@ -69,7 +69,11 @@ const OrderDetails = () => {
     const location = useLocation();
 
     useEffect(() => {
-        setRows([location.state.data])
+        try {
+            setRows([location.state.data])
+        } catch (error) {
+            setRows(null)
+        }
     }, [location])
 
     const onChange = (e, row) => {
@@ -120,7 +124,7 @@ const OrderDetails = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows?.map((row) => (
+                            {rows ? rows?.map((row) => (
                                 <StyledTableRow key={row.id} id={row.id} >
                                     <CustomTableCell {...{ row, name: "receipt_id", onChange }} />
                                     <CustomTableCell {...{ row, name: "created_date", onChange }} />
@@ -136,7 +140,7 @@ const OrderDetails = () => {
                                     <CustomTableCell {...{ row, name: "explanation", onChange }} />
                                     <CustomTableCell {...{ row, name: "note", onChange }} />
                                 </StyledTableRow>
-                            ))}
+                            )) : <tr><td colspan="13" style={{fontSize:"2rem"}}>"Nothing Found!"</td></tr>}
                         </TableBody>
                     </Table>
                 </TableContainer>
