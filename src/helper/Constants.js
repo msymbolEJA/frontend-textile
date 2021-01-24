@@ -12,6 +12,7 @@ export const tagsData = [
 ];
 
 export const statusData = [
+    "pending",
     "awaiting",
     "in-progress",
     "ready",
@@ -20,5 +21,4 @@ export const statusData = [
     "shipped",
     "repeat",
     "follow_up",
-    "pending"
 ];

@@ -146,7 +146,7 @@ function App() {
         setRows(state => {
             return rows.map(row => {
                 if (row.id === id) {
-                    console.log("hrcSendData",sendData)
+                    //console.log("hrcSendData",sendData)
                     putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, sendData).then((response) => {
                         //console.log(response)
                     }).catch((error) => {
@@ -186,12 +186,12 @@ function App() {
         const value = (e.target.checked);
         const name = e.target.name;
         const { id } = row;
-        console.log("clicked checkbox")
-        console.log(name,value)
+        //console.log("clicked checkbox")
+        //console.log(name,value)
         setSendData({[name]:value})
         const newRows = rows.map((row) => {
             if (row.id === id) {
-                console.log("sendData", sendData)
+                //console.log("sendData", sendData)
                 //handleRowChange(id)
                 setGlobId(id)
                 return { ...row, [name]: value };
@@ -293,10 +293,10 @@ function App() {
                                 onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                                 
                             >
-                                <td>
+                                <td onClick={(e)=>{e.stopPropagation()}}>
                                     <CustomCheckbox {...{ row, name: "approved", onCheckboxChange }} />
                                 </td>
-                                <td>
+                                <td  onClick={(e)=>{e.stopPropagation()}}>
                                     <OrderStatus {...{ row, name: "status", onSelectChange }} />
                                 </td>
                                 <CustomTableCell {...{ row, name: "receipt", onChange }} />
@@ -313,7 +313,7 @@ function App() {
                                 <CustomTableCell {...{ row, name: "size", onChange }} />
                                 <CustomTableCell {...{ row, name: "start", onChange }} />
                                 <CustomTableCell {...{ row, name: "space", onChange }} />
-                                <td>
+                                <td  onClick={(e)=>{e.stopPropagation()}}>
                                 <UploadFile {...{ row, name: "Image", uploadFile, fileSelectedHandler, selectId, selectedRowId }} />
                                 </td>
                                 <CustomTableCell {...{ row, name: "explanation", onChange }} />
