@@ -90,6 +90,8 @@ function App() {
     const [sendData, setSendData] = useState({})
     const [globId, setGlobId] = useState()
     const [selectedFile, setSelectedFile] = useState(null)
+    const [selectedRowId, setSelectedRowId] = useState();
+    
 
 
     useEffect(() => {
@@ -220,29 +222,39 @@ function App() {
         setRows(newRows);
     }
 
-    const uploadFile = (id) => {
-        let path = `http://144.202.67.136:8080/etsy/mapping/${id}/`
-        putImage(path, selectedFile, selectedFile.name)
-        .then((res)=> {
-            console.log(res)
-        }).catch((err) =>{
-            console.log(err)
-        }).finally(()=>{
-            let data = ""
-            getData(`http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`, data).then((response) => {
-           console.log(response.data.results)
-           setRows(response.data.results)
-           setCount(response.data.count)
-            }).catch((error) => {
-           console.log(error)
-       })
-        })
+    const uploadFile = (e,id) => {
+        e.stopPropagation();
+        try {
+            let path = `http://144.202.67.136:8080/etsy/mapping/${id}/`
+            putImage(path, selectedFile, selectedFile.name)
+            .then((res)=> {
+                console.log(res)
+            }).catch((err) =>{
+                console.log(err)
+            }).finally(()=>{
+                let data = ""
+                getData(`http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`, data).then((response) => {
+                    console.log(response.data.results)
+                    setRows(response.data.results)
+                    setCount(response.data.count)
+                }).catch((error) => {
+                    console.log(error)
+                })
+            })
+        } catch (error) {
+            console.log("Select a file. Error: ", error)
+        }
     }
     
-    const fileSelectedHandler =(e) => {
+    const fileSelectedHandler =(e,id) => {
+        e.stopPropagation();
         setSelectedFile(e.target.files[0])
     }
-
+    const selectId = (event, id) => {
+        event.stopPropagation();
+        console.log("sfi", id);
+        setSelectedRowId(id);
+      };
    
 
     return (
@@ -301,7 +313,7 @@ function App() {
                                 <CustomTableCell {...{ row, name: "start", onChange }} />
                                 <CustomTableCell {...{ row, name: "space", onChange }} />
                                 <td>
-                                <UploadFile {...{ row, name: "Image", uploadFile, fileSelectedHandler }} />
+                                <UploadFile {...{ row, name: "Image", uploadFile, fileSelectedHandler, selectId, selectedRowId }} />
                                 </td>
                                 <CustomTableCell {...{ row, name: "explanation", onChange }} />
                                 <CustomTableCell {...{ row, name: "note", onChange }} />

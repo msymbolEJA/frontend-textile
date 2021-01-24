@@ -24,9 +24,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
  
-const UploadFile = ({uploadFile, row, name, fileSelectedHandler}) => {
+const UploadFile = ({uploadFile, row, selectedRowId, selectId, fileSelectedHandler}) => {
     const classes = useStyles();
-    const hasImage = !(row.Image === "http://144.202.67.136:8080/media/2021-01-21%2017%3A24%3A28.978287") | row.image === ""
+    const hasImage = !((row.Image === "http://144.202.67.136:8080/media/2021-01-21%2017%3A24%3A28.978287") | (row.Image === null))
     //console.log("Image", row.Image)
     //console.log(row.id)
 
@@ -45,16 +45,24 @@ const UploadFile = ({uploadFile, row, name, fileSelectedHandler}) => {
             
             <>
             <label htmlFor="myInput">
-                <PublishIcon className={classes.icon}  />
+                <PublishIcon className={classes.icon}
+                onClick={(e) => selectId(e, row.id)}
+            />
             </label>
             <input
-            onChange={fileSelectedHandler}
+            onChange={(e) => fileSelectedHandler(e, row.id)}
+            onClick={(event) => event.stopPropagation()}
             id="myInput"
             style={{display:'none'}}
             type={"file"}
             />
-            <button className={classes.btn} onClick={() => uploadFile(row.id)}>Send</button>
             </>
+        }{
+            (selectedRowId === row.id) & !hasImage ?
+            <button className={classes.btn} onClick={(e) => uploadFile(e,row.id)}>
+                Send
+            </button>
+        : null
         }
         </div>
     )
