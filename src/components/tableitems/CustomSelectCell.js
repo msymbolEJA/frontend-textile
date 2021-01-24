@@ -20,6 +20,7 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
                 value={row[name]}
                 name={name}
                 onChange={(e) => onSelectChange(e, row)}
+                onClick={(e) => e.stopPropagation()}
             ><optgroup>
                 {statusData.map((item, index) => (
                     <option key={`${index}+${item}`} value={item}>{item}</option>

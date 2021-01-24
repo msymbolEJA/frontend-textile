@@ -179,6 +179,7 @@ function App() {
     }, [globId])
 
     const onCheckboxChange = (e, row) => {
+        e.stopPropagation();
         if (!previous[row.id]) {
             setPrevious((state) => ({ ...state, [row.id]: row }));
         }
