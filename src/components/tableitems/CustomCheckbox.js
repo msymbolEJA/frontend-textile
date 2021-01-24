@@ -15,8 +15,12 @@ const CustomCheckbox = ({ row, name, onCheckboxChange }) => {
     let checked = false;
     row[name] ? checked = true : checked = false
 
+    // console.log(row.status)
+    // console.log((row.status === "pending" | row.status === "awaiting"))
+    const isDisable = (row.status === "pending" | row.status === "awaiting")
+
     return (
-        <FormGroup className={classes.formStyle} >
+        <FormGroup className={classes.formStyle} style={{ pointerEvents: isDisable ? 'auto' : 'none' }} >
             <FormControlLabel
                 control={
                     <Checkbox
@@ -30,5 +34,5 @@ const CustomCheckbox = ({ row, name, onCheckboxChange }) => {
         </FormGroup>
     );
 }
-
+ 
 export default CustomCheckbox
