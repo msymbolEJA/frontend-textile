@@ -18,6 +18,7 @@ function TablePaginationActions(props) {
   const classes = useStyles();
   const theme = useTheme();
   const { count, page, rowsPerPage, onChangePage } = props;
+  //console.log("CPRPP",count,page, rowsPerPage)
 
   const handleFirstPageButtonClick = (event) => {
     onChangePage(event, 0);
@@ -33,6 +34,7 @@ function TablePaginationActions(props) {
 
   const handleLastPageButtonClick = (event) => {
     onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    //console.log("HLPBC")
   };
 
   return (

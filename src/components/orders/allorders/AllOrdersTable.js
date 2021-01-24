@@ -81,9 +81,11 @@ function AllOrdersTable() {
     const [isStatuReady, setIsStatuReady] = useState(false)
     const [url, setUrl] = useState(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
     const history = useHistory();
+    const [globStatu, setglobStatu] = useState("")
 
     //--------------- Get Orders
     useEffect(() => {
+        //console.log(url)
         axios.get(url)
             .then(res => {
                 setRows(res.data.results)
@@ -96,11 +98,15 @@ function AllOrdersTable() {
     //------------------------------
 
     const handleChangePage = (event, newPage) => {
+        //console.log(newPage)
+        setUrl(`http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rowsPerPage}&offset=${newPage * rowsPerPage}`)
         setPage(newPage);
     };
-
+    
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
+        let rpp = (+event.target.value)
+        setUrl(`http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rpp}&offset=${page * rpp}`)
         setPage(0);
     };
 
@@ -127,8 +133,10 @@ function AllOrdersTable() {
         //console.log(statu);
         if (statu === 'all orders') {
             setUrl(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
+            setglobStatu("")
         } else {
             setUrl(`http://144.202.67.136:8080/etsy/orders/?status=${statu}&limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
+            setglobStatu(statu)
         }
         setPage(0);
         if(statu==="awaiting"){
