@@ -33,16 +33,11 @@ export default function MenuAppBar() {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleAccountPage = () => {
     history.push("/account");
     setAnchorEl(null);
   };
   const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const handleOrdersPage = () => {
-    history.push("/orders");
     setAnchorEl(null);
   };
   const handleMainPage = () => {
@@ -53,14 +48,6 @@ export default function MenuAppBar() {
     history.push("/");
     setAnchorEl(null);
     localStorage.removeItem("x-auth-token")
-  };
-  const handleReadyOrderPage = () => {
-    history.push("/ready-orders");
-    setAnchorEl(null);
-  };
-  const handleSearchPage = () => {
-    history.push("/search");
-    setAnchorEl(null);
   };
 
   return (
@@ -107,9 +94,6 @@ export default function MenuAppBar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleOrdersPage}>Orders</MenuItem>
-                <MenuItem onClick={handleSearchPage}>Search</MenuItem>
-                <MenuItem onClick={handleReadyOrderPage}>Ready Orders</MenuItem>
                 <MenuItem onClick={handleAccountPage}>Account</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>

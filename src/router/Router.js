@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // Pages
 import Dashboard from "../components/dashboard/Dashboard";
-import Orders from "../components/orders/Orders";
 import Account from "../components/account/Account";
 import Login from "../components/login/Login";
 import Navbar from "../components/navbar/Navbar";
@@ -37,7 +36,6 @@ const DefaultContainer = () => (
   <div>
     <Navbar />
     <PrivateRouter exact path="/dashboard" component={Dashboard} />
-    <PrivateRouter exact path="/orders" component={Orders} />
     <PrivateRouter exact path="/all-orders" component={AllOrdersTable} />
     <PrivateRouter exact path="/account" component={Account} />
     <PrivateRouter exact path="/new-order" component={NewOrder} />
