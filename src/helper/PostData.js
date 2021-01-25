@@ -57,4 +57,14 @@ export const putImage = async (path, image, imageName) => {
     return response
 }
 
-   //     axios.put(`http://144.202.67.136:8080/etsy/mapping/${id}/`, fd)
+export const getOnePdf = async (path, data) => {
+    const fd = new FormData();
+    fd.append("a", 2)
+    const response = await axios.post(path, fd)
+    return response
+}
+
+export const getAllPdf = async (path,data)=>{
+    const response = await axios.post(path)
+    return response
+}

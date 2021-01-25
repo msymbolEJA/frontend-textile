@@ -17,7 +17,7 @@ import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import { tagsData } from "../../../helper/Constants";
 import Button from '@material-ui/core/Button';
-import { getData } from "../../../helper/PostData";
+import { getData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from '../../otheritems/CargoPage'
 
@@ -82,6 +82,7 @@ function AllOrdersTable() {
     const [url, setUrl] = useState(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
     const history = useHistory();
     const [globStatu, setglobStatu] = useState("")
+    const [allPdf, setAllPdf] = useState([])
 
     //--------------- Get Orders
     useEffect(() => {
@@ -142,6 +143,7 @@ function AllOrdersTable() {
         if(statu==="awaiting"){
             setPrintFlag(true)
             console.log("statu awaiting")
+            getAllPdfFunc()
         }else{
             setPrintFlag(false)
             setPrintFlag(false)
@@ -153,6 +155,16 @@ function AllOrdersTable() {
             setIsStatuReady(false)
         }
     }; 
+
+    const getAllPdfFunc = () => {
+        const data = ""
+        getAllPdf("http://144.202.67.136:8080/etsy/all_pdf/",data).then((response)=>{
+            console.log(response.data.a)
+            setAllPdf(response.data.a)
+        }).catch((error) =>{
+            console.log(error)
+        })
+    }
 
     const printHandler = () => {
         const data = ""
@@ -255,9 +267,20 @@ function AllOrdersTable() {
             </TableContainer>
             {
                 printFlag & printFlag ? 
+                <>
                 <Button variant="contained" color="primary" className={classes.print} onClick={printHandler}>
                     Print
-                </Button> 
+                </Button>
+                {
+                    allPdf?.map((pdf, index)=>(
+                    <div key={`${index}${pdf}`} >
+                    <a href={`http://144.202.67.136:8080/media/pdf/bulk/${pdf}`} target="_blank" rel="noreferrer">
+                        {pdf}
+                    </a>
+                    </div>
+                    ))
+                }
+                </> 
                 :
                 null
             }{
