@@ -20,6 +20,7 @@ import Button from "@material-ui/core/Button";
 import { getData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
+import BarcodeInput from "../../otheritems/BarcodeInput";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -212,6 +213,9 @@ function AllOrdersTable() {
           handleTagChange={handleTagChange}
           tagsData={tagsData}
         />
+        {selectedTag === "ready" || selectedTag === "shipped" ? (
+          <BarcodeInput />
+        ) : null}
         <TableContainer className={classes.container}>
           <Table
             className={classes.table}
