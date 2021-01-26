@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,6 +11,7 @@ import CustomTableCell from "../CustomTableCell";
 import Typography from '@material-ui/core/Typography';
 import DATA from "../../../../helper/Data";
 import { Button } from "@material-ui/core";
+import { getOnePdf, getData } from "../../../../helper/PostData";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -62,19 +62,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const OrderDetails = () => {
+const OrderDetails = ({ match }) => {
     const [rows, setRows] = useState(DATA);
     const [previous, setPrevious] = useState({});
     const classes = useStyles();
-    const location = useLocation();
 
-    useEffect(() => {
-        try {
-            setRows([location.state.data])
-        } catch (error) {
-            setRows(null)
-        }
-    }, [location])
+
 
     const onChange = (e, row) => {
         if (!previous[row.id]) {
@@ -92,8 +85,27 @@ const OrderDetails = () => {
         setRows(newRows);
     };
 
+    const getPdf = () => {
+        let data= rows.id
+        getOnePdf("http://144.202.67.136:8080/etsy/print_one/", data).then((res)=>{
+            console.log(res.data.url)
+            console.log(rows[0].id)
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }
 
-
+    useEffect(() => {
+        let data = ""
+        let url = `http://144.202.67.136:8080/etsy/mapping/${match.params.id}/`
+        //console.log(url)
+        getData(url, data).then((res)=>{
+            //console.log(res.data)
+            setRows([res.data])
+        }).catch((err)=>{
+            console.log(err)
+        })
+    },[match.params.id])
 
     return (
         <div>
@@ -140,7 +152,7 @@ const OrderDetails = () => {
                                     <CustomTableCell {...{ row, name: "explanation", onChange }} />
                                     <CustomTableCell {...{ row, name: "note", onChange }} />
                                 </StyledTableRow>
-                            )) : <tr><td colspan="13" style={{fontSize:"2rem"}}>"Nothing Found!"</td></tr>}
+                            )) : <tr><td colSpan="13" style={{fontSize:"2rem"}}>"Nothing Found!"</td></tr>}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -163,6 +175,13 @@ const OrderDetails = () => {
             >
                 Are you sure for package?
             </Button>
+            <br/>
+            <br/>
+            <Button 
+            onClick={getPdf} 
+            variant="contained"
+            color="primary"
+            className={classes.submit}>GETPDF</Button>
         </div>
     );
 }
