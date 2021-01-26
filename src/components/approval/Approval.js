@@ -18,7 +18,8 @@ import CustomCheckbox from "../tableitems/CustomCheckbox";
 import OrderStatus from "../tableitems/CustomSelectCell";
 import UploadFile from "../tableitems/UploadFile";
 import { putImage } from "../../helper/PostData";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { toastWarnNotify } from "../otheritems/ToastNotify";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,18 +101,6 @@ function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState();
 
-  const toastNotify = (msg) => {
-    toast.warn(msg, {
-      position: "top-center",
-      autoClose: 8000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-
   const getDataFunc = () => {
     let data = "";
     getData(
@@ -172,12 +161,17 @@ function App() {
     });
   };
 
-  const handleRowChange = (id) => {
+  const handleRowChange = (id, data) => {
+    //console.log("id", id);
+    //console.log("data", data);
     setRows((state) => {
       return rows.map((row) => {
         if (row.id === id) {
           //console.log("hrcSendData",sendData)
-          putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, sendData)
+          putData(
+            `http://144.202.67.136:8080/etsy/mapping/${id}/`,
+            data || sendData
+          )
             .then((response) => {
               //console.log(response)
             })
@@ -190,17 +184,24 @@ function App() {
         return row;
       });
     });
+    getDataFunc();
   };
 
   const handleRowKeyDown = (e, id) => {
     if (e.key === "Enter") {
+      console.log(e);
+      console.log(e.target.defaultValue);
+      console.log(e.target.name);
+      let data = { [e.target.name]: e.target.defaultValue };
+      console.log(data);
+      handleRowChange(id, data);
       handleRowChange(id);
     }
   };
 
-  const handleRowBlur = (id) => {
-    handleRowChange(id);
-  };
+  // const handleRowBlur = (id) => {
+  //   handleRowChange(id);
+  // };
 
   // Problem
   // Checkbox activate when onblur or enter
@@ -222,16 +223,22 @@ function App() {
     //console.log(name,value)
     if ((name === "approved") & (value === true) & (row.status === "pending")) {
       setSendData({ [name]: value, status: "awaiting" });
-      //getDataFunc()
+      //getDataFunc();
+      let data = { [name]: value, status: "awaiting" };
+      handleRowChange(id, data);
+      getDataFunc();
     } else if (
       (name === "approved") &
       (value === false) &
       (row.status === "awaiting")
     ) {
       setSendData({ [name]: value, status: "pending" });
-      //getDataFunc()
+      let data = { [name]: value, status: "pending" };
+      handleRowChange(id, data);
+      getDataFunc();
     } else {
       setSendData({ [name]: value });
+      //getDataFunc();
     }
 
     const newRows = rows.map((row) => {
@@ -245,7 +252,9 @@ function App() {
     });
     setRows(newRows);
     /* console.log("name", name); */
+    //getDataFunc();
   };
+
   const onSelectChange = (e, row) => {
     e.preventDefault();
     if (!previous[row.id]) {
@@ -255,7 +264,9 @@ function App() {
     const name = e.target.name;
     const { id } = row;
     console.log("name, value", name, value);
-    setSendData({ ...sendData, [name]: value });
+    //setSendData({ ...sendData, [name]: value });
+    let data = { [name]: value };
+    handleRowChange(id, data);
     const newRows = rows.map((row) => {
       if (row.id === id) {
         console.log("sendData", sendData);
@@ -283,9 +294,7 @@ function App() {
           getDataFunc();
         });
     } catch (error) {
-      //console.log("Select a file. Error: ");
-      //console.log("TOASTNOTIFY");
-      toastNotify("Select Image!");
+      toastWarnNotify("Select Image!");
     }
   };
 
@@ -305,12 +314,12 @@ function App() {
       .get("http://144.202.67.136:8080/etsy/approved_all/")
       .then((res) => {
         console.log(res);
-        toastNotify(res.data.Success);
+        toastWarnNotify(res.data.Success);
         getDataFunc();
       })
       .catch(({ response }) => {
         console.log(response.data.Failed);
-        toastNotify(response.data.Failed);
+        toastWarnNotify(response.data.Failed);
       });
   };
 
@@ -356,7 +365,7 @@ function App() {
                 key={row.id}
                 id={row.id}
                 onClick={(e) => handleRowClick(row.id)}
-                onBlur={(e) => handleRowBlur(row.id)}
+                //onBlur={(e) => handleRowBlur(row.id)}
                 onKeyDown={(e) => handleRowKeyDown(e, row.id)}
               >
                 <td
