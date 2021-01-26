@@ -70,7 +70,6 @@ const useStyles = makeStyles((theme) => ({
 
 function AllOrdersTable() {
   const [rows, setRows] = useState(DATA);
-  const [previous, setPrevious] = useState({});
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -96,6 +95,7 @@ function AllOrdersTable() {
       .get(url)
       .then((res) => {
         setRows(res.data.results);
+        console.log(res.data.results);
         setCount(res.data.count);
       })
       .catch((error) => {
@@ -126,22 +126,6 @@ function AllOrdersTable() {
     setPage(0);
   };
 
-  const onChange = (e, row) => {
-    if (!previous[row.id]) {
-      setPrevious((state) => ({ ...state, [row.id]: row }));
-    }
-    const value = e.target.value;
-    const name = e.target.name;
-    const id = row?.id;
-    const newRows = rows.map((row) => {
-      if (row.id === id) {
-        return { ...row, [name]: value };
-      }
-      return row;
-    });
-    setRows(newRows);
-  };
-
   const handleTagChange = (e) => {
     const statu = e.currentTarget.id;
     setSelectedTag(statu);
@@ -165,7 +149,7 @@ function AllOrdersTable() {
     setPage(0);
     if (statu === "awaiting") {
       setPrintFlag(true);
-      console.log("statu awaiting");
+      //console.log("statu awaiting");
       getAllPdfFunc();
     } else {
       setPrintFlag(false);
@@ -238,6 +222,7 @@ function AllOrdersTable() {
             <TableRow>
               <StyledTableCell align="center">Receipt Id</StyledTableCell>
               <StyledTableCell align="center">Id</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
               <StyledTableCell align="center">Created TSZ</StyledTableCell>
               <StyledTableCell align="center">Item Index</StyledTableCell>
               <StyledTableCell align="center">Created Date</StyledTableCell>
@@ -262,22 +247,23 @@ function AllOrdersTable() {
                 id={row.id}
                 onClick={() => handleRowClick(row.id)}
               >
-                <CustomTableCell {...{ row, name: "receipt", onChange }} />
-                <CustomTableCell {...{ row, name: "id", onChange }} />
-                <CustomTableCell {...{ row, name: "creation_tsz", onChange }} />
-                <CustomTableCell {...{ row, name: "item_index", onChange }} />
-                <CustomTableCell {...{ row, name: "created_date", onChange }} />
-                <CustomTableCell {...{ row, name: "buyer", onChange }} />
-                <CustomTableCell {...{ row, name: "supplier", onChange }} />
-                <CustomTableCell {...{ row, name: "type", onChange }} />
-                <CustomTableCell {...{ row, name: "length", onChange }} />
-                <CustomTableCell {...{ row, name: "color", onChange }} />
-                <CustomTableCell {...{ row, name: "qty", onChange }} />
-                <CustomTableCell {...{ row, name: "size", onChange }} />
-                <CustomTableCell {...{ row, name: "start", onChange }} />
-                <CustomTableCell {...{ row, name: "space", onChange }} />
-                <CustomTableCell {...{ row, name: "explanation", onChange }} />
-                <CustomTableCell {...{ row, name: "note", onChange }} />
+                <CustomTableCell {...{ row, name: "receipt" }} />
+                <CustomTableCell {...{ row, name: "id" }} />
+                <CustomTableCell {...{ row, name: "status" }} />
+                <CustomTableCell {...{ row, name: "creation_tsz" }} />
+                <CustomTableCell {...{ row, name: "item_index" }} />
+                <CustomTableCell {...{ row, name: "created_date" }} />
+                <CustomTableCell {...{ row, name: "buyer" }} />
+                <CustomTableCell {...{ row, name: "supplier" }} />
+                <CustomTableCell {...{ row, name: "type" }} />
+                <CustomTableCell {...{ row, name: "length" }} />
+                <CustomTableCell {...{ row, name: "color" }} />
+                <CustomTableCell {...{ row, name: "qty" }} />
+                <CustomTableCell {...{ row, name: "size" }} />
+                <CustomTableCell {...{ row, name: "start" }} />
+                <CustomTableCell {...{ row, name: "space" }} />
+                <CustomTableCell {...{ row, name: "explanation" }} />
+                <CustomTableCell {...{ row, name: "note" }} />
               </StyledTableRow>
             ))}
           </TableBody>
@@ -314,7 +300,7 @@ function AllOrdersTable() {
           >
             Print
           </Button>
-          <h2>Old Labels</h2>
+          <h2>Labels</h2>
           {allPdf?.map((pdf, index) => (
             <div key={`${index}${pdf}`}>
               <a
