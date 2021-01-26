@@ -12,10 +12,10 @@ const useStyles = makeStyles((theme) => ({
       width: "8rem",
     },
   },
-  btn : {
-    height: "2.5rem"
+  btn: {
+    height: "2.5rem",
   },
-  bottomSection:{
+  bottomSection: {
     display: "flex",
     justifyContent: "center",
   },
@@ -28,17 +28,25 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "15rem"
-  }
+    width: "15rem",
+  },
 }));
 
-export default function SearchForm({handleSubmit, handleChange, info, fail, clearBtn}) {
+export default function SearchForm({
+  handleSubmit,
+  handleChange,
+  info,
+  fail,
+  clearBtn,
+  setGlobalSearchKey,
+  globalSearchKey,
+}) {
   const classes = useStyles();
 
   return (
     <div>
       <div>
-        <form className={classes.root} >
+        <form className={classes.root}>
           <TextField
             variant="outlined"
             margin="dense"
@@ -50,7 +58,7 @@ export default function SearchForm({handleSubmit, handleChange, info, fail, clea
             autoFocus
             onChange={handleChange}
             value={info.id}
-            />
+          />
           {/* TODO : Option */}
           <TextField
             className={classes.item}
@@ -63,7 +71,7 @@ export default function SearchForm({handleSubmit, handleChange, info, fail, clea
             autoComplete="status"
             onChange={handleChange}
             value={info.status}
-            />
+          />
           <TextField
             className={classes.item}
             variant="outlined"
@@ -75,7 +83,7 @@ export default function SearchForm({handleSubmit, handleChange, info, fail, clea
             autoComplete="buyer"
             onChange={handleChange}
             value={info.buyer}
-            />
+          />
           <TextField
             className={classes.item}
             variant="outlined"
@@ -87,7 +95,7 @@ export default function SearchForm({handleSubmit, handleChange, info, fail, clea
             autoComplete="sku"
             onChange={handleChange}
             value={info.sku}
-            />
+          />
           <TextField
             className={classes.item}
             variant="outlined"
@@ -98,7 +106,7 @@ export default function SearchForm({handleSubmit, handleChange, info, fail, clea
             id="supplier"
             onChange={handleChange}
             value={info.supplier}
-            />
+          />
           <TextField
             className={classes.item}
             variant="outlined"
@@ -109,7 +117,7 @@ export default function SearchForm({handleSubmit, handleChange, info, fail, clea
             id="explanation"
             onChange={handleChange}
             value={info.explanation}
-            />
+          />
           <TextField
             className={classes.item}
             variant="outlined"
@@ -120,7 +128,7 @@ export default function SearchForm({handleSubmit, handleChange, info, fail, clea
             id="receipt_id"
             onChange={handleChange}
             value={info.receipt_id}
-            />
+          />
           <TextField
             className={classes.item}
             variant="outlined"
@@ -132,12 +140,24 @@ export default function SearchForm({handleSubmit, handleChange, info, fail, clea
             onChange={handleChange}
             value={info.tracking_code}
           />
+
+          <TextField
+            className={classes.item}
+            variant="outlined"
+            margin="dense"
+            name="globalSearch"
+            label="Global Search"
+            type="text"
+            id="globalSearch"
+            onChange={(e) => setGlobalSearchKey(e.target.value)}
+            value={globalSearchKey}
+          />
           <Button
             type="submit"
             variant="contained"
             color="primary"
             className={classes.btn}
-            onClick={(e)=> handleSubmit(e)}
+            onClick={(e) => handleSubmit(e)}
           >
             Search
           </Button>
@@ -150,13 +170,13 @@ export default function SearchForm({handleSubmit, handleChange, info, fail, clea
             Clear
           </Button>
         </form>
-        {fail ? 
-        <div className={classes.bottomSection}>
-          <div className={classes.warn}>
-          <Typography>Please fill any field!</Typography>
+        {fail ? (
+          <div className={classes.bottomSection}>
+            <div className={classes.warn}>
+              <Typography>Please fill any field!</Typography>
+            </div>
           </div>
-        </div> :
-        null}
+        ) : null}
       </div>
     </div>
   );

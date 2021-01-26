@@ -68,3 +68,8 @@ export const getAllPdf = async (path, data) => {
   const response = await axios.get(path);
   return response;
 };
+
+export const globalSearch = async (path) => {
+  const response = await axios.get(path);
+  return response;
+};
