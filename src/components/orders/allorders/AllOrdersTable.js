@@ -271,7 +271,7 @@ function AllOrdersTable() {
             <TableFooter>
               <TableRow>
                 <td>Total Record :</td>
-                <td>{count}</td>
+                <td>{count || 0}</td>
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25, 100]}
                   colSpan={22}
