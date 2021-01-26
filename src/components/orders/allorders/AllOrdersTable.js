@@ -85,7 +85,7 @@ function AllOrdersTable() {
   );
   const history = useHistory();
   const [globStatu, setglobStatu] = useState("");
-  const [allPdf, setAllPdf] = useState([]);
+  const [allPdf, setAllPdf] = useState();
 
   //--------------- Get Orders
   //console.log("UED", url);
@@ -302,17 +302,21 @@ function AllOrdersTable() {
               Print
             </Button>
             <h2>Labels</h2>
-            {allPdf?.map((pdf, index) => (
-              <div key={`${index}${pdf}`}>
-                <a
-                  href={`http://144.202.67.136:8080/media/pdf/bulk/${pdf}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {pdf}
-                </a>
-              </div>
-            ))}
+            {allPdf ? (
+              allPdf?.map((pdf, index) => (
+                <div key={`${index}${pdf}`}>
+                  <a
+                    href={`http://144.202.67.136:8080/media/pdf/bulk/${pdf}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {pdf}
+                  </a>
+                </div>
+              ))
+            ) : (
+              <h2>Dont have any label!</h2>
+            )}
           </>
         ) : null}
       </Paper>
