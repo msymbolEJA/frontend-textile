@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios'
-import CustomButtonGroup from "./CustomButtonGroup"
+import axios from "axios";
+import CustomButtonGroup from "./CustomButtonGroup";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -16,287 +16,321 @@ import DATA from "../../../helper/Data";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import { tagsData } from "../../../helper/Constants";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 import { getData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
-import CargoPage from '../../otheritems/CargoPage'
-
+import CargoPage from "../../otheritems/CargoPage";
 
 const StyledTableCell = withStyles((theme) => ({
-    head: {
-        backgroundColor: "#001a33",
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
+  head: {
+    backgroundColor: "#001a33",
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
-    root: {
-        "&:nth-of-type(odd)": {
-            backgroundColor: theme.palette.action.hover,
-        },
-        '&:hover': {
-            cursor: "pointer",
-            boxShadow: "1px 2px",
-        },
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
     },
+    "&:hover": {
+      cursor: "pointer",
+      boxShadow: "1px 2px",
+      backgroundColor: "#33eaff",
+    },
+  },
 }))(TableRow);
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        width: "100%",
-        marginTop: theme.spacing(3),
-        overflowX: "auto",
-    },
-    container: {
-        maxHeight: "83vh",
-    },
-    table: {
-        minWidth: 650,
-    },
-    selectTableCell: {
-        width: 60,
-    },
-    buttonGroup: {
-        marginBottom: theme.spacing(1),
-    },
-    print:{
-        marginTop: "1rem",
-        marginBottom: "0.5rem",
-    }
+  root: {
+    width: "100%",
+    marginTop: theme.spacing(3),
+    overflowX: "auto",
+  },
+  container: {
+    maxHeight: "83vh",
+  },
+  table: {
+    minWidth: 650,
+  },
+  selectTableCell: {
+    width: 60,
+  },
+  buttonGroup: {
+    marginBottom: theme.spacing(1),
+  },
+  print: {
+    marginTop: "1rem",
+    marginBottom: "0.5rem",
+  },
 }));
 
 function AllOrdersTable() {
-    const [rows, setRows] = useState(DATA);
-    const [previous, setPrevious] = useState({});
-    const classes = useStyles();
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [count, setCount] = useState(0)
-    const [selectedTag, setSelectedTag] = useState("all orders");
-    const [printFlag, setPrintFlag] = useState(false)
-    const [printError, setPrintError] = useState(false)
-    const [isStatuReady, setIsStatuReady] = useState(false)
-    const [url, setUrl] = useState(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
-    const history = useHistory();
-    const [globStatu, setglobStatu] = useState("")
-    const [allPdf, setAllPdf] = useState([])
+  const [rows, setRows] = useState(DATA);
+  const [previous, setPrevious] = useState({});
+  const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [count, setCount] = useState(0);
+  const [selectedTag, setSelectedTag] = useState("all orders");
+  const [printFlag, setPrintFlag] = useState(false);
+  const [printError, setPrintError] = useState(false);
+  const [isStatuReady, setIsStatuReady] = useState(false);
+  const [url, setUrl] = useState(
+    `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+      page * rowsPerPage
+    }`
+  );
+  const history = useHistory();
+  const [globStatu, setglobStatu] = useState("");
+  const [allPdf, setAllPdf] = useState([]);
 
-    //--------------- Get Orders
-    useEffect(() => {
-        //console.log(url)
-        axios.get(url)
-            .then(res => {
-                setRows(res.data.results)
-                setCount(res.data.count)
-            }).catch(error => {
-                console.log(error);
-            })
-    }, [page, rowsPerPage, url])
-    //console.log("data rows : ", rows);
-    //------------------------------
+  //--------------- Get Orders
+  //console.log("UED", url);
+  useEffect(() => {
+    //console.log(url);
+    axios
+      .get(url)
+      .then((res) => {
+        setRows(res.data.results);
+        setCount(res.data.count);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [page, rowsPerPage, url]);
+  //console.log("data rows : ", rows);
+  //------------------------------
 
-    const handleChangePage = (event, newPage) => {
-        //console.log(newPage)
-        setUrl(`http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rowsPerPage}&offset=${newPage * rowsPerPage}`)
-        setPage(newPage);
-    };
-    
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        let rpp = (+event.target.value)
-        setUrl(`http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rpp}&offset=${page * rpp}`)
-        setPage(0);
-    };
-
-    const onChange = (e, row) => {
-        if (!previous[row.id]) {
-            setPrevious((state) => ({ ...state, [row.id]: row }));
-        }
-        const value = e.target.value;
-        const name = e.target.name;
-        const id = row?.id;
-        const newRows = rows.map((row) => {
-            if (row.id === id) {
-                return { ...row, [name]: value };
-            }
-            return row;
-        });
-        setRows(newRows);
-    };
-
-    const handleTagChange = (e) => {
-        const statu = e.currentTarget.id
-        setSelectedTag(statu);
-        //console.log(e.target.innerHTML);
-        //console.log(statu);
-        if (statu === 'all orders') {
-            setUrl(`http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
-            setglobStatu("")
-        } else {
-            setUrl(`http://144.202.67.136:8080/etsy/orders/?status=${statu}&limit=${rowsPerPage}&offset=${page * rowsPerPage}`)
-            setglobStatu(statu)
-        }
-        setPage(0);
-        if(statu==="awaiting"){
-            setPrintFlag(true)
-            console.log("statu awaiting")
-            getAllPdfFunc()
-        }else{
-            setPrintFlag(false)
-            setPrintFlag(false)
-            setPrintError(false)
-        }
-        if(statu==="ready"){
-            setIsStatuReady(true)
-        }else{
-            setIsStatuReady(false)
-        }
-    }; 
-
-    const getAllPdfFunc = () => {
-        const data = ""
-        getAllPdf("http://144.202.67.136:8080/etsy/all_pdf/",data).then((response)=>{
-            console.log(response.data.a)
-            setAllPdf(response.data.a)
-        }).catch((error) =>{
-            console.log(error)
-        })
-    }
-
-    const printHandler = () => {
-        const data = ""
-        getData("http://144.202.67.136:8080/etsy/print/", data).then((data)=>{
-            console.log(data)
-            setPrintError(false)
-            setRows()
-        }).catch(({response})=> {
-            console.log(response.data.Failed)
-            setPrintError(response.data.Failed)
-        })
-    }
-
-    const handleRowClick = (id) => {
-        let res;
-        rows.forEach((row) => {
-            if (row.id === id) {
-                res = row
-            }
-        })
-        history.push({
-            pathname: '/order-details',
-            state: { data: res }
-        })
-    }
-
-    return (
-        <Paper className={classes.root}>
-            <CustomButtonGroup selectedTag={selectedTag} handleTagChange={handleTagChange} tagsData={tagsData} />
-            <TableContainer className={classes.container}>
-                <Table
-                    className={classes.table}
-                    stickyHeader
-                    aria-label="sticky table"
-                    size="small"
-                >
-                    <TableHead >
-                        <TableRow>
-                            <StyledTableCell align="center">Receipt Id</StyledTableCell>
-                            <StyledTableCell align="center">Id</StyledTableCell>
-                            <StyledTableCell align="center">Created TSZ</StyledTableCell>
-                            <StyledTableCell align="center">Item Index</StyledTableCell>
-                            <StyledTableCell align="center">Created Date</StyledTableCell>
-                            <StyledTableCell align="center">Buyer</StyledTableCell>
-                            <StyledTableCell align="center">Supplier</StyledTableCell>
-                            <StyledTableCell align="center">Type</StyledTableCell>
-                            <StyledTableCell align="center">Length</StyledTableCell>
-                            <StyledTableCell align="center">Color</StyledTableCell>
-                            <StyledTableCell align="center">Quantity</StyledTableCell>
-                            <StyledTableCell align="center">Size</StyledTableCell>
-                            <StyledTableCell align="center">Start</StyledTableCell>
-                            <StyledTableCell align="center">Space</StyledTableCell>
-                            <StyledTableCell align="center">Explanation</StyledTableCell>
-                            <StyledTableCell align="center">Note</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows?.map((row) => (
-                            <StyledTableRow className={classes.rowStyle} key={row.id} id={row.id} onClick={() => handleRowClick(row.id)} >
-                                <CustomTableCell {...{ row, name: "receipt_id", onChange }} />
-                                <CustomTableCell {...{ row, name: "id", onChange }} />
-                                <CustomTableCell {...{ row, name: "creation_tsz", onChange }} />
-                                <CustomTableCell {...{ row, name: "item_index", onChange }} />
-                                <CustomTableCell {...{ row, name: "created_date", onChange }} />
-                                <CustomTableCell {...{ row, name: "buyer", onChange }} />
-                                <CustomTableCell {...{ row, name: "supplier", onChange }} />
-                                <CustomTableCell {...{ row, name: "type", onChange }} />
-                                <CustomTableCell {...{ row, name: "length", onChange }} />
-                                <CustomTableCell {...{ row, name: "color", onChange }} />
-                                <CustomTableCell {...{ row, name: "qty", onChange }} />
-                                <CustomTableCell {...{ row, name: "size", onChange }} />
-                                <CustomTableCell {...{ row, name: "start", onChange }} />
-                                <CustomTableCell {...{ row, name: "space", onChange }} />
-                                <CustomTableCell {...{ row, name: "explanation", onChange }} />
-                                <CustomTableCell {...{ row, name: "note", onChange }} />
-                            </StyledTableRow>
-                        ))}
-                    </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <td>Total Record :</td>
-                            <td>{count}</td>
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10, 25, 100]}
-                                colSpan={22}
-                                count={count}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                SelectProps={{
-                                    inputProps: { "aria-label": "rows per page" },
-                                    native: true,
-                                }}
-                                onChangePage={handleChangePage}
-                                onChangeRowsPerPage={handleChangeRowsPerPage}
-                                ActionsComponent={TablePaginationActions}
-                            />
-                        </TableRow>
-                    </TableFooter>
-                </Table>
-            </TableContainer>
-            {
-                printFlag & printFlag ? 
-                <>
-                <Button variant="contained" color="primary" className={classes.print} onClick={printHandler}>
-                    Print
-                </Button>
-                {
-                    allPdf?.map((pdf, index)=>(
-                    <div key={`${index}${pdf}`} >
-                    <a href={`http://144.202.67.136:8080/media/pdf/bulk/${pdf}`} target="_blank" rel="noreferrer">
-                        {pdf}
-                    </a>
-                    </div>
-                    ))
-                }
-                </> 
-                :
-                null
-            }{
-                printError ?
-                <h1>{printError}</h1>
-                : 
-                null
-            }
-            {
-                isStatuReady ?
-                <CargoPage/>
-                :
-                null
-            }
-        </Paper>
+  const handleChangePage = (event, newPage) => {
+    //console.log(newPage)
+    setUrl(
+      `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rowsPerPage}&offset=${
+        newPage * rowsPerPage
+      }`
     );
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    let rpp = +event.target.value;
+    setUrl(
+      `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rpp}&offset=${
+        page * rpp
+      }`
+    );
+    setPage(0);
+  };
+
+  const onChange = (e, row) => {
+    if (!previous[row.id]) {
+      setPrevious((state) => ({ ...state, [row.id]: row }));
+    }
+    const value = e.target.value;
+    const name = e.target.name;
+    const id = row?.id;
+    const newRows = rows.map((row) => {
+      if (row.id === id) {
+        return { ...row, [name]: value };
+      }
+      return row;
+    });
+    setRows(newRows);
+  };
+
+  const handleTagChange = (e) => {
+    const statu = e.currentTarget.id;
+    setSelectedTag(statu);
+    //console.log(e.target.innerHTML);
+    //console.log(statu);
+    if (statu === "all orders") {
+      setUrl(
+        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`
+      );
+      setglobStatu("");
+    } else {
+      setUrl(
+        `http://144.202.67.136:8080/etsy/mapping/?status=${statu}&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`
+      );
+      setglobStatu(statu);
+    }
+    setPage(0);
+    if (statu === "awaiting") {
+      setPrintFlag(true);
+      console.log("statu awaiting");
+      getAllPdfFunc();
+    } else {
+      setPrintFlag(false);
+      setPrintError(false);
+    }
+    if (statu === "ready") {
+      setIsStatuReady(true);
+    } else {
+      setIsStatuReady(false);
+    }
+  };
+
+  const getAllPdfFunc = () => {
+    const data = "";
+    getAllPdf("http://144.202.67.136:8080/etsy/all_pdf/", data)
+      .then((response) => {
+        //console.log(response.data.a);
+        setAllPdf(response.data.a);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const printHandler = () => {
+    const data = "";
+    getData("http://144.202.67.136:8080/etsy/print_all/", data)
+      .then((data) => {
+        //console.log(data);
+        // Open pdf after get
+        const link = document.createElement("a");
+        link.href = `${data.data.url}`;
+        link.setAttribute("target", "_blank");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setPrintError(false);
+      })
+      .catch(({ response }) => {
+        console.log(response.data.Failed);
+        setPrintError(response.data.Failed);
+      })
+      .finally(() => {
+        setUrl(`http://144.202.67.136:8080/etsy/mapping/?status=awaiting/`);
+        getAllPdfFunc();
+      });
+  };
+
+  const handleRowClick = (id) => {
+    history.push({
+      pathname: `/order-details/${id}`,
+    });
+  };
+
+  return (
+    <Paper className={classes.root}>
+      <CustomButtonGroup
+        selectedTag={selectedTag}
+        handleTagChange={handleTagChange}
+        tagsData={tagsData}
+      />
+      <TableContainer className={classes.container}>
+        <Table
+          className={classes.table}
+          stickyHeader
+          aria-label="sticky table"
+          size="small"
+        >
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center">Receipt Id</StyledTableCell>
+              <StyledTableCell align="center">Id</StyledTableCell>
+              <StyledTableCell align="center">Created TSZ</StyledTableCell>
+              <StyledTableCell align="center">Item Index</StyledTableCell>
+              <StyledTableCell align="center">Created Date</StyledTableCell>
+              <StyledTableCell align="center">Buyer</StyledTableCell>
+              <StyledTableCell align="center">Supplier</StyledTableCell>
+              <StyledTableCell align="center">Type</StyledTableCell>
+              <StyledTableCell align="center">Length</StyledTableCell>
+              <StyledTableCell align="center">Color</StyledTableCell>
+              <StyledTableCell align="center">Quantity</StyledTableCell>
+              <StyledTableCell align="center">Size</StyledTableCell>
+              <StyledTableCell align="center">Start</StyledTableCell>
+              <StyledTableCell align="center">Space</StyledTableCell>
+              <StyledTableCell align="center">Explanation</StyledTableCell>
+              <StyledTableCell align="center">Note</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows?.map((row) => (
+              <StyledTableRow
+                className={classes.rowStyle}
+                key={row.id}
+                id={row.id}
+                onClick={() => handleRowClick(row.id)}
+              >
+                <CustomTableCell {...{ row, name: "receipt", onChange }} />
+                <CustomTableCell {...{ row, name: "id", onChange }} />
+                <CustomTableCell {...{ row, name: "creation_tsz", onChange }} />
+                <CustomTableCell {...{ row, name: "item_index", onChange }} />
+                <CustomTableCell {...{ row, name: "created_date", onChange }} />
+                <CustomTableCell {...{ row, name: "buyer", onChange }} />
+                <CustomTableCell {...{ row, name: "supplier", onChange }} />
+                <CustomTableCell {...{ row, name: "type", onChange }} />
+                <CustomTableCell {...{ row, name: "length", onChange }} />
+                <CustomTableCell {...{ row, name: "color", onChange }} />
+                <CustomTableCell {...{ row, name: "qty", onChange }} />
+                <CustomTableCell {...{ row, name: "size", onChange }} />
+                <CustomTableCell {...{ row, name: "start", onChange }} />
+                <CustomTableCell {...{ row, name: "space", onChange }} />
+                <CustomTableCell {...{ row, name: "explanation", onChange }} />
+                <CustomTableCell {...{ row, name: "note", onChange }} />
+              </StyledTableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <td>Total Record :</td>
+              <td>{count}</td>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, 100]}
+                colSpan={22}
+                count={count || 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+      {printError ? <h1>{printError}</h1> : null}
+      {printFlag & printFlag ? (
+        <>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.print}
+            onClick={printHandler}
+          >
+            Print
+          </Button>
+          <h2>Old Labels</h2>
+          {allPdf?.map((pdf, index) => (
+            <div key={`${index}${pdf}`}>
+              <a
+                href={`http://144.202.67.136:8080/media/pdf/bulk/${pdf}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {pdf}
+              </a>
+            </div>
+          ))}
+        </>
+      ) : null}
+      {isStatuReady ? <CargoPage /> : null}
+    </Paper>
+  );
 }
 
 export default AllOrdersTable;
