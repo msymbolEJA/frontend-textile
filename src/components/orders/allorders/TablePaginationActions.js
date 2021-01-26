@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 function TablePaginationActions(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const { count, page, rowsPerPage, onChangePage } = props;
+  const { count = 0, page, rowsPerPage, onChangePage } = props;
   //console.log("CPRPP",count,page, rowsPerPage)
 
   const handleFirstPageButtonClick = (event) => {
@@ -54,8 +54,8 @@ function TablePaginationActions(props) {
         {theme.direction === "rtl" ? (
           <KeyboardArrowRight />
         ) : (
-            <KeyboardArrowLeft />
-          )}
+          <KeyboardArrowLeft />
+        )}
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
@@ -65,8 +65,8 @@ function TablePaginationActions(props) {
         {theme.direction === "rtl" ? (
           <KeyboardArrowLeft />
         ) : (
-            <KeyboardArrowRight />
-          )}
+          <KeyboardArrowRight />
+        )}
       </IconButton>
       <IconButton
         onClick={handleLastPageButtonClick}

@@ -6,17 +6,17 @@ import Login from "../components/login/Login";
 import Navbar from "../components/navbar/Navbar";
 import NewOrder from "../components/orders/new/NewOrder";
 import Register from "../components/register/Register";
-import DueDate from "../components/orders/duedate/DueDate"
-import OrderPrep from "../components/orders/orderprep/OrderPrep"
-import ForgetPassword from "../components/forgetpassword/ForgetPassword"
-import ResetPassword from "../components/forgetpassword/ResetPassword"
-import AllOrdersTable from '../components/orders/allorders/AllOrdersTable'
-import Search from '../components/search/Search';
-import ReadyOrders from '../components/orders/readyorders/ReadyOrders'
-import OrderDetails from '../components/orders/readyorders/orderdetails/OrderDetails'
+import DueDate from "../components/orders/duedate/DueDate";
+import OrderPrep from "../components/orders/orderprep/OrderPrep";
+import ForgetPassword from "../components/forgetpassword/ForgetPassword";
+import ResetPassword from "../components/forgetpassword/ResetPassword";
+import AllOrdersTable from "../components/orders/allorders/AllOrdersTable";
+import Search from "../components/search/Search";
+import ReadyOrders from "../components/orders/readyorders/ReadyOrders";
+import OrderDetails from "../components/orders/readyorders/orderdetails/OrderDetails";
 // Private Router
-import PrivateRouter from './PrivateRouter';
-import Approval from '../components/approval/Approval'
+import PrivateRouter from "./PrivateRouter";
+import Approval from "../components/approval/Approval";
 
 const AppRouter = () => {
   return (
@@ -44,7 +44,7 @@ const DefaultContainer = () => (
     <PrivateRouter exact path="/approval" component={Approval} />
     <PrivateRouter exact path="/search" component={Search} />
     <PrivateRouter exact path="/ready-orders" component={ReadyOrders} />
-    <PrivateRouter exact path="/order-details" component={OrderDetails} />
+    <PrivateRouter exact path="/order-details/:id" component={OrderDetails} />
   </div>
 );
 
