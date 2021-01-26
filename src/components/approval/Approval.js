@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -41,6 +42,12 @@ const useStyles = makeStyles((theme) => ({
   input: {
     width: 100,
     height: 40,
+  },
+  btnStyle: {
+    backgroundColor: "orange",
+    borderRadius: "5px",
+    width: "6rem",
+    cursor: "pointer",
   },
 }));
 
@@ -93,8 +100,8 @@ function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState();
 
-  const toastNotify = () => {
-    toast.warn("Select Image!", {
+  const toastNotify = (msg) => {
+    toast.warn(msg, {
       position: "top-center",
       autoClose: 8000,
       hideProgressBar: false,
@@ -114,7 +121,7 @@ function App() {
       data
     )
       .then((response) => {
-        console.log(response.data.results);
+        console.log(response.data);
         setRows(response.data.results);
         setCount(response.data.count);
       })
@@ -278,7 +285,7 @@ function App() {
     } catch (error) {
       //console.log("Select a file. Error: ");
       //console.log("TOASTNOTIFY");
-      toastNotify();
+      toastNotify("Select Image!");
     }
   };
 
@@ -288,8 +295,23 @@ function App() {
   };
   const selectId = (event, id) => {
     event.stopPropagation();
-    console.log("sfi", id);
+    //console.log("sfi", id);
     setSelectedRowId(id);
+  };
+
+  const approveAll = () => {
+    console.log("Approve all");
+    axios
+      .get("http://144.202.67.136:8080/etsy/approved_all/")
+      .then((res) => {
+        console.log(res);
+        toastNotify(res.data.Success);
+        getDataFunc();
+      })
+      .catch(({ response }) => {
+        console.log(response.data.Failed);
+        toastNotify(response.data.Failed);
+      });
   };
 
   return (
@@ -302,7 +324,12 @@ function App() {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Approved</StyledTableCell>
+              <StyledTableCell align="center">
+                Approved
+                <button className={classes.btnStyle} onClick={approveAll}>
+                  Approve All
+                </button>
+              </StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
               <StyledTableCell align="center">Recept</StyledTableCell>
               <StyledTableCell align="center">Id</StyledTableCell>
@@ -386,7 +413,7 @@ function App() {
           <TableFooter>
             <TableRow>
               <td>Total Record :</td>
-              <td>{count}</td>
+              <td>{count || 0}</td>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 100]}
                 colSpan={22}

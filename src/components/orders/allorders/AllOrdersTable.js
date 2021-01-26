@@ -96,7 +96,7 @@ function AllOrdersTable() {
       .get(url)
       .then((res) => {
         setRows(res.data.results);
-        console.log(res.data.results);
+        //console.log(res.data.results);
         setCount(res.data.count);
       })
       .catch((error) => {

@@ -70,8 +70,6 @@ const OrderDetails = ({ match }) => {
   const [rows, setRows] = useState(DATA);
   const classes = useStyles();
 
-  console.log(rows[0].status);
-
   const getPdf = () => {
     let data = rows.id;
     getOnePdf("http://144.202.67.136:8080/etsy/print_one/", data)
