@@ -205,117 +205,119 @@ function AllOrdersTable() {
   };
 
   return (
-    <Paper className={classes.root}>
-      <CustomButtonGroup
-        selectedTag={selectedTag}
-        handleTagChange={handleTagChange}
-        tagsData={tagsData}
-      />
-      <TableContainer className={classes.container}>
-        <Table
-          className={classes.table}
-          stickyHeader
-          aria-label="sticky table"
-          size="small"
-        >
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="center">Receipt Id</StyledTableCell>
-              <StyledTableCell align="center">Id</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">Created TSZ</StyledTableCell>
-              <StyledTableCell align="center">Item Index</StyledTableCell>
-              <StyledTableCell align="center">Created Date</StyledTableCell>
-              <StyledTableCell align="center">Buyer</StyledTableCell>
-              <StyledTableCell align="center">Supplier</StyledTableCell>
-              <StyledTableCell align="center">Type</StyledTableCell>
-              <StyledTableCell align="center">Length</StyledTableCell>
-              <StyledTableCell align="center">Color</StyledTableCell>
-              <StyledTableCell align="center">Quantity</StyledTableCell>
-              <StyledTableCell align="center">Size</StyledTableCell>
-              <StyledTableCell align="center">Start</StyledTableCell>
-              <StyledTableCell align="center">Space</StyledTableCell>
-              <StyledTableCell align="center">Explanation</StyledTableCell>
-              <StyledTableCell align="center">Note</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows?.map((row) => (
-              <StyledTableRow
-                className={classes.rowStyle}
-                key={row.id}
-                id={row.id}
-                onClick={() => handleRowClick(row.id)}
-              >
-                <CustomTableCell {...{ row, name: "receipt" }} />
-                <CustomTableCell {...{ row, name: "id" }} />
-                <CustomTableCell {...{ row, name: "status" }} />
-                <CustomTableCell {...{ row, name: "creation_tsz" }} />
-                <CustomTableCell {...{ row, name: "item_index" }} />
-                <CustomTableCell {...{ row, name: "created_date" }} />
-                <CustomTableCell {...{ row, name: "buyer" }} />
-                <CustomTableCell {...{ row, name: "supplier" }} />
-                <CustomTableCell {...{ row, name: "type" }} />
-                <CustomTableCell {...{ row, name: "length" }} />
-                <CustomTableCell {...{ row, name: "color" }} />
-                <CustomTableCell {...{ row, name: "qty" }} />
-                <CustomTableCell {...{ row, name: "size" }} />
-                <CustomTableCell {...{ row, name: "start" }} />
-                <CustomTableCell {...{ row, name: "space" }} />
-                <CustomTableCell {...{ row, name: "explanation" }} />
-                <CustomTableCell {...{ row, name: "note" }} />
-              </StyledTableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <td>Total Record :</td>
-              <td>{count}</td>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, 100]}
-                colSpan={22}
-                count={count || 0}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: { "aria-label": "rows per page" },
-                  native: true,
-                }}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
-      {printError ? <h1>{printError}</h1> : null}
-      {printFlag & printFlag ? (
-        <>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.print}
-            onClick={printHandler}
+    <div>
+      <Paper className={classes.root}>
+        <CustomButtonGroup
+          selectedTag={selectedTag}
+          handleTagChange={handleTagChange}
+          tagsData={tagsData}
+        />
+        <TableContainer className={classes.container}>
+          <Table
+            className={classes.table}
+            stickyHeader
+            aria-label="sticky table"
+            size="small"
           >
-            Print
-          </Button>
-          <h2>Labels</h2>
-          {allPdf?.map((pdf, index) => (
-            <div key={`${index}${pdf}`}>
-              <a
-                href={`http://144.202.67.136:8080/media/pdf/bulk/${pdf}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {pdf}
-              </a>
-            </div>
-          ))}
-        </>
-      ) : null}
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="center">Receipt Id</StyledTableCell>
+                <StyledTableCell align="center">Id</StyledTableCell>
+                <StyledTableCell align="center">Status</StyledTableCell>
+                <StyledTableCell align="center">Created TSZ</StyledTableCell>
+                <StyledTableCell align="center">Item Index</StyledTableCell>
+                <StyledTableCell align="center">Created Date</StyledTableCell>
+                <StyledTableCell align="center">Buyer</StyledTableCell>
+                <StyledTableCell align="center">Supplier</StyledTableCell>
+                <StyledTableCell align="center">Type</StyledTableCell>
+                <StyledTableCell align="center">Length</StyledTableCell>
+                <StyledTableCell align="center">Color</StyledTableCell>
+                <StyledTableCell align="center">Quantity</StyledTableCell>
+                <StyledTableCell align="center">Size</StyledTableCell>
+                <StyledTableCell align="center">Start</StyledTableCell>
+                <StyledTableCell align="center">Space</StyledTableCell>
+                <StyledTableCell align="center">Explanation</StyledTableCell>
+                <StyledTableCell align="center">Note</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows?.map((row) => (
+                <StyledTableRow
+                  className={classes.rowStyle}
+                  key={row.id}
+                  id={row.id}
+                  onClick={() => handleRowClick(row.id)}
+                >
+                  <CustomTableCell {...{ row, name: "receipt" }} />
+                  <CustomTableCell {...{ row, name: "id" }} />
+                  <CustomTableCell {...{ row, name: "status" }} />
+                  <CustomTableCell {...{ row, name: "creation_tsz" }} />
+                  <CustomTableCell {...{ row, name: "item_index" }} />
+                  <CustomTableCell {...{ row, name: "created_date" }} />
+                  <CustomTableCell {...{ row, name: "buyer" }} />
+                  <CustomTableCell {...{ row, name: "supplier" }} />
+                  <CustomTableCell {...{ row, name: "type" }} />
+                  <CustomTableCell {...{ row, name: "length" }} />
+                  <CustomTableCell {...{ row, name: "color" }} />
+                  <CustomTableCell {...{ row, name: "qty" }} />
+                  <CustomTableCell {...{ row, name: "size" }} />
+                  <CustomTableCell {...{ row, name: "start" }} />
+                  <CustomTableCell {...{ row, name: "space" }} />
+                  <CustomTableCell {...{ row, name: "explanation" }} />
+                  <CustomTableCell {...{ row, name: "note" }} />
+                </StyledTableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <td>Total Record :</td>
+                <td>{count}</td>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, 100]}
+                  colSpan={22}
+                  count={count || 0}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: { "aria-label": "rows per page" },
+                    native: true,
+                  }}
+                  onChangePage={handleChangePage}
+                  onChangeRowsPerPage={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+        {printError ? <h1>{printError}</h1> : null}
+        {printFlag & printFlag ? (
+          <>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.print}
+              onClick={printHandler}
+            >
+              Print
+            </Button>
+            <h2>Labels</h2>
+            {allPdf?.map((pdf, index) => (
+              <div key={`${index}${pdf}`}>
+                <a
+                  href={`http://144.202.67.136:8080/media/pdf/bulk/${pdf}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {pdf}
+                </a>
+              </div>
+            ))}
+          </>
+        ) : null}
+      </Paper>
       {isStatuReady ? <CargoPage /> : null}
-    </Paper>
+    </div>
   );
 }
 
