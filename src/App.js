@@ -1,6 +1,7 @@
 import "./App.css";
 import AppRouter from "./router/Router";
-import { ContextProvider } from "./context/Context"
+import { ContextProvider } from "./context/Context";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
