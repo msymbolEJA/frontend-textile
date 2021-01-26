@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
+import { postFormData } from "../../helper/PostData";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,34 +42,80 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CargoPage = () => {
+  const [cargoForm, setCargoForm] = useState({
+    ref_number: "",
+    tracking_number: "",
+    carrier: "",
+  });
+  const [result, setResult] = useState();
   const classes = useStyles();
+
+  const cargoFormPost = (e) => {
+    e.preventDefault();
+    console.log("CFB");
+    console.log(cargoForm);
+
+    postFormData("http://144.202.67.136:8080/etsy/cargo/", cargoForm)
+      .then((res) => {
+        console.log(res.data.Success);
+        setResult(res.data.Success);
+      })
+      .catch(({ response }) => {
+        console.log(response);
+        setResult(response.data.Failed);
+      });
+    setCargoForm({
+      ref_number: "",
+      tracking_number: "",
+      carrier: "",
+    });
+  };
+
+  const handleChange = (e) => {
+    setCargoForm({ ...cargoForm, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className={classes.root}>
       <Paper className={classes.rootBottom}>
         <h1>Create Post</h1>
-
-        <form className={classes.root} noValidate autoComplete="off">
+        <form
+          className={classes.root}
+          autoComplete="off"
+          onSubmit={cargoFormPost}
+        >
           <TextField
             className={classes.inputStyle}
-            id="referenceNumber"
+            id="ref_number"
             label="Reference Number"
-            required
+            required={true}
+            type="text"
             variant="outlined"
+            name="ref_number"
+            onChange={handleChange}
+            value={cargoForm.ref_number}
           />
           <TextField
             className={classes.inputStyle}
-            id="cargoCompany"
-            label="Cargo Company"
+            id="tracking_number"
+            label="tracking_number"
             required
+            type="text"
+            onChange={handleChange}
             variant="outlined"
+            name="tracking_number"
+            value={cargoForm.tracking_number}
           />
           <TextField
             className={classes.inputStyle}
-            id="followingCode"
-            label="Following Code"
+            id="carrier"
+            label="Carrier"
             required
+            type="text"
+            name="carrier"
+            onChange={handleChange}
             variant="outlined"
+            value={cargoForm.carrier}
           />
           <br />
           <br />
@@ -82,6 +129,7 @@ const CargoPage = () => {
           </Button>
         </form>
       </Paper>
+      {result ? <h1>{result}</h1> : null}
     </div>
   );
 };
