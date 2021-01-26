@@ -39,8 +39,8 @@ const StyledTableRow = withStyles((theme) => ({
     },
     "&:hover": {
       cursor: "pointer",
-      boxShadow: "1px 2px",
-      backgroundColor: "#33eaff",
+      //boxShadow: "1px 2px",
+      backgroundColor: "#add8e6",
     },
   },
 }))(TableRow);
