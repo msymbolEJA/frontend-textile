@@ -6,7 +6,6 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Input from "@material-ui/core/Input";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
@@ -20,6 +19,7 @@ import { putImage } from "../../helper/PostData";
 import { ToastContainer } from "react-toastify";
 import { toastWarnNotify } from "../otheritems/ToastNotify";
 import ConstantTableCell from "../tableitems/ConstantTableCell";
+import EditableTableCell from "../tableitems/EditableTableCell";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,14 +35,6 @@ const useStyles = makeStyles((theme) => ({
   },
   selectTableCell: {
     width: 60,
-  },
-  tableCell: {
-    width: 130,
-    height: 40,
-  },
-  input: {
-    width: 100,
-    height: 40,
   },
   btnStyle: {
     backgroundColor: "orange",
@@ -69,25 +61,6 @@ const StyledTableCell = withStyles((theme) => ({
     fontSize: 14,
   },
 }))(TableCell);
-
-const CustomTableCell = ({ row, name, onChange }) => {
-  const classes = useStyles();
-  const { isEditMode } = row;
-  return (
-    <TableCell align="center" className={classes.tableCell}>
-      {isEditMode ? (
-        <Input
-          value={row[name] ? row[name] : ""} // first : value={row[name]} // i've changed
-          name={name}
-          onChange={(e) => onChange(e, row)}
-          className={classes.input}
-        />
-      ) : (
-        row[name]
-      )}
-    </TableCell>
-  );
-};
 
 function App() {
   const [rows, setRows] = React.useState([]);
@@ -389,17 +362,17 @@ function App() {
                 <ConstantTableCell {...{ row, name: "receipt" }} />
                 <ConstantTableCell {...{ row, name: "id" }} />
                 <ConstantTableCell {...{ row, name: "last_updated" }} />
-                <CustomTableCell {...{ row, name: "item_index", onChange }} />
+                <EditableTableCell {...{ row, name: "item_index", onChange }} />
                 <ConstantTableCell {...{ row, name: "created_date" }} />
-                <CustomTableCell {...{ row, name: "buyer", onChange }} />
-                <CustomTableCell {...{ row, name: "supplier", onChange }} />
-                <CustomTableCell {...{ row, name: "type", onChange }} />
-                <CustomTableCell {...{ row, name: "length", onChange }} />
-                <CustomTableCell {...{ row, name: "color", onChange }} />
-                <CustomTableCell {...{ row, name: "qty", onChange }} />
-                <CustomTableCell {...{ row, name: "size", onChange }} />
-                <CustomTableCell {...{ row, name: "start", onChange }} />
-                <CustomTableCell {...{ row, name: "space", onChange }} />
+                <EditableTableCell {...{ row, name: "buyer", onChange }} />
+                <EditableTableCell {...{ row, name: "supplier", onChange }} />
+                <EditableTableCell {...{ row, name: "type", onChange }} />
+                <EditableTableCell {...{ row, name: "length", onChange }} />
+                <EditableTableCell {...{ row, name: "color", onChange }} />
+                <EditableTableCell {...{ row, name: "qty", onChange }} />
+                <EditableTableCell {...{ row, name: "size", onChange }} />
+                <EditableTableCell {...{ row, name: "start", onChange }} />
+                <EditableTableCell {...{ row, name: "space", onChange }} />
                 <td
                   onClick={(e) => {
                     e.stopPropagation();
@@ -416,8 +389,10 @@ function App() {
                     }}
                   />
                 </td>
-                <CustomTableCell {...{ row, name: "explanation", onChange }} />
-                <CustomTableCell {...{ row, name: "note", onChange }} />
+                <EditableTableCell
+                  {...{ row, name: "explanation", onChange }}
+                />
+                <EditableTableCell {...{ row, name: "note", onChange }} />
               </StyledTableRow>
             ))}
           </TableBody>
