@@ -96,8 +96,8 @@ function App() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [count, setCount] = useState(0);
-  const [sendData, setSendData] = useState({});
-  const [globId, setGlobId] = useState();
+  //const [sendData, setSendData] = useState({});
+  //const [globId, setGlobId] = useState();
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState();
 
@@ -110,7 +110,7 @@ function App() {
       data
     )
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         setRows(response.data.results);
         setCount(response.data.count);
       })
@@ -133,7 +133,7 @@ function App() {
     const { id } = row;
     const newRows = rows.map((row) => {
       if (row.id === id) {
-        setSendData({ ...sendData, [name]: value });
+        //setSendData({ ...sendData, [name]: value });
         return { ...row, [name]: value };
       }
       return row;
@@ -168,10 +168,7 @@ function App() {
       return rows.map((row) => {
         if (row.id === id) {
           //console.log("hrcSendData",sendData)
-          putData(
-            `http://144.202.67.136:8080/etsy/mapping/${id}/`,
-            data || sendData
-          )
+          putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, data)
             .then((response) => {
               //console.log(response)
             })
@@ -189,27 +186,34 @@ function App() {
 
   const handleRowKeyDown = (e, id) => {
     if (e.key === "Enter") {
-      console.log(e);
-      console.log(e.target.defaultValue);
-      console.log(e.target.name);
+      // console.log(e);
+      // console.log(e.target.defaultValue);
+      // console.log(e.target.name);
       let data = { [e.target.name]: e.target.defaultValue };
-      console.log(data);
+      //console.log(id, data);
       handleRowChange(id, data);
-      handleRowChange(id);
+      getDataFunc();
+      //handleRowChange(id);
     }
   };
 
-  // const handleRowBlur = (id) => {
-  //   handleRowChange(id);
+  // const handleRowBlur = (e, id) => {
+  //   //console.log(e);
+  //   // console.log(e.target.defaultValue);
+  //   // console.log(e.target.name);
+  //   let data = { [e.target.name]: e.target.defaultValue };
+  //   console.log(data);
+  //   handleRowChange(id, data);
+  //   getDataFunc();
   // };
 
   // Problem
   // Checkbox activate when onblur or enter
-  useEffect(() => {
-    handleRowChange(globId);
-    //console.log("useEffect")
-    // eslint-disable-next-line
-  }, [globId]);
+  // useEffect(() => {
+  //   handleRowChange(globId);
+  //   //console.log("useEffect")
+  //   // eslint-disable-next-line
+  // }, [globId]);
 
   const onCheckboxChange = (e, row) => {
     e.stopPropagation();
@@ -222,7 +226,7 @@ function App() {
     //console.log("clicked checkbox")
     //console.log(name,value)
     if ((name === "approved") & (value === true) & (row.status === "pending")) {
-      setSendData({ [name]: value, status: "awaiting" });
+      //setSendData({ [name]: value, status: "awaiting" });
       //getDataFunc();
       let data = { [name]: value, status: "awaiting" };
       handleRowChange(id, data);
@@ -232,20 +236,23 @@ function App() {
       (value === false) &
       (row.status === "awaiting")
     ) {
-      setSendData({ [name]: value, status: "pending" });
+      //setSendData({ [name]: value, status: "pending" });
       let data = { [name]: value, status: "pending" };
       handleRowChange(id, data);
       getDataFunc();
     } else {
-      setSendData({ [name]: value });
-      //getDataFunc();
+      //setSendData({ [name]: value });
+      let data = { [name]: value };
+      handleRowChange(id, data);
+      getDataFunc();
+      data = {};
     }
 
     const newRows = rows.map((row) => {
       if (row.id === id) {
         //console.log("sendData", sendData)
         //handleRowChange(id)
-        setGlobId(id);
+        //setGlobId(id);
         return { ...row, [name]: value };
       }
       return row;
@@ -263,20 +270,34 @@ function App() {
     const value = e.target.value;
     const name = e.target.name;
     const { id } = row;
-    console.log("name, value", name, value);
-    //setSendData({ ...sendData, [name]: value });
-    let data = { [name]: value };
-    handleRowChange(id, data);
+    //console.log("id, name, value, approved", id, name, value, row.approved);
+    if ((name === "status") & (value === "pending") & (row.approved === true)) {
+      let data = { [name]: value, approved: false };
+      handleRowChange(id, data);
+      // getDataFunc();
+    } else if (
+      (name === "status") &
+      (value === "awaiting") &
+      (row.approved === false)
+    ) {
+      let data = { [name]: value, approved: true };
+      handleRowChange(id, data);
+    } else {
+      //setSendData({ ...sendData, [name]: value });
+      let data = { [name]: value };
+      handleRowChange(id, data);
+    }
     const newRows = rows.map((row) => {
       if (row.id === id) {
-        console.log("sendData", sendData);
-        setGlobId(id);
+        //console.log("sendData", sendData);
+        //setGlobId(id);
         //handleRowChange(id)
         return { ...row, [name]: value };
       }
       return row;
     });
     setRows(newRows);
+    getDataFunc();
   };
 
   const uploadFile = (e, id) => {
@@ -365,7 +386,7 @@ function App() {
                 key={row.id}
                 id={row.id}
                 onClick={(e) => handleRowClick(row.id)}
-                //onBlur={(e) => handleRowBlur(row.id)}
+                //onBlur={(e) => handleRowBlur(e, row.id)}
                 onKeyDown={(e) => handleRowKeyDown(e, row.id)}
               >
                 <td
