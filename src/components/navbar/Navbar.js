@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  hrefStyle: {
+    textDecoration: "none",
+    color: "#474747",
+  },
 }));
 
 export default function MenuAppBar() {
@@ -47,7 +51,7 @@ export default function MenuAppBar() {
   const handleLogout = () => {
     history.push("/");
     setAnchorEl(null);
-    localStorage.removeItem("x-auth-token")
+    localStorage.removeItem("x-auth-token");
   };
 
   return (
@@ -94,6 +98,16 @@ export default function MenuAppBar() {
                 open={open}
                 onClose={handleClose}
               >
+                <MenuItem>
+                  <a
+                    className={classes.hrefStyle}
+                    href="http://144.202.67.136:8080/admin/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Admin Panel
+                  </a>
+                </MenuItem>
                 <MenuItem onClick={handleAccountPage}>Account</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
