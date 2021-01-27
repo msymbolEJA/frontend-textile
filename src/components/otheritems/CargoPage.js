@@ -78,7 +78,7 @@ const CargoPage = () => {
   return (
     <div className={classes.root}>
       <Paper className={classes.rootBottom}>
-        <h1>Create Post</h1>
+        <h1>Create A New Shipment</h1>
         <form
           className={classes.root}
           autoComplete="off"
