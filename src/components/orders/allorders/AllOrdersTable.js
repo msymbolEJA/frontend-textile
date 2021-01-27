@@ -11,8 +11,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
 import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
-// Local Sample Data
-import DATA from "../../../helper/Data";
+
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import { tagsData } from "../../../helper/Constants";
@@ -21,6 +20,7 @@ import { getData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
+import {} from "../../tableitems/ConstantTableCell";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AllOrdersTable() {
-  const [rows, setRows] = useState(DATA);
+  const [rows, setRows] = useState([]);
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
