@@ -19,6 +19,7 @@ import UploadFile from "../tableitems/UploadFile";
 import { putImage } from "../../helper/PostData";
 import { ToastContainer } from "react-toastify";
 import { toastWarnNotify } from "../otheritems/ToastNotify";
+import ConstantTableCell from "../tableitems/ConstantTableCell";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -385,11 +386,11 @@ function App() {
                 >
                   <OrderStatus {...{ row, name: "status", onSelectChange }} />
                 </td>
-                <CustomTableCell {...{ row, name: "receipt", onChange }} />
-                <CustomTableCell {...{ row, name: "id", onChange }} />
-                <CustomTableCell {...{ row, name: "last_updated", onChange }} />
+                <ConstantTableCell {...{ row, name: "receipt" }} />
+                <ConstantTableCell {...{ row, name: "id" }} />
+                <ConstantTableCell {...{ row, name: "last_updated" }} />
                 <CustomTableCell {...{ row, name: "item_index", onChange }} />
-                <CustomTableCell {...{ row, name: "created_date", onChange }} />
+                <ConstantTableCell {...{ row, name: "created_date" }} />
                 <CustomTableCell {...{ row, name: "buyer", onChange }} />
                 <CustomTableCell {...{ row, name: "supplier", onChange }} />
                 <CustomTableCell {...{ row, name: "type", onChange }} />
