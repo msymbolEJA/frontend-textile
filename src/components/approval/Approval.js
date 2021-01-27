@@ -98,7 +98,7 @@ function App() {
   const [count, setCount] = useState(0);
   //const [sendData, setSendData] = useState({});
   //const [globId, setGlobId] = useState();
-  const [selectedFile, setSelectedFile] = useState(null);
+  //const [selectedFile, setSelectedFile] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState();
 
   const getDataFunc = () => {
@@ -110,7 +110,7 @@ function App() {
       data
     )
       .then((response) => {
-        //console.log(response.data);
+        console.log(response.data);
         setRows(response.data.results);
         setCount(response.data.count);
       })
@@ -300,11 +300,11 @@ function App() {
     getDataFunc();
   };
 
-  const uploadFile = (e, id) => {
+  const uploadFile = (e, id, imgFile) => {
     e.stopPropagation();
     try {
       let path = `http://144.202.67.136:8080/etsy/mapping/${id}/`;
-      putImage(path, selectedFile, selectedFile.name)
+      putImage(path, imgFile, imgFile.name)
         .then((res) => {
           console.log(res);
         })
@@ -321,7 +321,9 @@ function App() {
 
   const fileSelectedHandler = (e, id) => {
     e.stopPropagation();
-    setSelectedFile(e.target.files[0]);
+    //setSelectedFile(e.target.files[0]);
+    let imgFile = e.target.files[0];
+    uploadFile(e, selectedRowId, imgFile);
   };
   const selectId = (event, id) => {
     event.stopPropagation();

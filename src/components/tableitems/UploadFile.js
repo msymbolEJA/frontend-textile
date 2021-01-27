@@ -24,13 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UploadFile = ({
-  uploadFile,
-  row,
-  selectedRowId,
-  selectId,
-  fileSelectedHandler,
-}) => {
+const UploadFile = ({ row, selectId, fileSelectedHandler }) => {
   const classes = useStyles();
   const hasImage = !(
     (row.Image ===
@@ -67,11 +61,6 @@ const UploadFile = ({
           type={"file"}
         />
       </>
-      {selectedRowId === row.id ? (
-        <button className={classes.btn} onClick={(e) => uploadFile(e, row.id)}>
-          Send
-        </button>
-      ) : null}
     </div>
   );
 };
