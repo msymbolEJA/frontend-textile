@@ -10,7 +10,6 @@ import Input from "@material-ui/core/Input";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
-import DATA from "../../helper/Data";
 import { putData, getData } from "../../helper/PostData";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
@@ -90,7 +89,7 @@ const CustomTableCell = ({ row, name, onChange }) => {
 };
 
 function App() {
-  const [rows, setRows] = React.useState(DATA);
+  const [rows, setRows] = React.useState([]);
   const [previous, setPrevious] = React.useState({});
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
@@ -110,7 +109,7 @@ function App() {
       data
     )
       .then((response) => {
-        console.log(response.data);
+        console.log("r:", response.data);
         setRows(response.data.results);
         setCount(response.data.count);
       })
@@ -151,62 +150,41 @@ function App() {
   };
 
   const handleRowClick = (id) => {
-    setRows((state) => {
-      return rows.map((row) => {
-        if (row.id === id) {
-          return { ...row, isEditMode: true };
-        }
-        return row;
-      });
-    });
+    const currentRow = rows.find((row) => row.id === id);
+    if (currentRow) {
+      if (!rows[id - 1].isEditMode) {
+        const newRows = rows.map((row) => {
+          return { ...row, isEditMode: row.id === id };
+        });
+        setRows(newRows);
+      }
+    }
   };
 
   const handleRowChange = (id, data) => {
-    //console.log("id", id);
-    //console.log("data", data);
-    setRows((state) => {
-      return rows.map((row) => {
-        if (row.id === id) {
-          //console.log("hrcSendData",sendData)
-          putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, data)
-            .then((response) => {
-              //console.log(response)
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-          //setSendData({})
-          return { ...row, isEditMode: false };
-        }
-        return row;
-      });
-    });
-    getDataFunc();
+    putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, data)
+      .then((response) => {
+        // console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => getDataFunc());
   };
 
   const handleRowKeyDown = (e, id) => {
     if (e.key === "Enter") {
-      // console.log(e);
-      // console.log(e.target.defaultValue);
-      // console.log(e.target.name);
       let data = { [e.target.name]: e.target.defaultValue };
-      //console.log(id, data);
       handleRowChange(id, data);
-      getDataFunc();
-      //handleRowChange(id);
     }
   };
 
-  // const handleRowBlur = (e, id) => {
-  //   //console.log(e);
-  //   // console.log(e.target.defaultValue);
-  //   // console.log(e.target.name);
-  //   let data = { [e.target.name]: e.target.defaultValue };
-  //   console.log(data);
-  //   handleRowChange(id, data);
-  //   getDataFunc();
-  // };
-
+  const handleRowBlur = (e, id) => {
+    //  console.log(e.target.defaultValue);
+    // console.log(e.target.name);
+    let data = { [e.target.name]: e.target.defaultValue };
+    handleRowChange(id, data);
+  };
   // Problem
   // Checkbox activate when onblur or enter
   // useEffect(() => {
@@ -388,7 +366,7 @@ function App() {
                 key={row.id}
                 id={row.id}
                 onClick={(e) => handleRowClick(row.id)}
-                //onBlur={(e) => handleRowBlur(e, row.id)}
+                onBlur={(e) => handleRowBlur(e, row.id)}
                 onKeyDown={(e) => handleRowKeyDown(e, row.id)}
               >
                 <td
