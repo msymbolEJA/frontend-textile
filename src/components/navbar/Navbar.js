@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
+  rightTitle: {
+    marginLeft: "1rem",
+  },
   title: {
     flexGrow: 1,
   },
@@ -78,10 +81,11 @@ export default function MenuAppBar() {
             onClick={handleMainPage}
           >
             <StoreIcon />
+            <Typography variant="h6" className={classes.rightTitle}>
+              Shiny Store
+            </Typography>
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Shiny Store
-          </Typography>
+          <div className={classes.title}></div>
           {auth && (
             <div className={classes.rightTop}>
               <div className={classes.userInfo}>
