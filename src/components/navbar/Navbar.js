@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   userRole: {
     fontSize: "0.8rem",
+    color: "#d3d3d3",
   },
   userName: {
     fontSize: "1.2rem",
