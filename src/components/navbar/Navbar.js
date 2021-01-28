@@ -24,6 +24,17 @@ const useStyles = makeStyles((theme) => ({
   hrefStyle: {
     textDecoration: "none",
     color: "#474747",
+    fontWeight: "545",
+  },
+  rightTop: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  userRole: {
+    fontSize: "0.8rem",
+  },
+  userName: {
+    fontSize: "1.2rem",
   },
 }));
 
@@ -72,7 +83,13 @@ export default function MenuAppBar() {
             Shiny Store
           </Typography>
           {auth && (
-            <div>
+            <div className={classes.rightTop}>
+              <div className={classes.userInfo}>
+                <div className={classes.userRole}>
+                  {"User Role".toUpperCase()}
+                </div>
+                <div className={classes.userName}>User Name</div>
+              </div>
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
