@@ -188,7 +188,7 @@ function App() {
   const handleRowClick = (id) => {
     const currentRow = rows.find((row) => row.id === id);
     if (currentRow) {
-      if (!rows[id - 1].isEditMode) {
+      if (!currentRow.isEditMode) {
         const newRows = rows.map((row) => {
           return { ...row, isEditMode: row.id === id };
         });
