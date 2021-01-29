@@ -20,6 +20,7 @@ import { ToastContainer } from "react-toastify";
 import { toastWarnNotify } from "../otheritems/ToastNotify";
 import ConstantTableCell from "../tableitems/ConstantTableCell";
 import EditableTableCell from "../tableitems/EditableTableCell";
+import SortableTableCell from "./SortableTableCell";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,8 +55,8 @@ const StyledTableRow = withStyles((theme) => ({
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: "#f5f5dc",
+    color: theme.palette.common.black,
   },
   body: {
     fontSize: 14,
@@ -69,10 +70,54 @@ function App() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [count, setCount] = useState(0);
+  const [orderBy, setOrderBy] = useState("id");
+  const [order, setOrder] = React.useState("desc");
   //const [sendData, setSendData] = useState({});
   //const [globId, setGlobId] = useState();
   //const [selectedFile, setSelectedFile] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState();
+
+  const handleRequestSort = (event, property) => {
+    //console.log("handleRequestSort");
+    // console.log(property);
+    // console.log(orderBy);
+    // console.log(orderBy === property);
+    // console.log(order === "asc");
+    const isAsc = order === "asc";
+    if (isAsc) {
+      axios
+        .get(
+          `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+            page * rowsPerPage
+          }&ordering=${property}`
+        )
+        .then((response) => {
+          console.log(response.data.results);
+          setRows(response.data.results);
+          // setCount(response.data.count);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (!isAsc) {
+      axios
+        .get(
+          `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+            page * rowsPerPage
+          }&ordering=-${property}`
+        )
+        .then((response) => {
+          console.log(response.data.results);
+          setRows(response.data.results);
+          // setCount(response.data.count);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
 
   const getDataFunc = () => {
     let data = "";
@@ -83,7 +128,7 @@ function App() {
       data
     )
       .then((response) => {
-        console.log("r:", response.data);
+        console.log("response:", response.data.results);
         setRows(response.data.results);
         setCount(response.data.count);
       })
@@ -314,24 +359,150 @@ function App() {
                   Approve All
                 </button>
               </StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">Recept</StyledTableCell>
-              <StyledTableCell align="center">Id</StyledTableCell>
-              <StyledTableCell align="center">Last Updated</StyledTableCell>
-              <StyledTableCell align="center">Item Index</StyledTableCell>
-              <StyledTableCell align="center">Created Date</StyledTableCell>
-              <StyledTableCell align="center">Buyer</StyledTableCell>
-              <StyledTableCell align="center">Supplier</StyledTableCell>
-              <StyledTableCell align="center">Type</StyledTableCell>
-              <StyledTableCell align="center">Length</StyledTableCell>
-              <StyledTableCell align="center">Color</StyledTableCell>
-              <StyledTableCell align="center">Quantity</StyledTableCell>
-              <StyledTableCell align="center">Size</StyledTableCell>
-              <StyledTableCell align="center">Start</StyledTableCell>
-              <StyledTableCell align="center">Space</StyledTableCell>
-              <StyledTableCell align="center">Upload File</StyledTableCell>
-              <StyledTableCell align="center">Explanation</StyledTableCell>
-              <StyledTableCell align="center">Note</StyledTableCell>
+              <SortableTableCell
+                property="status"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Status"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="receipt"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Receipt"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="id"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Id"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="last_updated"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Last Updated"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="item_index"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Item Index"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="created_date"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Created Date"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="buyer"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Buyer"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="supplier"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Supplier"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="type"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Type"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="length"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Length"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="color"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Color"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="qty"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Quantity"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="size"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Size"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="start"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Start"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="space"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Space"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="Image"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Upload File"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="explanation"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Explanation"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="note"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Note"
+                setOrderBy={setOrderBy}
+              />
             </TableRow>
           </TableHead>
           <TableBody>
