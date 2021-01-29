@@ -229,7 +229,7 @@ export default function Register() {
             id="last_name"
             label="Last Name"
             name="last_name"
-            autoComplete="last_name"
+            autoComplete="name"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.last_name}
