@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
-import { putData, getData } from "../../helper/PostData";
+import { putData } from "../../helper/PostData";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
 import CustomCheckbox from "../tableitems/CustomCheckbox";
@@ -72,10 +72,37 @@ function App() {
   const [count, setCount] = useState(0);
   const [orderBy, setOrderBy] = useState("id");
   const [order, setOrder] = React.useState("desc");
+  //const [isSorted, setIsSorted] = useState(false);
   //const [sendData, setSendData] = useState({});
   //const [globId, setGlobId] = useState();
   //const [selectedFile, setSelectedFile] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState();
+  const [url, setUrl] = useState(
+    `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+      page * rowsPerPage
+    }`
+  );
+
+  useEffect(() => {
+    // console.log({ url });
+    // console.log({ page });
+    // console.log({ rowsPerPage });
+    getListFunc();
+    // eslint-disable-next-line
+  }, [url, page, rowsPerPage]);
+
+  const getListFunc = () => {
+    axios
+      .get(url)
+      .then((response) => {
+        console.log(response.data.count);
+        setRows(response.data.results);
+        setCount(response.data.count);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleRequestSort = (event, property) => {
     //console.log("handleRequestSort");
@@ -85,62 +112,36 @@ function App() {
     // console.log(order === "asc");
     const isAsc = order === "asc";
     if (isAsc) {
-      axios
-        .get(
-          `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
-            page * rowsPerPage
-          }&ordering=${property}`
-        )
-        .then((response) => {
-          console.log(response.data.results);
-          setRows(response.data.results);
-          // setCount(response.data.count);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      setUrl(
+        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }&ordering=${property}`
+      );
     } else if (!isAsc) {
-      axios
-        .get(
-          `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
-            page * rowsPerPage
-          }&ordering=-${property}`
-        )
-        .then((response) => {
-          console.log(response.data.results);
-          setRows(response.data.results);
-          // setCount(response.data.count);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      setUrl(
+        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }&ordering=-${property}`
+      );
     }
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
-  const getDataFunc = () => {
-    let data = "";
-    getData(
-      `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
-        page * rowsPerPage
-      }`,
-      data
-    )
-      .then((response) => {
-        console.log("response:", response.data.results);
-        setRows(response.data.results);
-        setCount(response.data.count);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const getDataFunc = () => {
+  //   if (isSorted) {
+  //     setUrl(
+  //       `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+  //         page * rowsPerPage
+  //       }`
+  //     );
+  //   }
+  // };
 
-  useEffect(() => {
-    getDataFunc();
-    // eslint-disable-next-line
-  }, [page, rowsPerPage]);
+  // useEffect(() => {
+  //   getDataFunc();
+  //   // eslint-disable-next-line
+  // }, [page, rowsPerPage]);
 
   const onChange = (e, row) => {
     if (!previous[row.id]) {
@@ -160,6 +161,22 @@ function App() {
   };
 
   const handleChangePage = (event, newPage) => {
+    console.log({ order });
+    if (order === "asc") {
+      console.log("order-desc-newpage");
+      setUrl(
+        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+          newPage * rowsPerPage
+        }&ordering=-${orderBy}`
+      );
+    } else if (order === "desc") {
+      console.log("asc-newpage");
+      setUrl(
+        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+          newPage * rowsPerPage
+        }&ordering=${orderBy}`
+      );
+    }
     setPage(newPage);
   };
 
@@ -188,7 +205,7 @@ function App() {
       .catch((error) => {
         console.log(error);
       })
-      .finally(() => getDataFunc());
+      .finally(() => getListFunc());
   };
 
   const handleRowKeyDown = (e, id) => {
@@ -227,7 +244,7 @@ function App() {
       //getDataFunc();
       let data = { [name]: value, status: "awaiting" };
       handleRowChange(id, data);
-      getDataFunc();
+      getListFunc();
     } else if (
       (name === "approved") &
       (value === false) &
@@ -236,12 +253,12 @@ function App() {
       //setSendData({ [name]: value, status: "pending" });
       let data = { [name]: value, status: "pending" };
       handleRowChange(id, data);
-      getDataFunc();
+      getListFunc();
     } else {
       //setSendData({ [name]: value });
       let data = { [name]: value };
       handleRowChange(id, data);
-      getDataFunc();
+      getListFunc();
       data = {};
     }
 
@@ -294,7 +311,7 @@ function App() {
       return row;
     });
     setRows(newRows);
-    getDataFunc();
+    getListFunc();
   };
 
   const uploadFile = (e, id, imgFile) => {
@@ -309,7 +326,7 @@ function App() {
           console.log(err);
         })
         .finally(() => {
-          getDataFunc();
+          getListFunc();
         });
     } catch (error) {
       toastWarnNotify("Select Image!");
@@ -335,7 +352,7 @@ function App() {
       .then((res) => {
         console.log(res);
         toastWarnNotify(res.data.Success);
-        getDataFunc();
+        getListFunc();
       })
       .catch(({ response }) => {
         console.log(response.data.Failed);

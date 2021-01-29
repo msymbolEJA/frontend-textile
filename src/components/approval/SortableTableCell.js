@@ -22,9 +22,9 @@ const SortableTableCell = ({
   setOrderBy,
 }) => {
   //   setOrderBy(property);
-  console.log({ property });
-  console.log({ order });
-  console.log({ orderBy });
+  // console.log({ property });
+  // console.log({ order });
+  // console.log({ orderBy });
   return (
     <>
       <StyledTableCell
