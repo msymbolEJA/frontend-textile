@@ -118,7 +118,7 @@ export default function Login() {
         .then((response) => {
           //console.log(values.username)
           //console.log(response.data);
-          setUser(response.data);
+          setUser(response?.data);
           const token = response?.data?.access;
           if (token) {
             localStorage.setItem("x-auth-token", token);
@@ -132,8 +132,12 @@ export default function Login() {
           if (response) {
             setLoginFailed(true);
             //console.log("Error", response)
-            console.log(response?.data.non_field_errors[0]);
-            setErrorText(response?.data.non_field_errors[0]);
+            //console.log(response?.data?.non_field_errors[0]);
+            try {
+              setErrorText(response?.data?.non_field_errors[0]);
+            } catch (error) {
+              setErrorText("Server Error!");
+            }
           } else {
             setLoginFailed(true);
             setErrorText("Something went wrong!");
