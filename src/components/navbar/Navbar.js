@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -10,6 +10,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import StoreIcon from "@material-ui/icons/Store";
 import Menu from "@material-ui/core/Menu";
+import { AppContext } from "../../context/Context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,8 +47,11 @@ export default function MenuAppBar() {
   const classes = useStyles(); // eslint-disable-next-line
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { user } = useContext(AppContext);
   const open = Boolean(anchorEl);
   const history = useHistory();
+
+  console.log(user.role);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -91,9 +95,11 @@ export default function MenuAppBar() {
             <div className={classes.rightTop}>
               <div className={classes.userInfo}>
                 <div className={classes.userRole}>
-                  {"User Role".toUpperCase()}
+                  {user.role.toUpperCase()}
                 </div>
-                <div className={classes.userName}>User Name</div>
+                <div className={classes.userName}>
+                  {user.user || user.username}
+                </div>
               </div>
               <IconButton
                 aria-label="account of current user"
