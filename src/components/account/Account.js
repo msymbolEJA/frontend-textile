@@ -4,12 +4,12 @@ import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import AccountBoxRoundedIcon from "@material-ui/icons/AccountBoxRounded";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
-import { AppContext } from "../../context/Context"
+import { AppContext } from "../../context/Context";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -56,33 +56,46 @@ const useStyles = makeStyles((theme) => ({
 export default function Account() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const { user, setUser } = useContext(AppContext)
+  const { user, setUser } = useContext(AppContext);
   const [accountData, setAccountData] = useState({
-    username: user.username,
+    username: user.user,
     email: user.email,
-  })
+  });
+  const [img, setImg] = useState();
 
-  //console.log(user.username);
+  //console.log(user);
 
   const updateUser = (e) => {
-    e.preventDefault()
-    setUser({ ...user, username: "test4" })
+    e.preventDefault();
+    setUser({ ...user, username: "test4" });
     setOpen(false);
     //console.log(accountData);
-  }
+  };
 
   const changeHandler = (e) => {
-    setAccountData({ ...accountData, [e.target.name]: e.target.value })
-  }
+    setAccountData({ ...accountData, [e.target.name]: e.target.value });
+  };
 
   const handleOpen = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  React.useEffect(() => {
+    axios
+      .get(`http://144.202.67.136:8080/account/profile/${user.id}/`)
+      .then((response) => {
+        //console.log(response.data.image);
+        setImg(response.data.image);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
 
   const body = (
     <div className={classes.modalpaper}>
@@ -167,7 +180,7 @@ export default function Account() {
           variant="contained"
           color="primary"
           className={classes.submit}
-          onClick={e => updateUser(e)}
+          onClick={(e) => updateUser(e)}
         >
           Update
         </Button>
@@ -180,7 +193,7 @@ export default function Account() {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <AccountBoxRoundedIcon className={classes.icon} />
+          <img src={img} alt="user" />
         </Avatar>
         <div className={classes.info}>
           <Typography component="h1" variant="h5">
