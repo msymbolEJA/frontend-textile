@@ -12,12 +12,15 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import CreateIcon from "@material-ui/icons/Create";
 import MenuItem from "@material-ui/core/MenuItem";
+import { ToastContainer } from "react-toastify";
+
 // Post Data
 import { postData } from "../../helper/PostData";
 import Modal from "@material-ui/core/Modal";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { USER_TYPE } from "../../helper/Constants";
+import { toastSuccessNotify } from "../otheritems/ToastNotify";
 
 const validationSchema = yup.object({
   username: yup
@@ -162,7 +165,9 @@ export default function Register() {
       postData("http://144.202.67.136:8080/account/register/", values)
         .then((data) => {
           console.log("DATA : ", data);
-          handleOpen();
+          console.log("MESSAGE : ", data.data.message);
+          toastSuccessNotify(data.data.message);
+          //handleOpen();
           history.push("/");
         })
         .catch(({ response }) => {
@@ -354,6 +359,7 @@ export default function Register() {
           <Copyright />
         </Box>
       </div>
+      <ToastContainer />
     </Container>
   );
 }
