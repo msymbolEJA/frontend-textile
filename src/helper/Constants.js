@@ -6,8 +6,8 @@ export const tagsData = [
   "ready",
   "in_transit",
   "cancelled",
-  "shipped",
   "repeat",
+  "shipped",
   "follow_up",
 ];
 
