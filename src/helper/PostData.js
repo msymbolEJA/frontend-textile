@@ -13,7 +13,6 @@ export const postData = async (path, data) => {
 };
 
 export const putData = async (path, data) => {
-  console.log("putDataToken", token);
   const response = await axios.put(`${path}`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -25,7 +24,7 @@ export const putData = async (path, data) => {
 };
 
 export const getData = async (path) => {
-  //console.log("getDataToken", token);
+  console.log(token);
   const response = await axios.get(`${path}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -42,9 +41,9 @@ export const postFormData = async (path, dataObj) => {
   Object.keys(dataObj).forEach((key) => data.append(key, dataObj[key]));
 
   console.log("data", data);
-  console.log("putDataToken", token);
   const response = await axios.post(`${path}`, data, {
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
     },
   });
@@ -52,15 +51,18 @@ export const postFormData = async (path, dataObj) => {
 };
 
 export const queryData = async (path) => {
-  const response = await axios.get(`${path}`);
+  const response = await axios.get(`${path}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response;
 };
 
 export const putImage = async (path, image, imageName) => {
   const fd = new FormData();
   fd.append("Image", image, imageName);
-
-  console.log("putImage", token);
   const response = await axios.put(path, fd, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -72,11 +74,15 @@ export const putImage = async (path, image, imageName) => {
 export const getOnePdf = async (path, data) => {
   const fd = new FormData();
   fd.append("a", 2);
-  const response = await axios.post(path, fd);
+  const response = await axios.post(path, fd, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response;
 };
 
-export const getAllPdf = async (path) => {
+export const getAllPdf = async (path, data) => {
   const response = await axios.get(path, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -86,6 +92,11 @@ export const getAllPdf = async (path) => {
 };
 
 export const globalSearch = async (path) => {
-  const response = await axios.get(path);
+  const response = await axios.get(path, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response;
 };
