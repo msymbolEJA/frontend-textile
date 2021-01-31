@@ -153,13 +153,12 @@ export default function Register() {
       last_name: "",
       email: "",
       role: "",
-      workshop: "",
       password: "",
       password2: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      //console.log(values);
+      console.log(values);
       postData("http://144.202.67.136:8080/account/register/", values)
         .then((data) => {
           console.log("DATA : ", data);
@@ -290,7 +289,7 @@ export default function Register() {
               autoComplete="workshop"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.workshop}
+              value={formik.values.workshop || ""}
             />
           ) : null}
           <TextField
