@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-  const { user, setUser } = useContext(AppContext);
+  const { user } = useContext(AppContext);
 
   const localUser = localStorage.getItem("localUser");
   console.log(user.role);
@@ -44,8 +44,8 @@ const Dashboard = () => {
       <h1>Dashboard</h1>
       <div className={classes.boxes}>
         <Grid container spacing={3}>
-          <AllOrders isAdmin={userRole == "admin"} />
-          {userRole == "admin" ? (
+          <AllOrders isAdmin={userRole === "admin"} />
+          {userRole === "admin" ? (
             <>
               <AwaitingOrders />
               <SearchOrders />

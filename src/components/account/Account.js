@@ -9,7 +9,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import { AppContext } from "../../context/Context";
-import axios from "axios";
 import { getData } from "../../helper/PostData";
 
 const useStyles = makeStyles((theme) => ({
