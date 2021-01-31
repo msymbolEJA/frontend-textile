@@ -12,7 +12,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import CreateIcon from "@material-ui/icons/Create";
 import MenuItem from "@material-ui/core/MenuItem";
-import { ToastContainer } from "react-toastify";
 
 // Post Data
 import { postData } from "../../helper/PostData";
@@ -359,7 +358,6 @@ export default function Register() {
           <Copyright />
         </Box>
       </div>
-      <ToastContainer />
     </Container>
   );
 }
