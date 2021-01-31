@@ -15,7 +15,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 // Post Data
 import { postData } from "../../helper/PostData";
-import Modal from "@material-ui/core/Modal";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { USER_TYPE } from "../../helper/Constants";
@@ -109,44 +108,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Register() {
   const classes = useStyles();
   const history = useHistory();
-  const [open, setOpen] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleMainPage = () => {
-    handleClose();
-    history.push("/");
-  };
-
-  const body = (
-    <div className={classes.modalpaper}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <div className={classes.error}>
-            <span>Registered succesfully! Wait for admin verification.</span>
-          </div>
-        </Grid>
-      </Grid>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        className={classes.submit}
-        onClick={handleMainPage}
-      >
-        Ok
-      </Button>
-    </div>
-  );
 
   const formik = useFormik({
     initialValues: {
@@ -166,7 +129,7 @@ export default function Register() {
           console.log("DATA : ", data);
           console.log("MESSAGE : ", data.data.message);
           toastSuccessNotify(data.data.message);
-          //handleOpen();
+
           history.push("/");
         })
         .catch(({ response }) => {
@@ -338,14 +301,6 @@ export default function Register() {
           >
             Register
           </Button>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-          >
-            {body}
-          </Modal>
           <Grid container>
             <Grid item xs className={classes.accountCheck}>
               <Link href="/" variant="body2">
