@@ -3,12 +3,7 @@ import React, { useState, createContext } from "react";
 export const AppContext = createContext();
 
 export const ContextProvider = (props) => {
-  const [user, setUser] = useState({
-    user: "admin",
-    email: "admin@admin.com",
-    id: "",
-    role: "",
-  });
+  const [user, setUser] = useState({});
   const [auth, setAuth] = useState(false);
   const localUser = localStorage.getItem("localUser");
   //console.log(user.role);

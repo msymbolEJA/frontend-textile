@@ -130,16 +130,18 @@ export default function MenuAppBar() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem>
-                  <a
-                    className={classes.hrefStyle}
-                    href="http://144.202.67.136:8080/admin/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Admin Panel
-                  </a>
-                </MenuItem>
+                {localRole === "admin" && (
+                  <MenuItem>
+                    <a
+                      className={classes.hrefStyle}
+                      href="http://144.202.67.136:8080/admin/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Admin Panel
+                    </a>
+                  </MenuItem>
+                )}
                 <MenuItem onClick={handleAccountPage}>Account</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
