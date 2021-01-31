@@ -51,7 +51,7 @@ export default function MenuAppBar() {
   const open = Boolean(anchorEl);
   const history = useHistory();
 
-  console.log(user.role);
+  //console.log(user.role);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -72,6 +72,9 @@ export default function MenuAppBar() {
     setAnchorEl(null);
     localStorage.removeItem("x-auth-token");
   };
+
+  const localRole = localStorage.getItem("localRole");
+  const localUser = localStorage.getItem("localUser");
 
   return (
     <div className={classes.root}>
@@ -95,10 +98,10 @@ export default function MenuAppBar() {
             <div className={classes.rightTop}>
               <div className={classes.userInfo}>
                 <div className={classes.userRole}>
-                  {user.role.toUpperCase()}
+                  {user.role.toUpperCase() || localRole.toUpperCase()}
                 </div>
                 <div className={classes.userName}>
-                  {user.user || user.username}
+                  {user.user || user.username || localUser}
                 </div>
               </div>
               <IconButton
