@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AllOrders() {
+export default function AllOrders({ isAdmin }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -29,7 +29,13 @@ export default function AllOrders() {
   };
 
   return (
-    <Grid item xs={12} md={6} onClick={handleClick} className={classes.root}>
+    <Grid
+      item
+      xs={12}
+      md={isAdmin ? 6 : 12}
+      onClick={handleClick}
+      className={classes.root}
+    >
       <Paper className={classes.paper}>
         <HorizontalSplitRoundedIcon className={classes.icon} color="primary" />
         <h1>All Orders</h1>
