@@ -99,7 +99,7 @@ export default function MenuAppBar() {
             <div className={classes.rightTop}>
               <div className={classes.userInfo}>
                 <div className={classes.userRole}>
-                  {user.role.toUpperCase() || localRole.toUpperCase()}
+                  {user?.role?.toUpperCase() || localRole?.toUpperCase()}
                 </div>
                 <div className={classes.userName}>
                   {localUser || user.user || user.username}

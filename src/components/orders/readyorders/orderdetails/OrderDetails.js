@@ -13,6 +13,7 @@ import DATA from "../../../../helper/Data";
 import { Button } from "@material-ui/core";
 import { getOnePdf, getData } from "../../../../helper/PostData";
 import CargoPage from "../../../otheritems/CargoPage";
+import data from "../../../../helper/Data";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -49,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
+  table2: {
+    maxWidth: 650,
+    margin: "auto",
+  },
   selectTableCell: {
     width: 60,
   },
@@ -68,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
 const OrderDetails = ({ match }) => {
   const [rows, setRows] = useState(DATA);
+  const [logs, setLogs] = useState([]);
   const classes = useStyles();
 
   const getPdf = () => {
@@ -91,11 +97,18 @@ const OrderDetails = ({ match }) => {
   useEffect(() => {
     let data = "";
     let url = `http://144.202.67.136:8080/etsy/mapping/${match.params.id}/`;
+    let urlLogs = `http://144.202.67.136:8080/etsy/dateLogs/${match.params.id}/`;
     //console.log(url)
     getData(url, data)
       .then((res) => {
         //console.log(res.data)
         setRows([res.data]);
+      })
+      .then(() => {
+        getData(urlLogs).then((res) => {
+          console.log("res logs:", res);
+          setLogs(res.data);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -173,6 +186,33 @@ const OrderDetails = ({ match }) => {
           Print
         </Button>
       ) : null}
+      <hr />
+
+      <TableContainer component={Paper}>
+        <Table className={classes.table2} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell align="right">User</TableCell>
+              <TableCell align="right">Type</TableCell>
+              <TableCell align="right">Data</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {logs.length > 0 &&
+              logs.map((log, i) => (
+                <TableRow key={i}>
+                  <TableCell component="th" scope="row">
+                    {log.change_date}
+                  </TableCell>
+                  <TableCell align="right">{log.user}</TableCell>
+                  <TableCell align="right">{log.type}</TableCell>
+                  <TableCell align="right">{log.data}</TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
