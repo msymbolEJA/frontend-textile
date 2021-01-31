@@ -1,5 +1,6 @@
 import axios from "axios";
 import FormData from "form-data";
+const token = localStorage.getItem("x-auth-token");
 
 export const postData = async (path, data) => {
   const response = await axios.post(`${path}`, data, {
@@ -12,8 +13,10 @@ export const postData = async (path, data) => {
 };
 
 export const putData = async (path, data) => {
+  console.log("putDataToken", token);
   const response = await axios.put(`${path}`, data, {
     headers: {
+      Authorization: `Bearer ${token}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -21,9 +24,11 @@ export const putData = async (path, data) => {
   return response;
 };
 
-export const getData = async (path, data) => {
-  const response = await axios.get(`${path}`, data, {
+export const getData = async (path) => {
+  //console.log("getDataToken", token);
+  const response = await axios.get(`${path}`, {
     headers: {
+      Authorization: `Bearer ${token}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },
@@ -37,6 +42,7 @@ export const postFormData = async (path, dataObj) => {
   Object.keys(dataObj).forEach((key) => data.append(key, dataObj[key]));
 
   console.log("data", data);
+  console.log("putDataToken", token);
   const response = await axios.post(`${path}`, data, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -53,7 +59,13 @@ export const queryData = async (path) => {
 export const putImage = async (path, image, imageName) => {
   const fd = new FormData();
   fd.append("Image", image, imageName);
-  const response = await axios.put(path, fd);
+
+  console.log("putImage", token);
+  const response = await axios.put(path, fd, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response;
 };
 
@@ -64,8 +76,12 @@ export const getOnePdf = async (path, data) => {
   return response;
 };
 
-export const getAllPdf = async (path, data) => {
-  const response = await axios.get(path);
+export const getAllPdf = async (path) => {
+  const response = await axios.get(path, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response;
 };
 
