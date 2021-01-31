@@ -10,6 +10,7 @@ import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import { AppContext } from "../../context/Context";
 import axios from "axios";
+import { getData } from "../../helper/PostData";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -86,15 +87,23 @@ export default function Account() {
   };
 
   React.useEffect(() => {
-    axios
-      .get(`http://144.202.67.136:8080/account/profile/${user.id}/`)
+    getData(`http://144.202.67.136:8080/account/profile/${user.id}/`)
       .then((response) => {
-        //console.log(response.data.image);
+        //console.log(response);
         setImg(response.data.image);
       })
       .catch((error) => {
         console.log(error);
       });
+    // axios
+    //   .get(`http://144.202.67.136:8080/account/profile/${user.id}/`)
+    //   .then((response) => {
+    //     //console.log(response.data.image);
+    //     setImg(response.data.image);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   });
 
   const body = (
