@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+//import axios from "axios";
 import CustomButtonGroup from "./CustomButtonGroup";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -11,7 +11,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
 import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
-
+//import { getData } from "../../../helper/PostData";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import { tagsData } from "../../../helper/Constants";
@@ -19,8 +19,8 @@ import Button from "@material-ui/core/Button";
 import { getData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
-import BarcodeInput from "../../otheritems/BarcodeInput";
 import {} from "../../tableitems/ConstantTableCell";
+import { TextField } from "@material-ui/core";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -92,8 +92,8 @@ function AllOrdersTable() {
   //console.log("UED", url);
   useEffect(() => {
     //console.log(url);
-    axios
-      .get(url)
+    let data = "";
+    getData(url, data)
       .then((res) => {
         setRows(res.data.results);
         //console.log(res.data.results);
@@ -214,7 +214,14 @@ function AllOrdersTable() {
           tagsData={tagsData}
         />
         {selectedTag === "ready" || selectedTag === "shipped" ? (
-          <BarcodeInput />
+          <TextField
+            id="outlined-basic"
+            label="Barcode"
+            variant="outlined"
+            size="small"
+            value="barcode-result"
+            className={classes.barcode}
+          />
         ) : null}
         <TableContainer className={classes.container}>
           <Table
