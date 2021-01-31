@@ -1,27 +1,23 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+import React, { useState } from "react";
+import BarcodeReader from "react-barcode-reader";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "25ch",
-    },
-  },
-}));
+const BarcodeInput = () => {
+  const [result, setResult] = useState("No result");
 
-export default function BarcodeInput() {
-  const classes = useStyles();
+  const handleScan = (data) => {
+    setResult(data);
+  };
+
+  const handleError = (err) => {
+    console.error(err);
+  };
 
   return (
-    <form className={classes.root} noValidate autoComplete="off">
-      <TextField
-        id="outlined-basic"
-        label="Barcode"
-        variant="outlined"
-        size="small"
-      />
-    </form>
+    <div>
+      <BarcodeReader onError={handleError} onScan={handleScan} />
+      <p>Barcode From Other Component : {result}</p>
+    </div>
   );
-}
+};
+
+export default BarcodeInput;

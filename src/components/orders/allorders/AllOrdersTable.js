@@ -19,7 +19,8 @@ import Button from "@material-ui/core/Button";
 import { getData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
-import { TextField } from "@material-ui/core";
+import BarcodeInput from "../../otheritems/BarcodeInput";
+import BarcodeReader from "react-barcode-reader";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -202,6 +203,16 @@ function AllOrdersTable() {
     });
   };
 
+  const [result, setResult] = useState("No result");
+
+  const handleScan = (data) => {
+    setResult(data);
+  };
+
+  const handleError = (err) => {
+    console.error(err);
+  };
+
   return (
     <div>
       <Paper className={classes.root}>
@@ -211,14 +222,11 @@ function AllOrdersTable() {
           tagsData={tagsData}
         />
         {selectedTag === "ready" || selectedTag === "shipped" ? (
-          <TextField
-            id="outlined-basic"
-            label="Barcode"
-            variant="outlined"
-            size="small"
-            value="barcode-result"
-            className={classes.barcode}
-          />
+          <div>
+            <BarcodeReader onError={handleError} onScan={handleScan} />
+            <p>Barcode From Same Component : {result}</p>
+            <BarcodeInput />
+          </div>
         ) : null}
         <TableContainer className={classes.container}>
           <Table

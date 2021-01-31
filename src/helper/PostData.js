@@ -24,7 +24,7 @@ export const putData = async (path, data) => {
 };
 
 export const getData = async (path) => {
-  console.log(token);
+  //console.log(token);
   const response = await axios.get(`${path}`, {
     headers: {
       Authorization: `Bearer ${token}`,
