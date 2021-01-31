@@ -38,12 +38,12 @@ const CustomButtonGroup = ({
 
   const { isAdmin } = useContext(AppContext);
 
-  // console.log({ isAdmin });
+  console.log({ isAdmin });
 
   // console.log(tagsData);
   // console.log(nonAdminTagsData);
 
-  let statusTags = isAdmin === "admin" ? tagsData : nonAdminTagsData;
+  let statusTags = isAdmin ? tagsData : nonAdminTagsData;
   // console.log({ statusTags });
 
   return (

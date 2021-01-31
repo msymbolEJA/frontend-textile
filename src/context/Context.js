@@ -15,7 +15,7 @@ export const ContextProvider = (props) => {
   // console.log("localUser", localUser);
   // console.log("user.role", user.role);
 
-  const isAdmin = user.role || localUser;
+  const isAdmin = (user.role || localUser) === "admin";
   console.log(isAdmin);
   return (
     <AppContext.Provider value={{ user, setUser, auth, setAuth, isAdmin }}>
