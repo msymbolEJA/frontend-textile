@@ -91,7 +91,6 @@ function AllOrdersTable() {
   //--------------- Get Orders
   //console.log("UED", url);
   useEffect(() => {
-    //console.log(url);
     getData(url)
       .then((res) => {
         setRows(res.data.results);

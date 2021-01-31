@@ -13,6 +13,7 @@ export const postData = async (path, data) => {
 };
 
 export const putData = async (path, data) => {
+  const token = localStorage.getItem("x-auth-token");
   const response = await axios.put(`${path}`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -24,7 +25,7 @@ export const putData = async (path, data) => {
 };
 
 export const getData = async (path) => {
-  //console.log(token);
+  const token = localStorage.getItem("x-auth-token");
   const response = await axios.get(`${path}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -37,10 +38,7 @@ export const getData = async (path) => {
 
 export const postFormData = async (path, dataObj) => {
   const data = new FormData();
-  console.log("data1", data);
   Object.keys(dataObj).forEach((key) => data.append(key, dataObj[key]));
-
-  console.log("data", data);
   const response = await axios.post(`${path}`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
