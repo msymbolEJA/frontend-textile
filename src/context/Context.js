@@ -10,8 +10,15 @@ export const ContextProvider = (props) => {
     role: "",
   });
   const [auth, setAuth] = useState(false);
+  const localUser = localStorage.getItem("localUser");
+  //console.log(user.role);
+  // console.log("localUser", localUser);
+  // console.log("user.role", user.role);
+
+  const isAdmin = user.role || localUser;
+  console.log(isAdmin);
   return (
-    <AppContext.Provider value={{ user, setUser, auth, setAuth }}>
+    <AppContext.Provider value={{ user, setUser, auth, setAuth, isAdmin }}>
       {props.children}
     </AppContext.Provider>
   );
