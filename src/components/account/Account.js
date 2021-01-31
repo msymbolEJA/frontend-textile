@@ -57,10 +57,7 @@ export default function Account() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const { user, setUser } = useContext(AppContext);
-  const [accountData, setAccountData] = useState({
-    username: user.user,
-    email: user.email,
-  });
+  const [accountData, setAccountData] = useState();
   const [img, setImg] = useState();
 
   //console.log(user);
@@ -86,24 +83,19 @@ export default function Account() {
   };
 
   React.useEffect(() => {
-    getData(`http://144.202.67.136:8080/account/profile/${user.id}/`)
+    getData(
+      `http://144.202.67.136:8080/account/profile/${localStorage.getItem(
+        "localId"
+      )}/`
+    )
       .then((response) => {
-        //console.log(response);
-        setImg(response.data.image);
+        console.log(response.data);
+        setAccountData(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-    // axios
-    //   .get(`http://144.202.67.136:8080/account/profile/${user.id}/`)
-    //   .then((response) => {
-    //     //console.log(response.data.image);
-    //     setImg(response.data.image);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-  });
+  }, []);
 
   const body = (
     <div className={classes.modalpaper}>
@@ -119,7 +111,7 @@ export default function Account() {
               id="username"
               label="Username"
               autoFocus
-              defaultValue={accountData.username}
+              defaultValue={accountData?.username}
               onChange={(e) => changeHandler(e)}
             />
           </Grid>
@@ -132,7 +124,7 @@ export default function Account() {
               label="Email Address"
               name="email"
               autoComplete="email"
-              defaultValue={accountData.email}
+              defaultValue={accountData?.email}
               onChange={(e) => changeHandler(e)}
             />
           </Grid>
@@ -205,9 +197,9 @@ export default function Account() {
         </Avatar>
         <div className={classes.info}>
           <Typography component="h1" variant="h5">
-            {accountData.username}
+            {accountData?.username}
           </Typography>
-          <Typography variant="h6">{accountData.email}</Typography>
+          <Typography variant="h6">{accountData?.email}</Typography>
         </div>
         <div>
           <Button

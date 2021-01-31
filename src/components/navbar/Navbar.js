@@ -48,6 +48,7 @@ export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { user } = useContext(AppContext);
+  console.log("user", user);
   const open = Boolean(anchorEl);
   const history = useHistory();
 
@@ -101,7 +102,7 @@ export default function MenuAppBar() {
                   {user.role.toUpperCase() || localRole.toUpperCase()}
                 </div>
                 <div className={classes.userName}>
-                  {user.user || user.username || localUser}
+                  {localUser || user.user || user.username}
                 </div>
               </div>
               <IconButton
