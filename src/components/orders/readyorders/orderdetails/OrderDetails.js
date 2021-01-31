@@ -193,9 +193,8 @@ const OrderDetails = ({ match }) => {
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
-              <TableCell align="right">User</TableCell>
-              <TableCell align="right">Type</TableCell>
-              <TableCell align="right">Data</TableCell>
+              <TableCell>User</TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -205,9 +204,9 @@ const OrderDetails = ({ match }) => {
                   <TableCell component="th" scope="row">
                     {log.change_date}
                   </TableCell>
-                  <TableCell align="right">{log.user}</TableCell>
-                  <TableCell align="right">{log.type}</TableCell>
-                  <TableCell align="right">{log.data}</TableCell>
+                  <TableCell>{log.user}</TableCell>
+                  <TableCell>{`${log.type} => ${log.data}`}</TableCell>
+                  <TableCell>{}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
