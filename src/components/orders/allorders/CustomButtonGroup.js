@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from "react";
 import Button from "@material-ui/core/Button";
+import { AppContext } from "../../../context/Context";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,18 +23,33 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   header: {
-    fontSize: "1.5rem"
-  }
+    fontSize: "1.5rem",
+  },
 }));
 
-const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
+const CustomButtonGroup = ({
+  selectedTag,
+  handleTagChange,
+  tagsData,
+  nonAdminTagsData,
+}) => {
   const classes = useStyles();
   //console.log("ST",selectedTag)
+
+  const { isAdmin } = useContext(AppContext);
+
+  // console.log({ isAdmin });
+
+  // console.log(tagsData);
+  // console.log(nonAdminTagsData);
+
+  let statusTags = isAdmin === "admin" ? tagsData : nonAdminTagsData;
+  // console.log({ statusTags });
 
   return (
     <div>
       <div className={classes.btnGroup}>
-        {tagsData.map((tag) => (
+        {statusTags.map((tag) => (
           <Button
             className={classes.btn}
             id={tag}
@@ -41,14 +57,17 @@ const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
             checked={selectedTag.indexOf(tag) > -1}
             onClick={(e) => handleTagChange(e)}
             variant="contained"
-            style={{ backgroundColor: selectedTag === tag ? "#3F51B5" : null, color: selectedTag === tag ? "white" : null }}
+            style={{
+              backgroundColor: selectedTag === tag ? "#3F51B5" : null,
+              color: selectedTag === tag ? "white" : null,
+            }}
           >
             {tag.replace("_", " ")}
           </Button>
         ))}
       </div>
-    </div >
-  )
-}
+    </div>
+  );
+};
 
-export default CustomButtonGroup
+export default CustomButtonGroup;

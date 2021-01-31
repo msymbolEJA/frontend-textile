@@ -11,6 +11,15 @@ export const tagsData = [
   "follow_up",
 ];
 
+export const nonAdminTagsData = [
+  "awaiting",
+  "in-progress",
+  "ready",
+  "in_transit",
+  "cancelled",
+  "repeat",
+];
+
 export const statusData = [
   "pending",
   "awaiting",
