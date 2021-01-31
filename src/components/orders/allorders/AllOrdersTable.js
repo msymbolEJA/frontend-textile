@@ -14,7 +14,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 //import { getData } from "../../../helper/PostData";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
-import { tagsData } from "../../../helper/Constants";
+import { tagsData, nonAdminTagsData } from "../../../helper/Constants";
 import Button from "@material-ui/core/Button";
 import { getData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
@@ -220,6 +220,7 @@ function AllOrdersTable() {
           selectedTag={selectedTag}
           handleTagChange={handleTagChange}
           tagsData={tagsData}
+          nonAdminTagsData={nonAdminTagsData}
         />
         {selectedTag === "ready" || selectedTag === "shipped" ? (
           <div>
