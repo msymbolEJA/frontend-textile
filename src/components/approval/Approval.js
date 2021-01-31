@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -353,8 +352,7 @@ function App() {
 
   const approveAll = () => {
     console.log("Approve all");
-    axios
-      .get("http://144.202.67.136:8080/etsy/approved_all/")
+    getData("http://144.202.67.136:8080/etsy/approved_all/")
       .then((res) => {
         console.log(res);
         toastWarnNotify(res.data.Success);

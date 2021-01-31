@@ -19,7 +19,6 @@ import Button from "@material-ui/core/Button";
 import { getData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
-import {} from "../../tableitems/ConstantTableCell";
 import { TextField } from "@material-ui/core";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -92,8 +91,7 @@ function AllOrdersTable() {
   //console.log("UED", url);
   useEffect(() => {
     //console.log(url);
-    let data = "";
-    getData(url, data)
+    getData(url)
       .then((res) => {
         setRows(res.data.results);
         //console.log(res.data.results);
@@ -164,8 +162,7 @@ function AllOrdersTable() {
   };
 
   const getAllPdfFunc = () => {
-    const data = "";
-    getAllPdf("http://144.202.67.136:8080/etsy/all_pdf/", data)
+    getAllPdf("http://144.202.67.136:8080/etsy/all_pdf/")
       .then((response) => {
         //console.log(response.data.a);
         setAllPdf(response.data.a);
@@ -194,7 +191,7 @@ function AllOrdersTable() {
         setPrintError(response.data.Failed);
       })
       .finally(() => {
-        setUrl(`http://144.202.67.136:8080/etsy/mapping/?status=awaiting/`);
+        setUrl(`http://144.202.67.136:8080/etsy/mapping/?status=awaiting`);
         getAllPdfFunc();
       });
   };
