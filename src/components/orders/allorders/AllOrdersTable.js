@@ -80,7 +80,7 @@ function AllOrdersTable() {
   const [printError, setPrintError] = useState(false);
   const [isStatuReady, setIsStatuReady] = useState(false);
   const [url, setUrl] = useState(
-    `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+    `http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${
       page * rowsPerPage
     }`
   );
@@ -95,7 +95,7 @@ function AllOrdersTable() {
     getData(url)
       .then((res) => {
         setRows(res.data.results);
-        //console.log(res.data.results);
+        console.log(res.data.results);
         setCount(res.data.count);
       })
       .catch((error) => {
@@ -108,7 +108,7 @@ function AllOrdersTable() {
   const handleChangePage = (event, newPage) => {
     //console.log(newPage)
     setUrl(
-      `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rowsPerPage}&offset=${
+      `http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rowsPerPage}&offset=${
         newPage * rowsPerPage
       }`
     );
@@ -119,7 +119,7 @@ function AllOrdersTable() {
     setRowsPerPage(+event.target.value);
     let rpp = +event.target.value;
     setUrl(
-      `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rpp}&offset=${
+      `http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rpp}&offset=${
         page * rpp
       }`
     );
@@ -133,14 +133,14 @@ function AllOrdersTable() {
     //console.log(statu);
     if (statu === "all orders") {
       setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+        `http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${
           page * rowsPerPage
         }`
       );
       setglobStatu("");
     } else {
       setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?status=${statu}&limit=${rowsPerPage}&offset=${
+        `http://144.202.67.136:8080/etsy/orders/?status=${statu}&limit=${rowsPerPage}&offset=${
           page * rowsPerPage
         }`
       );
@@ -192,7 +192,7 @@ function AllOrdersTable() {
         setPrintError(response.data.Failed);
       })
       .finally(() => {
-        setUrl(`http://144.202.67.136:8080/etsy/mapping/?status=awaiting`);
+        setUrl(`http://144.202.67.136:8080/etsy/orders/?status=awaiting`);
         getAllPdfFunc();
       });
   };
@@ -264,7 +264,7 @@ function AllOrdersTable() {
                   id={row.id}
                   onClick={() => handleRowClick(row.id)}
                 >
-                  <CustomTableCell {...{ row, name: "receipt" }} />
+                  <CustomTableCell {...{ row, name: "receipt_id" }} />
                   <CustomTableCell {...{ row, name: "id" }} />
                   <CustomTableCell {...{ row, name: "status" }} />
                   <CustomTableCell {...{ row, name: "creation_tsz" }} />
