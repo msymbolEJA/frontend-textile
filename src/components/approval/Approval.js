@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
-import { putData } from "../../helper/PostData";
+import { putData, getData } from "../../helper/PostData";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
 import CustomCheckbox from "../tableitems/CustomCheckbox";
@@ -84,24 +84,30 @@ function App() {
   );
 
   useEffect(() => {
-    // console.log({ url });
-    // console.log({ page });
-    // console.log({ rowsPerPage });
     getListFunc();
     // eslint-disable-next-line
   }, [url, page, rowsPerPage]);
 
   const getListFunc = () => {
-    axios
-      .get(url)
+    getData(url)
       .then((response) => {
-        console.log(response.data.count);
         setRows(response.data.results);
         setCount(response.data.count);
+        console.log(response);
       })
       .catch((error) => {
         console.log(error);
       });
+    // axios
+    //   .get(url)
+    //   .then((response) => {
+    //     console.log(response.data.count);
+    //     setRows(response.data.results);
+    //     setCount(response.data.count);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   };
 
   const handleRequestSort = (event, property) => {
