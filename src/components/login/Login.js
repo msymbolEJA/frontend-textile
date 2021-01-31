@@ -117,11 +117,15 @@ export default function Login() {
       postData("http://144.202.67.136:8080/account/login/", values)
         .then((response) => {
           //console.log(values.username)
-          //console.log(response.data);
+          console.log(response.data);
           setUser(response?.data);
           const token = response?.data?.access;
           if (token) {
             localStorage.setItem("x-auth-token", token);
+            localStorage.setItem("localUser", response?.data?.user);
+            localStorage.setItem("localEmail", response?.data?.email);
+            localStorage.setItem("localRole", response?.data?.role);
+            localStorage.setItem("localId", response?.data?.id);
             //console.log("Token", localStorage.getItem("x-auth-token"))
             console.log("Logged in succesfully!");
             setAuth(true);
