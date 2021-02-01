@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import AwaitingOrders from "./AwaitingOrders";
+import ApprovalOrders from "./ApprovalOrders";
 import AllOrders from "./AllOrders";
 import SearchOrders from "./SearchOrders";
 import NewOrders from "./NewOrders";
@@ -45,7 +45,7 @@ const Dashboard = () => {
           <AllOrders isAdmin={userRole === "admin"} />
           {userRole === "admin" ? (
             <>
-              <AwaitingOrders />
+              <ApprovalOrders />
               <SearchOrders />
               <NewOrders />
             </>

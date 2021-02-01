@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from "@material-ui/icons/Search";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -12,8 +12,12 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     textAlign: "center",
     color: theme.palette.text.primary,
+    height: 260,
   },
   icon: {
     fontSize: 50,
@@ -31,8 +35,10 @@ export default function SearchOrders() {
   return (
     <Grid item xs={12} md={6} onClick={handleClick} className={classes.root}>
       <Paper className={classes.paper}>
-        <SearchIcon className={classes.icon} color="primary" />
-        <h1>Search</h1>
+        <div>
+          <SearchIcon className={classes.icon} color="primary" />
+          <h1>Search</h1>
+        </div>
       </Paper>
     </Grid>
   );

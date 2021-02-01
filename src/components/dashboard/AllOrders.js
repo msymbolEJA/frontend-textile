@@ -88,7 +88,7 @@ export default function AllOrders({ isAdmin }) {
               backgroundColor: "#3F51B5",
               color: "white",
               borderRadius: "1rem",
-              height: "2.85rem",
+              height: "fit-content",
               margin: "0.3rem",
             }}
             onClick={handleClick}
