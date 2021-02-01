@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import BarcodeReader from "react-barcode-reader";
+import TextField from "@material-ui/core/TextField";
 
 const BarcodeInput = () => {
   const [result, setResult] = useState("No result");
@@ -15,7 +16,24 @@ const BarcodeInput = () => {
   return (
     <div>
       <BarcodeReader onError={handleError} onScan={handleScan} />
-      <p>Barcode From Other Component : {result}</p>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <p style={{ marginRight: "1rem" }}>
+          Barcode From Other Component : {result}
+        </p>
+        <TextField
+          label="Barcode"
+          id="outlined-size-small"
+          defaultValue=""
+          variant="outlined"
+          size="small"
+        />
+      </div>
     </div>
   );
 };
