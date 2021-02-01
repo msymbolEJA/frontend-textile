@@ -24,9 +24,6 @@ const Search = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log("HandleSubmit Button");
-    //console.log(info);
-    //console.log("GSK", globalSearchKey);
     if (globalSearchKey) {
       globalSearch(
         `http://144.202.67.136:8080/etsy/mapping/?search=${globalSearchKey}`
@@ -37,6 +34,7 @@ const Search = () => {
         })
         .catch((error) => {
           console.log(error);
+          setList([]);
         });
     } else {
       let queryString = "/?";
@@ -60,6 +58,7 @@ const Search = () => {
           })
           .catch((error) => {
             console.log(error);
+            setList([]);
           });
       }
     }
