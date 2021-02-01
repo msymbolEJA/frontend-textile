@@ -40,8 +40,6 @@ const Dashboard = () => {
 
   return (
     <div className={classes.root}>
-      <DashboardRoundedIcon className={classes.icon} color="primary" />
-      <h1>Dashboard</h1>
       <div className={classes.boxes}>
         <Grid container spacing={3}>
           <AllOrders isAdmin={userRole === "admin"} />
