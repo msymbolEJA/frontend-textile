@@ -48,7 +48,7 @@ export default function MenuAppBar() {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { user } = useContext(AppContext);
-  console.log("user", user);
+  //console.log("user", user);
   const open = Boolean(anchorEl);
   const history = useHistory();
 

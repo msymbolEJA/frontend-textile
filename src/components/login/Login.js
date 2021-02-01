@@ -117,7 +117,7 @@ export default function Login() {
       postData("http://144.202.67.136:8080/account/login/", values)
         .then((response) => {
           //console.log(values.username)
-          console.log(response.data);
+          //console.log(response.data);
           setUser(response?.data);
           const token = response?.data?.access;
           if (token) {

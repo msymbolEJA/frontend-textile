@@ -31,12 +31,12 @@ const Dashboard = () => {
   const { user } = useContext(AppContext);
 
   const localUser = localStorage.getItem("localUser");
-  console.log(user.role);
-  console.log(localUser);
+  //console.log(user.role);
+  //console.log(localUser);
 
   const userRole = user.role || localUser;
 
-  console.log({ userRole });
+  //console.log({ userRole });
 
   return (
     <div className={classes.root}>

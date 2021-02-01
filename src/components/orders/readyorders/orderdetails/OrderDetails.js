@@ -13,7 +13,7 @@ import DATA from "../../../../helper/Data";
 import { Button } from "@material-ui/core";
 import { getOnePdf, getData } from "../../../../helper/PostData";
 import CargoPage from "../../../otheritems/CargoPage";
-import data from "../../../../helper/Data";
+//import data from "../../../../helper/Data";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

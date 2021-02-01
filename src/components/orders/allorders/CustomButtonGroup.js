@@ -38,7 +38,7 @@ const CustomButtonGroup = ({
 
   const { isAdmin } = useContext(AppContext);
 
-  console.log({ isAdmin });
+  //console.log({ isAdmin });
 
   // console.log(tagsData);
   // console.log(nonAdminTagsData);
