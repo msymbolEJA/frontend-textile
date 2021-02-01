@@ -39,6 +39,7 @@ export const getData = async (path) => {
 export const postFormData = async (path, dataObj) => {
   const data = new FormData();
   Object.keys(dataObj).forEach((key) => data.append(key, dataObj[key]));
+  const token = localStorage.getItem("x-auth-token");
   const response = await axios.post(`${path}`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -49,6 +50,7 @@ export const postFormData = async (path, dataObj) => {
 };
 
 export const queryData = async (path) => {
+  const token = localStorage.getItem("x-auth-token");
   const response = await axios.get(`${path}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -61,6 +63,7 @@ export const queryData = async (path) => {
 export const putImage = async (path, image, imageName) => {
   const fd = new FormData();
   fd.append("Image", image, imageName);
+  const token = localStorage.getItem("x-auth-token");
   const response = await axios.put(path, fd, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -72,6 +75,7 @@ export const putImage = async (path, image, imageName) => {
 export const getOnePdf = async (path, data) => {
   const fd = new FormData();
   fd.append("a", 2);
+  const token = localStorage.getItem("x-auth-token");
   const response = await axios.post(path, fd, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -81,6 +85,7 @@ export const getOnePdf = async (path, data) => {
 };
 
 export const getAllPdf = async (path, data) => {
+  const token = localStorage.getItem("x-auth-token");
   const response = await axios.get(path, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -90,6 +95,7 @@ export const getAllPdf = async (path, data) => {
 };
 
 export const globalSearch = async (path) => {
+  const token = localStorage.getItem("x-auth-token");
   const response = await axios.get(path, {
     headers: {
       Authorization: `Bearer ${token}`,
