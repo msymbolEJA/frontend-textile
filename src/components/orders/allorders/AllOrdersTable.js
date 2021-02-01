@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
 import BarcodeReader from "react-barcode-reader";
+import ViewImageFile from "./ViewImageFile";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -253,6 +254,7 @@ function AllOrdersTable() {
                 <StyledTableCell align="center">Start</StyledTableCell>
                 <StyledTableCell align="center">Space</StyledTableCell>
                 <StyledTableCell align="center">Explanation</StyledTableCell>
+                <StyledTableCell align="center">Image</StyledTableCell>
                 <StyledTableCell align="center">Note</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -280,6 +282,9 @@ function AllOrdersTable() {
                   <CustomTableCell {...{ row, name: "start" }} />
                   <CustomTableCell {...{ row, name: "space" }} />
                   <CustomTableCell {...{ row, name: "explanation" }} />
+                  <td>
+                    <ViewImageFile {...{ row, name: "Image" }} />
+                  </td>
                   <CustomTableCell {...{ row, name: "note" }} />
                 </StyledTableRow>
               ))}
