@@ -554,9 +554,9 @@ function App() {
                 <ConstantTableCell {...{ row, name: "receipt" }} />
                 <ConstantTableCell {...{ row, name: "id" }} />
                 <ConstantTableCell {...{ row, name: "last_updated" }} />
-                <EditableTableCell {...{ row, name: "item_index", onChange }} />
+                <ConstantTableCell {...{ row, name: "item_index", onChange }} />
                 <ConstantTableCell {...{ row, name: "created_date" }} />
-                <EditableTableCell {...{ row, name: "buyer", onChange }} />
+                <ConstantTableCell {...{ row, name: "buyer", onChange }} />
                 <EditableTableCell {...{ row, name: "supplier", onChange }} />
                 <EditableTableCell {...{ row, name: "type", onChange }} />
                 <EditableTableCell {...{ row, name: "length", onChange }} />
