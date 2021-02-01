@@ -58,7 +58,8 @@ export default function Account() {
   const [open, setOpen] = React.useState(false);
   const { user, setUser } = useContext(AppContext);
   const [accountData, setAccountData] = useState();
-  const [img, setImg] = useState();
+  // eslint-disable-next-line
+  //const [img, setImg] = useState();
 
   //console.log(user);
 
@@ -89,7 +90,7 @@ export default function Account() {
       )}/`
     )
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data.image);
         setAccountData(response.data);
       })
       .catch((error) => {
@@ -193,7 +194,13 @@ export default function Account() {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <img src={img} alt="user" />
+          <img
+            src={
+              accountData?.image ||
+              "https://cdn.dribbble.com/users/304574/screenshots/6222816/male-user-placeholder.png"
+            }
+            alt="user"
+          />
         </Avatar>
         <div className={classes.info}>
           <Typography component="h1" variant="h5">
