@@ -573,6 +573,12 @@ function App() {
                 onClick={(e) => handleRowClick(row.id)}
                 onBlur={(e) => handleRowBlur(e, row.id)}
                 onKeyDown={(e) => handleRowKeyDown(e, row.id)}
+                style={{
+                  backgroundColor:
+                    (row.status !== "pending") & (row.approved === false)
+                      ? "#FF9494"
+                      : null,
+                }}
               >
                 <td
                   onClick={(e) => {
