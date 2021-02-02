@@ -77,12 +77,7 @@ export default function AllOrders({ isAdmin }) {
             <p>View All</p>
           </div>
         </div>
-        <div
-          style={{
-            border: "2px solid #3F51B5",
-            borderRadius: "0.5rem",
-          }}
-        >
+        <div>
           <Table
             className={classes.table}
             size="small"
