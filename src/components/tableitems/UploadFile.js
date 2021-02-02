@@ -31,8 +31,6 @@ const UploadFile = ({ row, selectId, fileSelectedHandler }) => {
       "http://144.202.67.136:8080/media/2021-01-21%2017%3A24%3A28.978287") |
     (row.image === null)
   );
-  //console.log("Image", row.Image)
-  //console.log(row.id)
 
   return (
     <div className={classes.root}>

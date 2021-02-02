@@ -22,6 +22,7 @@ import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
 import BarcodeReader from "react-barcode-reader";
 import ViewImageFile from "./ViewImageFile";
+import TextField from "@material-ui/core/TextField";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -129,6 +130,7 @@ function AllOrdersTable() {
   const handleTagChange = (e) => {
     const statu = e.currentTarget.id;
     setSelectedTag(statu);
+    setResult("");
     //console.log(e.target.innerHTML);
     //console.log(statu);
     if (statu === "all orders") {
@@ -203,7 +205,7 @@ function AllOrdersTable() {
     });
   };
 
-  const [result, setResult] = useState("No result");
+  const [result, setResult] = useState();
 
   const handleScan = (data) => {
     setResult(data);
@@ -222,11 +224,29 @@ function AllOrdersTable() {
           tagsData={tagsData}
           nonAdminTagsData={nonAdminTagsData}
         />
-        {selectedTag === "ready" || selectedTag === "shipped" ? (
+        {selectedTag === "ready" ? (
           <div>
             <BarcodeReader onError={handleError} onScan={handleScan} />
-            <p>Barcode From Same Component : {result}</p>
-            <BarcodeInput />
+            <p>Barcode From Same Component : {result || "No result"}</p>
+          </div>
+        ) : null}
+        {selectedTag === "shipped" ? (
+          <div>
+            <BarcodeInput onError={handleError} onScan={handleScan} />
+            <p>Barcode From Other Component : {result || "No result"}</p>
+          </div>
+        ) : null}
+        {selectedTag === "ready" || selectedTag === "shipped" ? (
+          <div className={classes.print}>
+            <TextField
+              label="Barcode"
+              id="outlined-size-small"
+              defaultValue=""
+              variant="outlined"
+              size="small"
+              value={result}
+              onChange={(e) => setResult(e.target.value)}
+            />
           </div>
         ) : null}
         <TableContainer className={classes.container}>
@@ -283,7 +303,9 @@ function AllOrdersTable() {
                   <CustomTableCell {...{ row, name: "space" }} />
                   <CustomTableCell {...{ row, name: "explanation" }} />
                   <td>
-                    <ViewImageFile {...{ row, name: "image" }} />
+                    {row?.image ? (
+                      <ViewImageFile {...{ row, name: "Image" }} />
+                    ) : null}
                   </td>
                   <CustomTableCell {...{ row, name: "note" }} />
                 </StyledTableRow>

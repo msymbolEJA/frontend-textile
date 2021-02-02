@@ -62,7 +62,7 @@ export const queryData = async (path) => {
 
 export const putImage = async (path, image, imageName) => {
   const fd = new FormData();
-  fd.append("Image", image, imageName);
+  fd.append("image", image, imageName);
   const token = localStorage.getItem("x-auth-token");
   const response = await axios.put(path, fd, {
     headers: {

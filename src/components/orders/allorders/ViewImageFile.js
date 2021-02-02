@@ -20,7 +20,7 @@ const ViewImageFile = ({ row, name }) => {
           onClick={(e) => {
             e.stopPropagation();
           }}
-          href={row.image}
+          href={row?.image}
           className={classes.vFile}
           target="_blank"
           rel="noreferrer"
