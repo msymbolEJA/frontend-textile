@@ -20,6 +20,8 @@ import { toastWarnNotify } from "../otheritems/ToastNotify";
 import ConstantTableCell from "../tableitems/ConstantTableCell";
 import EditableTableCell from "../tableitems/EditableTableCell";
 import SortableTableCell from "./SortableTableCell";
+import CustomButtonGroup from "./CustomButtonGroup";
+import { tagsData } from "../../helper/Constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,6 +77,8 @@ function App() {
   //const [sendData, setSendData] = useState({});
   //const [globId, setGlobId] = useState();
   //const [selectedFile, setSelectedFile] = useState(null);
+  //const [globStatu, setglobStatu] = useState("");
+  const [selectedTag, setSelectedTag] = useState("all orders");
   const [selectedRowId, setSelectedRowId] = useState();
   const [url, setUrl] = useState(
     `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
@@ -364,8 +368,34 @@ function App() {
       });
   };
 
+  const handleTagChange = (e) => {
+    const statu = e.currentTarget.id;
+    setSelectedTag(statu);
+    //console.log(e.target.innerHTML);
+    //console.log(statu);
+    if (statu === "all orders") {
+      setUrl(
+        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`
+      );
+    } else {
+      setUrl(
+        `http://144.202.67.136:8080/etsy/mapping/?status=${statu}&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`
+      );
+    }
+    setPage(0);
+  };
+
   return (
     <Paper className={classes.root}>
+      <CustomButtonGroup
+        selectedTag={selectedTag}
+        handleTagChange={handleTagChange}
+        tagsData={tagsData}
+      />
       <TableContainer className={classes.container}>
         <Table
           className={classes.table}

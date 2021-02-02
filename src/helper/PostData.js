@@ -1,6 +1,6 @@
 import axios from "axios";
 import FormData from "form-data";
-const token = localStorage.getItem("x-auth-token");
+//const token = localStorage.getItem("x-auth-token");
 
 export const postData = async (path, data) => {
   const response = await axios.post(`${path}`, data, {
