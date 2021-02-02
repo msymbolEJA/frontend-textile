@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     textAlign: "center",
     color: theme.palette.text.primary,
-    height: 260,
+    height: 150,
   },
   icon: {
     fontSize: 50,
