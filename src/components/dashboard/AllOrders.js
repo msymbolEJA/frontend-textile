@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import Table from "@material-ui/core/Table";
+import Button from "@material-ui/core/Button";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
@@ -14,6 +15,8 @@ import { getData } from "../../helper/PostData";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    height: 500,
+    overflow: "auto",
   },
   table: {
     minWidth: 350,
@@ -22,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
     color: theme.palette.text.primary,
-    height: 320,
   },
   icon: {
     fontSize: 25,
@@ -62,20 +64,7 @@ export default function AllOrders({ isAdmin }) {
             <ListAltIcon className={classes.icon} color="primary" />
             <p style={{ display: "inline", marginLeft: "0.5rem" }}>Orders</p>
           </div>
-
-          <div
-            style={{
-              cursor: "pointer",
-              backgroundColor: "#3F51B5",
-              color: "white",
-              borderRadius: "0.2rem",
-              height: "3rem",
-              padding: "0 0.3rem",
-            }}
-            onClick={handleClick}
-          >
-            <p>View All</p>
-          </div>
+          <Button onClick={handleClick}>View All</Button>
         </div>
         <div>
           <Table
