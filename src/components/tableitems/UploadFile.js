@@ -27,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
 const UploadFile = ({ row, selectId, fileSelectedHandler }) => {
   const classes = useStyles();
   const hasImage = !(
-    (row.Image ===
+    (row.image ===
       "http://144.202.67.136:8080/media/2021-01-21%2017%3A24%3A28.978287") |
-    (row.Image === null)
+    (row.image === null)
   );
   //console.log("Image", row.Image)
   //console.log(row.id)
@@ -38,7 +38,7 @@ const UploadFile = ({ row, selectId, fileSelectedHandler }) => {
     <div className={classes.root}>
       {hasImage ? (
         <a
-          href={row.Image}
+          href={row.image}
           className={classes.vFile}
           target="_blank"
           rel="noreferrer"

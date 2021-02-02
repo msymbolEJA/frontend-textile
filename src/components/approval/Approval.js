@@ -531,7 +531,7 @@ function App() {
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
-                property="Image"
+                property="image"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
@@ -603,7 +603,7 @@ function App() {
                   <UploadFile
                     {...{
                       row,
-                      name: "Image",
+                      name: "image",
                       uploadFile,
                       fileSelectedHandler,
                       selectId,

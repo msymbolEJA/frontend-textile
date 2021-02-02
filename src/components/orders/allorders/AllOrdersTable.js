@@ -283,7 +283,7 @@ function AllOrdersTable() {
                   <CustomTableCell {...{ row, name: "space" }} />
                   <CustomTableCell {...{ row, name: "explanation" }} />
                   <td>
-                    <ViewImageFile {...{ row, name: "Image" }} />
+                    <ViewImageFile {...{ row, name: "image" }} />
                   </td>
                   <CustomTableCell {...{ row, name: "note" }} />
                 </StyledTableRow>
