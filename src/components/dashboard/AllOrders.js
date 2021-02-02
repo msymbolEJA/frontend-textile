@@ -11,6 +11,7 @@ import TableHead from "@material-ui/core/TableHead";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import TableRow from "@material-ui/core/TableRow";
 import { getData } from "../../helper/PostData";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +65,9 @@ export default function AllOrders({ isAdmin }) {
             <ListAltIcon className={classes.icon} color="primary" />
             <p style={{ display: "inline", marginLeft: "0.5rem" }}>Orders</p>
           </div>
-          <Button onClick={handleClick}>View All</Button>
+          <Button onClick={handleClick} style={{ backgroundColor: "#B6D8F2" }}>
+            View All <ArrowForwardIosIcon />{" "}
+          </Button>
         </div>
         <div>
           <Table
