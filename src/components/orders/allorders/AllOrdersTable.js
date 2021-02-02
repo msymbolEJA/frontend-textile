@@ -119,12 +119,12 @@ function AllOrdersTable() {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     let rpp = +event.target.value;
+    setPage(0);
     setUrl(
       `http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rpp}&offset=${
-        page * rpp
+        0 * rpp
       }`
     );
-    setPage(0);
   };
 
   const handleTagChange = (e) => {

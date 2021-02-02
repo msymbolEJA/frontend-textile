@@ -80,6 +80,7 @@ function App() {
   //const [globStatu, setglobStatu] = useState("");
   const [selectedTag, setSelectedTag] = useState("all orders");
   const [selectedRowId, setSelectedRowId] = useState();
+  const [globStatu, setglobStatu] = useState("");
   const [url, setUrl] = useState(
     `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
       page * rowsPerPage
@@ -122,13 +123,13 @@ function App() {
     const isAsc = order === "asc";
     if (isAsc) {
       setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+        `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rowsPerPage}&offset=${
           page * rowsPerPage
         }&ordering=${property}`
       );
     } else if (!isAsc) {
       setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+        `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rowsPerPage}&offset=${
           page * rowsPerPage
         }&ordering=-${property}`
       );
@@ -174,14 +175,14 @@ function App() {
     if (order === "asc") {
       console.log("order-desc-newpage");
       setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+        `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rowsPerPage}&offset=${
           newPage * rowsPerPage
         }&ordering=-${orderBy}`
       );
     } else if (order === "desc") {
       console.log("asc-newpage");
       setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+        `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rowsPerPage}&offset=${
           newPage * rowsPerPage
         }&ordering=${orderBy}`
       );
@@ -191,7 +192,13 @@ function App() {
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
+    let rpp = +event.target.value;
     setPage(0);
+    setUrl(
+      `http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rpp}&offset=${
+        0 * rpp
+      }`
+    );
   };
 
   const handleRowClick = (id) => {
@@ -379,12 +386,14 @@ function App() {
           page * rowsPerPage
         }`
       );
+      setglobStatu("");
     } else {
       setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?status=${statu}&limit=${rowsPerPage}&offset=${
+        `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&status=${statu}&limit=${rowsPerPage}&offset=${
           page * rowsPerPage
         }`
       );
+      setglobStatu(statu);
     }
     setPage(0);
   };
