@@ -10,6 +10,8 @@ import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import { AppContext } from "../../context/Context";
 import { getData } from "../../helper/PostData";
+import PublishIcon from "@material-ui/icons/Publish";
+import { putImage } from "../../helper/PostData";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     padding: 80,
     backgroundColor: theme.palette.primary.main,
+    cursor: "pointer",
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -51,6 +54,12 @@ const useStyles = makeStyles((theme) => ({
   info: {
     margin: theme.spacing(3, 0, 2),
   },
+  updatePictureIcon: {
+    position: "absolute",
+    zIndex: 4,
+    color: "white",
+    fontSize: "3rem",
+  },
 }));
 
 export default function Account() {
@@ -58,10 +67,7 @@ export default function Account() {
   const [open, setOpen] = React.useState(false);
   const { user, setUser } = useContext(AppContext);
   const [accountData, setAccountData] = useState();
-  // eslint-disable-next-line
-  //const [img, setImg] = useState();
-
-  //console.log(user);
+  const [updateIcon, setUpdateIcon] = useState(false);
 
   const updateUser = (e) => {
     e.preventDefault();
@@ -168,12 +174,6 @@ export default function Account() {
               onChange={(e) => changeHandler(e)}
             />
           </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" fullWidth component="label">
-              Update Profile Picture
-              <input type="file" hidden />
-            </Button>
-          </Grid>
         </Grid>
         <Button
           type="submit"
@@ -189,19 +189,64 @@ export default function Account() {
     </div>
   );
 
+  const fileSelectedHandler = (e) => {
+    //setSelectedFile(e.target.files[0]);
+    let imgFile = e.target.files[0];
+    console.log(imgFile);
+    const localId = Number(localStorage.getItem("localId"));
+    console.log("....", localId);
+    try {
+      let path = `http://144.202.67.136:8080/account/profile/${localId}/`;
+      console.log(path);
+      putImage(path, imgFile, imgFile.name)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          // getData();
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateIconFlag = () => {
+    console.log("updateIconFlag");
+    setUpdateIcon(!updateIcon);
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <img
-            src={
-              accountData?.image ||
-              "https://cdn.dribbble.com/users/304574/screenshots/6222816/male-user-placeholder.png"
-            }
-            alt="user"
-          />
-        </Avatar>
+        <label htmlFor="myInput">
+          <Avatar
+            className={classes.avatar}
+            onMouseOver={updateIconFlag}
+            onMouseOut={updateIconFlag}
+          >
+            <img
+              src={
+                accountData?.image ||
+                "https://cdn.dribbble.com/users/304574/screenshots/6222816/male-user-placeholder.png"
+              }
+              alt="user"
+            />
+            {updateIcon && (
+              <PublishIcon className={classes.updatePictureIcon} />
+            )}
+            <input
+              type="file"
+              hidden
+              onChange={(e) => fileSelectedHandler(e)}
+              id="myInput"
+              style={{ display: "none" }}
+            />
+          </Avatar>
+        </label>
         <div className={classes.info}>
           <Typography component="h1" variant="h5">
             {accountData?.username}
