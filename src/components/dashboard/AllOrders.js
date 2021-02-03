@@ -50,7 +50,6 @@ export default function AllOrders() {
   useEffect(() => {
     getData("http://144.202.67.136:8080/etsy/status_count/").then(
       (response) => {
-        console.log(response);
         setStatuList(response.data);
       }
     );
@@ -74,16 +73,24 @@ export default function AllOrders() {
             <ListAltIcon className={classes.icon} color="primary" />
             <h1 style={{ display: "inline", marginLeft: "0.5rem" }}>Orders</h1>
           </div>
-          <Button
-            color="primary"
-            variant="outlined"
-            id="approval"
-            className={classes.button}
-            endIcon={<ArrowForwardIosIcon />}
-            onClick={(e) => handleClick(e)}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            View All
-          </Button>
+            <Button
+              color="primary"
+              variant="outlined"
+              id="approval"
+              className={classes.button}
+              endIcon={<ArrowForwardIosIcon />}
+              onClick={(e) => handleClick(e)}
+            >
+              View All
+            </Button>
+          </div>
         </div>
         <div>
           <Table className={classes.table}>
