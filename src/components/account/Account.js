@@ -60,6 +60,8 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     fontSize: "3rem",
   },
+  hrStyle: { backgroundColor: "#3F51B5", height: "2px", border: 0 },
+  header: { color: "#f44336" },
 }));
 
 export default function Account() {
@@ -96,7 +98,7 @@ export default function Account() {
       )}/`
     )
       .then((response) => {
-        //console.log(response.data.image);
+        console.log(response.data);
         setAccountData(response.data);
       })
       .catch((error) => {
@@ -202,8 +204,8 @@ export default function Account() {
         .then((res) => {
           console.log(res);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(({ response }) => {
+          console.log(response);
         })
         .finally(() => {
           // getData();
@@ -248,10 +250,52 @@ export default function Account() {
           </Avatar>
         </label>
         <div className={classes.info}>
+          <Typography variant="h6" className={classes.header}>
+            Username
+          </Typography>
           <Typography component="h1" variant="h5">
             {accountData?.username}
           </Typography>
+          <hr className={classes.hrStyle} />
+          <Typography variant="h6" className={classes.header}>
+            Email
+          </Typography>
           <Typography variant="h6">{accountData?.email}</Typography>
+          <hr className={classes.hrStyle} />
+
+          {accountData?.first_name ? (
+            <>
+              <Typography variant="h6" className={classes.header}>
+                First Name
+              </Typography>
+              <Typography variant="h6">{accountData?.first_name}</Typography>
+              <hr className={classes.hrStyle} />
+            </>
+          ) : null}
+          {accountData?.last_name ? (
+            <>
+              <Typography variant="h6" className={classes.header}>
+                Last Name
+              </Typography>
+              <Typography variant="h6">{accountData?.last_name}</Typography>
+              <hr className={classes.hrStyle} />
+            </>
+          ) : null}
+          <Typography variant="h6" className={classes.header}>
+            User Role
+          </Typography>
+          <Typography variant="h6">{accountData?.role}</Typography>
+          <hr className={classes.hrStyle} />
+
+          {accountData?.workshop ? (
+            <>
+              <Typography variant="h6" className={classes.header}>
+                Workshop
+              </Typography>
+              <Typography variant="h6">{accountData?.workshop}</Typography>
+              <hr className={classes.hrStyle} />
+            </>
+          ) : null}
         </div>
         <div>
           <Button
