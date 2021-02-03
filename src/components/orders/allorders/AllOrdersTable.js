@@ -90,9 +90,7 @@ function AllOrdersTable() {
   const [globStatu, setglobStatu] = useState("");
   const [allPdf, setAllPdf] = useState();
 
-  //--------------- Get Orders
-  //console.log("UED", url);
-  useEffect(() => {
+  const getListFunc = () => {
     getData(url)
       .then((res) => {
         setRows(res.data.results);
@@ -102,6 +100,12 @@ function AllOrdersTable() {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  //--------------- Get Orders
+  //console.log("UED", url);
+  useEffect(() => {
+    getListFunc();
   }, [page, rowsPerPage, url]);
   //console.log("data rows : ", rows);
   //------------------------------
@@ -363,7 +367,7 @@ function AllOrdersTable() {
           </>
         ) : null}
       </Paper>
-      {isStatuReady ? <CargoPage /> : null}
+      {isStatuReady ? <CargoPage getListFunc={getListFunc} /> : null}
     </div>
   );
 }
