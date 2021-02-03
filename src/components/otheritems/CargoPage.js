@@ -98,7 +98,7 @@ const CargoPage = () => {
           <TextField
             className={classes.inputStyle}
             id="tracking_number"
-            label="tracking_number"
+            label="Tracking Number"
             required
             type="text"
             onChange={handleChange}
