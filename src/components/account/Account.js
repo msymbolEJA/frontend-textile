@@ -60,8 +60,13 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     fontSize: "3rem",
   },
-  hrStyle: { backgroundColor: "#3F51B5", height: "2px", border: 0 },
-  header: { color: "#f44336" },
+  hrStyle: {
+    backgroundColor: "black",
+    height: "0.5px",
+    border: 0,
+    width: "20rem",
+  },
+  header: { color: "#3F51B5" },
 }));
 
 export default function Account() {
@@ -251,14 +256,14 @@ export default function Account() {
         </label>
         <div className={classes.info}>
           <Typography variant="h6" className={classes.header}>
-            Username
+            Username:
           </Typography>
           <Typography component="h1" variant="h5">
             {accountData?.username}
           </Typography>
           <hr className={classes.hrStyle} />
           <Typography variant="h6" className={classes.header}>
-            Email
+            Email:
           </Typography>
           <Typography variant="h6">{accountData?.email}</Typography>
           <hr className={classes.hrStyle} />
@@ -266,7 +271,7 @@ export default function Account() {
           {accountData?.first_name ? (
             <>
               <Typography variant="h6" className={classes.header}>
-                First Name
+                First Name:
               </Typography>
               <Typography variant="h6">{accountData?.first_name}</Typography>
               <hr className={classes.hrStyle} />
@@ -275,14 +280,14 @@ export default function Account() {
           {accountData?.last_name ? (
             <>
               <Typography variant="h6" className={classes.header}>
-                Last Name
+                Last Name:
               </Typography>
               <Typography variant="h6">{accountData?.last_name}</Typography>
               <hr className={classes.hrStyle} />
             </>
           ) : null}
           <Typography variant="h6" className={classes.header}>
-            User Role
+            User Role:
           </Typography>
           <Typography variant="h6">{accountData?.role}</Typography>
           <hr className={classes.hrStyle} />
@@ -290,7 +295,7 @@ export default function Account() {
           {accountData?.workshop ? (
             <>
               <Typography variant="h6" className={classes.header}>
-                Workshop
+                Workshop:
               </Typography>
               <Typography variant="h6">{accountData?.workshop}</Typography>
               <hr className={classes.hrStyle} />
