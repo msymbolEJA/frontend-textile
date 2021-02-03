@@ -16,24 +16,33 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    height: 500,
+    height: "auto",
     overflow: "auto",
+    margin: "2rem",
   },
   table: {
-    minWidth: 350,
+    minWidth: 150,
+    height: "auto",
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
   },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
     color: theme.palette.text.primary,
+    width: "42rem",
   },
   icon: {
-    fontSize: 25,
+    fontSize: 40,
     display: "inline",
+  },
+  button: {
+    height: "2rem ",
   },
 }));
 
-export default function AllOrders({ isAdmin }) {
+export default function AllOrders() {
   const classes = useStyles();
   const history = useHistory();
   const [statuList, setStatuList] = useState([]);
@@ -52,7 +61,7 @@ export default function AllOrders({ isAdmin }) {
   };
 
   return (
-    <Grid item xs={12} md={isAdmin ? 6 : 12} className={classes.root}>
+    <Grid item xs={12} md={12} className={classes.root}>
       <Paper className={classes.paper}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div
@@ -63,29 +72,37 @@ export default function AllOrders({ isAdmin }) {
             }}
           >
             <ListAltIcon className={classes.icon} color="primary" />
-            <p style={{ display: "inline", marginLeft: "0.5rem" }}>Orders</p>
+            <h1 style={{ display: "inline", marginLeft: "0.5rem" }}>Orders</h1>
           </div>
-          <Button onClick={handleClick} style={{ backgroundColor: "#B6D8F2" }}>
-            View All <ArrowForwardIosIcon />{" "}
+          <Button
+            color="primary"
+            variant="outlined"
+            id="approval"
+            className={classes.button}
+            endIcon={<ArrowForwardIosIcon />}
+            onClick={(e) => handleClick(e)}
+          >
+            View All
           </Button>
         </div>
         <div>
-          <Table
-            className={classes.table}
-            size="small"
-            aria-label="a dense table"
-          >
-            <TableHead>
+          <Table className={classes.table}>
+            <TableHead style={{ backgroundColor: "black" }}>
               <TableRow>
-                <TableCell>Status</TableCell>
-                <TableCell align="right">Count</TableCell>
+                <TableCell style={{ color: "white" }}>STATUS</TableCell>
+                <TableCell align="right" style={{ color: "white" }}>
+                  COUNT
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {statuList.map((statu) => (
                 <TableRow key={statu.status}>
                   <TableCell component="th" scope="row">
-                    {statu.status}
+                    {statu.status
+                      .replace("_", " ")
+                      .replace("-", " ")
+                      .toUpperCase()}
                   </TableCell>
                   <TableCell align="right">{statu.status_count}</TableCell>
                 </TableRow>
