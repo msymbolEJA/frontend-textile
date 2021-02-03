@@ -96,7 +96,7 @@ export default function Account() {
     setOpen(false);
   };
 
-  React.useEffect(() => {
+  const getInfo = () => {
     getData(
       `http://144.202.67.136:8080/account/profile/${localStorage.getItem(
         "localId"
@@ -109,6 +109,10 @@ export default function Account() {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  React.useEffect(() => {
+    getInfo();
   }, []);
 
   const body = (
@@ -214,6 +218,7 @@ export default function Account() {
         })
         .finally(() => {
           // getData();
+          getInfo();
         });
     } catch (error) {
       console.log(error);
@@ -289,7 +294,9 @@ export default function Account() {
           <Typography variant="h6" className={classes.header}>
             User Role:
           </Typography>
-          <Typography variant="h6">{accountData?.role}</Typography>
+          <Typography variant="h6">
+            {accountData?.role.replace("_", " ")}
+          </Typography>
           <hr className={classes.hrStyle} />
 
           {accountData?.workshop ? (
