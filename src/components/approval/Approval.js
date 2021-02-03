@@ -73,11 +73,6 @@ function App() {
   const [count, setCount] = useState(0);
   const [orderBy, setOrderBy] = useState("id");
   const [order, setOrder] = React.useState("desc");
-  //const [isSorted, setIsSorted] = useState(false);
-  //const [sendData, setSendData] = useState({});
-  //const [globId, setGlobId] = useState();
-  //const [selectedFile, setSelectedFile] = useState(null);
-  //const [globStatu, setglobStatu] = useState("");
   const [selectedTag, setSelectedTag] = useState("all orders");
   const [selectedRowId, setSelectedRowId] = useState();
   const [globStatu, setglobStatu] = useState("");
@@ -102,24 +97,9 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
-    // axios
-    //   .get(url)
-    //   .then((response) => {
-    //     console.log(response.data.count);
-    //     setRows(response.data.results);
-    //     setCount(response.data.count);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   };
 
   const handleRequestSort = (event, property) => {
-    //console.log("handleRequestSort");
-    // console.log(property);
-    // console.log(orderBy);
-    // console.log(orderBy === property);
-    // console.log(order === "asc");
     const isAsc = order === "asc";
     if (isAsc) {
       setUrl(
@@ -138,21 +118,6 @@ function App() {
     setOrderBy(property);
   };
 
-  // const getDataFunc = () => {
-  //   if (isSorted) {
-  //     setUrl(
-  //       `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
-  //         page * rowsPerPage
-  //       }`
-  //     );
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getDataFunc();
-  //   // eslint-disable-next-line
-  // }, [page, rowsPerPage]);
-
   const onChange = (e, row) => {
     if (!previous[row.id]) {
       setPrevious((state) => ({ ...state, [row.id]: row }));
@@ -162,7 +127,6 @@ function App() {
     const { id } = row;
     const newRows = rows.map((row) => {
       if (row.id === id) {
-        //setSendData({ ...sendData, [name]: value });
         return { ...row, [name]: value };
       }
       return row;
@@ -215,9 +179,7 @@ function App() {
 
   const handleRowChange = (id, data) => {
     putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, data)
-      .then((response) => {
-        // console.log(response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.log(error);
       })
@@ -232,18 +194,9 @@ function App() {
   };
 
   const handleRowBlur = (e, id) => {
-    //  console.log(e.target.defaultValue);
-    // console.log(e.target.name);
     let data = { [e.target.name]: e.target.defaultValue };
     handleRowChange(id, data);
   };
-  // Problem
-  // Checkbox activate when onblur or enter
-  // useEffect(() => {
-  //   handleRowChange(globId);
-  //   //console.log("useEffect")
-  //   // eslint-disable-next-line
-  // }, [globId]);
 
   const onCheckboxChange = (e, row) => {
     e.stopPropagation();
@@ -253,11 +206,8 @@ function App() {
     const value = e.target.checked;
     const name = e.target.name;
     const { id } = row;
-    //console.log("clicked checkbox")
-    //console.log(name,value)
+
     if ((name === "approved") & (value === true) & (row.status === "pending")) {
-      //setSendData({ [name]: value, status: "awaiting" });
-      //getDataFunc();
       let data = { [name]: value, status: "awaiting" };
       handleRowChange(id, data);
       getListFunc();
@@ -266,12 +216,10 @@ function App() {
       (value === false) &
       (row.status === "awaiting")
     ) {
-      //setSendData({ [name]: value, status: "pending" });
       let data = { [name]: value, status: "pending" };
       handleRowChange(id, data);
       getListFunc();
     } else {
-      //setSendData({ [name]: value });
       let data = { [name]: value };
       handleRowChange(id, data);
       getListFunc();
@@ -280,16 +228,11 @@ function App() {
 
     const newRows = rows.map((row) => {
       if (row.id === id) {
-        //console.log("sendData", sendData)
-        //handleRowChange(id)
-        //setGlobId(id);
         return { ...row, [name]: value };
       }
       return row;
     });
     setRows(newRows);
-    /* console.log("name", name); */
-    //getDataFunc();
   };
 
   const onSelectChange = (e, row) => {
@@ -300,11 +243,9 @@ function App() {
     const value = e.target.value;
     const name = e.target.name;
     const { id } = row;
-    //console.log("id, name, value, approved", id, name, value, row.approved);
     if ((name === "status") & (value === "pending") & (row.approved === true)) {
       let data = { [name]: value, approved: false };
       handleRowChange(id, data);
-      // getDataFunc();
     } else if (
       (name === "status") &
       (value === "awaiting") &
@@ -313,15 +254,11 @@ function App() {
       let data = { [name]: value, approved: true };
       handleRowChange(id, data);
     } else {
-      //setSendData({ ...sendData, [name]: value });
       let data = { [name]: value };
       handleRowChange(id, data);
     }
     const newRows = rows.map((row) => {
       if (row.id === id) {
-        //console.log("sendData", sendData);
-        //setGlobId(id);
-        //handleRowChange(id)
         return { ...row, [name]: value };
       }
       return row;
@@ -351,13 +288,11 @@ function App() {
 
   const fileSelectedHandler = (e, id) => {
     e.stopPropagation();
-    //setSelectedFile(e.target.files[0]);
     let imgFile = e.target.files[0];
     uploadFile(e, selectedRowId, imgFile);
   };
   const selectId = (event, id) => {
     event.stopPropagation();
-    //console.log("sfi", id);
     setSelectedRowId(id);
   };
 
@@ -378,8 +313,6 @@ function App() {
   const handleTagChange = (e) => {
     const statu = e.currentTarget.id;
     setSelectedTag(statu);
-    //console.log(e.target.innerHTML);
-    //console.log(statu);
     if (statu === "all orders") {
       setUrl(
         `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
