@@ -50,7 +50,47 @@ export default function AllOrders() {
   useEffect(() => {
     getData("http://144.202.67.136:8080/etsy/status_count/").then(
       (response) => {
-        setStatuList(response.data);
+        console.log(response.data);
+        const newData = [
+          {
+            status: response.data[3]?.status,
+            status_count: response.data[3]?.status_count,
+          },
+          {
+            status: response.data[2]?.status,
+            status_count: response.data[2]?.status_count,
+          },
+          {
+            status: response.data[7]?.status,
+            status_count: response.data[7]?.status_count,
+          },
+          {
+            status: response.data[8]?.status,
+            status_count: response.data[8]?.status_count,
+          },
+          {
+            status: response.data[1]?.status,
+            status_count: response.data[1]?.status_count,
+          },
+          {
+            status: response.data[0]?.status,
+            status_count: response.data[0]?.status_count,
+          },
+          {
+            status: response.data[4]?.status,
+            status_count: response.data[4]?.status_count,
+          },
+          {
+            status: response.data[5]?.status,
+            status_count: response.data[5]?.status_count,
+          },
+          {
+            status: response.data[6]?.status,
+            status_count: response.data[6]?.status_count,
+          },
+        ];
+        // console.log(newData);
+        setStatuList(newData);
       }
     );
   }, []);
