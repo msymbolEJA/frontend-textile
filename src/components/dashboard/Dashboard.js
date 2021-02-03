@@ -100,7 +100,7 @@ const Dashboard = () => {
           direction="column"
           alignItems="center"
           justify="center"
-          style={{ minHeight: "100vh" }}
+          style={{ height: "78vh" }}
         >
           <AllOrders />
         </Grid>

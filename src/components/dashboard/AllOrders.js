@@ -16,13 +16,11 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    height: "auto",
     overflow: "auto",
     margin: "2rem",
   },
   table: {
     minWidth: 150,
-    height: "auto",
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
