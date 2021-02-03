@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CargoPage = () => {
+const CargoPage = ({ getListFunc }) => {
   const [cargoForm, setCargoForm] = useState({
     ref_number: "",
     tracking_number: "",
@@ -69,6 +69,7 @@ const CargoPage = () => {
       tracking_number: "",
       carrier: "",
     });
+    getListFunc();
   };
 
   const handleChange = (e) => {
