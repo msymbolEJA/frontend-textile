@@ -74,13 +74,13 @@ function App() {
   const [count, setCount] = useState(0);
   const [orderBy, setOrderBy] = useState("id");
   const [order, setOrder] = React.useState("desc");
-  const [selectedTag, setSelectedTag] = useState("all orders");
+  const [selectedTag, setSelectedTag] = useState("pending");
   const [selectedRowId, setSelectedRowId] = useState();
   const [globStatu, setglobStatu] = useState("");
   const [checkBoxIds, setCheckBoxIds] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [url, setUrl] = useState(
-    `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+    `http://144.202.67.136:8080/etsy/mapping/?status=${selectedTag}&limit=${rowsPerPage}&offset=${
       page * rowsPerPage
     }`
   );
