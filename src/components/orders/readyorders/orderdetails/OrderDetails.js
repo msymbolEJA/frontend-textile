@@ -78,7 +78,7 @@ const OrderDetails = ({ match }) => {
   const classes = useStyles();
 
   const getPdf = () => {
-    let data = rows.id;
+    let data = match.params.id;
     getOnePdf("http://144.202.67.136:8080/etsy/print_one/", data)
       .then((res) => {
         //console.log(res.data.url);
@@ -96,11 +96,10 @@ const OrderDetails = ({ match }) => {
   };
 
   useEffect(() => {
-    let data = "";
     let url = `http://144.202.67.136:8080/etsy/mapping/${match.params.id}/`;
     let urlLogs = `http://144.202.67.136:8080/etsy/dateLogs/${match.params.id}/`;
     //console.log(url)
-    getData(url, data)
+    getData(url)
       .then((res) => {
         //console.log(res.data)
         setRows([res.data]);
@@ -117,10 +116,10 @@ const OrderDetails = ({ match }) => {
   }, [match.params.id]);
 
   const changeDateFormat = (date) => {
-    var date = moment(date);
+    date = moment(date);
     var dateComponent = date.utc().format("YYYY-MM-DD");
     var timeComponent = date.utc().format("HH:mm:ss");
-    console.log(dateComponent + " " + timeComponent);
+    // console.log(dateComponent + " " + timeComponent);
     return dateComponent + " " + timeComponent;
   };
 
@@ -184,7 +183,7 @@ const OrderDetails = ({ match }) => {
           </Table>
         </TableContainer>
       </Paper>
-      {rows[0].status === "ready" ? <CargoPage /> : null}
+      {rows[0].status === "ready" ? <CargoPage id={match.params.id} /> : null}
       {rows[0].status === "awaiting" ? (
         <Button
           onClick={getPdf}
