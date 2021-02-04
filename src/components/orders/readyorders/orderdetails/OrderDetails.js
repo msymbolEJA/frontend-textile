@@ -14,6 +14,7 @@ import { Button } from "@material-ui/core";
 import { getOnePdf, getData } from "../../../../helper/PostData";
 import CargoPage from "../../../otheritems/CargoPage";
 //import data from "../../../../helper/Data";
+import moment from "moment";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -105,19 +106,23 @@ const OrderDetails = ({ match }) => {
         setRows([res.data]);
       })
       .then(() => {
-        getData(urlLogs)
-          .then((res) => {
-            console.log("res logs:", res);
-            setLogs(res.data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        getData(urlLogs).then((res) => {
+          console.log("res logs:", res);
+          setLogs(res.data);
+        });
       })
       .catch((err) => {
         console.log(err);
       });
   }, [match.params.id]);
+
+  const changeDateFormat = (date) => {
+    var date = moment(date);
+    var dateComponent = date.utc().format("YYYY-MM-DD");
+    var timeComponent = date.utc().format("HH:mm:ss");
+    console.log(dateComponent + " " + timeComponent);
+    return dateComponent + " " + timeComponent;
+  };
 
   return (
     <div>
@@ -206,7 +211,7 @@ const OrderDetails = ({ match }) => {
               logs.map((log, i) => (
                 <TableRow key={i}>
                   <TableCell component="th" scope="row">
-                    {log.change_date}
+                    {changeDateFormat(log.change_date)}
                   </TableCell>
                   <TableCell>{log.user}</TableCell>
                   <TableCell>{`${log.type} => ${log.data}`}</TableCell>
