@@ -13,19 +13,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CustomTableCell = ({ row, name, name2 }) => {
+const CustomTableCell = ({ row, name, name2, name3 }) => {
   const classes = useStyles();
 
-  if (name2 === "creation_tsz") {
-    var str = row[name2];
-    var date = moment(str);
-    var dateComponent = date.utc().format("YYYY-MM-DD");
-    var timeComponent = date.utc().format("HH:mm:ss");
-    row[name2] = dateComponent + " " + timeComponent;
-  }
-
-  if (name === "last_updated") {
-    console.log("last_updated");
+  if (name === "creation_tsz") {
+    console.log("creation_tsz");
     var str = row[name];
     var date = moment(str);
     var dateComponent = date.utc().format("YYYY-MM-DD");
@@ -49,6 +41,12 @@ const CustomTableCell = ({ row, name, name2 }) => {
       ) : (
         row[name].replace("_", " ")
       )}
+      {name3 ? (
+        <>
+          {row[name3]}
+          <br />
+        </>
+      ) : null}
     </TableCell>
   );
 };

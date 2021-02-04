@@ -304,11 +304,9 @@ function AllOrdersTable() {
             <TableHead>
               <TableRow>
                 <StyledTableCell align="center">
-                  Receipt Id / Id
+                  Receipt Id / Id / Index
                 </StyledTableCell>
-                <StyledTableCell align="center">
-                  Created TSZ / Index
-                </StyledTableCell>
+                <StyledTableCell align="center">Created TSZ</StyledTableCell>
                 <StyledTableCell align="center">Buyer</StyledTableCell>
                 <StyledTableCell align="center">Supplier</StyledTableCell>
                 <StyledTableCell align="center">Status</StyledTableCell>
@@ -333,11 +331,14 @@ function AllOrdersTable() {
                   onClick={() => handleRowClick(row.id)}
                 >
                   <CustomTableCell
-                    {...{ row, name2: "receipt_id", name: "id" }}
+                    {...{
+                      row,
+                      name2: "receipt_id",
+                      name: "id",
+                      name3: "item_index",
+                    }}
                   />
-                  <CustomTableCell
-                    {...{ row, name2: "creation_tsz", name: "item_index" }}
-                  />
+                  <CustomTableCell {...{ row, name: "creation_tsz" }} />
                   <CustomTableCell {...{ row, name: "buyer" }} />
                   <CustomTableCell {...{ row, name: "supplier" }} />
                   <CustomTableCell {...{ row, name: "status" }} />
