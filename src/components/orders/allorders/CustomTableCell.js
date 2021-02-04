@@ -1,5 +1,6 @@
 import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {
@@ -14,6 +15,24 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomTableCell = ({ row, name, name2 }) => {
   const classes = useStyles();
+
+  if (name2 === "creation_tsz") {
+    var str = row[name2];
+    var date = moment(str);
+    var dateComponent = date.utc().format("YYYY-MM-DD");
+    var timeComponent = date.utc().format("HH:mm:ss");
+    row[name2] = dateComponent + " " + timeComponent;
+  }
+
+  if (name === "last_updated") {
+    console.log("last_updated");
+    var str = row[name];
+    var date = moment(str);
+    var dateComponent = date.utc().format("YYYY-MM-DD");
+    var timeComponent = date.utc().format("HH:mm:ss");
+    row[name] = dateComponent + " " + timeComponent;
+  }
+
   return (
     <TableCell align="center" className={classes.tableCell}>
       {name2 ? (

@@ -499,7 +499,7 @@ function App() {
                   }}
                 />
                 <ConstantTableCell
-                  {...{ row, name: "creation_tsz", name3: "buyer" }}
+                  {...{ row, name: "created_date", name3: "buyer" }}
                 />
                 <td
                   onClick={(e) => {
