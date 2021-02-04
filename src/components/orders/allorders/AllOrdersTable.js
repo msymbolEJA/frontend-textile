@@ -309,7 +309,6 @@ function AllOrdersTable() {
                 <StyledTableCell align="center">
                   Created TSZ / Index
                 </StyledTableCell>
-                <StyledTableCell align="center">System Date</StyledTableCell>
                 <StyledTableCell align="center">Buyer</StyledTableCell>
                 <StyledTableCell align="center">Supplier</StyledTableCell>
                 <StyledTableCell align="center">Status</StyledTableCell>
@@ -339,7 +338,6 @@ function AllOrdersTable() {
                   <CustomTableCell
                     {...{ row, name2: "creation_tsz", name: "item_index" }}
                   />
-                  <CustomTableCell {...{ row, name: "last_updated" }} />
                   <CustomTableCell {...{ row, name: "buyer" }} />
                   <CustomTableCell {...{ row, name: "supplier" }} />
                   <CustomTableCell {...{ row, name: "status" }} />
