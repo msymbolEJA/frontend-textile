@@ -13,9 +13,10 @@ const useStyles = makeStyles((theme) => ({
 
 const ViewImageFile = ({ row, name }) => {
   const classes = useStyles();
+
   return (
     <div className={classes.file}>
-      {name ? (
+      {row.image ? (
         <a
           onClick={(e) => {
             e.stopPropagation();
@@ -27,7 +28,9 @@ const ViewImageFile = ({ row, name }) => {
         >
           View File
         </a>
-      ) : null}
+      ) : (
+        <p className={classes.vFile}>No File</p>
+      )}
     </div>
   );
 };

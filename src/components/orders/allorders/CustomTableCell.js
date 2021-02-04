@@ -12,11 +12,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CustomTableCell = ({ row, name }) => {
+const CustomTableCell = ({ row, name, name2 }) => {
   const classes = useStyles();
   return (
     <TableCell align="center" className={classes.tableCell}>
-      {row[name]}
+      {name2 ? (
+        <>
+          {row[name2]}
+          <br />
+        </>
+      ) : null}
+      {name === "id" ? (
+        <>
+          <a href={`/order-details/${row.id}`}>{row[name]}</a>
+          <br />
+        </>
+      ) : (
+        row[name].replace("_", " ")
+      )}
     </TableCell>
   );
 };

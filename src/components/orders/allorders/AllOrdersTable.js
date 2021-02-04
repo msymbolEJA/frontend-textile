@@ -263,14 +263,16 @@ function AllOrdersTable() {
           >
             <TableHead>
               <TableRow>
-                <StyledTableCell align="center">Receipt Id</StyledTableCell>
-                <StyledTableCell align="center">Id</StyledTableCell>
-                <StyledTableCell align="center">Status</StyledTableCell>
-                <StyledTableCell align="center">Created TSZ</StyledTableCell>
-                <StyledTableCell align="center">Item Index</StyledTableCell>
-                <StyledTableCell align="center">Created Date</StyledTableCell>
+                <StyledTableCell align="center">
+                  Receipt Id / Id
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  Created TSZ / Index
+                </StyledTableCell>
+                <StyledTableCell align="center">System Date</StyledTableCell>
                 <StyledTableCell align="center">Buyer</StyledTableCell>
                 <StyledTableCell align="center">Supplier</StyledTableCell>
+                <StyledTableCell align="center">Status</StyledTableCell>
                 <StyledTableCell align="center">Type</StyledTableCell>
                 <StyledTableCell align="center">Length</StyledTableCell>
                 <StyledTableCell align="center">Color</StyledTableCell>
@@ -291,14 +293,16 @@ function AllOrdersTable() {
                   id={row.id}
                   onClick={() => handleRowClick(row.id)}
                 >
-                  <CustomTableCell {...{ row, name: "receipt_id" }} />
-                  <CustomTableCell {...{ row, name: "id" }} />
-                  <CustomTableCell {...{ row, name: "status" }} />
-                  <CustomTableCell {...{ row, name: "creation_tsz" }} />
-                  <CustomTableCell {...{ row, name: "item_index" }} />
-                  <CustomTableCell {...{ row, name: "created_date" }} />
+                  <CustomTableCell
+                    {...{ row, name2: "receipt_id", name: "id" }}
+                  />
+                  <CustomTableCell
+                    {...{ row, name2: "creation_tsz", name: "item_index" }}
+                  />
+                  <CustomTableCell {...{ row, name: "last_updated" }} />
                   <CustomTableCell {...{ row, name: "buyer" }} />
                   <CustomTableCell {...{ row, name: "supplier" }} />
+                  <CustomTableCell {...{ row, name: "status" }} />
                   <CustomTableCell {...{ row, name: "type" }} />
                   <CustomTableCell {...{ row, name: "length" }} />
                   <CustomTableCell {...{ row, name: "color" }} />
@@ -309,7 +313,7 @@ function AllOrdersTable() {
                   <CustomTableCell {...{ row, name: "explanation" }} />
                   <td>
                     {row?.image ? (
-                      <ViewImageFile {...{ row, name: "Image" }} />
+                      <ViewImageFile {...{ row, name: "image" }} />
                     ) : null}
                   </td>
                   <CustomTableCell {...{ row, name: "note" }} />
