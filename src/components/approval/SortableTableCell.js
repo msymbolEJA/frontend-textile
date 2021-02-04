@@ -15,6 +15,8 @@ const StyledTableCell = withStyles((theme) => ({
 
 const SortableTableCell = ({
   property,
+  property2,
+  property3,
   handleRequestSort,
   order,
   orderBy,
@@ -37,7 +39,20 @@ const SortableTableCell = ({
           direction={orderBy === property ? order : "asc"}
           onClick={(event) => handleRequestSort(event, property)}
         >
+          {property2 ? (
+            <>
+              {property2}
+              <br />
+            </>
+          ) : null}
+
           {colName}
+          {property3 ? (
+            <>
+              <br />
+              {property3}
+            </>
+          ) : null}
         </TableSortLabel>
       </StyledTableCell>
     </>

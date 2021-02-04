@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ConstantTableCell = ({ row, name }) => {
+const ConstantTableCell = ({ row, name, name2, name3 }) => {
   const classes = useStyles();
   return (
     <TableCell
@@ -19,7 +19,23 @@ const ConstantTableCell = ({ row, name }) => {
         e.stopPropagation();
       }}
     >
-      {row[name]}
+      {name2 ? (
+        <>
+          {row[name2]}
+          <br />
+        </>
+      ) : null}
+      {name === "id" ? (
+        <a href={`/order-details/${row.id}`}>{row[name]}</a>
+      ) : (
+        row[name]
+      )}
+      {name3 ? (
+        <>
+          <br />
+          {row[name3]}
+        </>
+      ) : null}
     </TableCell>
   );
 };

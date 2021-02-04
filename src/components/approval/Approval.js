@@ -8,7 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
-import { putData, getData, postData } from "../../helper/PostData";
+import { putData, getData } from "../../helper/PostData";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
 //import CustomCheckbox from "../tableitems/CustomCheckbox";
@@ -338,48 +338,24 @@ function App() {
         >
           <TableHead>
             <TableRow>
-              <SortableTableCell
-                property="status"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="Status"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
-                property="receipt"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="Receipt"
-                setOrderBy={setOrderBy}
-              />
+              <StyledTableCell align="center">
+                <button className={classes.btnStyle} onClick={selectAllFunc}>
+                  Select All
+                </button>
+              </StyledTableCell>
               <SortableTableCell
                 property="id"
+                property2="Receipt/"
+                property3="Index"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Id"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
-                property="last_updated"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="Last Updated"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
-                property="item_index"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="Item Index"
+                colName="Id/"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
                 property="created_date"
+                property3="Buyer"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
@@ -387,11 +363,11 @@ function App() {
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
-                property="buyer"
+                property="status"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Buyer"
+                colName="Status"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -458,12 +434,6 @@ function App() {
                 colName="Space"
                 setOrderBy={setOrderBy}
               />
-              <StyledTableCell align="center">
-                Approved
-                <button className={classes.btnStyle} onClick={selectAllFunc}>
-                  Select All
-                </button>
-              </StyledTableCell>
               <SortableTableCell
                 property="image"
                 handleRequestSort={handleRequestSort}
@@ -478,6 +448,14 @@ function App() {
                 order={order}
                 orderBy={orderBy}
                 colName="Explanation"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
+                property="personalization"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Personalization"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -510,14 +488,26 @@ function App() {
                     e.stopPropagation();
                   }}
                 >
+                  <AppendCheckBox {...{ row, appendCheckBox, selectAll }} />
+                </td>
+                <ConstantTableCell
+                  {...{
+                    row,
+                    name: "id",
+                    name2: "receipt",
+                    name3: "item_index",
+                  }}
+                />
+                <ConstantTableCell
+                  {...{ row, name: "creation_tsz", name3: "buyer" }}
+                />
+                <td
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
                   <OrderStatus {...{ row, name: "status", onSelectChange }} />
                 </td>
-                <ConstantTableCell {...{ row, name: "receipt" }} />
-                <ConstantTableCell {...{ row, name: "id" }} />
-                <ConstantTableCell {...{ row, name: "last_updated" }} />
-                <ConstantTableCell {...{ row, name: "item_index", onChange }} />
-                <ConstantTableCell {...{ row, name: "created_date" }} />
-                <ConstantTableCell {...{ row, name: "buyer", onChange }} />
                 <EditableTableCell {...{ row, name: "supplier", onChange }} />
                 <EditableTableCell {...{ row, name: "type", onChange }} />
                 <EditableTableCell {...{ row, name: "length", onChange }} />
@@ -526,13 +516,6 @@ function App() {
                 <EditableTableCell {...{ row, name: "size", onChange }} />
                 <EditableTableCell {...{ row, name: "start", onChange }} />
                 <EditableTableCell {...{ row, name: "space", onChange }} />
-                <td
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <AppendCheckBox {...{ row, appendCheckBox, selectAll }} />
-                </td>
                 <td
                   onClick={(e) => {
                     e.stopPropagation();
@@ -551,6 +534,9 @@ function App() {
                 </td>
                 <EditableTableCell
                   {...{ row, name: "explanation", onChange }}
+                />
+                <EditableTableCell
+                  {...{ row, name: "personalization", onChange }}
                 />
                 <EditableTableCell {...{ row, name: "note", onChange }} />
               </StyledTableRow>
