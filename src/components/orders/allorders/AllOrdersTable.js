@@ -202,6 +202,7 @@ function AllOrdersTable() {
       .finally(() => {
         setUrl(`http://144.202.67.136:8080/etsy/orders/?status=awaiting`);
         getAllPdfFunc();
+        getListFunc();
       });
   };
 
@@ -217,6 +218,7 @@ function AllOrdersTable() {
 
   useEffect(() => {
     if (barcodeInput) checkOrderIfInProgress(barcodeInput);
+    // eslint-disable-next-line
   }, [barcodeInput]);
 
   const checkOrderIfInProgress = async (id) => {

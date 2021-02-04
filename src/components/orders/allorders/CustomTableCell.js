@@ -17,7 +17,6 @@ const CustomTableCell = ({ row, name, name2, name3 }) => {
   const classes = useStyles();
 
   if (name === "creation_tsz") {
-    console.log("creation_tsz");
     var str = row[name];
     var date = moment(str);
     var dateComponent = date.utc().format("YYYY-MM-DD");
