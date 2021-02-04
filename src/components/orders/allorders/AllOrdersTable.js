@@ -106,6 +106,7 @@ function AllOrdersTable() {
   //console.log("UED", url);
   useEffect(() => {
     getListFunc();
+    // eslint-disable-next-line
   }, [page, rowsPerPage, url]);
   //console.log("data rows : ", rows);
   //------------------------------
