@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CargoPage = ({ getListFunc }) => {
+const CargoPage = ({ getListFunc, id }) => {
   const [cargoForm, setCargoForm] = useState({
     ref_number: "",
     tracking_number: "",
@@ -49,6 +49,11 @@ const CargoPage = ({ getListFunc }) => {
   });
   const [result, setResult] = useState();
   const classes = useStyles();
+  //console.log("CP Id", id);
+
+  const refreshPage = () => {
+    console.log("Refresh Page");
+  };
 
   const cargoFormPost = (e) => {
     e.preventDefault();
@@ -69,7 +74,12 @@ const CargoPage = ({ getListFunc }) => {
       tracking_number: "",
       carrier: "",
     });
-    getListFunc();
+    try {
+      getListFunc();
+    } catch (error) {
+      console.log(error);
+      refreshPage();
+    }
   };
 
   const handleChange = (e) => {
