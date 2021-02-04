@@ -48,47 +48,26 @@ export default function AllOrders() {
   useEffect(() => {
     getData("http://144.202.67.136:8080/etsy/status_count/").then(
       (response) => {
-        console.log(response.data);
-        const newData = [
-          {
-            status: response.data[3]?.status,
-            status_count: response.data[3]?.status_count,
-          },
-          {
-            status: response.data[2]?.status,
-            status_count: response.data[2]?.status_count,
-          },
-          {
-            status: response.data[7]?.status,
-            status_count: response.data[7]?.status_count,
-          },
-          {
-            status: response.data[8]?.status,
-            status_count: response.data[8]?.status_count,
-          },
-          {
-            status: response.data[1]?.status,
-            status_count: response.data[1]?.status_count,
-          },
-          {
-            status: response.data[0]?.status,
-            status_count: response.data[0]?.status_count,
-          },
-          {
-            status: response.data[4]?.status,
-            status_count: response.data[4]?.status_count,
-          },
-          {
-            status: response.data[5]?.status,
-            status_count: response.data[5]?.status_count,
-          },
-          {
-            status: response.data[6]?.status,
-            status_count: response.data[6]?.status_count,
-          },
-        ];
-        // console.log(newData);
-        setStatuList(newData);
+        console.log(response);
+        //setStatuList(response.data);
+        var result = response.data.reduce(function (map, obj) {
+          map[obj.status] = obj.status_count;
+          return map;
+        }, {});
+        console.log(result);
+        const newStatusList = {
+          pending: result.pending || 0,
+          awaiting: result.awaiting || 0,
+          in_progress: result.in_progress || 0,
+          ready: result.ready || 0,
+          in_transit: result.in_transit || 0,
+          cancelled: result.cancelled || 0,
+          repeat: result.repeat || 0,
+          shipped: result.shipped || 0,
+          follow_up: result.follow_up || 0,
+        };
+        console.log(newStatusList);
+        setStatuList(newStatusList);
       }
     );
   }, []);
@@ -141,15 +120,12 @@ export default function AllOrders() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {statuList.map((statu) => (
-                <TableRow key={statu.status}>
+              {Object.keys(statuList).map((key, value) => (
+                <TableRow key={key}>
                   <TableCell component="th" scope="row">
-                    {statu.status
-                      .replace("_", " ")
-                      .replace("-", " ")
-                      .toUpperCase()}
+                    {key.replace("_", " ").replace("-", " ").toUpperCase()}
                   </TableCell>
-                  <TableCell align="right">{statu.status_count}</TableCell>
+                  <TableCell align="right">{value}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
