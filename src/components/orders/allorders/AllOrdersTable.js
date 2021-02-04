@@ -11,18 +11,17 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
 import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
-//import { getData } from "../../../helper/PostData";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import { tagsData, nonAdminTagsData } from "../../../helper/Constants";
 import Button from "@material-ui/core/Button";
-import { getData, getAllPdf } from "../../../helper/PostData";
+import { getData, putData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
-import BarcodeReader from "react-barcode-reader";
 import ViewImageFile from "./ViewImageFile";
 import TextField from "@material-ui/core/TextField";
+import { toastErrorNotify } from "../../otheritems/ToastNotify";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -81,6 +80,8 @@ function AllOrdersTable() {
   const [printFlag, setPrintFlag] = useState(false);
   const [printError, setPrintError] = useState(false);
   const [isStatuReady, setIsStatuReady] = useState(false);
+  const [barcodeManuelInput, setBarcodeManuelInput] = useState();
+  const [barcodeInput, setBarcodeInput] = useState();
   const [url, setUrl] = useState(
     `http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${
       page * rowsPerPage
@@ -135,7 +136,7 @@ function AllOrdersTable() {
   const handleTagChange = (e) => {
     const statu = e.currentTarget.id;
     setSelectedTag(statu);
-    setResult("");
+    setBarcodeInput("");
     //console.log(e.target.innerHTML);
     //console.log(statu);
     if (statu === "all orders") {
@@ -204,16 +205,53 @@ function AllOrdersTable() {
       });
   };
 
+  const changeOrderStatus = (id, status) => {
+    putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, { status })
+      .then((response) => {
+        setUrl("http://144.202.67.136:8080/etsy/orders/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if (barcodeInput) checkOrderIfInProgress(barcodeInput);
+  }, [barcodeInput]);
+
+  const checkOrderIfInProgress = async (id) => {
+    let isInProgress = false;
+    const url = `http://144.202.67.136:8080/etsy/mapping/${id}/`;
+    try {
+      const res = await getData(url);
+      isInProgress = res?.data?.status === "in_progress";
+      if (isInProgress) {
+        changeOrderStatus(id, "ready");
+      } else {
+        toastErrorNotify(
+          `The order is not in progress. Current status is: ${res?.data?.status}`
+        );
+      }
+    } catch (error) {
+      toastErrorNotify(error?.response?.data?.detail || error?.message);
+    }
+
+    return isInProgress;
+  };
+
+  const handleManuelBarcodeInput = (e) => {
+    if (e.keyCode === 13) setBarcodeInput(barcodeManuelInput);
+  };
+
   const handleRowClick = (id) => {
     history.push({
       pathname: `/order-details/${id}`,
     });
   };
 
-  const [result, setResult] = useState();
-
   const handleScan = (data) => {
-    setResult(data);
+    setBarcodeInput(data);
+    setBarcodeManuelInput(data);
   };
 
   const handleError = (err) => {
@@ -231,14 +269,15 @@ function AllOrdersTable() {
         />
         {selectedTag === "ready" ? (
           <div>
-            <BarcodeReader onError={handleError} onScan={handleScan} />
-            <p>Barcode From Same Component : {result || "No result"}</p>
+            <BarcodeInput onError={handleError} onScan={handleScan} />
+            <p>Barcode: {barcodeInput || "No result"}</p>
           </div>
         ) : null}
+
         {selectedTag === "shipped" ? (
           <div>
             <BarcodeInput onError={handleError} onScan={handleScan} />
-            <p>Barcode From Other Component : {result || "No result"}</p>
+            <p>Barcode: {barcodeInput || "No result"}</p>
           </div>
         ) : null}
         {selectedTag === "ready" || selectedTag === "shipped" ? (
@@ -249,8 +288,9 @@ function AllOrdersTable() {
               defaultValue=""
               variant="outlined"
               size="small"
-              value={result}
-              onChange={(e) => setResult(e.target.value)}
+              value={barcodeManuelInput}
+              onChange={(e) => setBarcodeManuelInput(e.target.value)}
+              onKeyDown={handleManuelBarcodeInput}
             />
           </div>
         ) : null}

@@ -105,10 +105,14 @@ const OrderDetails = ({ match }) => {
         setRows([res.data]);
       })
       .then(() => {
-        getData(urlLogs).then((res) => {
-          console.log("res logs:", res);
-          setLogs(res.data);
-        });
+        getData(urlLogs)
+          .then((res) => {
+            console.log("res logs:", res);
+            setLogs(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
