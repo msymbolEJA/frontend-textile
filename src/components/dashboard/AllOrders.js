@@ -125,7 +125,7 @@ export default function AllOrders() {
                   <TableCell component="th" scope="row">
                     {key.replace("_", " ").replace("-", " ").toUpperCase()}
                   </TableCell>
-                  <TableCell align="right">{value}</TableCell>
+                  <TableCell align="right">{statuList[key]}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
