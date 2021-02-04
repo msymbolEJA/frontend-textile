@@ -74,7 +74,8 @@ export const putImage = async (path, image, imageName) => {
 
 export const getOnePdf = async (path, data) => {
   const fd = new FormData();
-  fd.append("a", 2);
+  console.log("Postdata data", data);
+  fd.append("a", data);
   const token = localStorage.getItem("x-auth-token");
   const response = await axios.post(path, fd, {
     headers: {
