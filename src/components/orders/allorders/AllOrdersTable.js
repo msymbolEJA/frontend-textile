@@ -314,7 +314,9 @@ function AllOrdersTable() {
                   <td>
                     {row?.image ? (
                       <ViewImageFile {...{ row, name: "image" }} />
-                    ) : null}
+                    ) : (
+                      <p>No File</p>
+                    )}
                   </td>
                   <CustomTableCell {...{ row, name: "note" }} />
                 </StyledTableRow>

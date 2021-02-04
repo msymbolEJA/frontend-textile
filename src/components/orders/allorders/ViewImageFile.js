@@ -28,9 +28,7 @@ const ViewImageFile = ({ row, name }) => {
         >
           View File
         </a>
-      ) : (
-        <p className={classes.vFile}>No File</p>
-      )}
+      ) : null}
     </div>
   );
 };
