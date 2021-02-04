@@ -10,14 +10,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AppendCheckBox = ({ row, appendCheckBox }) => {
+const AppendCheckBox = ({ row, appendCheckBox, selectAll }) => {
   const classes = useStyles();
   const [checked, setChecked] = React.useState(false);
   //console.log(row);
   //console.log(row.id);
 
   const handleCheckBoxChange = (e, id) => {
-    appendCheckBox(id);
+    if (!checked) {
+      appendCheckBox(id);
+    }
     setChecked(!checked);
   };
 
@@ -26,7 +28,7 @@ const AppendCheckBox = ({ row, appendCheckBox }) => {
       <FormControlLabel
         control={
           <Checkbox
-            checked={checked}
+            checked={checked || selectAll}
             onChange={(e) => handleCheckBoxChange(e, row.id)}
             name="approved"
             color="primary"

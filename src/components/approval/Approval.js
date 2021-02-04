@@ -8,7 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
-import { putData, getData } from "../../helper/PostData";
+import { putData, getData, postData } from "../../helper/PostData";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
 //import CustomCheckbox from "../tableitems/CustomCheckbox";
@@ -78,6 +78,7 @@ function App() {
   const [selectedRowId, setSelectedRowId] = useState();
   const [globStatu, setglobStatu] = useState("");
   const [checkBoxIds, setCheckBoxIds] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
   const [url, setUrl] = useState(
     `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
       page * rowsPerPage
@@ -283,7 +284,7 @@ function App() {
   const approveAll = () => {
     console.log("Approve all");
     console.log(checkBoxIds);
-    // getData("http://144.202.67.136:8080/etsy/approved_all/")
+    // postData("http://144.202.67.136:8080/etsy/approved_all/", checkBoxIds)
     //   .then((res) => {
     //     console.log(res);
     //     toastWarnNotify(res.data.Success);
@@ -316,8 +317,14 @@ function App() {
     setPage(0);
   };
 
+  const selectAllFunc = () => {
+    console.log("Select All");
+    setSelectAll(!selectAll);
+  };
+
   return (
     <Paper className={classes.root}>
+      <button onClick={approveAll}>approveAll</button>
       <CustomButtonGroup
         selectedTag={selectedTag}
         handleTagChange={handleTagChange}
@@ -453,8 +460,8 @@ function App() {
               />
               <StyledTableCell align="center">
                 Approved
-                <button className={classes.btnStyle} onClick={approveAll}>
-                  Approve All
+                <button className={classes.btnStyle} onClick={selectAllFunc}>
+                  Select All
                 </button>
               </StyledTableCell>
               <SortableTableCell
@@ -524,7 +531,7 @@ function App() {
                     e.stopPropagation();
                   }}
                 >
-                  <AppendCheckBox {...{ row, appendCheckBox }} />
+                  <AppendCheckBox {...{ row, appendCheckBox, selectAll }} />
                 </td>
                 <td
                   onClick={(e) => {
