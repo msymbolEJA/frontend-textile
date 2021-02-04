@@ -11,7 +11,8 @@ import Paper from "@material-ui/core/Paper";
 import { putData, getData } from "../../helper/PostData";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
-import CustomCheckbox from "../tableitems/CustomCheckbox";
+//import CustomCheckbox from "../tableitems/CustomCheckbox";
+import AppendCheckBox from "./AppendCheckBox";
 import OrderStatus from "../tableitems/CustomSelectCell";
 import UploadFile from "../tableitems/UploadFile";
 import { putImage } from "../../helper/PostData";
@@ -76,6 +77,7 @@ function App() {
   const [selectedTag, setSelectedTag] = useState("all orders");
   const [selectedRowId, setSelectedRowId] = useState();
   const [globStatu, setglobStatu] = useState("");
+  const [checkBoxIds, setCheckBoxIds] = useState([]);
   const [url, setUrl] = useState(
     `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
       page * rowsPerPage
@@ -198,41 +200,23 @@ function App() {
     handleRowChange(id, data);
   };
 
-  const onCheckboxChange = (e, row) => {
-    e.stopPropagation();
-    if (!previous[row.id]) {
-      setPrevious((state) => ({ ...state, [row.id]: row }));
-    }
-    const value = e.target.checked;
-    const name = e.target.name;
-    const { id } = row;
+  const appendCheckBox = (id) => {
+    console.log("appendCheckBox", id);
 
-    if ((name === "approved") & (value === true) & (row.status === "pending")) {
-      let data = { [name]: value, status: "awaiting" };
-      handleRowChange(id, data);
-      getListFunc();
-    } else if (
-      (name === "approved") &
-      (value === false) &
-      (row.status === "awaiting")
-    ) {
-      let data = { [name]: value, status: "pending" };
-      handleRowChange(id, data);
-      getListFunc();
+    const index = checkBoxIds.indexOf(id);
+    if (index > -1) {
+      console.log("it has");
+      const newCheckBoxIds = checkBoxIds;
+      newCheckBoxIds.splice(index, 1);
+      console.log("newCBI", newCheckBoxIds);
+      setCheckBoxIds(newCheckBoxIds);
+      //console.log(checkBoxIds);
     } else {
-      let data = { [name]: value };
-      handleRowChange(id, data);
-      getListFunc();
-      data = {};
+      setCheckBoxIds((checkBoxIds) => [...checkBoxIds, id]);
     }
 
-    const newRows = rows.map((row) => {
-      if (row.id === id) {
-        return { ...row, [name]: value };
-      }
-      return row;
-    });
-    setRows(newRows);
+    //checkBoxId.push(id);
+    //console.log(checkBoxIds);
   };
 
   const onSelectChange = (e, row) => {
@@ -298,16 +282,17 @@ function App() {
 
   const approveAll = () => {
     console.log("Approve all");
-    getData("http://144.202.67.136:8080/etsy/approved_all/")
-      .then((res) => {
-        console.log(res);
-        toastWarnNotify(res.data.Success);
-        getListFunc();
-      })
-      .catch(({ response }) => {
-        console.log(response.data.Failed);
-        toastWarnNotify(response.data.Failed);
-      });
+    console.log(checkBoxIds);
+    // getData("http://144.202.67.136:8080/etsy/approved_all/")
+    //   .then((res) => {
+    //     console.log(res);
+    //     toastWarnNotify(res.data.Success);
+    //     getListFunc();
+    //   })
+    //   .catch(({ response }) => {
+    //     console.log(response.data.Failed);
+    //     toastWarnNotify(response.data.Failed);
+    //   });
   };
 
   const handleTagChange = (e) => {
@@ -346,12 +331,6 @@ function App() {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">
-                Approved
-                <button className={classes.btnStyle} onClick={approveAll}>
-                  Approve All
-                </button>
-              </StyledTableCell>
               <SortableTableCell
                 property="status"
                 handleRequestSort={handleRequestSort}
@@ -472,6 +451,12 @@ function App() {
                 colName="Space"
                 setOrderBy={setOrderBy}
               />
+              <StyledTableCell align="center">
+                Approved
+                <button className={classes.btnStyle} onClick={approveAll}>
+                  Approve All
+                </button>
+              </StyledTableCell>
               <SortableTableCell
                 property="image"
                 handleRequestSort={handleRequestSort}
@@ -518,15 +503,6 @@ function App() {
                     e.stopPropagation();
                   }}
                 >
-                  <CustomCheckbox
-                    {...{ row, name: "approved", onCheckboxChange }}
-                  />
-                </td>
-                <td
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
                   <OrderStatus {...{ row, name: "status", onSelectChange }} />
                 </td>
                 <ConstantTableCell {...{ row, name: "receipt" }} />
@@ -543,6 +519,13 @@ function App() {
                 <EditableTableCell {...{ row, name: "size", onChange }} />
                 <EditableTableCell {...{ row, name: "start", onChange }} />
                 <EditableTableCell {...{ row, name: "space", onChange }} />
+                <td
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <AppendCheckBox {...{ row, appendCheckBox }} />
+                </td>
                 <td
                   onClick={(e) => {
                     e.stopPropagation();

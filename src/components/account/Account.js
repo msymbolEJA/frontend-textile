@@ -123,7 +123,7 @@ export default function Account() {
       )}/`
     )
       .then((response) => {
-        console.log("responseData", response.data);
+        // console.log("responseData", response.data);
         setAccountData(response.data);
       })
       .catch((error) => {
