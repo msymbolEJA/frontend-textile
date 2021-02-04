@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Modal from "@material-ui/core/Modal";
 import { AppContext } from "../../context/Context";
-import { getData } from "../../helper/PostData";
+import { getData, putData } from "../../helper/PostData";
 import PublishIcon from "@material-ui/icons/Publish";
 import { putImage } from "../../helper/PostData";
 
@@ -78,9 +78,29 @@ export default function Account() {
 
   const updateUser = (e) => {
     e.preventDefault();
-    setUser({ ...user, username: "test4" });
+    setUser({ ...user });
+    delete accountData.image;
+    const localId = Number(localStorage.getItem("localId"));
+    console.log("....", localId);
+    try {
+      let path = `http://144.202.67.136:8080/account/profile/${localId}/`;
+      console.log(path);
+      putData(path, accountData)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch(({ response }) => {
+          console.log(response);
+        })
+        .finally(() => {
+          getInfo();
+        });
+      getInfo();
+    } catch (error) {
+      console.log(error);
+    }
     setOpen(false);
-    //console.log(accountData);
+    console.log(accountData);
   };
 
   const changeHandler = (e) => {
@@ -103,7 +123,7 @@ export default function Account() {
       )}/`
     )
       .then((response) => {
-        console.log(response.data);
+        console.log("responseData", response.data);
         setAccountData(response.data);
       })
       .catch((error) => {
@@ -124,12 +144,35 @@ export default function Account() {
               autoComplete="username"
               name="username"
               variant="outlined"
-              required
               fullWidth
               id="username"
               label="Username"
               autoFocus
               defaultValue={accountData?.username}
+              onChange={(e) => changeHandler(e)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              autoComplete="first_name"
+              name="first_name"
+              variant="outlined"
+              fullWidth
+              id="first_name"
+              label="First Name"
+              defaultValue={accountData?.first_name}
+              onChange={(e) => changeHandler(e)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              autoComplete="last_name"
+              name="last_name"
+              variant="outlined"
+              fullWidth
+              id="last_name"
+              label="Last Name"
+              defaultValue={accountData?.last_name}
               onChange={(e) => changeHandler(e)}
             />
           </Grid>
@@ -143,45 +186,6 @@ export default function Account() {
               name="email"
               autoComplete="email"
               defaultValue={accountData?.email}
-              onChange={(e) => changeHandler(e)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              name="password"
-              label="Current Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={(e) => changeHandler(e)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              name="newPassword"
-              label="New Password"
-              type="password"
-              id="newPassword"
-              autoComplete="current-password"
-              onChange={(e) => changeHandler(e)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              name="confirmPassword"
-              label="Confirm Password"
-              type="password"
-              id="confirmPassword"
-              autoComplete="current-password"
               onChange={(e) => changeHandler(e)}
             />
           </Grid>
@@ -218,8 +222,8 @@ export default function Account() {
         })
         .finally(() => {
           // getData();
-          getInfo();
         });
+      getInfo();
     } catch (error) {
       console.log(error);
     }
@@ -294,9 +298,7 @@ export default function Account() {
           <Typography variant="h6" className={classes.header}>
             User Role:
           </Typography>
-          <Typography variant="h6">
-            {accountData?.role.replace("_", " ")}
-          </Typography>
+          <Typography variant="h6">{accountData?.role}</Typography>
           <hr className={classes.hrStyle} />
 
           {accountData?.workshop ? (
