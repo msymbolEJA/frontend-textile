@@ -6,7 +6,6 @@ export const tagsData = [
   "in_transit",
   "cancelled",
   "shipped",
-  "all orders",
 ];
 
 export const nonAdminTagsData = [

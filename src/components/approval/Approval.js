@@ -289,24 +289,32 @@ function App() {
   };
 
   const handleTagChange = (e) => {
-    console.log("e", e);
     const statu = e.currentTarget.id;
+    console.log("statu", statu);
     setSelectedTag(statu);
-    if (statu === "all orders") {
-      setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?limit=${rowsPerPage}&offset=${
+    let newUrl = "http://144.202.67.136:8080/etsy/mapping/?";
+    switch (statu) {
+      case "all_orders":
+        newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+        break;
+      case "repeat":
+        newUrl += `is_repeat=true&limit=${rowsPerPage}&offset=${
           page * rowsPerPage
-        }`
-      );
-      setglobStatu("");
-    } else {
-      setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&status=${statu}&limit=${rowsPerPage}&offset=${
+        }`;
+        break;
+      case "followUp":
+        newUrl += `is_followup=true&limit=${rowsPerPage}&offset=${
           page * rowsPerPage
-        }`
-      );
-      setglobStatu(statu);
+        }`;
+        break;
+      default:
+        newUrl += `status=${globStatu}&status=${statu}&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`;
+        break;
     }
+    setUrl(newUrl);
+    setglobStatu("");
     setPage(0);
   };
 

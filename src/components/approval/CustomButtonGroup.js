@@ -49,6 +49,47 @@ const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
           </Button>
         ))}
       </div>
+      <div>
+        <Button
+          className={classes.btn}
+          id="all_orders"
+          key="all_orders"
+          onClick={(e) => handleTagChange(e)}
+          variant="contained"
+          style={{
+            backgroundColor: selectedTag === "all_orders" ? "#3F51B5" : null,
+            color: selectedTag === "all_orders" ? "white" : null,
+          }}
+        >
+          ALL ORDERS
+        </Button>
+        <Button
+          className={classes.btn}
+          id="repeat"
+          key="repeat"
+          onClick={(e) => handleTagChange(e)}
+          variant="contained"
+          style={{
+            backgroundColor: selectedTag === "repeat" ? "#3F51B5" : null,
+            color: selectedTag === "repeat" ? "white" : null,
+          }}
+        >
+          Repeat
+        </Button>
+        <Button
+          className={classes.btn}
+          id="followUp"
+          key="followUp"
+          onClick={(e) => handleTagChange(e)}
+          variant="contained"
+          style={{
+            backgroundColor: selectedTag === "followUp" ? "#3F51B5" : null,
+            color: selectedTag === "followUp" ? "white" : null,
+          }}
+        >
+          Follow Up
+        </Button>
+      </div>
     </div>
   );
 };

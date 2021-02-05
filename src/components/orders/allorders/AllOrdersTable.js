@@ -80,7 +80,7 @@ if (
   localUser === "shop_packer"
 ) {
   //console.log("admin");
-  firstStatu = "all orders";
+  firstStatu = "all_orders";
 } else {
   firstStatu = "awaiting";
   // console.log("awaiting");
@@ -155,7 +155,7 @@ function AllOrdersTable() {
     setBarcodeInput("");
     //console.log(e.target.innerHTML);
     //console.log(statu);
-    if (statu === "all orders") {
+    if (statu === "all_orders") {
       setUrl(
         `http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${
           page * rowsPerPage
