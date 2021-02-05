@@ -107,7 +107,7 @@ const OrderDetails = ({ match }) => {
       })
       .then(() => {
         getData(urlLogs).then((res) => {
-          console.log("res logs:", res);
+          // console.log("res logs:", res);
           setLogs(res.data);
         });
       })
@@ -140,7 +140,6 @@ const OrderDetails = ({ match }) => {
                 <StyledTableCell align="center">Receipt Id</StyledTableCell>
                 <StyledTableCell align="center">Date</StyledTableCell>
                 <StyledTableCell align="center">Statu</StyledTableCell>
-                <StyledTableCell align="center">System Date</StyledTableCell>
                 <StyledTableCell align="center">Buyer</StyledTableCell>
                 <StyledTableCell align="center">Supplier</StyledTableCell>
                 <StyledTableCell align="center">Type</StyledTableCell>
@@ -158,9 +157,10 @@ const OrderDetails = ({ match }) => {
                 rows?.map((row) => (
                   <StyledTableRow key={row.id} id={row.id}>
                     <CustomTableCell {...{ row, name: "receipt" }} />
-                    <CustomTableCell {...{ row, name: "created_date" }} />
+                    <CustomTableCell
+                      {...{ row, name: "created_date", changeDateFormat }}
+                    />
                     <CustomTableCell {...{ row, name: "status" }} />
-                    <CustomTableCell {...{ row, name: "creation_tsz" }} />
                     <CustomTableCell {...{ row, name: "buyer" }} />
                     <CustomTableCell {...{ row, name: "supplier" }} />
                     <CustomTableCell {...{ row, name: "type" }} />

@@ -13,9 +13,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CustomTableCell = ({ row, name, onChange }) => {
+const CustomTableCell = ({ row, name, onChange, changeDateFormat }) => {
   const classes = useStyles();
   const { isEditMode } = row;
+
+  if (name === "created_date") {
+    console.log("created_date", row[name]);
+    row[name] = changeDateFormat(row[name]);
+    console.log(row[name]);
+  }
+  if (name === "status") {
+    console.log("status");
+    row[name] = row[name].replace("_", " ");
+  }
+
+  //console.log("changeDateFormat", changeDateFormat);
   return (
     <TableCell align="center" className={classes.tableCell}>
       {isEditMode ? (
@@ -26,8 +38,8 @@ const CustomTableCell = ({ row, name, onChange }) => {
           className={classes.input}
         />
       ) : (
-          row[name]
-        )}
+        row[name]
+      )}
     </TableCell>
   );
 };
