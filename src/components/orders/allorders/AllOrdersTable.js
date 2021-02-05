@@ -70,13 +70,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const localUser = localStorage.getItem("localUser");
+console.log("localUser", localUser);
+
+let firstStatu;
+if (
+  localUser === "admin" ||
+  localUser === "shop_manager" ||
+  localUser === "shop_packer"
+) {
+  console.log("admin");
+  firstStatu = "all orders";
+} else {
+  firstStatu = "awaiting";
+  console.log("awaiting");
+}
+
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [count, setCount] = useState(0);
-  const [selectedTag, setSelectedTag] = useState("all orders");
+  const [selectedTag, setSelectedTag] = useState(firstStatu);
   const [printFlag, setPrintFlag] = useState(false);
   const [printError, setPrintError] = useState(false);
   const [isStatuReady, setIsStatuReady] = useState(false);

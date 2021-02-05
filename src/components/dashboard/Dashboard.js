@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   const userRole = user.role || localUser;
 
-  console.log(userRole);
+  // console.log(userRole);
 
   const handleClick = (e) => {
     history.push(`/${e.currentTarget.id}`);
