@@ -75,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
 const OrderDetails = ({ match }) => {
   const [rows, setRows] = useState(DATA);
   const [logs, setLogs] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const classes = useStyles();
 
   const getPdf = () => {
@@ -113,7 +114,7 @@ const OrderDetails = ({ match }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [match.params.id]);
+  }, [match.params.id, refresh]);
 
   const changeDateFormat = (date) => {
     date = moment(date);
@@ -183,7 +184,9 @@ const OrderDetails = ({ match }) => {
           </Table>
         </TableContainer>
       </Paper>
-      {rows[0].status === "ready" ? <CargoPage id={match.params.id} /> : null}
+      {rows[0].status === "ready" ? (
+        <CargoPage setRefresh={setRefresh} id={match.params.id} />
+      ) : null}
       {rows[0].status === "awaiting" ? (
         <Button
           onClick={getPdf}
@@ -201,6 +204,7 @@ const OrderDetails = ({ match }) => {
         <a
           href={`http://144.202.67.136:8080/media/pdf/${match.params.id}.pdf`}
           target="_blank"
+          rel="noreferrer"
         >
           Open Printed Pdf
         </a>

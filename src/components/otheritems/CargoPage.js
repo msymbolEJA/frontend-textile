@@ -4,6 +4,10 @@ import { Button } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import { postFormData } from "../../helper/PostData";
+import {
+  toastErrorNotify,
+  toastSuccessNotify,
+} from "../otheritems/ToastNotify";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CargoPage = ({ getListFunc, id }) => {
+const CargoPage = ({ getListFunc, id, setRefresh }) => {
   const [cargoForm, setCargoForm] = useState({
     ref_number: "",
     tracking_number: "",
@@ -51,10 +55,6 @@ const CargoPage = ({ getListFunc, id }) => {
   const classes = useStyles();
   //console.log("CP Id", id);
 
-  const refreshPage = () => {
-    console.log("Refresh Page");
-  };
-
   const cargoFormPost = (e) => {
     e.preventDefault();
     console.log("CFB");
@@ -63,11 +63,16 @@ const CargoPage = ({ getListFunc, id }) => {
     postFormData("http://144.202.67.136:8080/etsy/cargo/", cargoForm)
       .then((res) => {
         console.log(res.data.Success);
+        toastSuccessNotify(res.data.Success);
         setResult(res.data.Success);
       })
       .catch(({ response }) => {
         console.log(response);
         setResult(response.data.Failed);
+        toastErrorNotify(response.data.Failed);
+      })
+      .finally(() => {
+        if (setRefresh) setRefresh(true);
       });
     setCargoForm({
       ref_number: "",
@@ -77,8 +82,7 @@ const CargoPage = ({ getListFunc, id }) => {
     try {
       getListFunc();
     } catch (error) {
-      console.log(error);
-      refreshPage();
+      //console.log(error);
     }
   };
 
