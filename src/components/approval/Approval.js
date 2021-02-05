@@ -459,11 +459,19 @@ function App() {
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
+                property="message_from_buyer"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Customer Note"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
                 property="note"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Note"
+                colName="Internal Note"
                 setOrderBy={setOrderBy}
               />
             </TableRow>
@@ -537,6 +545,9 @@ function App() {
                 />
                 <EditableTableCell
                   {...{ row, name: "personalization", onChange }}
+                />
+                <EditableTableCell
+                  {...{ row, name: "message_from_buyer", onChange }}
                 />
                 <EditableTableCell {...{ row, name: "note", onChange }} />
               </StyledTableRow>
