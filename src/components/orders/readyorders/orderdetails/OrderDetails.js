@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import DATA from "../../../../helper/Data";
 import { Button } from "@material-ui/core";
 import { getOnePdf, getData } from "../../../../helper/PostData";
-import CargoPage from "../../../otheritems/CargoPage";
+import OrderDetailsCargoPage from "./OrderDetailsCargoPage";
 //import data from "../../../../helper/Data";
 import moment from "moment";
 
@@ -187,7 +187,7 @@ const OrderDetails = ({ match }) => {
         </TableContainer>
       </Paper>
       {rows[0].status === "ready" ? (
-        <CargoPage setRefresh={setRefresh} id={match.params.id} />
+        <OrderDetailsCargoPage id={match.params.id} />
       ) : null}
       {rows[0].status === "awaiting" ? (
         <Button
