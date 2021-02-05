@@ -19,6 +19,7 @@ import { putImage } from "../../helper/PostData";
 import { ToastContainer } from "react-toastify";
 import { toastWarnNotify } from "../otheritems/ToastNotify";
 import ConstantTableCell from "../tableitems/ConstantTableCell";
+import FlagAndFavCell from "./FlagAndFavCell";
 import EditableTableCell from "../tableitems/EditableTableCell";
 import SortableTableCell from "./SortableTableCell";
 import CustomButtonGroup from "./CustomButtonGroup";
@@ -498,12 +499,14 @@ function App() {
                 >
                   <AppendCheckBox {...{ row, appendCheckBox, selectAll }} />
                 </td>
-                <ConstantTableCell
+                <FlagAndFavCell
                   {...{
                     row,
                     name: "id",
                     name2: "receipt",
                     name3: "item_index",
+                    name4: "is_followup",
+                    name5: "is_repeat",
                   }}
                 />
                 <ConstantTableCell
