@@ -141,19 +141,6 @@ export default function Account() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              autoComplete="username"
-              name="username"
-              variant="outlined"
-              fullWidth
-              id="username"
-              label="Username"
-              autoFocus
-              defaultValue={accountData?.username}
-              onChange={(e) => changeHandler(e)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
               autoComplete="first_name"
               name="first_name"
               variant="outlined"
@@ -199,6 +186,14 @@ export default function Account() {
           onClick={(e) => updateUser(e)}
         >
           Update
+        </Button>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={handleClose}
+        >
+          Cancel
         </Button>
       </form>
     </div>
