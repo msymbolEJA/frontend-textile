@@ -12,6 +12,7 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import TableRow from "@material-ui/core/TableRow";
 import { getData } from "../../helper/PostData";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AllOrders({ userRole }) {
   const classes = useStyles();
   const history = useHistory();
-  const [statuList, setStatuList] = useState([]);
+  const [statuList, setStatuList] = useState();
 
   useEffect(() => {
     getData("http://144.202.67.136:8080/etsy/status_count/").then(
@@ -135,16 +136,22 @@ export default function AllOrders({ userRole }) {
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {Object.keys(statuList).map((key, value) => (
-                <TableRow key={key}>
-                  <TableCell component="th" scope="row">
-                    {key.replace("_", " ").replace("-", " ").toUpperCase()}
-                  </TableCell>
-                  <TableCell align="right">{statuList[key]}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+            {statuList ? (
+              <TableBody>
+                {Object.keys(statuList).map((key, value) => (
+                  <TableRow key={key}>
+                    <TableCell component="th" scope="row">
+                      {key.replace("_", " ").replace("-", " ").toUpperCase()}
+                    </TableCell>
+                    <TableCell align="right">{statuList[key]}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            ) : (
+              <td colspan="2" style={{ display: "table-cell" }}>
+                <CircularProgress />
+              </td>
+            )}
           </Table>
         </div>
       </Paper>
