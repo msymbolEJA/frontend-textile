@@ -324,8 +324,14 @@ function App() {
   };
 
   const handlerFlagRepeatChange = (id, name, value) => {
-    let data = { [name]: !value };
-    handleRowChange(id, data);
+    if (name === "is_repeat" && value === false) {
+      console.log("inside is repeat", id, name, value);
+      let data = { [name]: !value, status: "awaiting" };
+      handleRowChange(id, data);
+    } else {
+      let data = { [name]: !value };
+      handleRowChange(id, data);
+    }
   };
 
   return (
