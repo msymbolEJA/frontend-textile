@@ -27,9 +27,7 @@ export const statusData = [
   "ready",
   "in_transit",
   "cancelled",
-  "repeat",
   "shipped",
-  "follow_up",
 ];
 
 export const USER_TYPE = {
