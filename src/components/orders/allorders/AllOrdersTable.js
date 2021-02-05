@@ -354,6 +354,7 @@ function AllOrdersTable() {
                       name2: "receipt_id",
                       name: "id",
                       name3: "item_index",
+                      name4: "is_repeat",
                     }}
                   />
                   <CustomTableCell {...{ row, name: "creation_tsz" }} />

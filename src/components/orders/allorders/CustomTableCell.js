@@ -1,6 +1,7 @@
 import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
+import RepeatIcon from "@material-ui/icons/Repeat";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CustomTableCell = ({ row, name, name2, name3 }) => {
+const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
   const classes = useStyles();
 
   if (name === "creation_tsz") {
@@ -46,6 +47,7 @@ const CustomTableCell = ({ row, name, name2, name3 }) => {
           <br />
         </>
       ) : null}
+      {row[name4] ? <RepeatIcon style={{ color: "red" }} /> : null}
     </TableCell>
   );
 };
