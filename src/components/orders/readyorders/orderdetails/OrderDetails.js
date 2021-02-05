@@ -187,7 +187,7 @@ const OrderDetails = ({ match }) => {
         </TableContainer>
       </Paper>
       {rows[0].status === "ready" ? (
-        <OrderDetailsCargoPage id={match.params.id} />
+        <OrderDetailsCargoPage id={match.params.id} setRefresh={setRefresh} />
       ) : null}
       {rows[0].status === "awaiting" ? (
         <Button
