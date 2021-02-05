@@ -79,7 +79,7 @@ const ConstantTableCell = ({
           cursor: "pointer",
           pointerEvents: isDisable ? "auto" : "none",
         }}
-        // onClick={() => handlerFlagRepeatChange(row.id, name6, row[name6])}
+        onClick={() => handlerFlagRepeatChange(row.id, name6, row[name6])}
       />
     </TableCell>
   );
