@@ -4,6 +4,7 @@ import TableCell from "@material-ui/core/TableCell";
 import moment from "moment";
 import FlagIcon from "@material-ui/icons/Flag";
 import RepeatIcon from "@material-ui/icons/Repeat";
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {
@@ -19,6 +20,7 @@ const ConstantTableCell = ({
   name3,
   name4,
   name5,
+  name6,
   handlerFlagRepeatChange,
 }) => {
   const classes = useStyles();
@@ -31,6 +33,9 @@ const ConstantTableCell = ({
     var timeComponent = date.utc().format("HH:mm:ss");
     row[name] = dateComponent + " " + timeComponent;
   }
+  const isDisable = row.status === "pending";
+
+  console.log(name6);
 
   return (
     <TableCell
@@ -67,6 +72,14 @@ const ConstantTableCell = ({
       <RepeatIcon
         style={{ color: row[name5] ? "red" : "grey", cursor: "pointer" }}
         onClick={() => handlerFlagRepeatChange(row.id, name5, row[name5])}
+      />
+      <ThumbUpAltIcon
+        style={{
+          color: row[name6] ? "red" : "grey",
+          cursor: "pointer",
+          pointerEvents: isDisable ? "auto" : "none",
+        }}
+        // onClick={() => handlerFlagRepeatChange(row.id, name6, row[name6])}
       />
     </TableCell>
   );

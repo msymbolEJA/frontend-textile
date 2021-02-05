@@ -518,6 +518,7 @@ function App() {
                     name3: "item_index",
                     name4: "is_followup",
                     name5: "is_repeat",
+                    name6: "approved",
                     handlerFlagRepeatChange,
                   }}
                 />

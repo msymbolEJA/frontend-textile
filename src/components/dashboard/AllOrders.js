@@ -87,7 +87,7 @@ export default function AllOrders({ userRole }) {
         }
       }
     );
-  }, []);
+  }, [userRole]);
 
   const handleClick = () => {
     history.push("/all-orders");
@@ -148,9 +148,13 @@ export default function AllOrders({ userRole }) {
                 ))}
               </TableBody>
             ) : (
-              <td colspan="2" style={{ display: "table-cell" }}>
-                <CircularProgress />
-              </td>
+              <tbody>
+                <tr>
+                  <td colSpan="2" style={{ display: "table-cell" }}>
+                    <CircularProgress />
+                  </td>
+                </tr>
+              </tbody>
             )}
           </Table>
         </div>
