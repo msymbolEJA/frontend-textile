@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const localUser = localStorage.getItem("localUser");
-console.log("localUser", localUser);
+//console.log("localUser", localUser);
 
 let firstStatu;
 if (
@@ -79,11 +79,11 @@ if (
   localUser === "shop_manager" ||
   localUser === "shop_packer"
 ) {
-  console.log("admin");
+  //console.log("admin");
   firstStatu = "all orders";
 } else {
   firstStatu = "awaiting";
-  console.log("awaiting");
+  // console.log("awaiting");
 }
 
 function AllOrdersTable() {
