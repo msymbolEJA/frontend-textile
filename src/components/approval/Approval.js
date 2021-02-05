@@ -543,10 +543,10 @@ function App() {
                 <EditableTableCell
                   {...{ row, name: "explanation", onChange }}
                 />
-                <EditableTableCell
+                <ConstantTableCell
                   {...{ row, name: "personalization", onChange }}
                 />
-                <EditableTableCell
+                <ConstantTableCell
                   {...{ row, name: "message_from_buyer", onChange }}
                 />
                 <EditableTableCell {...{ row, name: "note", onChange }} />
