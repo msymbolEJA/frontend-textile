@@ -223,9 +223,9 @@ function App() {
 
   const onSelectChange = (e, row) => {
     e.preventDefault();
-    if (!previous[row.id]) {
-      setPrevious((state) => ({ ...state, [row.id]: row }));
-    }
+    // if (!previous[row.id]) {
+    //   setPrevious((state) => ({ ...state, [row.id]: row }));
+    // }
     const value = e.target.value;
     const name = e.target.name;
     const { id } = row;
@@ -243,13 +243,13 @@ function App() {
       let data = { [name]: value };
       handleRowChange(id, data);
     }
-    const newRows = rows.map((row) => {
-      if (row.id === id) {
-        return { ...row, [name]: value };
-      }
-      return row;
-    });
-    setRows(newRows);
+    // const newRows = rows.map((row) => {
+    //   if (row.id === id) {
+    //     return { ...row, [name]: value };
+    //   }
+    //   return row;
+    // });
+    // setRows(newRows);
     getListFunc();
   };
 
