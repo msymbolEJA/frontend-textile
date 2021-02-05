@@ -102,7 +102,7 @@ const OrderDetails = ({ match }) => {
     //console.log(url)
     getData(url)
       .then((res) => {
-        //console.log(res.data)
+        console.log(res.data);
         setRows([res.data]);
       })
       .then(() => {
@@ -156,7 +156,9 @@ const OrderDetails = ({ match }) => {
               {rows ? (
                 rows?.map((row) => (
                   <StyledTableRow key={row.id} id={row.id}>
-                    <CustomTableCell {...{ row, name: "receipt" }} />
+                    <CustomTableCell
+                      {...{ row, name: "receipt", name2: "is_repeat" }}
+                    />
                     <CustomTableCell
                       {...{ row, name: "created_date", changeDateFormat }}
                     />
