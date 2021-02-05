@@ -195,6 +195,18 @@ const OrderDetails = ({ match }) => {
         </Button>
       ) : null}
       <hr />
+      {["in_progress", "ready", "in_transit", "shipped"].includes(
+        rows[0].status
+      ) ? (
+        <a
+          href={`http://144.202.67.136:8080/media/pdf/${match.params.id}.pdf`}
+          target="_blank"
+        >
+          Open Printed Pdf
+        </a>
+      ) : null}
+
+      <hr />
 
       <TableContainer component={Paper}>
         <Table className={classes.table2} aria-label="simple table">
