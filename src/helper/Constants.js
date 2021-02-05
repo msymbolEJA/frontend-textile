@@ -1,14 +1,12 @@
 export const tagsData = [
-  "all orders",
   "pending",
   "awaiting",
   "in_progress",
   "ready",
   "in_transit",
   "cancelled",
-  "repeat",
   "shipped",
-  "follow_up",
+  "all orders",
 ];
 
 export const nonAdminTagsData = [

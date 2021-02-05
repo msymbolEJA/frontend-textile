@@ -11,6 +11,8 @@ import Paper from "@material-ui/core/Paper";
 import { putData, getData } from "../../helper/PostData";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
+import Checkbox from "@material-ui/core/Checkbox";
+
 //import CustomCheckbox from "../tableitems/CustomCheckbox";
 import AppendCheckBox from "./AppendCheckBox";
 import OrderStatus from "../tableitems/CustomSelectCell";
@@ -104,6 +106,7 @@ function App() {
   };
 
   const handleRequestSort = (event, property) => {
+    console.log("event", event);
     const isAsc = order === "asc";
     if (isAsc) {
       setUrl(
@@ -159,6 +162,7 @@ function App() {
   };
 
   const handleChangeRowsPerPage = (event) => {
+    console.log("event", event);
     setRowsPerPage(+event.target.value);
     let rpp = +event.target.value;
     setPage(0);
@@ -170,6 +174,7 @@ function App() {
   };
 
   const handleRowClick = (id) => {
+    console.log("id", id);
     const currentRow = rows.find((row) => row.id === id);
     if (currentRow) {
       if (!currentRow.isEditMode) {
@@ -182,6 +187,7 @@ function App() {
   };
 
   const handleRowChange = (id, data) => {
+    console.log("data", data);
     putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, data)
       .then((response) => {})
       .catch((error) => {
@@ -191,6 +197,7 @@ function App() {
   };
 
   const handleRowKeyDown = (e, id) => {
+    console.log("e", e);
     if (e.key === "Enter") {
       let data = { [e.target.name]: e.target.defaultValue };
       handleRowChange(id, data);
@@ -198,30 +205,13 @@ function App() {
   };
 
   const handleRowBlur = (e, id) => {
+    console.log("e", e);
     let data = { [e.target.name]: e.target.defaultValue };
     handleRowChange(id, data);
   };
 
-  const appendCheckBox = (id) => {
-    console.log("appendCheckBox", id);
-
-    const index = checkBoxIds.indexOf(id);
-    if (index > -1) {
-      console.log("it has");
-      const newCheckBoxIds = checkBoxIds;
-      newCheckBoxIds.splice(index, 1);
-      console.log("newCBI", newCheckBoxIds);
-      setCheckBoxIds(newCheckBoxIds);
-      //console.log(checkBoxIds);
-    } else {
-      setCheckBoxIds((checkBoxIds) => [...checkBoxIds, id]);
-    }
-
-    //checkBoxId.push(id);
-    //console.log(checkBoxIds);
-  };
-
   const onSelectChange = (e, row) => {
+    console.log("e", e);
     e.preventDefault();
     // if (!previous[row.id]) {
     //   setPrevious((state) => ({ ...state, [row.id]: row }));
@@ -254,6 +244,7 @@ function App() {
   };
 
   const uploadFile = (e, id, imgFile) => {
+    console.log("e", e);
     e.stopPropagation();
     try {
       let path = `http://144.202.67.136:8080/etsy/mapping/${id}/`;
@@ -298,6 +289,7 @@ function App() {
   };
 
   const handleTagChange = (e) => {
+    console.log("e", e);
     const statu = e.currentTarget.id;
     setSelectedTag(statu);
     if (statu === "all orders") {
@@ -318,11 +310,6 @@ function App() {
     setPage(0);
   };
 
-  const selectAllFunc = () => {
-    console.log("Select All");
-    setSelectAll(!selectAll);
-  };
-
   const handlerFlagRepeatChange = (id, name, value) => {
     if (name === "is_repeat" && value === false) {
       console.log("inside is repeat", id, name, value);
@@ -335,6 +322,39 @@ function App() {
       let data = { [name]: !value };
       handleRowChange(id, data);
     }
+  };
+  const [selected, setSelected] = React.useState([]);
+  console.log("selected", selected);
+
+  const handleSelectAllClick = (event) => {
+    console.log("handleSelectAllClick");
+    if (event.target.checked) {
+      const newSelecteds = rows.map((n) => n?.id);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleCheckBoxClick = (event, id) => {
+    console.log("event", event);
+    console.log("id", id);
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
   };
 
   return (
@@ -353,10 +373,15 @@ function App() {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">
-                <button className={classes.btnStyle} onClick={selectAllFunc}>
-                  Select All
-                </button>
+              <StyledTableCell align="center" style={{ padding: 0 }}>
+                <Checkbox
+                  indeterminate={
+                    selected.length > 0 && selected.length < rows.length
+                  }
+                  checked={rows.length > 0 && selected.length === rows.length}
+                  onChange={handleSelectAllClick}
+                  inputProps={{ "aria-label": "select all" }}
+                />
               </StyledTableCell>
               <SortableTableCell
                 property="id"
@@ -492,85 +517,99 @@ function App() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow
-                key={row.id}
-                id={row.id}
-                onClick={(e) => handleRowClick(row.id)}
-                onBlur={(e) => handleRowBlur(e, row.id)}
-                onKeyDown={(e) => handleRowKeyDown(e, row.id)}
-                style={{
-                  backgroundColor:
-                    (row.status !== "pending") & (row.approved === false)
-                      ? "#FF9494"
-                      : null,
-                }}
-              >
-                <td
-                  onClick={(e) => {
-                    e.stopPropagation();
+            {rows.map((row, index) => {
+              const isItemSelected = selected.indexOf(row.id) !== -1;
+              const labelId = `enhanced-table-checkbox-${index}`;
+              return (
+                <StyledTableRow
+                  key={row.id}
+                  id={row.id}
+                  onClick={(e) => handleRowClick(row.id)}
+                  onBlur={(e) => handleRowBlur(e, row.id)}
+                  onKeyDown={(e) => handleRowKeyDown(e, row.id)}
+                  style={{
+                    backgroundColor:
+                      (row.status !== "pending") & (row.approved === false)
+                        ? "#FF9494"
+                        : null,
                   }}
                 >
-                  <AppendCheckBox {...{ row, appendCheckBox, selectAll }} />
-                </td>
-                <FlagAndFavCell
-                  {...{
-                    row,
-                    name: "id",
-                    name2: "receipt",
-                    name3: "item_index",
-                    name4: "is_followup",
-                    name5: "is_repeat",
-                    name6: "approved",
-                    handlerFlagRepeatChange,
-                  }}
-                />
-                <ConstantTableCell
-                  {...{ row, name: "created_date", name3: "buyer" }}
-                />
-                <td
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <OrderStatus {...{ row, name: "status", onSelectChange }} />
-                </td>
-                <EditableTableCell {...{ row, name: "supplier", onChange }} />
-                <EditableTableCell {...{ row, name: "type", onChange }} />
-                <EditableTableCell {...{ row, name: "length", onChange }} />
-                <EditableTableCell {...{ row, name: "color", onChange }} />
-                <EditableTableCell {...{ row, name: "qty", onChange }} />
-                <EditableTableCell {...{ row, name: "size", onChange }} />
-                <EditableTableCell {...{ row, name: "start", onChange }} />
-                <EditableTableCell {...{ row, name: "space", onChange }} />
-                <td
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <UploadFile
+                  <td
+                    style={{ padding: 0 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCheckBoxClick(e, row.id);
+                    }}
+                    onBlur={(e) => {
+                      e.stopPropagation();
+                    }}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <Checkbox
+                      checked={isItemSelected}
+                      inputProps={{ "aria-labelledby": labelId }}
+                    />
+                  </td>
+                  <FlagAndFavCell
                     {...{
                       row,
-                      name: "image",
-                      uploadFile,
-                      fileSelectedHandler,
-                      selectId,
-                      selectedRowId,
+                      name: "id",
+                      name2: "receipt",
+                      name3: "item_index",
+                      name4: "is_followup",
+                      name5: "is_repeat",
+                      handlerFlagRepeatChange,
                     }}
                   />
-                </td>
-                <EditableTableCell
-                  {...{ row, name: "explanation", onChange }}
-                />
-                <ConstantTableCell
-                  {...{ row, name: "personalization", onChange }}
-                />
-                <ConstantTableCell
-                  {...{ row, name: "message_from_buyer", onChange }}
-                />
-                <EditableTableCell {...{ row, name: "note", onChange }} />
-              </StyledTableRow>
-            ))}
+                  <ConstantTableCell
+                    {...{ row, name: "created_date", name3: "buyer" }}
+                  />
+                  <td
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <OrderStatus {...{ row, name: "status", onSelectChange }} />
+                  </td>
+                  <EditableTableCell {...{ row, name: "supplier", onChange }} />
+                  <EditableTableCell {...{ row, name: "type", onChange }} />
+                  <EditableTableCell {...{ row, name: "length", onChange }} />
+                  <EditableTableCell {...{ row, name: "color", onChange }} />
+                  <EditableTableCell {...{ row, name: "qty", onChange }} />
+                  <EditableTableCell {...{ row, name: "size", onChange }} />
+                  <EditableTableCell {...{ row, name: "start", onChange }} />
+                  <EditableTableCell {...{ row, name: "space", onChange }} />
+                  <td
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <UploadFile
+                      {...{
+                        row,
+                        name: "image",
+                        uploadFile,
+                        fileSelectedHandler,
+                        selectId,
+                        selectedRowId,
+                      }}
+                    />
+                  </td>
+                  <EditableTableCell
+                    {...{ row, name: "explanation", onChange }}
+                  />
+                  <ConstantTableCell
+                    {...{ row, name: "personalization", onChange }}
+                  />
+                  <ConstantTableCell
+                    {...{ row, name: "message_from_buyer", onChange }}
+                  />
+                  <EditableTableCell {...{ row, name: "note", onChange }} />
+                </StyledTableRow>
+              );
+            })}
           </TableBody>
           <TableFooter>
             <TableRow>
