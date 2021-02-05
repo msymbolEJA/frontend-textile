@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AllOrders() {
+export default function AllOrders({ userRole }) {
   const classes = useStyles();
   const history = useHistory();
   const [statuList, setStatuList] = useState([]);
@@ -55,19 +55,35 @@ export default function AllOrders() {
           return map;
         }, {});
         console.log(result);
-        const newStatusList = {
-          pending: result.pending || 0,
-          awaiting: result.awaiting || 0,
-          in_progress: result.in_progress || 0,
-          ready: result.ready || 0,
-          in_transit: result.in_transit || 0,
-          cancelled: result.cancelled || 0,
-          repeat: result.repeat || 0,
-          shipped: result.shipped || 0,
-          follow_up: result.follow_up || 0,
-        };
-        console.log(newStatusList);
-        setStatuList(newStatusList);
+
+        if (
+          userRole === "admin" ||
+          userRole === "shop_manager" ||
+          userRole === "shop_packer"
+        ) {
+          const newStatusList = {
+            pending: result.pending || 0,
+            awaiting: result.awaiting || 0,
+            in_progress: result.in_progress || 0,
+            ready: result.ready || 0,
+            in_transit: result.in_transit || 0,
+            cancelled: result.cancelled || 0,
+            repeat: result.repeat || 0,
+            shipped: result.shipped || 0,
+            follow_up: result.follow_up || 0,
+          };
+          console.log(newStatusList);
+          setStatuList(newStatusList);
+        } else {
+          const newStatusList = {
+            awaiting: result.awaiting || 0,
+            in_progress: result.in_progress || 0,
+            ready: result.ready || 0,
+            in_transit: result.in_transit || 0,
+          };
+          console.log(newStatusList);
+          setStatuList(newStatusList);
+        }
       }
     );
   }, []);

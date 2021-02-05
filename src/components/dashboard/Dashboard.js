@@ -104,7 +104,7 @@ const Dashboard = () => {
           justify="center"
           style={{ height: "78vh" }}
         >
-          <AllOrders />
+          <AllOrders userRole={userRole} />
         </Grid>
       </div>
     </div>
