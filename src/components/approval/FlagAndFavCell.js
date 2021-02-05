@@ -12,7 +12,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ConstantTableCell = ({ row, name, name2, name3, name4, name5 }) => {
+const ConstantTableCell = ({
+  row,
+  name,
+  name2,
+  name3,
+  name4,
+  name5,
+  handlerFlagRepeatChange,
+}) => {
   const classes = useStyles();
   //const [followUpFlag, setFollowUpFlag] = useState(false)
 
@@ -22,12 +30,6 @@ const ConstantTableCell = ({ row, name, name2, name3, name4, name5 }) => {
     var dateComponent = date.utc().format("YYYY-MM-DD");
     var timeComponent = date.utc().format("HH:mm:ss");
     row[name] = dateComponent + " " + timeComponent;
-  }
-
-  if (row[name4]) {
-    console.log("name4");
-  } else {
-    console.log("name42");
   }
 
   return (
@@ -56,16 +58,16 @@ const ConstantTableCell = ({ row, name, name2, name3, name4, name5 }) => {
           <br />
         </>
       ) : null}
-      {row[name4] ? (
-        <FlagIcon style={{ color: "red", cursor: "pointer" }} />
-      ) : (
-        <FlagIcon style={{ color: "grey", cursor: "pointer" }} />
-      )}
-      {row[name4] ? (
-        <RepeatIcon style={{ color: "red", cursor: "pointer" }} />
-      ) : (
-        <RepeatIcon style={{ color: "grey", cursor: "pointer" }} />
-      )}
+
+      <FlagIcon
+        style={{ color: row[name4] ? "red" : "grey", cursor: "pointer" }}
+        onClick={() => handlerFlagRepeatChange(row.id, name4, row[name4])}
+      />
+
+      <RepeatIcon
+        style={{ color: row[name5] ? "red" : "grey", cursor: "pointer" }}
+        onClick={() => handlerFlagRepeatChange(row.id, name5, row[name5])}
+      />
     </TableCell>
   );
 };

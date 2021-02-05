@@ -323,6 +323,11 @@ function App() {
     setSelectAll(!selectAll);
   };
 
+  const handlerFlagRepeatChange = (id, name, value) => {
+    let data = { [name]: !value };
+    handleRowChange(id, data);
+  };
+
   return (
     <Paper className={classes.root}>
       <button onClick={approveAll}>approveAll</button>
@@ -507,6 +512,7 @@ function App() {
                     name3: "item_index",
                     name4: "is_followup",
                     name5: "is_repeat",
+                    handlerFlagRepeatChange,
                   }}
                 />
                 <ConstantTableCell
