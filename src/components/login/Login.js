@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 // Post Data
-import { postData } from "../../helper/PostData";
+import { postAuthData } from "../../helper/PostData";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { AppContext } from "../../context/Context";
@@ -100,7 +100,7 @@ export default function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      postData("http://144.202.67.136:8080/account/login/", values)
+      postAuthData("http://144.202.67.136:8080/account/login/", values)
         .then((response) => {
           //console.log(values.username)
           //console.log(response.data);

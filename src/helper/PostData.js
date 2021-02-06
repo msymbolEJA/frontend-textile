@@ -2,9 +2,21 @@ import axios from "axios";
 import FormData from "form-data";
 //const token = localStorage.getItem("x-auth-token");
 
-export const postData = async (path, data) => {
+export const postAuthData = async (path, data) => {
   const response = await axios.post(`${path}`, data, {
     headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  return response;
+};
+
+export const postData = async (path, data) => {
+  const token = localStorage.getItem("x-auth-token");
+  const response = await axios.post(`${path}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
       Accept: "application/json",
       "Content-Type": "application/json",
     },

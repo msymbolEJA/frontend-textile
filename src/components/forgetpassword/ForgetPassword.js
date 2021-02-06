@@ -10,8 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import HelpIcon from '@material-ui/icons/Help';
-// Post Data
-//import { postData } from "../../helper/PostData";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from 'axios'

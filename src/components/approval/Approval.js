@@ -21,7 +21,7 @@ import { putData, getData } from "../../helper/PostData";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
 import OrderStatus from "../tableitems/CustomSelectCell";
 import UploadFile from "../tableitems/UploadFile";
-import { putImage } from "../../helper/PostData";
+import { putImage, postData } from "../../helper/PostData";
 import { ToastContainer } from "react-toastify";
 import { toastWarnNotify } from "../otheritems/ToastNotify";
 import ConstantTableCell from "../tableitems/ConstantTableCell";
@@ -283,17 +283,17 @@ function App() {
   };
 
   const handleApproveSelected = () => {
-    console.log("handleApproveSelected");
-    // postData("http://144.202.67.136:8080/etsy/approved_all/", checkBoxIds)
-    //   .then((res) => {
-    //     console.log(res);
-    //     toastWarnNotify(res.data.Success);
-    //     getListFunc();
-    //   })
-    //   .catch(({ response }) => {
-    //     console.log(response.data.Failed);
-    //     toastWarnNotify(response.data.Failed);
-    //   });
+    postData("http://144.202.67.136:8080/etsy/approved_all/", { ids: selected })
+      .then((res) => {
+        console.log(res);
+        toastWarnNotify(res?.data?.Success);
+        getListFunc();
+        setSelected([]);
+      })
+      .catch(({ response }) => {
+        console.log("response", response);
+        toastWarnNotify(response?.data?.detail);
+      });
   };
 
   const handleTagChange = (e) => {

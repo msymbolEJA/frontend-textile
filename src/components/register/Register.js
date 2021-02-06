@@ -14,7 +14,7 @@ import CreateIcon from "@material-ui/icons/Create";
 import MenuItem from "@material-ui/core/MenuItem";
 
 // Post Data
-import { postData } from "../../helper/PostData";
+import { postAuthData } from "../../helper/PostData";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { USER_TYPE } from "../../helper/Constants";
@@ -124,7 +124,7 @@ export default function Register() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(values);
-      postData("http://144.202.67.136:8080/account/register/", values)
+      postAuthData("http://144.202.67.136:8080/account/register/", values)
         .then((data) => {
           console.log("DATA : ", data);
           console.log("MESSAGE : ", data.data.message);
