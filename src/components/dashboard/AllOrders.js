@@ -17,8 +17,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    overflow: "auto",
-    margin: "2rem",
+    marginTop: 30,
+    minWidth: "400px",
   },
   table: {
     minWidth: 150,
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
     color: theme.palette.text.primary,
-    width: "42rem",
+    //width: "42rem",
   },
   icon: {
     fontSize: 40,
@@ -94,7 +94,7 @@ export default function AllOrders({ userRole }) {
   };
 
   return (
-    <Grid item xs={12} md={12} className={classes.root}>
+    <Grid item xs={12} md={6} className={classes.root}>
       <Paper className={classes.paper}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div

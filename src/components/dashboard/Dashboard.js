@@ -10,10 +10,13 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import FindInPageIcon from "@material-ui/icons/FindInPage";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import CargoTable from "./CargoTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: 30,
+    marginTop: 20,
+    marginRight: 50,
+    marginLeft: 50,
   },
   boxes: {
     flexGrow: 1,
@@ -96,15 +99,9 @@ const Dashboard = () => {
             </Button>
           </div>
         ) : null}
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-          style={{ height: "78vh" }}
-        >
+        <Grid container spacing={2}>
           <AllOrders userRole={userRole} />
+          <CargoTable />
         </Grid>
       </div>
     </div>
