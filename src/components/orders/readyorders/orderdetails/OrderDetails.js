@@ -118,8 +118,8 @@ const OrderDetails = ({ match }) => {
 
   const changeDateFormat = (date) => {
     date = moment(date);
-    var dateComponent = date.utc().format("YYYY-MM-DD");
-    var timeComponent = date.utc().format("HH:mm:ss");
+    var dateComponent = date.utc().format("DD-MM-YY");
+    var timeComponent = date.utc().format("HH:mm");
     // console.log(dateComponent + " " + timeComponent);
     return dateComponent + " " + timeComponent;
   };

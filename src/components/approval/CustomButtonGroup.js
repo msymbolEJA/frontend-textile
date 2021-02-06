@@ -49,7 +49,7 @@ const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
           </Button>
         ))}
       </div>
-      <div>
+      <div className={classes.btnGroup}>
         <Button
           className={classes.btn}
           id="all_orders"

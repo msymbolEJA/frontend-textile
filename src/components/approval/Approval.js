@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableFooter from "@material-ui/core/TableFooter";
-import TablePagination from "@material-ui/core/TablePagination";
-import Paper from "@material-ui/core/Paper";
-import { putData, getData } from "../../helper/PostData";
-import TableContainer from "@material-ui/core/TableContainer";
-import TablePaginationActions from "../tableitems/TablePaginationActions";
-import Checkbox from "@material-ui/core/Checkbox";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableFooter,
+  TablePagination,
+  Paper,
+  TableContainer,
+  Checkbox,
+} from "@material-ui/core";
+import FlagIcon from "@material-ui/icons/Flag";
+import RepeatIcon from "@material-ui/icons/Repeat";
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 
-//import CustomCheckbox from "../tableitems/CustomCheckbox";
-import AppendCheckBox from "./AppendCheckBox";
+import { putData, getData } from "../../helper/PostData";
+import TablePaginationActions from "../tableitems/TablePaginationActions";
 import OrderStatus from "../tableitems/CustomSelectCell";
 import UploadFile from "../tableitems/UploadFile";
 import { putImage } from "../../helper/PostData";
@@ -48,6 +52,12 @@ const useStyles = makeStyles((theme) => ({
     width: "6rem",
     cursor: "pointer",
   },
+  approveButton: {
+    float: "left",
+    margin: "0 0 0.5rem 0.5rem",
+    padding: "6px 6px 4px",
+    fontSize: "small",
+  },
 }));
 
 const StyledTableRow = withStyles((theme) => ({
@@ -80,8 +90,7 @@ function App() {
   const [selectedTag, setSelectedTag] = useState("pending");
   const [selectedRowId, setSelectedRowId] = useState();
   const [globStatu, setglobStatu] = useState("");
-  const [checkBoxIds, setCheckBoxIds] = useState([]);
-  const [selectAll, setSelectAll] = useState(false);
+  const [selected, setSelected] = React.useState([]);
   const [url, setUrl] = useState(
     `http://144.202.67.136:8080/etsy/mapping/?status=${selectedTag}&limit=${rowsPerPage}&offset=${
       page * rowsPerPage
@@ -273,9 +282,8 @@ function App() {
     setSelectedRowId(id);
   };
 
-  const approveAll = () => {
-    console.log("Approve all");
-    console.log(checkBoxIds);
+  const handleApproveSelected = () => {
+    console.log("handleApproveSelected");
     // postData("http://144.202.67.136:8080/etsy/approved_all/", checkBoxIds)
     //   .then((res) => {
     //     console.log(res);
@@ -290,7 +298,7 @@ function App() {
 
   const handleTagChange = (e) => {
     const statu = e.currentTarget.id;
-    console.log("statu", statu);
+    setSelected([]);
     setSelectedTag(statu);
     let newUrl = "http://144.202.67.136:8080/etsy/mapping/?";
     switch (statu) {
@@ -331,8 +339,6 @@ function App() {
       handleRowChange(id, data);
     }
   };
-  const [selected, setSelected] = React.useState([]);
-  console.log("selected", selected);
 
   const handleSelectAllClick = (event) => {
     console.log("handleSelectAllClick");
@@ -345,11 +351,8 @@ function App() {
   };
 
   const handleCheckBoxClick = (event, id) => {
-    console.log("event", event);
-    console.log("id", id);
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
@@ -367,12 +370,20 @@ function App() {
 
   return (
     <Paper className={classes.root}>
-      <button onClick={approveAll}>approveAll</button>
       <CustomButtonGroup
         selectedTag={selectedTag}
         handleTagChange={handleTagChange}
         tagsData={tagsData}
       />
+      <Button
+        color="secondary"
+        variant="contained"
+        onClick={handleApproveSelected}
+        className={classes.approveButton}
+        disabled={!selected.length}
+      >
+        Approve Selected ({selected.length})
+      </Button>
       <TableContainer className={classes.container}>
         <Table
           className={classes.table}
@@ -402,20 +413,20 @@ function App() {
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
+                property="status"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Status"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
                 property="created_date"
                 property3="Buyer"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
                 colName="Created Date"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
-                property="status"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="Status"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -571,16 +582,58 @@ function App() {
                       handlerFlagRepeatChange,
                     }}
                   />
-                  <ConstantTableCell
-                    {...{ row, name: "created_date", name3: "buyer" }}
-                  />
                   <td
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
                   >
+                    <FlagIcon
+                      style={{
+                        color: row["is_followup"] ? "red" : "grey",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        handlerFlagRepeatChange(
+                          row.id,
+                          "is_followup",
+                          row["is_followup"]
+                        )
+                      }
+                    />
+
+                    <RepeatIcon
+                      style={{
+                        color: row["is_repeat"] ? "red" : "grey",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        handlerFlagRepeatChange(
+                          row.id,
+                          "is_repeat",
+                          row["is_repeat"]
+                        )
+                      }
+                    />
+                    <ThumbUpAltIcon
+                      style={{
+                        color: row["approved"] ? "red" : "grey",
+                        cursor: "pointer",
+                        pointerEvents:
+                          row.status === "pending" ? "auto" : "none",
+                      }}
+                      onClick={() =>
+                        handlerFlagRepeatChange(
+                          row.id,
+                          "approved",
+                          row["approved"]
+                        )
+                      }
+                    />
                     <OrderStatus {...{ row, name: "status", onSelectChange }} />
                   </td>
+                  <ConstantTableCell
+                    {...{ row, name: "created_date", name3: "buyer" }}
+                  />
                   <EditableTableCell {...{ row, name: "supplier", onChange }} />
                   <EditableTableCell {...{ row, name: "type", onChange }} />
                   <EditableTableCell {...{ row, name: "length", onChange }} />
@@ -621,8 +674,18 @@ function App() {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <td>Total Record :</td>
-              <td>{count || 0}</td>
+              <td colspan="3">
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={handleApproveSelected}
+                  className={classes.approveButton}
+                  disabled={!selected.length}
+                >
+                  Approve Selected ({selected.length})
+                </Button>
+              </td>
+              <td>Total Record:{count || 0}</td>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 100]}
                 colSpan={22}

@@ -4,16 +4,12 @@ import Input from "@material-ui/core/Input";
 
 const useStyles = makeStyles(() => ({
   tableCell: {
-    width: 130,
-    height: 40,
-  },
-  input: {
-    width: 100,
-    height: 40,
+    padding: 0,
+    width: "fit-content",
   },
 }));
 
-const CustomTableCell = ({ row, name, onChange }) => {
+const EditableTableCell = ({ row, name, onChange }) => {
   const classes = useStyles();
   const { isEditMode } = row;
   return (
@@ -32,4 +28,4 @@ const CustomTableCell = ({ row, name, onChange }) => {
   );
 };
 
-export default CustomTableCell;
+export default EditableTableCell;

@@ -31,6 +31,7 @@ const SortableTableCell = ({
     <>
       <StyledTableCell
         align="center"
+        style={{ padding: 0, textAlign:"center"}}
         //sortDirection={orderBy === "id" ? order : false}
         onClick={() => setOrderBy(property)}
       >

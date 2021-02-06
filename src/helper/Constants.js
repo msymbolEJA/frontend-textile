@@ -14,7 +14,6 @@ export const nonAdminTagsData = [
   "ready",
   "in_transit",
   "cancelled",
-  "repeat",
 ];
 
 export const statusData = [

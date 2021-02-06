@@ -16,14 +16,15 @@ const ConstantTableCell = ({ row, name, name2, name3 }) => {
   if (name === "created_date") {
     var str = row[name];
     var date = moment(str);
-    var dateComponent = date.utc().format("YYYY-MM-DD");
-    var timeComponent = date.utc().format("HH:mm:ss");
+    var dateComponent = date.utc().format("DD-MM-YY");
+    var timeComponent = date.utc().format("HH:mm");
     row[name] = dateComponent + " " + timeComponent;
   }
   return (
     <TableCell
       align="center"
       className={classes.tableCell}
+      style={{ minWidth: name === "message_from_buyer" ? "250px" : "auto" }}
       onClick={(e) => {
         e.stopPropagation();
       }}

@@ -20,8 +20,8 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
   if (name === "creation_tsz") {
     var str = row[name];
     var date = moment(str);
-    var dateComponent = date.utc().format("YYYY-MM-DD");
-    var timeComponent = date.utc().format("HH:mm:ss");
+    var dateComponent = date.utc().format("DD-MM-YY");
+    var timeComponent = date.utc().format("HH:mm");
     row[name] = dateComponent + " " + timeComponent;
   }
 
@@ -33,21 +33,23 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
           <br />
         </>
       ) : null}
-      {name === "id" ? (
-        <>
-          <a href={`/order-details/${row.id}`}>{row[name]}</a>
-          <br />
-        </>
-      ) : (
-        row[name].replace("_", " ")
-      )}
-      {name3 ? (
-        <>
-          {row[name3]}
-          <br />
-        </>
-      ) : null}
-      {row[name4] ? <RepeatIcon style={{ color: "red" }} /> : null}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
+      >
+        {name === "id" ? (
+          <>
+            <a href={`/order-details/${row.id}`}>{row[name]}</a>
+          </>
+        ) : (
+          row[name].replace("_", " ")
+        )}
+        {row[name4] ? <RepeatIcon style={{ color: "red" }} /> : null}
+        {name3 ? <>{row[name3]}</> : null}
+      </div>
     </TableCell>
   );
 };
