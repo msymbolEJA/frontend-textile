@@ -215,7 +215,7 @@ const OrderDetails = ({ match }) => {
           </TableHead>
           <TableBody>
             {logs.length > 0 &&
-              logs.map((log, i) => (
+              logs.reverse().map((log, i) => (
                 <TableRow key={i}>
                   <TableCell component="th" scope="row">
                     {moment(log.change_date).format("DD-MM-YY HH:mm")}
