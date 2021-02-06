@@ -47,15 +47,13 @@ export default function AllOrders({ userRole }) {
   const [statuList, setStatuList] = useState();
 
   useEffect(() => {
-    getData("http://144.202.67.136:8080/etsy/status_count/").then(
+    getData("http://144.202.67.136:8080/etsy/summary_order/").then(
       (response) => {
-        // console.log(response);
-        //setStatuList(response.data);
-        var result = response.data.reduce(function (map, obj) {
-          map[obj.status] = obj.status_count;
-          return map;
-        }, {});
-        // console.log(result);
+        console.log(response.data[0]);
+        const newResult = {};
+        response.data[0].forEach((item) => {
+          Object.assign(newResult, { [item.status]: item.status_count });
+        });
 
         if (
           userRole === "admin" ||
@@ -63,26 +61,24 @@ export default function AllOrders({ userRole }) {
           userRole === "shop_packer"
         ) {
           const newStatusList = {
-            pending: result.pending || 0,
-            awaiting: result.awaiting || 0,
-            in_progress: result.in_progress || 0,
-            ready: result.ready || 0,
-            in_transit: result.in_transit || 0,
-            cancelled: result.cancelled || 0,
-            repeat: result.repeat || 0,
-            shipped: result.shipped || 0,
-            follow_up: result.follow_up || 0,
+            pending: newResult.pending || 0,
+            awaiting: newResult.awaiting || 0,
+            in_progress: newResult.in_progress || 0,
+            ready: newResult.ready || 0,
+            in_transit: newResult.in_transit || 0,
+            cancelled: newResult.cancelled || 0,
+            repeat: newResult.repeat || 0,
+            shipped: newResult.shipped || 0,
+            follow_up: newResult.follow_up || 0,
           };
-          // console.log(newStatusList);
           setStatuList(newStatusList);
         } else {
           const newStatusList = {
-            awaiting: result.awaiting || 0,
-            in_progress: result.in_progress || 0,
-            ready: result.ready || 0,
-            in_transit: result.in_transit || 0,
+            awaiting: newResult.awaiting || 0,
+            in_progress: newResult.in_progress || 0,
+            ready: newResult.ready || 0,
+            in_transit: newResult.in_transit || 0,
           };
-          // console.log(newStatusList);
           setStatuList(newStatusList);
         }
       }
