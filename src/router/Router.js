@@ -1,4 +1,8 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
+import { Router } from "react-router";
+
+//import createHistory from "history/createBrowserHistory";
+
 // Pages
 import Dashboard from "../components/dashboard/Dashboard";
 import Account from "../components/account/Account";
@@ -18,9 +22,11 @@ import OrderDetails from "../components/orders/readyorders/orderdetails/OrderDet
 import PrivateRouter from "./PrivateRouter";
 import Approval from "../components/approval/Approval";
 
+const history = require("history").createBrowserHistory();
+
 const AppRouter = () => {
   return (
-    <Router>
+    <Router history={history}>
       <Switch>
         <Route path="/register" component={Register} />
         <Route path="/reset/:id" component={ResetPassword} />

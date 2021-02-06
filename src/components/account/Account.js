@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Account() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const { user, setUser } = useContext(AppContext);
   const [accountData, setAccountData] = useState();
   const [updateIcon, setUpdateIcon] = useState(false);

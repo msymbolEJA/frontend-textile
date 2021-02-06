@@ -73,7 +73,7 @@ const Dashboard = () => {
               id="approval"
               className={classes.button}
               startIcon={<ThumbUpIcon />}
-              onClick={(e) => handleClick(e)}
+              onClick={() => history.push(`/approval?&status=pending`)}
             >
               Approval
             </Button>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Orders({ list }) {
-  const [rows, setRows] = React.useState(list);
-  const [previous, setPrevious] = React.useState({});
+  const [rows, setRows] = useState(list);
+  const [previous, setPrevious] = useState({});
   const classes = useStyles();
 
   //console.log("rows", rows)
@@ -86,24 +86,24 @@ function Orders({ list }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows ? rows.map((row) => (
-              <StyledTableRow key={row.temp_id}>
-                <CustomTableCell {...{ row, name: "customer", onChange }} />
-                <CustomTableCell
-                  {...{ row, name: "supplier", onChange }}
-                />
-                <CustomTableCell {...{ row, name: "type", onChange }} />
-                <CustomTableCell {...{ row, name: "length", onChange }} />
-                <CustomTableCell {...{ row, name: "color", onChange }} />
-                <CustomTableCell
-                  {...{ row, name: "qty", onChange }}
-                />
-                <CustomTableCell {...{ row, name: "size", onChange }} />
-                <CustomTableCell {...{ row, name: "start", onChange }} />
-                <CustomTableCell {...{ row, name: "space", onChange }} />
-                <CustomTableCell {...{ row, name: "explanation", onChange }} />
-              </StyledTableRow>
-            )) : null }
+          {rows
+            ? rows.map((row) => (
+                <StyledTableRow key={row.temp_id}>
+                  <CustomTableCell {...{ row, name: "customer", onChange }} />
+                  <CustomTableCell {...{ row, name: "supplier", onChange }} />
+                  <CustomTableCell {...{ row, name: "type", onChange }} />
+                  <CustomTableCell {...{ row, name: "length", onChange }} />
+                  <CustomTableCell {...{ row, name: "color", onChange }} />
+                  <CustomTableCell {...{ row, name: "qty", onChange }} />
+                  <CustomTableCell {...{ row, name: "size", onChange }} />
+                  <CustomTableCell {...{ row, name: "start", onChange }} />
+                  <CustomTableCell {...{ row, name: "space", onChange }} />
+                  <CustomTableCell
+                    {...{ row, name: "explanation", onChange }}
+                  />
+                </StyledTableRow>
+              ))
+            : null}
         </TableBody>
       </Table>
     </Paper>

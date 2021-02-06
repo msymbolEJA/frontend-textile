@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { ToastContainer } from "react-toastify";
 import {
   Button,
   Table,
@@ -13,23 +14,25 @@ import {
   TableContainer,
   Checkbox,
 } from "@material-ui/core";
-import FlagIcon from "@material-ui/icons/Flag";
-import RepeatIcon from "@material-ui/icons/Repeat";
-import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import {
+  Flag as FlagIcon,
+  Repeat as RepeatIcon,
+  ThumbUpAlt as ThumbUpAltIcon,
+} from "@material-ui/icons";
 
 import { putData, getData } from "../../helper/PostData";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
 import OrderStatus from "../tableitems/CustomSelectCell";
 import UploadFile from "../tableitems/UploadFile";
 import { putImage, postData } from "../../helper/PostData";
-import { ToastContainer } from "react-toastify";
+import { getQueryParams } from "../../helper/getQueryParams";
 import { toastWarnNotify } from "../otheritems/ToastNotify";
 import ConstantTableCell from "../tableitems/ConstantTableCell";
 import FlagAndFavCell from "./FlagAndFavCell";
 import EditableTableCell from "../tableitems/EditableTableCell";
 import SortableTableCell from "./SortableTableCell";
 import CustomButtonGroup from "./CustomButtonGroup";
-import { tagsData } from "../../helper/Constants";
+import { tagsData, BASE_URL_MAPPING, BASE_URL } from "../../helper/Constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,58 +81,59 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-function App() {
-  const [rows, setRows] = React.useState([]);
-  const [previous, setPrevious] = React.useState({});
+function App({ history }) {
+  const [rows, setRows] = useState([]);
+  const [previous, setPrevious] = useState({});
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [count, setCount] = useState(0);
   const [orderBy, setOrderBy] = useState("id");
-  const [order, setOrder] = React.useState("desc");
-  const [selectedTag, setSelectedTag] = useState("pending");
+  const [order, setOrder] = useState("desc");
   const [selectedRowId, setSelectedRowId] = useState();
-  const [globStatu, setglobStatu] = useState("");
-  const [selected, setSelected] = React.useState([]);
-  const [url, setUrl] = useState(
-    `http://144.202.67.136:8080/etsy/mapping/?status=${selectedTag}&limit=${rowsPerPage}&offset=${
-      page * rowsPerPage
-    }`
-  );
+  const [selected, setSelected] = useState([]);
+  const filters = getQueryParams();
+  const [globStatu, setglobStatu] = useState(filters?.status || "pending");
+  const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
 
   useEffect(() => {
     getListFunc();
     // eslint-disable-next-line
-  }, [url, page, rowsPerPage]);
+  }, [
+    filters?.ordering,
+    filters?.is_followup,
+    filters?.status,
+    filters?.is_repeat,
+    filters?.limit,
+    filters?.offset,
+  ]);
 
   const getListFunc = () => {
-    getData(url)
+    getData(
+      `${BASE_URL_MAPPING}?${
+        filters?.status ? `status=${filters?.status}` : ""
+      }&is_repeat=${filters?.is_repeat}&is_followup=${
+        filters?.is_followup
+      }&limit=${rowsPerPage}&offset=${filters?.offset}&ordering=${
+        filters?.ordering
+      }`
+    )
       .then((response) => {
         setRows(response.data.results);
         setCount(response.data.count);
-        console.log(response);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error", error);
+        console.log("error Response", error?.response);
       });
   };
 
   const handleRequestSort = (event, property) => {
     console.log("event", event);
     const isAsc = order === "asc";
-    if (isAsc) {
-      setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }&ordering=${property}`
-      );
-    } else if (!isAsc) {
-      setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }&ordering=-${property}`
-      );
-    }
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("ordering", `${isAsc ? "" : "-"}${property}`);
+    history.push(history.location.pathname + "?" + currentUrlParams.toString());
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
@@ -151,35 +155,19 @@ function App() {
   };
 
   const handleChangePage = (event, newPage) => {
-    console.log({ order });
-    if (order === "asc") {
-      console.log("order-desc-newpage");
-      setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rowsPerPage}&offset=${
-          newPage * rowsPerPage
-        }&ordering=-${orderBy}`
-      );
-    } else if (order === "desc") {
-      console.log("asc-newpage");
-      setUrl(
-        `http://144.202.67.136:8080/etsy/mapping/?status=${globStatu}&limit=${rowsPerPage}&offset=${
-          newPage * rowsPerPage
-        }&ordering=${orderBy}`
-      );
-    }
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("offset", newPage * filters?.limit || 0);
+    history.push(history.location.pathname + "?" + currentUrlParams.toString());
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    console.log("event", event);
     setRowsPerPage(+event.target.value);
     let rpp = +event.target.value;
     setPage(0);
-    setUrl(
-      `http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rpp}&offset=${
-        0 * rpp
-      }`
-    );
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("limit", rpp || 0);
+    history.push(history.location.pathname + "?" + currentUrlParams.toString());
   };
 
   const handleRowClick = (id) => {
@@ -196,8 +184,7 @@ function App() {
   };
 
   const handleRowChange = (id, data) => {
-    console.log("data", data);
-    putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, data)
+    putData(`${BASE_URL_MAPPING}${id}/`, data)
       .then((response) => {})
       .catch((error) => {
         console.log(error);
@@ -256,7 +243,7 @@ function App() {
     console.log("e", e);
     e.stopPropagation();
     try {
-      let path = `http://144.202.67.136:8080/etsy/mapping/${id}/`;
+      let path = `${BASE_URL_MAPPING}${id}/`;
       putImage(path, imgFile, imgFile.name)
         .then((res) => {
           console.log(res);
@@ -283,10 +270,11 @@ function App() {
   };
 
   const handleApproveSelected = () => {
-    postData("http://144.202.67.136:8080/etsy/approved_all/", { ids: selected })
+    postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
       .then((res) => {
         console.log(res);
-        toastWarnNotify(res?.data?.Success);
+        //toastWarnNotify(res?.data?.Success);
+        toastWarnNotify("Selected 'PENDING' orders are approved");
         getListFunc();
         setSelected([]);
       })
@@ -300,7 +288,7 @@ function App() {
     const statu = e.currentTarget.id;
     setSelected([]);
     setSelectedTag(statu);
-    let newUrl = "http://144.202.67.136:8080/etsy/mapping/?";
+    let newUrl = "";
     switch (statu) {
       case "all_orders":
         newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
@@ -316,12 +304,12 @@ function App() {
         }`;
         break;
       default:
-        newUrl += `status=${globStatu}&status=${statu}&limit=${rowsPerPage}&offset=${
+        newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
           page * rowsPerPage
         }`;
         break;
     }
-    setUrl(newUrl);
+    history.push(`/approval?&${newUrl}`);
     setglobStatu("");
     setPage(0);
   };
@@ -341,7 +329,6 @@ function App() {
   };
 
   const handleSelectAllClick = (event) => {
-    console.log("handleSelectAllClick");
     if (event.target.checked) {
       const newSelecteds = rows.map((n) => n?.id);
       setSelected(newSelecteds);
