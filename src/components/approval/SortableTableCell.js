@@ -23,15 +23,11 @@ const SortableTableCell = ({
   colName,
   setOrderBy,
 }) => {
-  //   setOrderBy(property);
-  // console.log({ property });
-  // console.log({ order });
-  // console.log({ orderBy });
   return (
     <>
       <StyledTableCell
         align="center"
-        style={{ padding: 0, textAlign:"center"}}
+        style={{ padding: 0, textAlign: "center" }}
         //sortDirection={orderBy === "id" ? order : false}
         onClick={() => setOrderBy(property)}
       >

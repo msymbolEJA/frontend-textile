@@ -17,14 +17,6 @@ const useStyles = makeStyles((theme) => ({
 const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
   const classes = useStyles();
 
-  if (name === "creation_tsz") {
-    var str = row[name];
-    var date = moment(str);
-    var dateComponent = date.utc().format("DD-MM-YY");
-    var timeComponent = date.utc().format("HH:mm");
-    row[name] = dateComponent + " " + timeComponent;
-  }
-
   return (
     <TableCell align="center" className={classes.tableCell}>
       {name2 ? (
@@ -44,6 +36,8 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
           <>
             <a href={`/order-details/${row.id}`}>{row[name]}</a>
           </>
+        ) : name === "creation_tsz" ? (
+          moment(row[name]).format("DD-MM-YY HH:mm")
         ) : (
           row[name].replace("_", " ")
         )}

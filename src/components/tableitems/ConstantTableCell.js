@@ -12,14 +12,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ConstantTableCell = ({ row, name, name2, name3 }) => {
   const classes = useStyles();
-
-  if (name === "created_date") {
-    var str = row[name];
-    var date = moment(str);
-    var dateComponent = date.utc().format("DD-MM-YY");
-    var timeComponent = date.utc().format("HH:mm");
-    row[name] = dateComponent + " " + timeComponent;
-  }
   return (
     <TableCell
       align="center"
@@ -37,6 +29,8 @@ const ConstantTableCell = ({ row, name, name2, name3 }) => {
       ) : null}
       {name === "id" ? (
         <a href={`/order-details/${row.id}`}>{row[name]}</a>
+      ) : name === "created_date" ? (
+        moment(row[name]).format("DD-MM-YY HH:mm")
       ) : (
         row[name]
       )}

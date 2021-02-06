@@ -2,6 +2,7 @@ import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import RepeatIcon from "@material-ui/icons/Repeat";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {
@@ -14,13 +15,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CustomTableCell = ({ row, name, name2, onChange, changeDateFormat }) => {
+const CustomTableCell = ({ row, name, name2, onChange }) => {
   const classes = useStyles();
   const { isEditMode } = row;
 
-  if (name === "created_date") {
-    row[name] = changeDateFormat(row[name]);
-  }
   if (name === "status") {
     //console.log("status");
     if (row[name]) {
@@ -38,6 +36,8 @@ const CustomTableCell = ({ row, name, name2, onChange, changeDateFormat }) => {
           onChange={(e) => onChange(e, row)}
           className={classes.input}
         />
+      ) : name === "created_date" ? (
+        moment(row[name]).format("DD-MM-YY HH:mm")
       ) : (
         row[name]
       )}

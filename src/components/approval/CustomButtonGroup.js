@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing(3),
     overflowX: "auto",
   },
   container: {
@@ -49,7 +48,7 @@ const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
           </Button>
         ))}
       </div>
-      <div className={classes.btnGroup}>
+      <div>
         <Button
           className={classes.btn}
           id="all_orders"

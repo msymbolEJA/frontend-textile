@@ -116,14 +116,6 @@ const OrderDetails = ({ match }) => {
       });
   }, [match.params.id, refresh]);
 
-  const changeDateFormat = (date) => {
-    date = moment(date);
-    var dateComponent = date.utc().format("DD-MM-YY");
-    var timeComponent = date.utc().format("HH:mm");
-    // console.log(dateComponent + " " + timeComponent);
-    return dateComponent + " " + timeComponent;
-  };
-
   return (
     <div>
       <Paper className={classes.root}>
@@ -159,9 +151,7 @@ const OrderDetails = ({ match }) => {
                     <CustomTableCell
                       {...{ row, name: "receipt", name2: "is_repeat" }}
                     />
-                    <CustomTableCell
-                      {...{ row, name: "created_date", changeDateFormat }}
-                    />
+                    <CustomTableCell {...{ row, name: "created_date" }} />
                     <CustomTableCell {...{ row, name: "status" }} />
                     <CustomTableCell {...{ row, name: "buyer" }} />
                     <CustomTableCell {...{ row, name: "supplier" }} />
@@ -228,7 +218,7 @@ const OrderDetails = ({ match }) => {
               logs.map((log, i) => (
                 <TableRow key={i}>
                   <TableCell component="th" scope="row">
-                    {changeDateFormat(log.change_date)}
+                    {moment(log.change_date).format("DD-MM-YY HH:mm")}
                   </TableCell>
                   <TableCell>{log.user}</TableCell>
                   <TableCell>{`${log.type} => ${log.data}`}</TableCell>
