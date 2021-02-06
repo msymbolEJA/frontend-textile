@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
@@ -11,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import Button from "@material-ui/core/Button";
+import { getData } from "../../helper/PostData";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -28,25 +28,13 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(date, quantity, orders) {
-  return { date, quantity, orders };
-}
-
-const rows = [
-  createData("02.02.2021", 3, 2645),
-  createData("03.02.2021", 5, 9.0),
-  createData("04.02.2021", 2, 16.0),
-  createData("05.02.2021", 3, 3.7),
-  createData("06.02.2021", 5, 16.0),
-];
-
 const useStyles = makeStyles((theme) => ({
   table: {
     //width: 300,
   },
   root: {
     flexGrow: 1,
-    cursor: "pointer",
+    // cursor: "pointer",
     margin: 0,
     marginTop: 30,
     minWidth: "400px",
@@ -65,6 +53,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CustomizedTables() {
   const classes = useStyles();
+  const [cargoList, setCargoList] = useState({});
+
+  useEffect(() => {
+    getData("http://144.202.67.136:8080/etsy/due_dates/").then((response) => {
+      console.log("CargoTableResponse", response.data);
+      setCargoList(response.data);
+    });
+  }, []);
 
   return (
     <Grid item xs={12} md={6} className={classes.root}>
@@ -108,13 +104,25 @@ export default function CustomizedTables() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.date}>
+            {Object.keys(cargoList).map((item, index) => (
+              <StyledTableRow key={index}>
                 <StyledTableCell component="th" scope="row">
-                  {row.date}
+                  {item}
                 </StyledTableCell>
-                <StyledTableCell align="left">{row.quantity}</StyledTableCell>
-                <StyledTableCell align="right">{row.orders}</StyledTableCell>
+                {/* <StyledTableCell align="left">
+                  {cargoList[item].is_late}
+                </StyledTableCell> */}
+                <StyledTableCell align="left">
+                  {cargoList[item].values.length}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {cargoList[item].values.map((key, i) => (
+                    <span key={i}>
+                      <span key={i}>{key},</span>
+                      {i % 4 === 0 ? <br /> : null}
+                    </span>
+                  ))}
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

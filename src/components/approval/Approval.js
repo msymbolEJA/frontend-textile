@@ -674,7 +674,7 @@ function App() {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <td colspan="3">
+              <td colSpan="3">
                 <Button
                   color="secondary"
                   variant="contained"

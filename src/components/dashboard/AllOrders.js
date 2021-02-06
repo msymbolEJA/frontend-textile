@@ -49,13 +49,13 @@ export default function AllOrders({ userRole }) {
   useEffect(() => {
     getData("http://144.202.67.136:8080/etsy/status_count/").then(
       (response) => {
-        console.log(response);
+        // console.log(response);
         //setStatuList(response.data);
         var result = response.data.reduce(function (map, obj) {
           map[obj.status] = obj.status_count;
           return map;
         }, {});
-        console.log(result);
+        // console.log(result);
 
         if (
           userRole === "admin" ||
@@ -73,7 +73,7 @@ export default function AllOrders({ userRole }) {
             shipped: result.shipped || 0,
             follow_up: result.follow_up || 0,
           };
-          console.log(newStatusList);
+          // console.log(newStatusList);
           setStatuList(newStatusList);
         } else {
           const newStatusList = {
@@ -82,7 +82,7 @@ export default function AllOrders({ userRole }) {
             ready: result.ready || 0,
             in_transit: result.in_transit || 0,
           };
-          console.log(newStatusList);
+          // console.log(newStatusList);
           setStatuList(newStatusList);
         }
       }
