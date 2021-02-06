@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FlagAndFavCell = ({ row, name, name2, name3 }) => {
+  console.log("row", row);
   const classes = useStyles();
   return (
     <TableCell

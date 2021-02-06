@@ -49,7 +49,6 @@ export default function AllOrders({ userRole }) {
   useEffect(() => {
     getData("http://144.202.67.136:8080/etsy/summary_order/").then(
       (response) => {
-        console.log(response.data[0]);
         const newResult = {};
         response.data[0].forEach((item) => {
           Object.assign(newResult, { [item.status]: item.status_count });

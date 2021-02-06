@@ -2,6 +2,7 @@ import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import RepeatIcon from "@material-ui/icons/Repeat";
+import EcoIcon from "@material-ui/icons/Eco";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {
@@ -15,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
+  console.log("name", name);
   const classes = useStyles();
 
   return (
@@ -42,6 +44,11 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
           row[name].replace("_", " ")
         )}
         {row[name4] ? <RepeatIcon style={{ color: "red" }} /> : null}
+        {name === "id" ? (
+          row["type"].includes("14K") || row["explanation"].includes("14K") ? (
+            <EcoIcon style={{ color: "#f9a825" }} />
+          ) : null
+        ) : null}
         {name3 ? <>{row[name3]}</> : null}
       </div>
     </TableCell>

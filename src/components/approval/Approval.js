@@ -18,6 +18,7 @@ import {
   Flag as FlagIcon,
   Repeat as RepeatIcon,
   ThumbUpAlt as ThumbUpAltIcon,
+  Eco as EcoIcon,
 } from "@material-ui/icons";
 
 import { putData, getData } from "../../helper/PostData";
@@ -574,6 +575,14 @@ function App({ history }) {
                       e.stopPropagation();
                     }}
                   >
+                    {row["type"].includes("14K") ||
+                    row["explanation"].includes("14K") ? (
+                      <>
+                        <EcoIcon style={{ color: "#f9a825" }} />
+                        <br />
+                      </>
+                    ) : null}
+
                     <FlagIcon
                       style={{
                         color: row["is_followup"] ? "red" : "grey",
