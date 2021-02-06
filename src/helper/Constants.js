@@ -36,3 +36,23 @@ export const USER_TYPE = {
   WORKSHOP_MANAGER: "workshop_manager",
   WORKSHOP_PACKER: "workshop_packer",
 };
+
+export const sortingArrayAdmin = [
+  "PENDING",
+  "AWAITING",
+  "IN PROGRESS",
+  "READY",
+  "SHIPPED",
+  "CANCELLED",
+  "REPEAT",
+  "FOLLOW UP",
+];
+
+export const sortingArrayUser = [
+  "PENDING",
+  "AWAITING",
+  "IN PROGRESS",
+  "READY",
+  "CANCELLED",
+  "REPEAT",
+];
