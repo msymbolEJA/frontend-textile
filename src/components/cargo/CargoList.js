@@ -45,16 +45,44 @@ const useStyles = makeStyles({
 
 export default function CustomizedTables() {
   const classes = useStyles();
-  const [cargoList, setCargoList] = useState([]);
+  const [cargoList, setCargoList] = useState({});
 
   useEffect(() => {
-    getData("http://144.202.67.136:8080/etsy/shipment_list/").then(
+    getData("http://144.202.67.136:8080/etsy/shipment_content/").then(
       (response) => {
-        console.log(response.data);
-        setCargoList(response.data);
+        console.log(response.data.null);
+        setCargoList(response.data.null);
       }
     );
   }, []);
+
+  const tnFunc = (tn, carrier) => {
+    console.log(tn, carrier.toUpperCase());
+    if (carrier.toUpperCase().includes("DHL")) {
+      // console.log("DHL");
+      return (
+        <a
+          href={`https://www.dhl.com/en/express/tracking.html?AWB=${tn}&brand=DHL`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {tn}
+        </a>
+      );
+    } else if (carrier.toUpperCase().includes("UPS")) {
+      return (
+        <a
+          href={`https://www.ups.com/track?tracknum=${tn}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {tn}
+        </a>
+      );
+    } else {
+      return tn;
+    }
+  };
 
   return (
     <TableContainer component={Paper} className={classes.root}>
@@ -65,30 +93,51 @@ export default function CustomizedTables() {
         <TableHead>
           <TableRow>
             <StyledTableCell align="center">Id</StyledTableCell>
-            <StyledTableCell align="center">Carrier</StyledTableCell>
-            <StyledTableCell align="center">Count</StyledTableCell>
             <StyledTableCell align="center">Reference Number</StyledTableCell>
+            <StyledTableCell align="center">Carrier</StyledTableCell>
+            <StyledTableCell align="center">Content</StyledTableCell>
+            <StyledTableCell align="center">Count</StyledTableCell>
             <StyledTableCell align="center">Shipment Date</StyledTableCell>
             <StyledTableCell align="center">Tracking Number</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {cargoList.map((row, i) => (
-            <StyledTableRow key={i}>
-              <StyledTableCell align="center" component="th" scope="row">
-                {row.id}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row.carrier}</StyledTableCell>
-              <StyledTableCell align="center">{row.count}</StyledTableCell>
-              <StyledTableCell align="center">{row.ref_number}</StyledTableCell>
-              <StyledTableCell align="center">
-                {moment(row.shipment_date).format("DD-MM-YY HH:mm")}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {row.tracking_number}
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {Object.keys(cargoList).length === 0 ? (
+            <tr>
+              <td colSpan="4">No Item!</td>
+            </tr>
+          ) : (
+            Object.keys(cargoList).map((row, i) => (
+              <StyledTableRow key={i}>
+                <StyledTableCell align="center">
+                  {cargoList[row].id}
+                </StyledTableCell>
+                <StyledTableCell align="center" component="th" scope="row">
+                  {row}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {cargoList[row].carrier.toUpperCase()}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {cargoList[row].content}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {cargoList[row].content.length}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {moment(cargoList[row].shipment_date).format(
+                    "DD-MM-YY HH:mm"
+                  )}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {tnFunc(
+                    cargoList[row].tracking_number,
+                    cargoList[row].carrier
+                  )}
+                </StyledTableCell>
+              </StyledTableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </TableContainer>
