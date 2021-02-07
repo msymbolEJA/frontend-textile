@@ -45,8 +45,6 @@ export const sortingArrayAdmin = [
   "IN TRANSIT",
   "SHIPPED",
   "CANCELLED",
-  "REPEAT",
-  "FOLLOW UP",
 ];
 
 export const sortingArrayUser = [
@@ -55,5 +53,4 @@ export const sortingArrayUser = [
   "READY",
   "IN TRANSIT",
   "CANCELLED",
-  "REPEAT",
 ];

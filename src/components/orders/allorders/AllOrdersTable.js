@@ -249,7 +249,6 @@ function AllOrdersTable() {
     try {
       const res = await getData(url);
       isInProgress = res?.data?.status === "in_progress";
-      setBarcodeManuelInput(null);
       if (selectedTag === "shipped") {
         changeOrderStatus(id, "shipped");
       } else if (isInProgress) {
@@ -261,6 +260,8 @@ function AllOrdersTable() {
       }
     } catch (error) {
       toastErrorNotify(error?.response?.data?.detail || error?.message);
+    } finally {
+      setBarcodeManuelInput(null);
     }
 
     return isInProgress;

@@ -52,6 +52,15 @@ export default function SummaryTable({
   header2,
   data,
 }) {
+  console.log("data", data);
+  let total =
+    (data !== "noOrders" &&
+      data?.length > 0 &&
+      data.reduce(function (accumulator, currentValue) {
+        return accumulator + currentValue.cell2;
+      }, 0)) ||
+    0;
+
   const classes = useStyles();
   const history = useHistory();
 
@@ -72,7 +81,7 @@ export default function SummaryTable({
           >
             {icon}
             <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>
-              {title} ({(data !== "noOrders" && data?.length) || 0})
+              {title} ({total})
             </h3>
           </div>
           <div
