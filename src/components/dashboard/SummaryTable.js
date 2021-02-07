@@ -110,7 +110,12 @@ export default function SummaryTable({
               <TableBody>
                 {data === "noOrders" ? (
                   <TableRow>
-                    <TableCell align="center" component="th" scope="row">
+                    <TableCell
+                      colSpan="2"
+                      align="center"
+                      component="th"
+                      scope="row"
+                    >
                       EVERYTHING IS ON SCHEDULE
                     </TableCell>
                   </TableRow>
