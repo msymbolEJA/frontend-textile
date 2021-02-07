@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CargoPage = ({ getListFunc, id, setRefresh }) => {
+const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
   const [cargoForm, setCargoForm] = useState({
     tracking_number: "",
     carrier: "",
@@ -82,7 +82,7 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
         toastErrorNotify(response.data.Failed);
       })
       .finally(() => {
-        if (setRefresh) setRefresh(true);
+        setRefreshTable((p) => !p);
       });
     setCargoForm({
       tracking_number: "",

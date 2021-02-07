@@ -440,7 +440,12 @@ function AllOrdersTable() {
           </>
         ) : null}
       </Paper>
-      {isStatuReady ? <CargoPage getListFunc={getListFunc} /> : null}
+      {isStatuReady ? (
+        <CargoPage
+          getListFunc={getListFunc}
+          setRefreshTable={setRefreshTable}
+        />
+      ) : null}
     </div>
   );
 }
