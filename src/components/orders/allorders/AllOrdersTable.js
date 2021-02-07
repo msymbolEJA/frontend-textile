@@ -243,7 +243,9 @@ function AllOrdersTable() {
     try {
       const res = await getData(url);
       isInProgress = res?.data?.status === "in_progress";
-      if (isInProgress) {
+      if (selectedTag === "shipped") {
+        changeOrderStatus(id, "shipped");
+      } else if (isInProgress) {
         changeOrderStatus(id, "ready");
       } else {
         toastErrorNotify(

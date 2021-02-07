@@ -85,7 +85,7 @@ const Dashboard = () => {
         if (!currentObject) currentObject = { cell1: object, cell2: 0 };
         return currentObject;
       });
-      setOrderSummary(newResult2.length ? newResult2 : "NO ORDERS");
+      setOrderSummary(newResult2.length ? newResult2 : "noOrders");
     });
   }, [userRole]);
 
@@ -98,10 +98,10 @@ const Dashboard = () => {
           if (obj[key].is_late)
             newResult.push({ cell1: key, cell2: obj[key].values.length });
         });
-        setWorkshopDueDates(newResult.length ? newResult : "NO ORDERS");
+        setWorkshopDueDates(newResult.length ? newResult : "noOrders");
       })
       .catch((err) => {
-        setWorkshopDueDates("NO ORDERS");
+        setWorkshopDueDates("noOrders");
       });
   }, []);
 
@@ -114,10 +114,10 @@ const Dashboard = () => {
           if (obj[key].is_late)
             newResult.push({ cell1: key, cell2: obj[key].values.length });
         });
-        setShipmentDueDates(newResult.length ? newResult : "NO ORDERS");
+        setShipmentDueDates(newResult.length ? newResult : "noOrders");
       })
       .catch((err) => {
-        setShipmentDueDates("NO ORDERS");
+        setShipmentDueDates("noOrders");
       });
   }, []);
   const handleClick = (e) => {
