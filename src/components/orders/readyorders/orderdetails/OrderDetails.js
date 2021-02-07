@@ -97,7 +97,7 @@ const OrderDetails = ({ match }) => {
   };
 
   useEffect(() => {
-    let url = `http://144.202.67.136:8080/etsy/mapping/${match.params.id}/`;
+    let url = `http://144.202.67.136:8080/etsy/orders/${match.params.id}/`;
     let urlLogs = `http://144.202.67.136:8080/etsy/dateLogs/${match.params.id}/`;
     //console.log(url)
     getData(url)
@@ -149,7 +149,7 @@ const OrderDetails = ({ match }) => {
                 rows?.map((row) => (
                   <StyledTableRow key={row.id} id={row.id}>
                     <CustomTableCell
-                      {...{ row, name: "receipt", name2: "is_repeat" }}
+                      {...{ row, name: "receipt_id", name2: "is_repeat" }}
                     />
                     <CustomTableCell {...{ row, name: "created_date" }} />
                     <CustomTableCell {...{ row, name: "status" }} />
