@@ -64,7 +64,9 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
         .toISOString()
         .replaceAll("-", "")
         .replaceAll(":", "")
-        .replaceAll(".", "") + cargoForm.ref_number_f;
+        .replaceAll(".", "") +
+      "-" +
+      cargoForm.ref_number_f;
     delete cargoForm.ref_number_f;
     console.log(cargoForm);
 
@@ -132,7 +134,7 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
           <TextField
             className={classes.inputStyle}
             id="ref_number_f"
-            label="Reference Number"
+            label="Description"
             type="text"
             variant="outlined"
             name="ref_number_f"
