@@ -72,7 +72,7 @@ export default function SummaryTable({
           >
             {icon}
             <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>
-              {title} ({(data !== "NO ORDERS" && data?.length) || 0})
+              {title} ({(data !== "noOrders" && data?.length) || 0})
             </h3>
           </div>
           <div
@@ -108,10 +108,10 @@ export default function SummaryTable({
             </TableHead>
             {data?.length ? (
               <TableBody>
-                {data === "NO ORDERS" ? (
+                {data === "noOrders" ? (
                   <TableRow>
                     <TableCell align="center" component="th" scope="row">
-                      {data}
+                      EVERYTHING IS ON SCHEDULE
                     </TableCell>
                   </TableRow>
                 ) : (
