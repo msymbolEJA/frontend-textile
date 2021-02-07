@@ -47,9 +47,9 @@ const useStyles = makeStyles((theme) => ({
 
 const CargoPage = ({ getListFunc, id, setRefresh }) => {
   const [cargoForm, setCargoForm] = useState({
-    ref_number: "",
     tracking_number: "",
     carrier: "",
+    ref_number_f: "",
   });
   const [result, setResult] = useState();
   const classes = useStyles();
@@ -57,7 +57,15 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
 
   const cargoFormPost = (e) => {
     e.preventDefault();
+    let d = new Date();
     console.log("CFB");
+    cargoForm.ref_number =
+      d
+        .toISOString()
+        .replaceAll("-", "")
+        .replaceAll(":", "")
+        .replaceAll(".", "") + cargoForm.ref_number_f;
+    delete cargoForm.ref_number_f;
     console.log(cargoForm);
 
     postFormData("http://144.202.67.136:8080/etsy/cargo/", cargoForm)
@@ -75,9 +83,9 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
         if (setRefresh) setRefresh(true);
       });
     setCargoForm({
-      ref_number: "",
       tracking_number: "",
       carrier: "",
+      ref_number_f: "",
     });
     try {
       getListFunc();
@@ -101,17 +109,6 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
         >
           <TextField
             className={classes.inputStyle}
-            id="ref_number"
-            label="Reference Number"
-            required={true}
-            type="text"
-            variant="outlined"
-            name="ref_number"
-            onChange={handleChange}
-            value={cargoForm.ref_number}
-          />
-          <TextField
-            className={classes.inputStyle}
             id="tracking_number"
             label="Tracking Number"
             required
@@ -131,6 +128,16 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
             onChange={handleChange}
             variant="outlined"
             value={cargoForm.carrier}
+          />
+          <TextField
+            className={classes.inputStyle}
+            id="ref_number_f"
+            label="Reference Number"
+            type="text"
+            variant="outlined"
+            name="ref_number_f"
+            onChange={handleChange}
+            value={cargoForm.ref_number_f}
           />
           <br />
           <br />
