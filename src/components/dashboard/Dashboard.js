@@ -171,6 +171,16 @@ const Dashboard = () => {
             >
               New
             </Button>
+            <Button
+              color="primary"
+              variant="outlined"
+              id="cargo-list"
+              className={classes.button}
+              startIcon={<LocalShippingIcon />}
+              onClick={(e) => handleClick(e)}
+            >
+              Cargo List
+            </Button>
           </div>
         ) : null}
         <Grid container spacing={2}>
