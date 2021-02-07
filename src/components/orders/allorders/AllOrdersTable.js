@@ -106,6 +106,7 @@ function AllOrdersTable() {
   const history = useHistory();
   const [globStatu, setglobStatu] = useState("");
   const [allPdf, setAllPdf] = useState();
+  const [refreshTable, setRefreshTable] = useState(false);
 
   const getListFunc = () => {
     getData(url)
@@ -124,7 +125,7 @@ function AllOrdersTable() {
   useEffect(() => {
     getListFunc();
     // eslint-disable-next-line
-  }, [page, rowsPerPage, url, rows, rows.lenght]);
+  }, [page, rowsPerPage, url, refreshTable]);
   //console.log("data rows : ", rows);
   //------------------------------
 
@@ -230,6 +231,7 @@ function AllOrdersTable() {
     putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, { status })
       .then((response) => {
         getData(url);
+        setRefreshTable(!refreshTable);
       })
       .catch((error) => {
         console.log(error);
@@ -247,6 +249,7 @@ function AllOrdersTable() {
     try {
       const res = await getData(url);
       isInProgress = res?.data?.status === "in_progress";
+      setBarcodeManuelInput(null);
       if (selectedTag === "shipped") {
         changeOrderStatus(id, "shipped");
       } else if (isInProgress) {
