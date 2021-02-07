@@ -57,7 +57,7 @@ export default function CustomizedTables() {
   }, []);
 
   const tnFunc = (tn, carrier) => {
-    console.log(tn, carrier.toUpperCase());
+    // console.log(tn, carrier.toUpperCase());
     if (carrier.toUpperCase().includes("DHL")) {
       // console.log("DHL");
       return (

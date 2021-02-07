@@ -68,7 +68,7 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
       "-" +
       cargoForm.ref_number_f;
     delete cargoForm.ref_number_f;
-    console.log(cargoForm);
+    // console.log(cargoForm);
 
     postFormData("http://144.202.67.136:8080/etsy/cargo/", cargoForm)
       .then((res) => {

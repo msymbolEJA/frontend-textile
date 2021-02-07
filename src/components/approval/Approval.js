@@ -94,7 +94,7 @@ function App({ history }) {
   const [selectedRowId, setSelectedRowId] = useState();
   const [selected, setSelected] = useState([]);
   const filters = getQueryParams();
-  const [globStatu, setglobStatu] = useState(filters?.status || "pending");
+  // const [globStatu, setglobStatu] = useState(filters?.status || "pending");
   const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
 
   useEffect(() => {
@@ -311,7 +311,7 @@ function App({ history }) {
         break;
     }
     history.push(`/approval?&${newUrl}`);
-    setglobStatu("");
+    // setglobStatu("");
     setPage(0);
   };
 
