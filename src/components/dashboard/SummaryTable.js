@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     height: "2rem ",
+    minWidth: "8rem",
   },
 }));
 
