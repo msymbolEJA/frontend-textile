@@ -21,6 +21,10 @@ import OrderDetails from "../components/orders/readyorders/orderdetails/OrderDet
 // Private Router
 import PrivateRouter from "./PrivateRouter";
 import Approval from "../components/approval/Approval";
+import CargoList from "../components/cargo/CargoList";
+import CargoContent from "../components/cargo/CargoContent";
+import WorkshopDueDates from "../components/cargo/WorkshopDueDates";
+import ShipmentDueDates from "../components/cargo/ShipmentDueDates";
 
 const history = require("history").createBrowserHistory();
 
@@ -50,6 +54,18 @@ const DefaultContainer = () => (
     <PrivateRouter exact path="/approval" component={Approval} />
     <PrivateRouter exact path="/search" component={Search} />
     <PrivateRouter exact path="/ready-orders" component={ReadyOrders} />
+    <PrivateRouter exact path="/cargo-list" component={CargoList} />
+    <PrivateRouter exact path="/cargo-content" component={CargoContent} />
+    <PrivateRouter
+      exact
+      path="/workshop-due-dates"
+      component={WorkshopDueDates}
+    />
+    <PrivateRouter
+      exact
+      path="/shipment-due-dates"
+      component={ShipmentDueDates}
+    />
     <PrivateRouter exact path="/order-details/:id" component={OrderDetails} />
   </div>
 );
