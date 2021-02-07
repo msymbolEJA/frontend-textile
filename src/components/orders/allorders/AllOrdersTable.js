@@ -83,7 +83,7 @@ if (
   firstStatu = "pending";
 } else {
   firstStatu = "awaiting";
-  // console.log("awaiting");
+  //console.log("awaiting");
 }
 
 function AllOrdersTable() {
@@ -99,7 +99,7 @@ function AllOrdersTable() {
   const [barcodeManuelInput, setBarcodeManuelInput] = useState();
   const [barcodeInput, setBarcodeInput] = useState();
   const [url, setUrl] = useState(
-    `http://144.202.67.136:8080/etsy/orders/?status=pending&limit=${rowsPerPage}&offset=${
+    `http://144.202.67.136:8080/etsy/orders/?status=${firstStatu}&limit=${rowsPerPage}&offset=${
       page * rowsPerPage
     }`
   );
