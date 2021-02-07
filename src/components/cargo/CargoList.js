@@ -119,7 +119,15 @@ export default function CustomizedTables() {
                   {cargoList[row].carrier.toUpperCase()}
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {cargoList[row].content}
+                  {cargoList[row].content.map((key, i) => (
+                    <span key={i}>
+                      <a href={`/order-details/${key}/`} key={i}>
+                        {key}
+                      </a>
+                      {" - "}
+                      {(i + 1) % 4 === 0 ? <br /> : null}
+                    </span>
+                  ))}
                 </StyledTableCell>
                 <StyledTableCell align="center">
                   {cargoList[row].content.length}
