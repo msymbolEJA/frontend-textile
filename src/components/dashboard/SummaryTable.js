@@ -71,9 +71,9 @@ export default function SummaryTable({
             }}
           >
             {icon}
-            <h1 style={{ display: "inline", marginLeft: "0.5rem" }}>
+            <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>
               {title} ({(data !== "NO ORDERS" && data?.length) || 0})
-            </h1>
+            </h3>
           </div>
           <div
             style={{
