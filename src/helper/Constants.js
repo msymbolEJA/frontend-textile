@@ -42,6 +42,7 @@ export const sortingArrayAdmin = [
   "AWAITING",
   "IN PROGRESS",
   "READY",
+  "IN TRANSIT",
   "SHIPPED",
   "CANCELLED",
   "REPEAT",
@@ -52,6 +53,7 @@ export const sortingArrayUser = [
   "AWAITING",
   "IN PROGRESS",
   "READY",
+  "IN TRANSIT",
   "CANCELLED",
   "REPEAT",
 ];
