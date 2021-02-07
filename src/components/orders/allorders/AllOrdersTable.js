@@ -124,7 +124,7 @@ function AllOrdersTable() {
   useEffect(() => {
     getListFunc();
     // eslint-disable-next-line
-  }, [page, rowsPerPage, url]);
+  }, [page, rowsPerPage, url, rows, rows.lenght]);
   //console.log("data rows : ", rows);
   //------------------------------
 
@@ -216,7 +216,11 @@ function AllOrdersTable() {
         setPrintError(response.data.Failed);
       })
       .finally(() => {
-        setUrl(`http://144.202.67.136:8080/etsy/orders/?status=awaiting`);
+        setUrl(
+          `http://144.202.67.136:8080/etsy/orders/?status=awaiting&limit=${rowsPerPage}&offset=${
+            page * rowsPerPage
+          }`
+        );
         getAllPdfFunc();
         getListFunc();
       });
@@ -225,7 +229,7 @@ function AllOrdersTable() {
   const changeOrderStatus = (id, status) => {
     putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, { status })
       .then((response) => {
-        setUrl("http://144.202.67.136:8080/etsy/orders/");
+        getData(url);
       })
       .catch((error) => {
         console.log(error);
@@ -305,10 +309,9 @@ function AllOrdersTable() {
             <TextField
               label="Barcode"
               id="outlined-size-small"
-              defaultValue=""
               variant="outlined"
               size="small"
-              value={barcodeManuelInput}
+              value={barcodeManuelInput || ""}
               onChange={(e) => setBarcodeManuelInput(e.target.value)}
               onKeyDown={handleManuelBarcodeInput}
             />

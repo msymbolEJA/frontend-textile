@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
-  // console.log("name", name);
   const classes = useStyles();
 
   return (
