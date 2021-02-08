@@ -22,6 +22,7 @@ import OrderDetails from "../components/orders/readyorders/orderdetails/OrderDet
 import PrivateRouter from "./PrivateRouter";
 import Approval from "../components/approval/Approval";
 import CargoList from "../components/cargo/CargoList";
+import CargoContent from "../components/cargo/CargoContent";
 import WorkshopDueDates from "../components/cargo/WorkshopDueDates";
 import ShipmentDueDates from "../components/cargo/ShipmentDueDates";
 
@@ -65,6 +66,7 @@ const DefaultContainer = () => (
       component={ShipmentDueDates}
     />
     <PrivateRouter exact path="/order-details/:id" component={OrderDetails} />
+    <PrivateRouter exact path="/cargo-content/:id" component={CargoContent} />
   </div>
 );
 
