@@ -42,10 +42,10 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "auto",
   },
   container: {
-    maxHeight: "83vh",
+    // maxHeight: "78vh",
   },
   table: {
-    minWidth: 650,
+    // height: "500px",
   },
   selectTableCell: {
     width: 60,

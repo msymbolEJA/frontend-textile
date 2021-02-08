@@ -66,24 +66,24 @@ export default function CustomizedTables() {
   // console.log("user.workshop", user.workshop);
 
   useEffect(() => {
-    getData(
-      `http://144.202.67.136:8080/etsy/shipment_content/${getSupplier}`
-    ).then((response) => {
-      console.log(response.data);
-      let dataObj = response.data;
-      let lastObj = {};
-      const formattedData = dataObj
-        ? Object.keys(dataObj).map((key) => ({ ...dataObj[key] }))
-        : [];
+    getData(`http://144.202.67.136:8080/etsy/cargo_list/${getSupplier}`).then(
+      (response) => {
+        console.log(response.data);
+        let dataObj = response.data;
+        let lastObj = {};
+        const formattedData = dataObj
+          ? Object.keys(dataObj).map((key) => ({ ...dataObj[key] }))
+          : [];
 
-      formattedData.map((item) => {
-        for (const key in item) {
-          lastObj[key] = item[key];
-        }
-      });
-      //console.log(lastObj);
-      setCargoList(lastObj);
-    });
+        formattedData.forEach((item) => {
+          for (const key in item) {
+            lastObj[key] = item[key];
+          }
+        });
+        //console.log(lastObj);
+        setCargoList(lastObj);
+      }
+    );
   }, [getSupplier]);
 
   const tnFunc = (tn, carrier) => {

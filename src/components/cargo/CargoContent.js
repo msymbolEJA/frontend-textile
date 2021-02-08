@@ -8,7 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { getData } from "../../helper/PostData";
-import moment from "moment";
 import Typography from "@material-ui/core/Typography";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -34,9 +33,9 @@ const useStyles = makeStyles({
     //width: "500px",
   },
   root: {
-    margin: "1rem",
+    margin: "1.5%",
     minWidth: "500px",
-    width: "95%",
+    width: "97%",
   },
   header: {
     marginBottom: "1rem",
@@ -48,14 +47,14 @@ export default function CustomizedTables({ match }) {
   const [cargoList, setCargoList] = useState([]);
   console.log("match-params-id", match.params.id);
 
-  //   useEffect(() => {
-  //     getData("http://144.202.67.136:8080/etsy/shipment_content/").then(
-  //       (response) => {
-  //         console.log(response.data.null);
-  //         setCargoList(response.data.null);
-  //       }
-  //     );
-  //   }, []);
+  useEffect(() => {
+    getData(
+      `http://144.202.67.136:8080/etsy/shipment/?id=${match.params.id}`
+    ).then((response) => {
+      console.log(response.data);
+      setCargoList(response.data);
+    });
+  }, [match.params.id]);
 
   return (
     <TableContainer component={Paper} className={classes.root}>
@@ -65,29 +64,33 @@ export default function CustomizedTables({ match }) {
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell align="center">Carrier</StyledTableCell>
-            <StyledTableCell align="center">Content</StyledTableCell>
-            <StyledTableCell align="center">Shipment Date</StyledTableCell>
-            <StyledTableCell align="center">Tracking Number</StyledTableCell>
+            <StyledTableCell align="center">ORDER ID</StyledTableCell>
+            <StyledTableCell align="center">RECEIPT ID</StyledTableCell>
+            <StyledTableCell align="center">CUSTOMER</StyledTableCell>
+            <StyledTableCell align="center">ITEM INDEX</StyledTableCell>
+            <StyledTableCell align="center">TYPE</StyledTableCell>
+            <StyledTableCell align="center">STATUS</StyledTableCell>
+            <StyledTableCell align="center">NOTE</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* {Object.keys(cargoList).map((row, i) => (
+          {cargoList.map((row, i) => (
             <StyledTableRow key={i}>
               <StyledTableCell align="center" component="th" scope="row">
-                {row}
+                <a href={`/order-details/${row[0].id}`}>{row[0].id}</a>
               </StyledTableCell>
               <StyledTableCell align="center">
-                {cargoList[row].content}
+                {row[0].receipt_id}
               </StyledTableCell>
+              <StyledTableCell align="center">{row[0].name}</StyledTableCell>
               <StyledTableCell align="center">
-                {moment(cargoList[row].shipment_date).format("DD-MM-YY HH:mm")}
+                {row[0].item_index}
               </StyledTableCell>
-              <StyledTableCell align="center">
-                {cargoList[row].tracking_number}
-              </StyledTableCell>
+              <StyledTableCell align="center">{row[0].type}</StyledTableCell>
+              <StyledTableCell align="center">{row[0].status}</StyledTableCell>
+              <StyledTableCell align="center">{row[0].note}</StyledTableCell>
             </StyledTableRow>
-          ))} */}
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
