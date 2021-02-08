@@ -129,6 +129,7 @@ const OrderDetails = ({ match }) => {
           >
             <TableHead>
               <TableRow>
+                <StyledTableCell align="center">Id</StyledTableCell>
                 <StyledTableCell align="center">Receipt Id</StyledTableCell>
                 <StyledTableCell align="center">Date</StyledTableCell>
                 <StyledTableCell align="center">Statu</StyledTableCell>
@@ -148,6 +149,7 @@ const OrderDetails = ({ match }) => {
               {rows ? (
                 rows?.map((row) => (
                   <StyledTableRow key={row.id} id={row.id}>
+                    <CustomTableCell {...{ row, name: "id" }} />
                     <CustomTableCell
                       {...{ row, name: "receipt_id", name2: "is_repeat" }}
                     />
