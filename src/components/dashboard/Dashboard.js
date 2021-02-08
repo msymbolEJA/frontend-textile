@@ -127,62 +127,64 @@ const Dashboard = () => {
   return (
     <div className={classes.root}>
       <div className={classes.boxes}>
-        {userRole === "admin" ||
-        userRole === "shop_manager" ||
-        userRole === "shop_packer" ? (
-          <div style={{ flexDirection: "row" }}>
-            <Button
-              color="primary"
-              variant="outlined"
-              id="all-orders"
-              className={classes.button}
-              startIcon={<ViewListIcon />}
-              onClick={(e) => handleClick(e)}
-            >
-              All Orders
-            </Button>
-            <Button
-              color="primary"
-              variant="outlined"
-              id="approval"
-              className={classes.button}
-              startIcon={<ThumbUpIcon />}
-              onClick={() => history.push(`/approval?&status=pending`)}
-            >
-              Approval
-            </Button>
-            <Button
-              color="primary"
-              variant="outlined"
-              id="search"
-              className={classes.button}
-              startIcon={<FindInPageIcon />}
-              onClick={(e) => handleClick(e)}
-            >
-              Search
-            </Button>
-            <Button
-              color="primary"
-              variant="outlined"
-              id="new-order"
-              className={classes.button}
-              startIcon={<AddCircleIcon />}
-              onClick={(e) => handleClick(e)}
-            >
-              New
-            </Button>
-            <Button
-              color="primary"
-              variant="outlined"
-              id="cargo-list"
-              className={classes.button}
-              startIcon={<LocalShippingIcon />}
-              onClick={(e) => handleClick(e)}
-            >
-              Cargo List
-            </Button>
-          </div>
-        ) : null}
+        <div style={{ flexDirection: "row" }}>
+          <Button
+            color="primary"
+            variant="outlined"
+            id="all-orders"
+            className={classes.button}
+            startIcon={<ViewListIcon />}
+            onClick={(e) => handleClick(e)}
+          >
+            All Orders
+          </Button>
+          {userRole === "admin" ||
+          userRole === "shop_manager" ||
+          userRole === "shop_packer" ? (
+            <>
+              <Button
+                color="primary"
+                variant="outlined"
+                id="approval"
+                className={classes.button}
+                startIcon={<ThumbUpIcon />}
+                onClick={() => history.push(`/approval?&status=pending`)}
+              >
+                Approval
+              </Button>
+              <Button
+                color="primary"
+                variant="outlined"
+                id="search"
+                className={classes.button}
+                startIcon={<FindInPageIcon />}
+                onClick={(e) => handleClick(e)}
+              >
+                Search
+              </Button>
+              <Button
+                color="primary"
+                variant="outlined"
+                id="new-order"
+                className={classes.button}
+                startIcon={<AddCircleIcon />}
+                onClick={(e) => handleClick(e)}
+              >
+                New
+              </Button>
+            </>
+          ) : null}
+          <Button
+            color="primary"
+            variant="outlined"
+            id="cargo-list"
+            className={classes.button}
+            startIcon={<LocalShippingIcon />}
+            onClick={(e) => handleClick(e)}
+          >
+            Cargo List
+          </Button>
+        </div>
         <Grid container spacing={2}>
           <SummaryTable
             title="Orders"

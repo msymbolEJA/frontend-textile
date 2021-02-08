@@ -61,27 +61,22 @@ export default function CustomizedTables() {
   const history = useHistory();
   const [getSupplier, setGetSupplier] = useState("");
   const { isAdmin } = useContext(AppContext);
-  // console.log(isAdmin);
-  // console.log(userRole);
-  // console.log("user.workshop", user.workshop);
 
   useEffect(() => {
     getData(`http://144.202.67.136:8080/etsy/cargo_list/${getSupplier}`).then(
       (response) => {
         console.log(response.data);
         let dataObj = response.data;
-        let lastObj = {};
         const formattedData = dataObj
-          ? Object.keys(dataObj).map((key) => ({ ...dataObj[key] }))
+          ? Object.keys(dataObj).map((key) => {
+              return Object.keys(dataObj[key]).map((key2) => ({
+                ...dataObj[key][key2],
+                refNumber: key2,
+              }));
+            })
           : [];
 
-        formattedData.forEach((item) => {
-          for (const key in item) {
-            lastObj[key] = item[key];
-          }
-        });
-        //console.log(lastObj);
-        setCargoList(lastObj);
+        setCargoList(formattedData);
       }
     );
   }, [getSupplier]);
@@ -176,59 +171,57 @@ export default function CustomizedTables() {
             <StyledTableCell align="center">Tracking Number</StyledTableCell>
           </TableRow>
         </TableHead>
+  
         <TableBody>
-          {Object.keys(cargoList).length === 0 ? (
+          {!cargoList.length ? (
             <tr>
               <td colSpan="4">No Item!</td>
             </tr>
           ) : (
-            Object.keys(cargoList).map((row, i) => (
-              <StyledTableRow
-                key={i}
-                onClick={() => handleRowClick(cargoList[row].id)}
-              >
-                <StyledTableCell align="center">
-                  {cargoList[row].id}
-                </StyledTableCell>
-                <StyledTableCell align="center" component="th" scope="row">
-                  {row}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {cargoList[row].carrier.toUpperCase()}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {cargoList[row].content.map((key, i) => (
-                    <span key={i}>
-                      <a
-                        href={`/order-details/${key}/`}
-                        key={i}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                      >
-                        {key}
-                      </a>
-                      {" - "}
-                      {(i + 1) % 4 === 0 ? <br /> : null}
-                    </span>
-                  ))}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {cargoList[row].content.length}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {moment(cargoList[row].shipment_date).format(
-                    "DD-MM-YY HH:mm"
-                  )}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {tnFunc(
-                    cargoList[row].tracking_number,
-                    cargoList[row].carrier
-                  )}
-                </StyledTableCell>
-              </StyledTableRow>
-            ))
+            cargoList.map((ws, j) =>
+              ws.map((row, i) => {
+                return (
+                  <StyledTableRow
+                    key={i}
+                    onClick={() => handleRowClick(row.id)}
+                  >
+                    <StyledTableCell align="center">{row.id}</StyledTableCell>
+                    <StyledTableCell align="center" component="th" scope="row">
+                      {row?.refNumber}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.carrier.toUpperCase()}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.content.map((key, i) => (
+                        <span key={i}>
+                          <a
+                            href={`/order-details/${key}/`}
+                            key={i}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                          >
+                            {key}
+                          </a>
+                          {" - "}
+                          {(i + 1) % 4 === 0 ? <br /> : null}
+                        </span>
+                      ))}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.content.length}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {moment(row.shipment_date).format("DD-MM-YY HH:mm")}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {tnFunc(row.tracking_number, row.carrier)}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                );
+              })
+            )
           )}
         </TableBody>
       </Table>

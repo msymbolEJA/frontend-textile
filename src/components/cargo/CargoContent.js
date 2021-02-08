@@ -45,16 +45,15 @@ const useStyles = makeStyles({
 export default function CustomizedTables({ match }) {
   const classes = useStyles();
   const [cargoList, setCargoList] = useState([]);
-  console.log("match-params-id", match.params.id);
 
   useEffect(() => {
-    getData(
-      `http://144.202.67.136:8080/etsy/shipment/?id=${match.params.id}`
-    ).then((response) => {
-      console.log(response.data);
-      setCargoList(response.data);
-    });
-  }, [match.params.id]);
+    if (match?.params?.id)
+      getData(
+        `http://144.202.67.136:8080/etsy/shipments/?id=${match.params.id}`
+      ).then((response) => {
+        setCargoList(response.data);
+      });
+  }, [match?.params?.id]);
 
   return (
     <TableContainer component={Paper} className={classes.root}>
@@ -74,23 +73,25 @@ export default function CustomizedTables({ match }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cargoList.map((row, i) => (
-            <StyledTableRow key={i}>
-              <StyledTableCell align="center" component="th" scope="row">
-                <a href={`/order-details/${row[0].id}`}>{row[0].id}</a>
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {row[0].receipt_id}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row[0].name}</StyledTableCell>
-              <StyledTableCell align="center">
-                {row[0].item_index}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row[0].type}</StyledTableCell>
-              <StyledTableCell align="center">{row[0].status}</StyledTableCell>
-              <StyledTableCell align="center">{row[0].note}</StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {cargoList.length
+            ? cargoList.map((row, i) => (
+                <StyledTableRow key={i}>
+                  <StyledTableCell align="center" component="th" scope="row">
+                    <a href={`/order-details/${row.id}`}>{row.id}</a>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.receipt_id}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{row.name}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.item_index}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">{row.type}</StyledTableCell>
+                  <StyledTableCell align="center">{row.status}</StyledTableCell>
+                  <StyledTableCell align="center">{row.note}</StyledTableCell>
+                </StyledTableRow>
+              ))
+            : null}
         </TableBody>
       </Table>
     </TableContainer>
