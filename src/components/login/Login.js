@@ -21,10 +21,7 @@ const validationSchema = yup.object({
     .string("Enter your username")
     .min(2, "Username should be of minimum 2 characters length.")
     .required("Username is required"),
-  password: yup
-    .string("Enter your password")
-    .min(5, "Password should be of minimum 5 characters length")
-    .required("Password is required"),
+  password: yup.string("Enter your password").required("Password is required"),
 });
 
 const useStyles = makeStyles((theme) => ({
