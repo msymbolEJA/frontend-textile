@@ -497,16 +497,8 @@ function App({ history }) {
         selectedTag={selectedTag}
         handleTagChange={handleTagChange}
         tagsData={tagsData}
+        searchHandler={searchHandler}
       />
-      <div style={{ display: "flex", marginLeft: "1rem" }}>
-        <TextField
-          label="Search"
-          id="outlined-size-small"
-          variant="outlined"
-          size="small"
-          onKeyDown={(e) => searchHandler(e)}
-        />
-      </div>
       <TableContainer className={classes.container}>
         <Table
           className={classes.table}
