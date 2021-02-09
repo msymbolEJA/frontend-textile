@@ -18,7 +18,6 @@ import {
   Flag as FlagIcon,
   Repeat as RepeatIcon,
   ThumbUpAlt as ThumbUpAltIcon,
-  Eco as EcoIcon,
 } from "@material-ui/icons";
 
 import { putData, getData } from "../../helper/PostData";
@@ -84,10 +83,11 @@ const StyledTableCell = withStyles((theme) => ({
 
 function App({ history }) {
   const [rows, setRows] = useState([]);
+  console.log("rows", rows);
   const [previous, setPrevious] = useState({});
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  // const [rowsPerPage, setRowsPerPage] = useState(10);
   const [count, setCount] = useState(0);
   const [orderBy, setOrderBy] = useState("id");
   const [order, setOrder] = useState("desc");
@@ -115,13 +115,14 @@ function App({ history }) {
         filters?.status ? `status=${filters?.status}` : ""
       }&is_repeat=${filters?.is_repeat}&is_followup=${
         filters?.is_followup
-      }&limit=${rowsPerPage}&offset=${filters?.offset}&ordering=${
-        filters?.ordering
-      }`
+      }&ordering=${filters?.ordering}` //&limit=${rowsPerPage}&offset=${filters?.offset}
     )
       .then((response) => {
-        setRows(response.data.results);
-        setCount(response.data.count);
+        console.log("response.data", response.data);
+        setRows(response.data);
+        //setRows(response.data.results);
+        setCount(response.data.length);
+        //setCount(response.data.count);
       })
       .catch((error) => {
         console.log("error", error);
@@ -155,21 +156,21 @@ function App({ history }) {
     setRows(newRows);
   };
 
-  const handleChangePage = (event, newPage) => {
+  /*   const handleChangePage = (event, newPage) => {
     let currentUrlParams = new URLSearchParams(window.location.search);
     currentUrlParams.set("offset", newPage * filters?.limit || 0);
     history.push(history.location.pathname + "?" + currentUrlParams.toString());
     setPage(newPage);
-  };
+  }; */
 
-  const handleChangeRowsPerPage = (event) => {
+  /*   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     let rpp = +event.target.value;
     setPage(0);
     let currentUrlParams = new URLSearchParams(window.location.search);
     currentUrlParams.set("limit", rpp || 0);
     history.push(history.location.pathname + "?" + currentUrlParams.toString());
-  };
+  }; */
 
   const handleRowClick = (id) => {
     console.log("id", id);
@@ -292,22 +293,16 @@ function App({ history }) {
     let newUrl = "";
     switch (statu) {
       case "all_orders":
-        newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+        // newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`;
+        newUrl += `is_repeat=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "followUp":
-        newUrl += `is_followup=true&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`;
+        newUrl += `is_followup=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       default:
-        newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`;
+        newUrl += `status=${statu}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
     }
     history.push(`/approval?&${newUrl}`);
@@ -345,7 +340,7 @@ function App({ history }) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
+    } else if (selectedIndex === selected?.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1));
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
@@ -368,9 +363,9 @@ function App({ history }) {
         variant="contained"
         onClick={handleApproveSelected}
         className={classes.approveButton}
-        disabled={!selected.length}
+        disabled={!selected?.length}
       >
-        Approve Selected ({selected.length})
+        Approve Selected ({selected?.length})
       </Button>
       <TableContainer className={classes.container}>
         <Table
@@ -383,9 +378,11 @@ function App({ history }) {
               <StyledTableCell align="center" style={{ padding: 0 }}>
                 <Checkbox
                   indeterminate={
-                    selected.length > 0 && selected.length < rows.length
+                    selected?.length > 0 && selected?.length < rows?.length
                   }
-                  checked={rows.length > 0 && selected.length === rows.length}
+                  checked={
+                    rows?.length > 0 && selected?.length === rows?.length
+                  }
                   onChange={handleSelectAllClick}
                   inputProps={{ "aria-label": "select all" }}
                 />
@@ -514,6 +511,14 @@ function App({ history }) {
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
+                property="gift_message"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="Gift Message"
+                setOrderBy={setOrderBy}
+              />
+              <SortableTableCell
                 property="note"
                 handleRequestSort={handleRequestSort}
                 order={order}
@@ -538,6 +543,9 @@ function App({ history }) {
                     backgroundColor:
                       (row.status !== "pending") & (row.approved === false)
                         ? "#FF9494"
+                        : row["type"].includes("14K") ||
+                          row["explanation"].includes("14K")
+                        ? "#ffef8a"
                         : null,
                   }}
                 >
@@ -575,14 +583,6 @@ function App({ history }) {
                       e.stopPropagation();
                     }}
                   >
-                    {row["type"].includes("14K") ||
-                    row["explanation"].includes("14K") ? (
-                      <>
-                        <EcoIcon style={{ color: "#f9a825" }} />
-                        <br />
-                      </>
-                    ) : null}
-
                     <FlagIcon
                       style={{
                         color: row["is_followup"] ? "red" : "grey",
@@ -663,6 +663,9 @@ function App({ history }) {
                   <ConstantTableCell
                     {...{ row, name: "message_from_buyer", onChange }}
                   />
+                  <EditableTableCell
+                    {...{ row, name: "gift_message", onChange }}
+                  />
                   <EditableTableCell {...{ row, name: "note", onChange }} />
                 </StyledTableRow>
               );
@@ -676,13 +679,13 @@ function App({ history }) {
                   variant="contained"
                   onClick={handleApproveSelected}
                   className={classes.approveButton}
-                  disabled={!selected.length}
+                  disabled={!selected?.length}
                 >
-                  Approve Selected ({selected.length})
+                  Approve Selected ({selected?.length})
                 </Button>
               </td>
               <td>Total Record:{count || 0}</td>
-              <TablePagination
+              {/*       <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 100]}
                 colSpan={22}
                 count={count}
@@ -695,7 +698,7 @@ function App({ history }) {
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}
-              />
+              /> */}
             </TableRow>
           </TableFooter>
         </Table>

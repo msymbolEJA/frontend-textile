@@ -48,6 +48,7 @@ export const sortingArrayAdmin = [
 ];
 
 export const sortingArrayUser = [
+  "PENDING",
   "AWAITING",
   "IN PROGRESS",
   "READY",
