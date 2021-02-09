@@ -55,3 +55,11 @@ export const sortingArrayUser = [
   "IN TRANSIT",
   "CANCELLED",
 ];
+
+export const repeatReasons = {
+  MANUFACTURING_ERROR: "MANUFACTURING ERROR",
+  DISCOLORATION: "DISCOLORATION",
+  BREAK_OFF: "BREAK OFF",
+  LOST_IN_MAIL: "LOST IN MAIL",
+  SECOND: "SECOND",
+};

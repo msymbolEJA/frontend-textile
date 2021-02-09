@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { ToastContainer } from "react-toastify";
 import {
@@ -31,7 +31,12 @@ import FlagAndFavCell from "./FlagAndFavCell";
 import EditableTableCell from "../tableitems/EditableTableCell";
 import SortableTableCell from "./SortableTableCell";
 import CustomButtonGroup from "./CustomButtonGroup";
-import { tagsData, BASE_URL_MAPPING, BASE_URL } from "../../helper/Constants";
+import {
+  tagsData,
+  BASE_URL_MAPPING,
+  BASE_URL,
+  repeatReasons,
+} from "../../helper/Constants";
 import Menu from "@material-ui/core/Menu";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -121,7 +126,8 @@ function App({ history }) {
   const [selected, setSelected] = useState([]);
   const filters = getQueryParams();
   const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
-  const [repeatAnchorEl, setRepeatAnchorEl] = React.useState(null);
+  const [repeatAnchorEl, setRepeatAnchorEl] = useState();
+  const [rowIdToRepeat, setRowIdToRepeat] = useState();
 
   useEffect(() => {
     getListFunc();
@@ -135,7 +141,7 @@ function App({ history }) {
     filters?.offset,
   ]);
 
-  const getListFunc = () => {
+  const getListFunc = useCallback(() => {
     getData(
       `${BASE_URL_MAPPING}?${
         filters?.status ? `status=${filters?.status}` : ""
@@ -150,118 +156,157 @@ function App({ history }) {
       .catch((error) => {
         console.log("error", error);
       });
-  };
+  }, [
+    filters?.is_followup,
+    filters?.is_repeat,
+    filters?.ordering,
+    filters?.status,
+  ]);
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = order === "asc";
-    let currentUrlParams = new URLSearchParams(window.location.search);
-    currentUrlParams.set("ordering", `${isAsc ? "" : "-"}${property}`);
-    history.push(history.location.pathname + "?" + currentUrlParams.toString());
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
+  const handleRequestSort = useCallback(
+    (event, property) => {
+      const isAsc = order === "asc";
+      let currentUrlParams = new URLSearchParams(window.location.search);
+      currentUrlParams.set("ordering", `${isAsc ? "" : "-"}${property}`);
+      history.push(
+        history.location.pathname + "?" + currentUrlParams.toString()
+      );
+      setOrder(isAsc ? "desc" : "asc");
+      setOrderBy(property);
+    },
+    [history, order]
+  );
 
-  const onChange = (e, row) => {
-    if (!previous[row.id]) {
-      setPrevious((state) => ({ ...state, [row.id]: row }));
-    }
-    const value = e.target.value;
-    const name = e.target.name;
-    const { id } = row;
-    const newRows = rows.map((row) => {
-      if (row.id === id) {
-        return { ...row, [name]: value };
+  const onChange = useCallback(
+    (e, row) => {
+      if (!previous[row.id]) {
+        setPrevious((state) => ({ ...state, [row.id]: row }));
       }
-      return row;
-    });
-    setRows(newRows);
-  };
+      const value = e.target.value;
+      const name = e.target.name;
+      const { id } = row;
+      const newRows = rows.map((row) => {
+        if (row.id === id) {
+          return { ...row, [name]: value };
+        }
+        return row;
+      });
+      setRows(newRows);
+    },
+    [previous, rows]
+  );
 
-  const handleRowClick = (id) => {
-    const currentRow = rows.find((row) => row.id === id);
-    if (currentRow) {
-      if (!currentRow.isEditMode) {
-        const newRows = rows.map((row) => {
-          return { ...row, isEditMode: row.id === id };
-        });
-        setRows(newRows);
+  const handleRowClick = useCallback(
+    (id) => {
+      const currentRow = rows.find((row) => row.id === id);
+      if (currentRow) {
+        if (!currentRow.isEditMode) {
+          const newRows = rows.map((row) => {
+            return { ...row, isEditMode: row.id === id };
+          });
+          setRows(newRows);
+        }
       }
-    }
-  };
+    },
+    [rows]
+  );
 
-  const handleRowChange = (id, data) => {
-    putData(`${BASE_URL_MAPPING}${id}/`, data)
-      .then((response) => {})
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => getListFunc());
-  };
+  const handleRowChange = useCallback(
+    (id, data) => {
+      putData(`${BASE_URL_MAPPING}${id}/`, data)
+        .then((response) => {})
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => getListFunc());
+    },
+    [getListFunc]
+  );
 
-  const handleRowKeyDown = (e, id) => {
-    if (e.key === "Enter") {
+  const handleRowKeyDown = useCallback(
+    (e, id) => {
+      if (e.key === "Enter") {
+        let data = { [e.target.name]: e.target.defaultValue };
+        handleRowChange(id, data);
+      }
+    },
+    [handleRowChange]
+  );
+
+  const handleRowBlur = useCallback(
+    (e, id) => {
       let data = { [e.target.name]: e.target.defaultValue };
       handleRowChange(id, data);
-    }
-  };
+    },
+    [handleRowChange]
+  );
 
-  const handleRowBlur = (e, id) => {
-    let data = { [e.target.name]: e.target.defaultValue };
-    handleRowChange(id, data);
-  };
+  const onSelectChange = useCallback(
+    (e, row) => {
+      e.preventDefault();
+      const value = e.target.value;
+      const name = e.target.name;
+      const { id } = row;
+      if (
+        (name === "status") &
+        (value === "pending") &
+        (row.approved === true)
+      ) {
+        let data = { [name]: value, approved: false };
+        handleRowChange(id, data);
+      } else if (
+        (name === "status") &
+        (value === "awaiting") &
+        (row.approved === false)
+      ) {
+        let data = { [name]: value, approved: true };
+        handleRowChange(id, data);
+      } else {
+        let data = { [name]: value };
+        handleRowChange(id, data);
+      }
+      getListFunc();
+    },
+    [getListFunc, handleRowChange]
+  );
 
-  const onSelectChange = (e, row) => {
-    e.preventDefault();
-    const value = e.target.value;
-    const name = e.target.name;
-    const { id } = row;
-    if ((name === "status") & (value === "pending") & (row.approved === true)) {
-      let data = { [name]: value, approved: false };
-      handleRowChange(id, data);
-    } else if (
-      (name === "status") &
-      (value === "awaiting") &
-      (row.approved === false)
-    ) {
-      let data = { [name]: value, approved: true };
-      handleRowChange(id, data);
-    } else {
-      let data = { [name]: value };
-      handleRowChange(id, data);
-    }
-    getListFunc();
-  };
+  const uploadFile = useCallback(
+    (e, id, imgFile) => {
+      e.stopPropagation();
+      try {
+        let path = `${BASE_URL_MAPPING}${id}/`;
+        putImage(path, imgFile, imgFile.name)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            getListFunc();
+          });
+      } catch (error) {
+        toastWarnNotify("Select Image!");
+      }
+    },
+    [getListFunc]
+  );
 
-  const uploadFile = (e, id, imgFile) => {
-    e.stopPropagation();
-    try {
-      let path = `${BASE_URL_MAPPING}${id}/`;
-      putImage(path, imgFile, imgFile.name)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          getListFunc();
-        });
-    } catch (error) {
-      toastWarnNotify("Select Image!");
-    }
-  };
+  const fileSelectedHandler = useCallback(
+    (e, id) => {
+      e.stopPropagation();
+      let imgFile = e.target.files[0];
+      uploadFile(e, selectedRowId, imgFile);
+    },
+    [selectedRowId, uploadFile]
+  );
 
-  const fileSelectedHandler = (e, id) => {
-    e.stopPropagation();
-    let imgFile = e.target.files[0];
-    uploadFile(e, selectedRowId, imgFile);
-  };
-  const selectId = (event, id) => {
+  const selectId = useCallback((event, id) => {
     event.stopPropagation();
     setSelectedRowId(id);
-  };
+  }, []);
 
-  const handleApproveSelected = () => {
+  const handleApproveSelected = useCallback(() => {
     postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
       .then((res) => {
         toastWarnNotify("Selected 'PENDING' orders are approved");
@@ -271,72 +316,83 @@ function App({ history }) {
       .catch(({ response }) => {
         toastWarnNotify(response?.data?.detail);
       });
-  };
+  }, [getListFunc, selected]);
 
-  const handleTagChange = (e) => {
-    const statu = e.currentTarget.id;
-    setSelected([]);
-    setSelectedTag(statu);
-    let newUrl = "";
-    switch (statu) {
-      case "all_orders":
-        break;
-      case "repeat":
-        newUrl += `is_repeat=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-        break;
-      case "followUp":
-        newUrl += `is_followup=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-        break;
-      default:
-        newUrl += `status=${statu}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-        break;
-    }
-    history.push(`/approval?&${newUrl}`);
-  };
+  const handleTagChange = useCallback(
+    (e) => {
+      const statu = e.currentTarget.id;
+      setSelected([]);
+      setSelectedTag(statu);
+      let newUrl = "";
+      switch (statu) {
+        case "all_orders":
+          break;
+        case "repeat":
+          newUrl += `is_repeat=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          break;
+        case "followUp":
+          newUrl += `is_followup=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          break;
+        default:
+          newUrl += `status=${statu}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          break;
+      }
+      history.push(`/approval?&${newUrl}`);
+    },
+    [history]
+  );
 
-  const handlerFlagRepeatChange = (id, name, value) => {
-    if (name === "is_repeat" && value === false) {
-      let data = { [name]: !value, status: "awaiting" };
-      handleRowChange(id, data);
-    } else if (name === "approved" && value === false) {
-      let data = { [name]: !value, status: "awaiting" };
-      handleRowChange(id, data);
-    } else {
-      let data = { [name]: !value };
-      handleRowChange(id, data);
-    }
-  };
+  const handlerFlagRepeatChange = useCallback(
+    (id, name, value) => {
+      if (name === "is_repeat" && value === false) {
+        let data = { [name]: !value, status: "awaiting" };
+        handleRowChange(id, data);
+      } else if (name === "approved" && value === false) {
+        let data = { [name]: !value, status: "awaiting" };
+        handleRowChange(id, data);
+      } else {
+        let data = { [name]: !value };
+        handleRowChange(id, data);
+      }
+    },
+    [handleRowChange]
+  );
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n?.id);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
+  const handleSelectAllClick = useCallback(
+    (event) => {
+      if (event.target.checked) {
+        const newSelecteds = rows.map((n) => n?.id);
+        setSelected(newSelecteds);
+        return;
+      }
+      setSelected([]);
+    },
+    [rows]
+  );
 
-  const handleCheckBoxClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected?.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  const handleCheckBoxClick = useCallback(
+    (event, id) => {
+      const selectedIndex = selected.indexOf(id);
+      let newSelected = [];
+      if (selectedIndex === -1) {
+        newSelected = newSelected.concat(selected, id);
+      } else if (selectedIndex === 0) {
+        newSelected = newSelected.concat(selected.slice(1));
+      } else if (selectedIndex === selected?.length - 1) {
+        newSelected = newSelected.concat(selected.slice(0, -1));
+      } else if (selectedIndex > 0) {
+        newSelected = newSelected.concat(
+          selected.slice(0, selectedIndex),
+          selected.slice(selectedIndex + 1)
+        );
+      }
+      setSelected(newSelected);
+    },
+    [selected]
+  );
 
-  const searchHandler = (e) => {
+  const searchHandler = useCallback((e) => {
     if (e.keyCode === 13) {
-      console.log("value", e.target.value);
       if (e.target.value) {
         globalSearch(
           `http://144.202.67.136:8080/etsy/mapping/?search=${e.target.value}`
@@ -355,33 +411,85 @@ function App({ history }) {
     } else {
       // console.log(e.target.value);
     }
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setRepeatAnchorEl(null);
-  };
+  }, []);
 
-  const menuClickHandler = (e, id, name, value) => {
-    console.log("SELECTION", e.currentTarget.id);
-    console.log("ID", id);
-    console.log("NAME", name);
-    console.log("VALUE", value);
-    // let data = {
-    //   [name]: !value,
-    //   status: "awaiting",
-    //   note: "REPEAT." + e.currentTarget.id,
-    // };
-    // console.log(data);
-    //handleRowChange(id, data);
-    handleClose();
-  };
-
-  const handlerRepeatChange = (e, id, name, value) => {
+  const handlerRepeatChange = useCallback((e, id) => {
+    setRowIdToRepeat(id);
     setRepeatAnchorEl(e.currentTarget);
-    console.log("id", id);
-    console.log("name", name);
-    console.log("value", value);
-  };
+  }, []);
+
+  const menuClickHandler = useCallback(
+    (row, reason) => () => {
+      const data = {
+        is_repeat: true,
+        status: "awaiting",
+        note: "**REPEAT: " + reason + "** " + row?.note,
+      };
+      handleRowChange(row.id, data);
+      handleClose();
+    },
+    [handleClose, handleRowChange]
+  );
+
+  const repeatMenu = useCallback(
+    (row) => {
+      return (
+        <>
+          <StyledMenu
+            id="customized-menu"
+            anchorEl={repeatAnchorEl}
+            keepMounted
+            open={Boolean(repeatAnchorEl)}
+            onClose={handleClose}
+          >
+            <StyledMenuItem>
+              <ListItemText
+                primary="Wrong manufacturing"
+                id="Wrong manufacturing"
+                onClick={menuClickHandler(
+                  row,
+                  repeatReasons.MANUFACTURING_ERROR
+                )}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemText
+                primary="Discoloration"
+                id="discoloration"
+                onClick={menuClickHandler(row, repeatReasons.DISCOLORATION)}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemText
+                primary="Break off"
+                id="break off"
+                onClick={menuClickHandler(row, repeatReasons.BREAK_OFF)}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemText
+                primary="Lost in mail"
+                id="lost in mail"
+                onClick={menuClickHandler(row, repeatReasons.LOST_IN_MAIL)}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemText
+                primary="Second"
+                id="Second"
+                onClick={menuClickHandler(row, repeatReasons.SECOND)}
+              />
+            </StyledMenuItem>
+          </StyledMenu>
+        </>
+      );
+    },
+    [handleClose, menuClickHandler, repeatAnchorEl]
+  );
 
   return (
     <Paper className={classes.root}>
@@ -611,6 +719,9 @@ function App({ history }) {
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
+                    onBlur={(e) => {
+                      e.stopPropagation();
+                    }}
                     style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
                   >
                     <FlagIcon
@@ -626,99 +737,19 @@ function App({ history }) {
                         )
                       }
                     />
-
                     <RepeatIcon
                       style={{
                         color: row["is_repeat"] ? "red" : "grey",
                         cursor: "pointer",
                       }}
-                      onClick={(e) =>
-                        handlerRepeatChange(
-                          e,
-                          row.id,
-                          "is_repeat",
-                          row["is_repeat"]
-                        )
-                      }
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlerRepeatChange(e, row.id);
+                      }}
                     />
-                    <StyledMenu
-                      id="customized-menu"
-                      anchorEl={repeatAnchorEl}
-                      keepMounted
-                      open={Boolean(repeatAnchorEl)}
-                      onClose={handleClose}
-                    >
-                      <StyledMenuItem>
-                        <ListItemText
-                          primary="Wrong manufacturing"
-                          id="Wrong manufacturing"
-                          onClick={(e) =>
-                            menuClickHandler(
-                              e,
-                              row.id,
-                              "is_repeat",
-                              row["is_repeat"]
-                            )
-                          }
-                        />
-                      </StyledMenuItem>
-                      <StyledMenuItem>
-                        <ListItemText
-                          primary="Discoloration"
-                          id="discoloration"
-                          onClick={(e) =>
-                            menuClickHandler(
-                              e,
-                              row.id,
-                              "is_repeat",
-                              row["is_repeat"]
-                            )
-                          }
-                        />
-                      </StyledMenuItem>
-                      <StyledMenuItem>
-                        <ListItemText
-                          primary="Break off"
-                          id="break off"
-                          onClick={(e) =>
-                            menuClickHandler(
-                              e,
-                              row.id,
-                              "is_repeat",
-                              row["is_repeat"]
-                            )
-                          }
-                        />
-                      </StyledMenuItem>
-                      <StyledMenuItem>
-                        <ListItemText
-                          primary="Lost in mail"
-                          id="lost in mail"
-                          onClick={(e) =>
-                            menuClickHandler(
-                              e,
-                              row.id,
-                              "is_repeat",
-                              row["is_repeat"]
-                            )
-                          }
-                        />
-                      </StyledMenuItem>
-                      <StyledMenuItem>
-                        <ListItemText
-                          primary="Other"
-                          id="other"
-                          onClick={(e) =>
-                            menuClickHandler(
-                              e,
-                              row.id,
-                              "is_repeat",
-                              row["is_repeat"]
-                            )
-                          }
-                        />
-                      </StyledMenuItem>
-                    </StyledMenu>
+                    {Boolean(repeatAnchorEl) && row.id === rowIdToRepeat
+                      ? repeatMenu(row)
+                      : null}
                     <ThumbUpAltIcon
                       style={{
                         color: row["approved"] ? "red" : "grey",
