@@ -49,9 +49,10 @@ export default function CustomizedTables({ match }) {
   useEffect(() => {
     if (match?.params?.id)
       getData(
-        `http://144.202.67.136:8080/etsy/shipments/?id=${match.params.id}`
+        `http://144.202.67.136:8080/etsy/shipment/?id=${match.params.id}`
       ).then((response) => {
-        setCargoList(response.data);
+        console.log(response.data);
+        setCargoList(response.data[0]);
       });
   }, [match?.params?.id]);
 
