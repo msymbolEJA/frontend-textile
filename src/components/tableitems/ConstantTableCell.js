@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ConstantTableCell = ({ row, name, name2, name3 }) => {
-  if (name === "personalization") console.log("row", row);
   const classes = useStyles();
   return (
     <TableCell

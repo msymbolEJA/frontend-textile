@@ -98,8 +98,6 @@ export default function Login() {
     onSubmit: (values) => {
       postAuthData("http://144.202.67.136:8080/account/login/", values)
         .then((response) => {
-          //console.log(values.username)
-          //console.log(response.data);
           setUser(response?.data);
           const token = response?.data?.access;
           if (token) {
@@ -108,7 +106,6 @@ export default function Login() {
             localStorage.setItem("localEmail", response?.data?.email);
             localStorage.setItem("localRole", response?.data?.role);
             localStorage.setItem("localId", response?.data?.id);
-            //console.log("Token", localStorage.getItem("x-auth-token"))
             console.log("Logged in succesfully!");
             setAuth(true);
             history.push("/dashboard");
@@ -117,8 +114,6 @@ export default function Login() {
         .catch(({ response }) => {
           if (response) {
             setLoginFailed(true);
-            //console.log("Error", response)
-            //console.log(response?.data?.non_field_errors[0]);
             try {
               setErrorText(response?.data?.non_field_errors[0]);
             } catch (error) {

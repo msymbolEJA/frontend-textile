@@ -80,7 +80,6 @@ export default function ForgetPassword() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values);
             axios.post('http://144.202.67.136:8080/account/password_reset', values).then(res => {
                 console.log(res);
             }).catch(error => {

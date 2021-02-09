@@ -58,7 +58,6 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
   const cargoFormPost = (e) => {
     e.preventDefault();
     let d = new Date();
-    console.log("CFB");
     cargoForm.ref_number =
       d
         .toISOString()
@@ -68,16 +67,13 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
       "-" +
       cargoForm.ref_number_f;
     delete cargoForm.ref_number_f;
-    // console.log(cargoForm);
 
     postFormData("http://144.202.67.136:8080/etsy/cargo/", cargoForm)
       .then((res) => {
-        console.log(res.data.Success);
         toastSuccessNotify(res.data.Success);
         setResult(res.data.Success);
       })
       .catch(({ response }) => {
-        console.log(response);
         setResult(response.data.Failed);
         toastErrorNotify(response.data.Failed);
       })

@@ -56,7 +56,6 @@ export default function CustomizedTables() {
   useEffect(() => {
     getData("http://144.202.67.136:8080/etsy/shipment_due_dates/").then(
       (response) => {
-        console.log("CargoTableResponse", response.data);
         setCargoList(response.data);
       }
     );

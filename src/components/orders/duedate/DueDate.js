@@ -38,7 +38,6 @@ const StyledTableCell = withStyles((theme) => ({
 export default function DueDate() {
   let headers = getHeaders(data);
   let bodyItems = getBodyItems(data);
-  // console.log("BodyItems", bodyItems);
   const classes = useStyles();
 
   return (

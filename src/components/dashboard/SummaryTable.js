@@ -52,7 +52,6 @@ export default function SummaryTable({
   header2,
   data,
 }) {
-  // console.log("data", data);
   let total =
     (data !== "noOrders" &&
       data?.length > 0 &&

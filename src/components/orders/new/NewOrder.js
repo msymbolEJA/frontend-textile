@@ -19,12 +19,8 @@ function NewOrder() {
   });
 
  
-
-  //console.log(DATA);
- 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("HandleSubmit Button");
     let {
       customer,
       supplier,
@@ -37,10 +33,7 @@ function NewOrder() {
       space,
       explanation,
     } = info;
-    /*
-    TODO
-    POST DATA 
-    */
+
    postFormData(`http://144.202.67.136:8080/etsy/manuel_orders/`,info).then((data)=> {
      console.log(data)
    }).catch((error)=> {

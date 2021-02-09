@@ -74,12 +74,10 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
 
     postFormData("http://144.202.67.136:8080/etsy/cargo_one/", cargoForm)
       .then((res) => {
-        console.log(res.data.Success);
         toastSuccessNotify(res.data.Success);
         setResult(res.data.Success);
       })
       .catch(({ response }) => {
-        console.log(response);
         setResult(response.data.Failed);
         toastErrorNotify(response.data.Failed);
       })

@@ -89,8 +89,6 @@ if (
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
   const classes = useStyles();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [count, setCount] = useState(0);
   const [selectedTag, setSelectedTag] = useState(firstStatu);
   const [printFlag, setPrintFlag] = useState(false);
@@ -99,79 +97,37 @@ function AllOrdersTable() {
   const [barcodeManuelInput, setBarcodeManuelInput] = useState();
   const [barcodeInput, setBarcodeInput] = useState();
   const [url, setUrl] = useState(
-    `http://144.202.67.136:8080/etsy/orders/?status=${firstStatu}&limit=${rowsPerPage}&offset=${
-      page * rowsPerPage
-    }`
+    `http://144.202.67.136:8080/etsy/orders/?status=${firstStatu}`
   );
   const history = useHistory();
-  const [globStatu, setglobStatu] = useState("");
   const [allPdf, setAllPdf] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
 
   const getListFunc = () => {
     getData(url)
       .then((res) => {
-        setRows(res.data.results);
-        console.log(res.data.results);
-        setCount(res.data.count);
+        setRows(res.data);
+        setCount(res.data?.length || 0);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  //--------------- Get Orders
-  //console.log("UED", url);
   useEffect(() => {
     getListFunc();
     // eslint-disable-next-line
-  }, [page, rowsPerPage, url, refreshTable]);
-  //console.log("data rows : ", rows);
-  //------------------------------
-
-  const handleChangePage = (event, newPage) => {
-    //console.log(newPage)
-    setUrl(
-      `http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rowsPerPage}&offset=${
-        newPage * rowsPerPage
-      }`
-    );
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    let rpp = +event.target.value;
-    setPage(0);
-    setUrl(
-      `http://144.202.67.136:8080/etsy/orders/?status=${globStatu}&limit=${rpp}&offset=${
-        0 * rpp
-      }`
-    );
-  };
+  }, [url, refreshTable]);
 
   const handleTagChange = (e) => {
     const statu = e.currentTarget.id;
     setSelectedTag(statu);
     setBarcodeInput("");
-    //console.log(e.target.innerHTML);
-    //console.log(statu);
     if (statu === "all_orders") {
-      setUrl(
-        `http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`
-      );
-      setglobStatu("");
+      setUrl(`http://144.202.67.136:8080/etsy/orders/`);
     } else {
-      setUrl(
-        `http://144.202.67.136:8080/etsy/orders/?status=${statu}&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`
-      );
-      setglobStatu(statu);
+      setUrl(`http://144.202.67.136:8080/etsy/orders/?status=${statu}`);
     }
-    setPage(0);
     if (statu === "awaiting") {
       setPrintFlag(true);
       //console.log("statu awaiting");
@@ -190,7 +146,6 @@ function AllOrdersTable() {
   const getAllPdfFunc = () => {
     getAllPdf("http://144.202.67.136:8080/etsy/all_pdf/")
       .then((response) => {
-        //console.log(response.data.a);
         setAllPdf(response.data.a);
       })
       .catch((error) => {
@@ -202,7 +157,6 @@ function AllOrdersTable() {
     const data = "";
     getData("http://144.202.67.136:8080/etsy/print_all/", data)
       .then((data) => {
-        //console.log(data);
         // Open pdf after get
         const link = document.createElement("a");
         link.href = `${data.data.url}`;
@@ -217,11 +171,7 @@ function AllOrdersTable() {
         setPrintError(response.data.Failed);
       })
       .finally(() => {
-        setUrl(
-          `http://144.202.67.136:8080/etsy/orders/?status=awaiting&limit=${rowsPerPage}&offset=${
-            page * rowsPerPage
-          }`
-        );
+        setUrl(`http://144.202.67.136:8080/etsy/orders/?status=awaiting`);
         getAllPdfFunc();
         getListFunc();
       });
@@ -354,6 +304,13 @@ function AllOrdersTable() {
                   key={row.id}
                   id={row.id}
                   onClick={() => handleRowClick(row.id)}
+                  style={{
+                    backgroundColor:
+                      row["type"].includes("14K") ||
+                      row["explanation"].includes("14K")
+                        ? "#ffef8a"
+                        : null,
+                  }}
                 >
                   <CustomTableCell
                     {...{
@@ -391,20 +348,6 @@ function AllOrdersTable() {
               <TableRow>
                 <td>Total Record :</td>
                 <td>{count || 0}</td>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, 100]}
-                  colSpan={22}
-                  count={count || 0}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  SelectProps={{
-                    inputProps: { "aria-label": "rows per page" },
-                    native: true,
-                  }}
-                  onChangePage={handleChangePage}
-                  onChangeRowsPerPage={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
               </TableRow>
             </TableFooter>
           </Table>

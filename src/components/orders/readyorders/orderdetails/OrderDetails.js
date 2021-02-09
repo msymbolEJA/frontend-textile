@@ -99,15 +99,12 @@ const OrderDetails = ({ match }) => {
   useEffect(() => {
     let url = `http://144.202.67.136:8080/etsy/orders/${match.params.id}/`;
     let urlLogs = `http://144.202.67.136:8080/etsy/dateLogs/${match.params.id}/`;
-    //console.log(url)
     getData(url)
       .then((res) => {
-        console.log(res.data);
         setRows([res.data]);
       })
       .then(() => {
         getData(urlLogs).then((res) => {
-          // console.log("res logs:", res);
           setLogs(res.data);
         });
       })

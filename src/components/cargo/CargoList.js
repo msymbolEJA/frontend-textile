@@ -65,7 +65,6 @@ export default function CustomizedTables() {
   useEffect(() => {
     getData(`http://144.202.67.136:8080/etsy/cargo_list/${getSupplier}`).then(
       (response) => {
-        console.log(response.data);
         let dataObj = response.data;
         const formattedData = dataObj
           ? Object.keys(dataObj).map((key) => {
@@ -82,9 +81,7 @@ export default function CustomizedTables() {
   }, [getSupplier]);
 
   const tnFunc = (tn, carrier) => {
-    // console.log(tn, carrier.toUpperCase());
     if (carrier.toUpperCase().includes("DHL")) {
-      // console.log("DHL");
       return (
         <a
           href={`https://www.dhl.com/en/express/tracking.html?AWB=${tn}&brand=DHL`}
@@ -110,12 +107,10 @@ export default function CustomizedTables() {
   };
 
   const handleRowClick = (id) => {
-    console.log("HRC", id);
     history.push(`/cargo-content/${id}`);
   };
 
   const handleSupplier = (e) => {
-    console.log(e.currentTarget.id);
     if (e.currentTarget.id) {
       setGetSupplier(`?supplier=${e.currentTarget.id}`);
     } else {

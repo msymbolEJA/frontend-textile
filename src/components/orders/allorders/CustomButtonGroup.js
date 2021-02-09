@@ -34,17 +34,10 @@ const CustomButtonGroup = ({
   nonAdminTagsData,
 }) => {
   const classes = useStyles();
-  //console.log("ST",selectedTag)
 
   const { isAdmin } = useContext(AppContext);
 
-  //console.log({ isAdmin });
-
-  // console.log(tagsData);
-  // console.log(nonAdminTagsData);
-
   let statusTags = isAdmin ? tagsData : nonAdminTagsData;
-  // console.log({ statusTags });
 
   return (
     <div>

@@ -34,7 +34,6 @@ function TablePaginationActions(props) {
 
   const handleLastPageButtonClick = (event) => {
     onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    //console.log("HLPBC")
   };
 
   return (

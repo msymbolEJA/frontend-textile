@@ -9,7 +9,6 @@ import {
   TableHead,
   TableRow,
   TableFooter,
-  TablePagination,
   Paper,
   TableContainer,
   Checkbox,
@@ -21,7 +20,6 @@ import {
 } from "@material-ui/icons";
 
 import { putData, getData } from "../../helper/PostData";
-import TablePaginationActions from "../tableitems/TablePaginationActions";
 import OrderStatus from "../tableitems/CustomSelectCell";
 import UploadFile from "../tableitems/UploadFile";
 import { putImage, postData } from "../../helper/PostData";
@@ -79,18 +77,14 @@ const StyledTableCell = withStyles((theme) => ({
 
 function App({ history }) {
   const [rows, setRows] = useState([]);
-  console.log("rows", rows);
   const [previous, setPrevious] = useState({});
   const classes = useStyles();
-  const [page, setPage] = useState(0);
-  // const [rowsPerPage, setRowsPerPage] = useState(10);
   const [count, setCount] = useState(0);
   const [orderBy, setOrderBy] = useState("id");
   const [order, setOrder] = useState("desc");
   const [selectedRowId, setSelectedRowId] = useState();
   const [selected, setSelected] = useState([]);
   const filters = getQueryParams();
-  // const [globStatu, setglobStatu] = useState(filters?.status || "pending");
   const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
 
   useEffect(() => {
@@ -114,20 +108,15 @@ function App({ history }) {
       }&ordering=${filters?.ordering}` //&limit=${rowsPerPage}&offset=${filters?.offset}
     )
       .then((response) => {
-        console.log("response.data", response.data);
         setRows(response.data);
-        //setRows(response.data.results);
         setCount(response.data.length);
-        //setCount(response.data.count);
       })
       .catch((error) => {
         console.log("error", error);
-        console.log("error Response", error?.response);
       });
   };
 
   const handleRequestSort = (event, property) => {
-    console.log("event", event);
     const isAsc = order === "asc";
     let currentUrlParams = new URLSearchParams(window.location.search);
     currentUrlParams.set("ordering", `${isAsc ? "" : "-"}${property}`);
@@ -152,24 +141,7 @@ function App({ history }) {
     setRows(newRows);
   };
 
-  /*   const handleChangePage = (event, newPage) => {
-    let currentUrlParams = new URLSearchParams(window.location.search);
-    currentUrlParams.set("offset", newPage * filters?.limit || 0);
-    history.push(history.location.pathname + "?" + currentUrlParams.toString());
-    setPage(newPage);
-  }; */
-
-  /*   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    let rpp = +event.target.value;
-    setPage(0);
-    let currentUrlParams = new URLSearchParams(window.location.search);
-    currentUrlParams.set("limit", rpp || 0);
-    history.push(history.location.pathname + "?" + currentUrlParams.toString());
-  }; */
-
   const handleRowClick = (id) => {
-    console.log("id", id);
     const currentRow = rows.find((row) => row.id === id);
     if (currentRow) {
       if (!currentRow.isEditMode) {
@@ -191,7 +163,6 @@ function App({ history }) {
   };
 
   const handleRowKeyDown = (e, id) => {
-    console.log("e", e);
     if (e.key === "Enter") {
       let data = { [e.target.name]: e.target.defaultValue };
       handleRowChange(id, data);
@@ -199,17 +170,12 @@ function App({ history }) {
   };
 
   const handleRowBlur = (e, id) => {
-    console.log("e", e);
     let data = { [e.target.name]: e.target.defaultValue };
     handleRowChange(id, data);
   };
 
   const onSelectChange = (e, row) => {
-    console.log("e", e);
     e.preventDefault();
-    // if (!previous[row.id]) {
-    //   setPrevious((state) => ({ ...state, [row.id]: row }));
-    // }
     const value = e.target.value;
     const name = e.target.name;
     const { id } = row;
@@ -227,18 +193,10 @@ function App({ history }) {
       let data = { [name]: value };
       handleRowChange(id, data);
     }
-    // const newRows = rows.map((row) => {
-    //   if (row.id === id) {
-    //     return { ...row, [name]: value };
-    //   }
-    //   return row;
-    // });
-    // setRows(newRows);
     getListFunc();
   };
 
   const uploadFile = (e, id, imgFile) => {
-    console.log("e", e);
     e.stopPropagation();
     try {
       let path = `${BASE_URL_MAPPING}${id}/`;
@@ -270,14 +228,11 @@ function App({ history }) {
   const handleApproveSelected = () => {
     postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
       .then((res) => {
-        console.log(res);
-        //toastWarnNotify(res?.data?.Success);
         toastWarnNotify("Selected 'PENDING' orders are approved");
         getListFunc();
         setSelected([]);
       })
       .catch(({ response }) => {
-        console.log("response", response);
         toastWarnNotify(response?.data?.detail);
       });
   };
@@ -289,7 +244,6 @@ function App({ history }) {
     let newUrl = "";
     switch (statu) {
       case "all_orders":
-        // newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
         break;
       case "repeat":
         newUrl += `is_repeat=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
@@ -302,13 +256,10 @@ function App({ history }) {
         break;
     }
     history.push(`/approval?&${newUrl}`);
-    // setglobStatu("");
-    setPage(0);
   };
 
   const handlerFlagRepeatChange = (id, name, value) => {
     if (name === "is_repeat" && value === false) {
-      console.log("inside is repeat", id, name, value);
       let data = { [name]: !value, status: "awaiting" };
       handleRowChange(id, data);
     } else if (name === "approved" && value === false) {
@@ -672,20 +623,6 @@ function App({ history }) {
           <TableFooter>
             <TableRow>
               <td colSpan="2">Total Record:{count || 0}</td>
-              {/*       <TablePagination
-                rowsPerPageOptions={[5, 10, 25, 100]}
-                colSpan={22}
-                count={count}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                SelectProps={{
-                  inputProps: { "aria-label": "rows per page" },
-                  native: true,
-                }}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-              /> */}
             </TableRow>
           </TableFooter>
         </Table>

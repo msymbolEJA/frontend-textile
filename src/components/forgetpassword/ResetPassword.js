@@ -78,7 +78,6 @@ export default function Register(props) {
     const history = useHistory();
 
     const token = props.match.params.id
-    //console.log(token);
 
     const formik = useFormik({
         initialValues: {
@@ -88,10 +87,8 @@ export default function Register(props) {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values);
             axios.post('http://144.202.67.136:8080/account/change_password', values).then(
                 res => {
-                    console.log(res);
                     history.push("/");
                 }
             ).catch((error) => {

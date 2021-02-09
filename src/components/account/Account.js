@@ -81,10 +81,8 @@ export default function Account() {
     setUser({ ...user });
     delete accountData.image;
     const localId = Number(localStorage.getItem("localId"));
-    console.log("....", localId);
     try {
       let path = `http://144.202.67.136:8080/account/profile/${localId}/`;
-      console.log(path);
       putData(path, accountData)
         .then((res) => {
           console.log(res);
@@ -100,7 +98,6 @@ export default function Account() {
       console.log(error);
     }
     setOpen(false);
-    console.log(accountData);
   };
 
   const changeHandler = (e) => {
@@ -200,14 +197,10 @@ export default function Account() {
   );
 
   const fileSelectedHandler = (e) => {
-    //setSelectedFile(e.target.files[0]);
     let imgFile = e.target.files[0];
-    console.log(imgFile);
     const localId = Number(localStorage.getItem("localId"));
-    console.log("....", localId);
     try {
       let path = `http://144.202.67.136:8080/account/profile/${localId}/`;
-      console.log(path);
       putImage(path, imgFile, imgFile.name)
         .then((res) => {
           console.log(res);
@@ -225,7 +218,6 @@ export default function Account() {
   };
 
   const updateIconFlag = () => {
-    console.log("updateIconFlag");
     setUpdateIcon(!updateIcon);
   };
 

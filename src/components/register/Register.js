@@ -123,17 +123,12 @@ export default function Register() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       postAuthData("http://144.202.67.136:8080/account/register/", values)
         .then((data) => {
-          console.log("DATA : ", data);
-          console.log("MESSAGE : ", data.data.message);
           toastSuccessNotify(data.data.message);
-
           history.push("/");
         })
         .catch(({ response }) => {
-          //console.log("Err", response.data.password)
           if (response.data.username) {
             setLoginError(response.data.username);
           } else if (response.data.password) {

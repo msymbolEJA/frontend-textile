@@ -40,7 +40,6 @@ const Search = () => {
       let queryString = "/?";
       Object.keys(info).forEach((key) => {
         if (info[key]) {
-          console.log(key, info[key]);
           queryString = `${queryString}${key}=${info[key]}&`;
         }
       });
@@ -49,11 +48,9 @@ const Search = () => {
       } else {
         setFail(false);
         queryString = queryString.slice(0, -1);
-        console.log(queryString);
         let path = `http://144.202.67.136:8080/etsy/mapping${queryString}`;
         queryData(path)
           .then((response) => {
-            console.log(response.data);
             setList(response.data);
           })
           .catch((error) => {
@@ -65,7 +62,6 @@ const Search = () => {
   };
 
   const clearBtn = () => {
-    //console.log("ClearBTN")
     setInfo({
       id: "",
       status: "",
