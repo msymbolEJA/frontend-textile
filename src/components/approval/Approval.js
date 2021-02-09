@@ -420,7 +420,13 @@ function App({ history }) {
                 colName="Explanation"
                 setOrderBy={setOrderBy}
               />
-              <StyledTableCell align="center" style={{ padding: 0 }}>
+              <StyledTableCell
+                align="center"
+                style={{
+                  padding: 0,
+                  pointerEvents: selectedTag === "pending" ? "auto" : "none",
+                }}
+              >
                 <Button
                   color="secondary"
                   variant="contained"
@@ -589,7 +595,11 @@ function App({ history }) {
                     {...{ row, name: "explanation", onChange }}
                   />
                   <td
-                    style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
+                    style={{
+                      padding: 0,
+                      borderBottom: "1px solid #e0e0e0",
+                      pointerEvents: row.status === "pending" ? "auto" : "none",
+                    }}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleCheckBoxClick(e, row.id);

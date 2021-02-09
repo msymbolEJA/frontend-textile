@@ -18,7 +18,7 @@ const ConstantTableCell = ({ row, name, name2, name3 }) => {
       className={classes.tableCell}
       style={{
         backgroundColor:
-          name === "personalization" && !row[name].trim() && "#FF9494",
+          name === "personalization" && !row[name]?.trim() && "#FF9494",
       }}
       onClick={(e) => {
         e.stopPropagation();
