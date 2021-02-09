@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +26,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
+const CustomButtonGroup = ({
+  selectedTag,
+  handleTagChange,
+  tagsData,
+  searchHandler,
+}) => {
   const classes = useStyles();
 
   return (
@@ -49,6 +55,20 @@ const CustomButtonGroup = ({ selectedTag, handleTagChange, tagsData }) => {
         ))}
       </div>
       <div>
+        <TextField
+          label="Search"
+          id="outlined-size-small"
+          defaultValue="Small"
+          variant="outlined"
+          size="small"
+          style={{
+            marginTop: "0.22rem",
+            marginRight: "0.3rem",
+            width: 150,
+          }}
+          onKeyDown={(e) => searchHandler(e)}
+        />
+
         <Button
           className={classes.btn}
           id="all_orders"

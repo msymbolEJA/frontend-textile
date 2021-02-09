@@ -361,11 +361,13 @@ function App({ history }) {
     setRepeatAnchorEl(null);
   };
 
-  const menuClickHandler = (e, id, name, value) => {
+  const menuClickHandler = (e, id, name, value, row) => {
+    console.log(e);
     console.log("SELECTION", e.currentTarget.id);
     console.log("ID", id);
     console.log("NAME", name);
     console.log("VALUE", value);
+    console.log("ROW", row);
     // let data = {
     //   [name]: !value,
     //   status: "awaiting",
@@ -389,16 +391,9 @@ function App({ history }) {
         selectedTag={selectedTag}
         handleTagChange={handleTagChange}
         tagsData={tagsData}
+        searchHandler={searchHandler}
       />
-      <div style={{ display: "flex", marginLeft: "1rem" }}>
-        <TextField
-          label="Search"
-          id="outlined-size-small"
-          variant="outlined"
-          size="small"
-          onKeyDown={(e) => searchHandler(e)}
-        />
-      </div>
+
       <TableContainer className={classes.container}>
         <Table
           className={classes.table}
@@ -641,84 +636,7 @@ function App({ history }) {
                         )
                       }
                     />
-                    <StyledMenu
-                      id="customized-menu"
-                      anchorEl={repeatAnchorEl}
-                      keepMounted
-                      open={Boolean(repeatAnchorEl)}
-                      onClose={handleClose}
-                    >
-                      <StyledMenuItem>
-                        <ListItemText
-                          primary="Wrong manufacturing"
-                          id="Wrong manufacturing"
-                          onClick={(e) =>
-                            menuClickHandler(
-                              e,
-                              row.id,
-                              "is_repeat",
-                              row["is_repeat"]
-                            )
-                          }
-                        />
-                      </StyledMenuItem>
-                      <StyledMenuItem>
-                        <ListItemText
-                          primary="Discoloration"
-                          id="discoloration"
-                          onClick={(e) =>
-                            menuClickHandler(
-                              e,
-                              row.id,
-                              "is_repeat",
-                              row["is_repeat"]
-                            )
-                          }
-                        />
-                      </StyledMenuItem>
-                      <StyledMenuItem>
-                        <ListItemText
-                          primary="Break off"
-                          id="break off"
-                          onClick={(e) =>
-                            menuClickHandler(
-                              e,
-                              row.id,
-                              "is_repeat",
-                              row["is_repeat"]
-                            )
-                          }
-                        />
-                      </StyledMenuItem>
-                      <StyledMenuItem>
-                        <ListItemText
-                          primary="Lost in mail"
-                          id="lost in mail"
-                          onClick={(e) =>
-                            menuClickHandler(
-                              e,
-                              row.id,
-                              "is_repeat",
-                              row["is_repeat"]
-                            )
-                          }
-                        />
-                      </StyledMenuItem>
-                      <StyledMenuItem>
-                        <ListItemText
-                          primary="Other"
-                          id="other"
-                          onClick={(e) =>
-                            menuClickHandler(
-                              e,
-                              row.id,
-                              "is_repeat",
-                              row["is_repeat"]
-                            )
-                          }
-                        />
-                      </StyledMenuItem>
-                    </StyledMenu>
+
                     <ThumbUpAltIcon
                       style={{
                         color: row["approved"] ? "red" : "grey",
