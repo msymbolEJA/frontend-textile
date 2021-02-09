@@ -185,7 +185,7 @@ const Dashboard = () => {
             Cargo List
           </Button>
         </div>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} style={{ justifyContent: "center" }}>
           <SummaryTable
             title="Orders"
             total={0}
@@ -196,7 +196,7 @@ const Dashboard = () => {
             data={orderSummary}
           />
           <SummaryTable
-            title="Behind of Workshop Schedule"
+            title="Behind Schedule"
             total={0}
             next="/workshop-due-dates"
             icon={
@@ -210,7 +210,7 @@ const Dashboard = () => {
           userRole === "shop_manager" ||
           userRole === "shop_packer" ? (
             <SummaryTable
-              title="Behind of Shipment Schedule"
+              title="Behind Overall Schedule"
               total={0}
               next="/shipment-due-dates"
               icon={

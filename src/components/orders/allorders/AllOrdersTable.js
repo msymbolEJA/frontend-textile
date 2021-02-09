@@ -254,9 +254,7 @@ function AllOrdersTable() {
       } else if (isInProgress) {
         changeOrderStatus(id, "ready");
       } else {
-        toastErrorNotify(
-          `The order is not in progress. Current status is: ${res?.data?.status}`
-        );
+        toastErrorNotify(`Current status: ${res?.data?.status}`.toUpperCase());
       }
     } catch (error) {
       toastErrorNotify(error?.response?.data?.detail || error?.message);

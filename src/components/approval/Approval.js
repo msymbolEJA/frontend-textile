@@ -45,20 +45,16 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     // height: "500px",
+    marginTop: "1rem",
   },
   selectTableCell: {
     width: 60,
   },
-  btnStyle: {
-    backgroundColor: "orange",
-    borderRadius: "5px",
-    width: "6rem",
-    cursor: "pointer",
-  },
   approveButton: {
     float: "left",
-    margin: "0 0 0.5rem 0.5rem",
-    padding: "6px 6px 4px",
+    margin: "5px 0 0",
+    padding: "5px 2px",
+    lineHeight: 1,
     fontSize: "small",
   },
 }));
@@ -358,15 +354,6 @@ function App({ history }) {
         handleTagChange={handleTagChange}
         tagsData={tagsData}
       />
-      <Button
-        color="secondary"
-        variant="contained"
-        onClick={handleApproveSelected}
-        className={classes.approveButton}
-        disabled={!selected?.length}
-      >
-        Approve Selected ({selected?.length})
-      </Button>
       <TableContainer className={classes.container}>
         <Table
           className={classes.table}
@@ -375,18 +362,6 @@ function App({ history }) {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center" style={{ padding: 0 }}>
-                <Checkbox
-                  indeterminate={
-                    selected?.length > 0 && selected?.length < rows?.length
-                  }
-                  checked={
-                    rows?.length > 0 && selected?.length === rows?.length
-                  }
-                  onChange={handleSelectAllClick}
-                  inputProps={{ "aria-label": "select all" }}
-                />
-              </StyledTableCell>
               <SortableTableCell
                 property="id"
                 property2="Receipt/"
@@ -494,6 +469,27 @@ function App({ history }) {
                 colName="Explanation"
                 setOrderBy={setOrderBy}
               />
+              <StyledTableCell align="center" style={{ padding: 0 }}>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  onClick={handleApproveSelected}
+                  className={classes.approveButton}
+                  disabled={!selected?.length}
+                >
+                  Approve ({selected?.length})
+                </Button>
+                <Checkbox
+                  indeterminate={
+                    selected?.length > 0 && selected?.length < rows?.length
+                  }
+                  checked={
+                    rows?.length > 0 && selected?.length === rows?.length
+                  }
+                  onChange={handleSelectAllClick}
+                  inputProps={{ "aria-label": "select all" }}
+                />
+              </StyledTableCell>
               <SortableTableCell
                 property="personalization"
                 handleRequestSort={handleRequestSort}
@@ -549,24 +545,6 @@ function App({ history }) {
                         : null,
                   }}
                 >
-                  <td
-                    style={{ padding: 0 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCheckBoxClick(e, row.id);
-                    }}
-                    onBlur={(e) => {
-                      e.stopPropagation();
-                    }}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Checkbox
-                      checked={isItemSelected}
-                      inputProps={{ "aria-labelledby": labelId }}
-                    />
-                  </td>
                   <FlagAndFavCell
                     {...{
                       row,
@@ -582,6 +560,7 @@ function App({ history }) {
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
+                    style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
                   >
                     <FlagIcon
                       style={{
@@ -642,6 +621,7 @@ function App({ history }) {
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
+                    style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
                   >
                     <UploadFile
                       {...{
@@ -657,6 +637,24 @@ function App({ history }) {
                   <EditableTableCell
                     {...{ row, name: "explanation", onChange }}
                   />
+                  <td
+                    style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCheckBoxClick(e, row.id);
+                    }}
+                    onBlur={(e) => {
+                      e.stopPropagation();
+                    }}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <Checkbox
+                      checked={isItemSelected}
+                      inputProps={{ "aria-labelledby": labelId }}
+                    />
+                  </td>
                   <ConstantTableCell
                     {...{ row, name: "personalization", onChange }}
                   />
@@ -673,18 +671,7 @@ function App({ history }) {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <td colSpan="3">
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  onClick={handleApproveSelected}
-                  className={classes.approveButton}
-                  disabled={!selected?.length}
-                >
-                  Approve Selected ({selected?.length})
-                </Button>
-              </td>
-              <td>Total Record:{count || 0}</td>
+              <td colSpan="2">Total Record:{count || 0}</td>
               {/*       <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 100]}
                 colSpan={22}

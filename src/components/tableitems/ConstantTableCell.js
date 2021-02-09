@@ -11,12 +11,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ConstantTableCell = ({ row, name, name2, name3 }) => {
+  if (name === "personalization") console.log("row", row);
   const classes = useStyles();
   return (
     <TableCell
       align="center"
       className={classes.tableCell}
-      style={{ minWidth: name === "message_from_buyer" ? "250px" : "auto" }}
+      style={{
+        backgroundColor:
+          name === "personalization" && !row[name].trim() && "#FF9494",
+      }}
       onClick={(e) => {
         e.stopPropagation();
       }}
