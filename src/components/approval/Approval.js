@@ -12,6 +12,7 @@ import {
   Paper,
   TableContainer,
   Checkbox,
+  TextField,
 } from "@material-ui/core";
 import {
   Flag as FlagIcon,
@@ -19,7 +20,7 @@ import {
   ThumbUpAlt as ThumbUpAltIcon,
 } from "@material-ui/icons";
 
-import { putData, getData } from "../../helper/PostData";
+import { putData, getData, globalSearch } from "../../helper/PostData";
 import OrderStatus from "../tableitems/CustomSelectCell";
 import UploadFile from "../tableitems/UploadFile";
 import { putImage, postData } from "../../helper/PostData";
@@ -298,6 +299,29 @@ function App({ history }) {
     setSelected(newSelected);
   };
 
+  const searchHandler = (e) => {
+    if (e.keyCode === 13) {
+      console.log("value", e.target.value);
+      if (e.target.value) {
+        globalSearch(
+          `http://144.202.67.136:8080/etsy/mapping/?search=${e.target.value}`
+        )
+          .then((response) => {
+            console.log(response.data);
+            setRows(response.data);
+            setCount(response.data.length);
+            //setList(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+            setRows([]);
+          });
+      }
+    } else {
+      // console.log(e.target.value);
+    }
+  };
+
   return (
     <Paper className={classes.root}>
       <CustomButtonGroup
@@ -305,6 +329,15 @@ function App({ history }) {
         handleTagChange={handleTagChange}
         tagsData={tagsData}
       />
+      <div style={{ display: "flex", marginLeft: "1rem" }}>
+        <TextField
+          label="Search"
+          id="outlined-size-small"
+          variant="outlined"
+          size="small"
+          onKeyDown={(e) => searchHandler(e)}
+        />
+      </div>
       <TableContainer className={classes.container}>
         <Table
           className={classes.table}
