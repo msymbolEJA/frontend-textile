@@ -32,6 +32,40 @@ import EditableTableCell from "../tableitems/EditableTableCell";
 import SortableTableCell from "./SortableTableCell";
 import CustomButtonGroup from "./CustomButtonGroup";
 import { tagsData, BASE_URL_MAPPING, BASE_URL } from "../../helper/Constants";
+import Menu from "@material-ui/core/Menu";
+import ListItemText from "@material-ui/core/ListItemText";
+import MenuItem from "@material-ui/core/MenuItem";
+
+const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #d3d4d5",
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "center",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "center",
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    "&:focus": {
+      backgroundColor: theme.palette.primary.main,
+      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,6 +121,7 @@ function App({ history }) {
   const [selected, setSelected] = useState([]);
   const filters = getQueryParams();
   const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
+  const [repeatAnchorEl, setRepeatAnchorEl] = React.useState(null);
 
   useEffect(() => {
     getListFunc();
@@ -320,6 +355,32 @@ function App({ history }) {
     } else {
       // console.log(e.target.value);
     }
+  };
+
+  const handleClose = () => {
+    setRepeatAnchorEl(null);
+  };
+
+  const menuClickHandler = (e, id, name, value) => {
+    console.log("SELECTION", e.currentTarget.id);
+    console.log("ID", id);
+    console.log("NAME", name);
+    console.log("VALUE", value);
+    // let data = {
+    //   [name]: !value,
+    //   status: "awaiting",
+    //   note: "REPEAT." + e.currentTarget.id,
+    // };
+    // console.log(data);
+    //handleRowChange(id, data);
+    handleClose();
+  };
+
+  const handlerRepeatChange = (e, id, name, value) => {
+    setRepeatAnchorEl(e.currentTarget);
+    console.log("id", id);
+    console.log("name", name);
+    console.log("value", value);
   };
 
   return (
@@ -571,14 +632,93 @@ function App({ history }) {
                         color: row["is_repeat"] ? "red" : "grey",
                         cursor: "pointer",
                       }}
-                      onClick={() =>
-                        handlerFlagRepeatChange(
+                      onClick={(e) =>
+                        handlerRepeatChange(
+                          e,
                           row.id,
                           "is_repeat",
                           row["is_repeat"]
                         )
                       }
                     />
+                    <StyledMenu
+                      id="customized-menu"
+                      anchorEl={repeatAnchorEl}
+                      keepMounted
+                      open={Boolean(repeatAnchorEl)}
+                      onClose={handleClose}
+                    >
+                      <StyledMenuItem>
+                        <ListItemText
+                          primary="Wrong manufacturing"
+                          id="Wrong manufacturing"
+                          onClick={(e) =>
+                            menuClickHandler(
+                              e,
+                              row.id,
+                              "is_repeat",
+                              row["is_repeat"]
+                            )
+                          }
+                        />
+                      </StyledMenuItem>
+                      <StyledMenuItem>
+                        <ListItemText
+                          primary="Discoloration"
+                          id="discoloration"
+                          onClick={(e) =>
+                            menuClickHandler(
+                              e,
+                              row.id,
+                              "is_repeat",
+                              row["is_repeat"]
+                            )
+                          }
+                        />
+                      </StyledMenuItem>
+                      <StyledMenuItem>
+                        <ListItemText
+                          primary="Break off"
+                          id="break off"
+                          onClick={(e) =>
+                            menuClickHandler(
+                              e,
+                              row.id,
+                              "is_repeat",
+                              row["is_repeat"]
+                            )
+                          }
+                        />
+                      </StyledMenuItem>
+                      <StyledMenuItem>
+                        <ListItemText
+                          primary="Lost in mail"
+                          id="lost in mail"
+                          onClick={(e) =>
+                            menuClickHandler(
+                              e,
+                              row.id,
+                              "is_repeat",
+                              row["is_repeat"]
+                            )
+                          }
+                        />
+                      </StyledMenuItem>
+                      <StyledMenuItem>
+                        <ListItemText
+                          primary="Other"
+                          id="other"
+                          onClick={(e) =>
+                            menuClickHandler(
+                              e,
+                              row.id,
+                              "is_repeat",
+                              row["is_repeat"]
+                            )
+                          }
+                        />
+                      </StyledMenuItem>
+                    </StyledMenu>
                     <ThumbUpAltIcon
                       style={{
                         color: row["approved"] ? "red" : "grey",
