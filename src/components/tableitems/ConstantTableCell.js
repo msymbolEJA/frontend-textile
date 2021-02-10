@@ -35,7 +35,7 @@ const ConstantTableCell = ({ row, name, name2, name3 }) => {
       ) : name === "created_date" ? (
         moment(row[name]).format("DD-MM-YY HH:mm")
       ) : (
-        row[name]
+        row[name]?.replace(/&quot;/g, '"').replace(/&#39;/g, "'")
       )}
       {name3 ? (
         <>

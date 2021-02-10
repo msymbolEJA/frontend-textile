@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "auto",
   },
   container: {
-    maxHeight: "83vh",
+    // maxHeight: "83vh",
   },
   table: {
     minWidth: 650,

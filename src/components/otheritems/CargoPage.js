@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   container: {
-    maxHeight: "83vh",
+    // maxHeight: "83vh",
   },
   table: {
     minWidth: 650,

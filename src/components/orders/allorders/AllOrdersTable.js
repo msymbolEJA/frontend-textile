@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "auto",
   },
   container: {
-    maxHeight: "83vh",
+    // maxHeight: "83vh",
   },
   table: {
     minWidth: 650,
@@ -333,7 +333,7 @@ function AllOrdersTable() {
                   <CustomTableCell {...{ row, name: "start" }} />
                   <CustomTableCell {...{ row, name: "space" }} />
                   <CustomTableCell {...{ row, name: "explanation" }} />
-                  <td>
+                  <td style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}>
                     {row?.image ? (
                       <ViewImageFile {...{ row, name: "image" }} />
                     ) : (

@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "5vw",
   },
   container: {
-    maxHeight: "83vh",
+    // maxHeight: "83vh",
   },
   table: {
     minWidth: 650,
