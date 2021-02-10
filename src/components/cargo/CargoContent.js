@@ -51,8 +51,7 @@ export default function CustomizedTables({ match }) {
       getData(
         `http://144.202.67.136:8080/etsy/shipment/?id=${match.params.id}`
       ).then((response) => {
-        console.log(response.data);
-        setCargoList(response.data[0]);
+        setCargoList(response.data);
       });
   }, [match?.params?.id]);
 
