@@ -688,8 +688,8 @@ function App({ history }) {
                     backgroundColor:
                       (row.status !== "pending") & (row.approved === false)
                         ? "#FF9494"
-                        : row["type"].includes("14K") ||
-                          row["explanation"].includes("14K")
+                        : row["type"]?.includes("14K") ||
+                          row["explanation"]?.includes("14K")
                         ? "#ffef8a"
                         : null,
                   }}

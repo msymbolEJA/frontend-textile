@@ -1,28 +1,33 @@
-import React, { useState, useEffect } from "react";
-//import axios from "axios";
+import React, { useState, useEffect, useCallback } from "react";
+
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableFooter,
+  Paper,
+  TableContainer,
+  Checkbox,
+  TextField,
+} from "@material-ui/core";
+
 import CustomButtonGroup from "./CustomButtonGroup";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import TablePagination from "@material-ui/core/TablePagination";
-import TableFooter from "@material-ui/core/TableFooter";
-import Paper from "@material-ui/core/Paper";
-import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import { tagsData, nonAdminTagsData } from "../../../helper/Constants";
-import Button from "@material-ui/core/Button";
 import { getData, putData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
 import ViewImageFile from "./ViewImageFile";
-import TextField from "@material-ui/core/TextField";
 import { toastErrorNotify } from "../../otheritems/ToastNotify";
 import { BASE_URL, BASE_URL_MAPPING } from "../../../helper/Constants";
+import { getQueryParams } from "../../../helper/getQueryParams";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -72,7 +77,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const localUser = localStorage.getItem("localUser");
-//console.log("localUser", localUser);
 
 let firstStatu;
 if (
@@ -80,18 +84,18 @@ if (
   localUser === "shop_manager" ||
   localUser === "shop_packer"
 ) {
-  //console.log("admin");
   firstStatu = "pending";
 } else {
   firstStatu = "awaiting";
-  //console.log("awaiting");
 }
 
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
+  const filters = getQueryParams();
+
   const classes = useStyles();
   const [count, setCount] = useState(0);
-  const [selectedTag, setSelectedTag] = useState(firstStatu);
+  const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
   const [printFlag, setPrintFlag] = useState(false);
   const [printError, setPrintError] = useState(false);
   const [isStatuReady, setIsStatuReady] = useState(false);
@@ -104,45 +108,63 @@ function AllOrdersTable() {
   const [allPdf, setAllPdf] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
 
-  const getListFunc = () => {
-    getData(url)
-      .then((res) => {
-        setRows(res.data);
-        setCount(res.data?.length || 0);
+  const getListFunc = useCallback(() => {
+    getData(
+      `${BASE_URL_MAPPING}?${
+        filters?.status ? `status=${filters?.status}` : ""
+      }&is_repeat=${filters?.is_repeat}&is_followup=${
+        filters?.is_followup
+      }&ordering=${filters?.ordering}` //&limit=${rowsPerPage}&offset=${filters?.offset}
+    )
+      .then((response) => {
+        setRows(response.data);
+        setCount(response.data.length);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error", error);
       });
-  };
+  }, [
+    filters?.is_followup,
+    filters?.is_repeat,
+    filters?.ordering,
+    filters?.status,
+  ]);
 
   useEffect(() => {
     getListFunc();
     // eslint-disable-next-line
-  }, [url, refreshTable]);
+  }, [
+    filters?.ordering,
+    filters?.is_followup,
+    filters?.status,
+    filters?.is_repeat,
+    filters?.limit,
+    filters?.offset,
+    refreshTable,
+  ]);
 
-  const handleTagChange = (e) => {
-    const statu = e.currentTarget.id;
-    setSelectedTag(statu);
-    setBarcodeInput("");
-    if (statu === "all_orders") {
-      setUrl(`${BASE_URL}etsy/orders/`);
-    } else {
-      setUrl(`${BASE_URL}etsy/orders/?status=${statu}`);
-    }
-    if (statu === "awaiting") {
-      setPrintFlag(true);
-      //console.log("statu awaiting");
-      getAllPdfFunc();
-    } else {
-      setPrintFlag(false);
-      setPrintError(false);
-    }
-    if (statu === "ready") {
-      setIsStatuReady(true);
-    } else {
-      setIsStatuReady(false);
-    }
-  };
+  const handleTagChange = useCallback(
+    (e) => {
+      const statu = e.currentTarget.id;
+      setSelectedTag(statu);
+      let newUrl = "";
+      switch (statu) {
+        case "all_orders":
+          break;
+        case "repeat":
+          newUrl += `is_repeat=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          break;
+        case "followUp":
+          newUrl += `is_followup=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          break;
+        default:
+          newUrl += `status=${statu}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          break;
+      }
+      history.push(`/approval?&${newUrl}`);
+    },
+    [history]
+  );
 
   const getAllPdfFunc = () => {
     getAllPdf(`${BASE_URL}etsy/all_pdf/`)
@@ -307,8 +329,8 @@ function AllOrdersTable() {
                   onClick={() => handleRowClick(row.id)}
                   style={{
                     backgroundColor:
-                      row["type"].includes("14K") ||
-                      row["explanation"].includes("14K")
+                      row["type"]?.includes("14K") ||
+                      row["explanation"]?.includes("14K")
                         ? "#ffef8a"
                         : null,
                   }}
