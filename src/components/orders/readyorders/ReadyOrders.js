@@ -16,6 +16,7 @@ import DATA from "../../../helper/Data";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import Typography from "@material-ui/core/Typography";
+import { BASE_URL } from "../../../helper/Constants";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -76,7 +77,7 @@ function ReadyOrders() {
 
   //--------------- Get Orders
   useEffect(() => {
-    const myUrl = `http://144.202.67.136:8080/etsy/orders/?limit=${rowsPerPage}&offset=${
+    const myUrl = `${BASE_URL}etsy/orders/?limit=${rowsPerPage}&offset=${
       page * rowsPerPage
     }`;
     axios

@@ -13,7 +13,7 @@ import DATA from "../../../../helper/Data";
 import { Button } from "@material-ui/core";
 import { getOnePdf, getData } from "../../../../helper/PostData";
 import OrderDetailsCargoPage from "./OrderDetailsCargoPage";
-//import data from "../../../../helper/Data";
+import { BASE_URL } from "../../../../helper/Constants";
 import moment from "moment";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -80,7 +80,7 @@ const OrderDetails = ({ match }) => {
 
   const getPdf = () => {
     let data = match.params.id;
-    getOnePdf("http://144.202.67.136:8080/etsy/print_one/", data)
+    getOnePdf(`${BASE_URL}etsy/print_one/`, data)
       .then((res) => {
         //console.log(res.data.url);
         const link = document.createElement("a");
@@ -97,8 +97,8 @@ const OrderDetails = ({ match }) => {
   };
 
   useEffect(() => {
-    let url = `http://144.202.67.136:8080/etsy/orders/${match.params.id}/`;
-    let urlLogs = `http://144.202.67.136:8080/etsy/dateLogs/${match.params.id}/`;
+    let url = `${BASE_URL}etsy/orders/${match.params.id}/`;
+    let urlLogs = `${BASE_URL}etsy/dateLogs/${match.params.id}/`;
     getData(url)
       .then((res) => {
         setRows([res.data]);
@@ -193,7 +193,7 @@ const OrderDetails = ({ match }) => {
         rows[0].status
       ) ? (
         <a
-          href={`http://144.202.67.136:8080/media/pdf/${match.params.id}.pdf`}
+          href={`${BASE_URL}media/pdf/${match.params.id}.pdf`}
           target="_blank"
           rel="noreferrer"
         >

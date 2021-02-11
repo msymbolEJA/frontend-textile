@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import { getData } from "../../helper/PostData";
+import { BASE_URL } from "../../helper/Constants";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -54,7 +55,7 @@ export default function CustomizedTables() {
   const [cargoList, setCargoList] = useState({});
 
   useEffect(() => {
-    getData("http://144.202.67.136:8080/etsy/due_dates/").then((response) => {
+    getData(`${BASE_URL}etsy/due_dates/`).then((response) => {
       setCargoList(response.data);
     });
   }, []);

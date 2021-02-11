@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 // import {  BASE_URL} from "../../helper/Constants";
 import { AppContext } from "../../context/Context";
 import Button from "@material-ui/core/Button";
+import { BASE_URL } from "../../helper/Constants";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -63,21 +64,19 @@ export default function CustomizedTables() {
   const { isAdmin } = useContext(AppContext);
 
   useEffect(() => {
-    getData(`http://144.202.67.136:8080/etsy/cargo_list/${getSupplier}`).then(
-      (response) => {
-        let dataObj = response.data;
-        const formattedData = dataObj
-          ? Object.keys(dataObj).map((key) => {
-              return Object.keys(dataObj[key]).map((key2) => ({
-                ...dataObj[key][key2],
-                refNumber: key2,
-              }));
-            })
-          : [];
+    getData(`${BASE_URL}etsy/cargo_list/${getSupplier}`).then((response) => {
+      let dataObj = response.data;
+      const formattedData = dataObj
+        ? Object.keys(dataObj).map((key) => {
+            return Object.keys(dataObj[key]).map((key2) => ({
+              ...dataObj[key][key2],
+              refNumber: key2,
+            }));
+          })
+        : [];
 
-        setCargoList(formattedData);
-      }
-    );
+      setCargoList(formattedData);
+    });
   }, [getSupplier]);
 
   const tnFunc = (tn, carrier) => {
@@ -166,7 +165,7 @@ export default function CustomizedTables() {
             <StyledTableCell align="center">Tracking Number</StyledTableCell>
           </TableRow>
         </TableHead>
-  
+
         <TableBody>
           {!cargoList.length ? (
             <tr>

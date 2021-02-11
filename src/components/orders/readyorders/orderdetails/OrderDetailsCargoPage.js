@@ -8,6 +8,7 @@ import {
   toastErrorNotify,
   toastSuccessNotify,
 } from "../../../otheritems/ToastNotify";
+import { BASE_URL } from "../../../../helper/Constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,7 +73,7 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
     delete cargoForm.ref_number_f;
     console.log(cargoForm);
 
-    postFormData("http://144.202.67.136:8080/etsy/cargo_one/", cargoForm)
+    postFormData(`${BASE_URL}etsy/cargo_one/`, cargoForm)
       .then((res) => {
         toastSuccessNotify(res.data.Success);
         setResult(res.data.Success);

@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PublishIcon from "@material-ui/icons/Publish";
+import { BASE_URL } from "../../helper/Constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,8 +28,7 @@ const useStyles = makeStyles((theme) => ({
 const UploadFile = ({ row, selectId, fileSelectedHandler }) => {
   const classes = useStyles();
   const hasImage = !(
-    (row.image ===
-      "http://144.202.67.136:8080/media/2021-01-21%2017%3A24%3A28.978287") |
+    (row.image === `${BASE_URL}media/2021-01-21%2017%3A24%3A28.978287`) |
     (row.image === null)
   );
 

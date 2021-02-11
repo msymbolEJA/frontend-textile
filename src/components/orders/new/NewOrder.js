@@ -1,24 +1,24 @@
 import { useState } from "react";
 import Table from "./Table";
 import Form from "./Form";
-import { postFormData } from '../../../helper/PostData'
+import { postFormData } from "../../../helper/PostData";
+import { BASE_URL } from "../../../helper/Constants";
 
 function NewOrder() {
   const [list, setList] = useState("");
   const [info, setInfo] = useState({
-      customer: "",
-      supplier: "",
-      type: "",
-      length: "",
-      color: "",
-      qty: "",
-      size: "",
-      start: "",
-      space: "",
-      explanation: "",
+    customer: "",
+    supplier: "",
+    type: "",
+    length: "",
+    color: "",
+    qty: "",
+    size: "",
+    start: "",
+    space: "",
+    explanation: "",
   });
 
- 
   const handleSubmit = (e) => {
     e.preventDefault();
     let {
@@ -34,11 +34,13 @@ function NewOrder() {
       explanation,
     } = info;
 
-   postFormData(`http://144.202.67.136:8080/etsy/manuel_orders/`,info).then((data)=> {
-     console.log(data)
-   }).catch((error)=> {
-     console.log(error)
-   })
+    postFormData(`${BASE_URL}etsy/manuel_orders/`, info)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     setList([
       ...list,
@@ -57,7 +59,7 @@ function NewOrder() {
       },
     ]);
     setInfo({
-      temp_id:"",
+      temp_id: "",
       customer: "",
       supplier: "",
       type: "",

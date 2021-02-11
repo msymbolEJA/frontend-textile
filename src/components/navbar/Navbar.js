@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import StoreIcon from "@material-ui/icons/Store";
 import Menu from "@material-ui/core/Menu";
 import { AppContext } from "../../context/Context";
+import { BASE_URL } from "../../helper/Constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -134,7 +135,7 @@ export default function MenuAppBar() {
                   <MenuItem>
                     <a
                       className={classes.hrefStyle}
-                      href="http://144.202.67.136:8080/admin/"
+                      href={`${BASE_URL}admin/`}
                       target="_blank"
                       rel="noreferrer"
                     >

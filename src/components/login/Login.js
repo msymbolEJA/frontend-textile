@@ -15,6 +15,7 @@ import { postAuthData } from "../../helper/PostData";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { AppContext } from "../../context/Context";
+import { BASE_URL } from "../../helper/Constants";
 
 const validationSchema = yup.object({
   username: yup
@@ -96,7 +97,7 @@ export default function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      postAuthData("http://144.202.67.136:8080/account/login/", values)
+      postAuthData(`${BASE_URL}account/login/`, values)
         .then((response) => {
           setUser(response?.data);
           const token = response?.data?.access;

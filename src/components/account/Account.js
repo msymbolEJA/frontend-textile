@@ -12,6 +12,7 @@ import { AppContext } from "../../context/Context";
 import { getData, putData } from "../../helper/PostData";
 import PublishIcon from "@material-ui/icons/Publish";
 import { putImage } from "../../helper/PostData";
+import { BASE_URL } from "../../helper/Constants";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -82,7 +83,7 @@ export default function Account() {
     delete accountData.image;
     const localId = Number(localStorage.getItem("localId"));
     try {
-      let path = `http://144.202.67.136:8080/account/profile/${localId}/`;
+      let path = `${BASE_URL}account/profile/${localId}/`;
       putData(path, accountData)
         .then((res) => {
           console.log(res);
@@ -114,11 +115,7 @@ export default function Account() {
   };
 
   const getInfo = () => {
-    getData(
-      `http://144.202.67.136:8080/account/profile/${localStorage.getItem(
-        "localId"
-      )}/`
-    )
+    getData(`${BASE_URL}account/profile/${localStorage.getItem("localId")}/`)
       .then((response) => {
         // console.log("responseData", response.data);
         setAccountData(response.data);
@@ -200,7 +197,7 @@ export default function Account() {
     let imgFile = e.target.files[0];
     const localId = Number(localStorage.getItem("localId"));
     try {
-      let path = `http://144.202.67.136:8080/account/profile/${localId}/`;
+      let path = `${BASE_URL}account/profile/${localId}/`;
       putImage(path, imgFile, imgFile.name)
         .then((res) => {
           console.log(res);

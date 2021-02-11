@@ -394,9 +394,7 @@ function App({ history }) {
   const searchHandler = useCallback((e) => {
     if (e.keyCode === 13) {
       if (e.target.value) {
-        globalSearch(
-          `http://144.202.67.136:8080/etsy/mapping/?search=${e.target.value}`
-        )
+        globalSearch(`${BASE_URL_MAPPING}?search=${e.target.value}`)
           .then((response) => {
             console.log(response.data);
             setRows(response.data);

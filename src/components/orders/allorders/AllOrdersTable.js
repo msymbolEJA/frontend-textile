@@ -22,6 +22,7 @@ import BarcodeInput from "../../otheritems/BarcodeInput";
 import ViewImageFile from "./ViewImageFile";
 import TextField from "@material-ui/core/TextField";
 import { toastErrorNotify } from "../../otheritems/ToastNotify";
+import { BASE_URL, BASE_URL_MAPPING } from "../../../helper/Constants";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -97,7 +98,7 @@ function AllOrdersTable() {
   const [barcodeManuelInput, setBarcodeManuelInput] = useState();
   const [barcodeInput, setBarcodeInput] = useState();
   const [url, setUrl] = useState(
-    `http://144.202.67.136:8080/etsy/orders/?status=${firstStatu}`
+    `${BASE_URL}etsy/orders/?status=${firstStatu}`
   );
   const history = useHistory();
   const [allPdf, setAllPdf] = useState();
@@ -124,9 +125,9 @@ function AllOrdersTable() {
     setSelectedTag(statu);
     setBarcodeInput("");
     if (statu === "all_orders") {
-      setUrl(`http://144.202.67.136:8080/etsy/orders/`);
+      setUrl(`${BASE_URL}etsy/orders/`);
     } else {
-      setUrl(`http://144.202.67.136:8080/etsy/orders/?status=${statu}`);
+      setUrl(`${BASE_URL}etsy/orders/?status=${statu}`);
     }
     if (statu === "awaiting") {
       setPrintFlag(true);
@@ -144,7 +145,7 @@ function AllOrdersTable() {
   };
 
   const getAllPdfFunc = () => {
-    getAllPdf("http://144.202.67.136:8080/etsy/all_pdf/")
+    getAllPdf(`${BASE_URL}etsy/all_pdf/`)
       .then((response) => {
         setAllPdf(response.data.a);
       })
@@ -155,7 +156,7 @@ function AllOrdersTable() {
 
   const printHandler = () => {
     const data = "";
-    getData("http://144.202.67.136:8080/etsy/print_all/", data)
+    getData(`${BASE_URL}etsy/print_all/`, data)
       .then((data) => {
         // Open pdf after get
         const link = document.createElement("a");
@@ -171,14 +172,14 @@ function AllOrdersTable() {
         setPrintError(response.data.Failed);
       })
       .finally(() => {
-        setUrl(`http://144.202.67.136:8080/etsy/orders/?status=awaiting`);
+        setUrl(`${BASE_URL}etsy/orders/?status=awaiting`);
         getAllPdfFunc();
         getListFunc();
       });
   };
 
   const changeOrderStatus = (id, status) => {
-    putData(`http://144.202.67.136:8080/etsy/mapping/${id}/`, { status })
+    putData(`${BASE_URL_MAPPING}${id}/`, { status })
       .then((response) => {
         getData(url);
         setRefreshTable(!refreshTable);
@@ -195,7 +196,7 @@ function AllOrdersTable() {
 
   const checkOrderIfInProgress = async (id) => {
     let isInProgress = false;
-    const url = `http://144.202.67.136:8080/etsy/mapping/${id}/`;
+    const url = `${BASE_URL_MAPPING}${id}/`;
     try {
       const res = await getData(url);
       isInProgress = res?.data?.status === "in_progress";
@@ -368,7 +369,7 @@ function AllOrdersTable() {
               allPdf?.map((pdf, index) => (
                 <div key={`${index}${pdf}`}>
                   <a
-                    href={`http://144.202.67.136:8080/media/pdf/bulk/${pdf}`}
+                    href={`${BASE_URL}media/pdf/bulk/${pdf}`}
                     target="_blank"
                     rel="noreferrer"
                   >

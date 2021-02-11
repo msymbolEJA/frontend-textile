@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from "./Form";
 import ResultTable from "./resulttable/ResultTable";
 import { queryData, globalSearch } from "../../helper/PostData";
+import { BASE_URL_MAPPING } from "../../helper/Constants";
 
 const Search = () => {
   const [fail, setFail] = useState(false);
@@ -25,9 +26,7 @@ const Search = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (globalSearchKey) {
-      globalSearch(
-        `http://144.202.67.136:8080/etsy/mapping/?search=${globalSearchKey}`
-      )
+      globalSearch(`${BASE_URL_MAPPING}?search=${globalSearchKey}`)
         .then((response) => {
           //console.log(response.data);
           setList(response.data);
@@ -48,7 +47,7 @@ const Search = () => {
       } else {
         setFail(false);
         queryString = queryString.slice(0, -1);
-        let path = `http://144.202.67.136:8080/etsy/mapping${queryString}`;
+        let path = `${BASE_URL_MAPPING}${queryString}`;
         queryData(path)
           .then((response) => {
             setList(response.data);

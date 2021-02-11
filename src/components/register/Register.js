@@ -19,6 +19,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { USER_TYPE } from "../../helper/Constants";
 import { toastSuccessNotify } from "../otheritems/ToastNotify";
+import { BASE_URL } from "../../helper/Constants";
 
 const validationSchema = yup.object({
   username: yup
@@ -123,7 +124,7 @@ export default function Register() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      postAuthData("http://144.202.67.136:8080/account/register/", values)
+      postAuthData(`${BASE_URL}account/register/`, values)
         .then((data) => {
           toastSuccessNotify(data.data.message);
           history.push("/");
