@@ -92,7 +92,7 @@ export default function MenuAppBar() {
           >
             <StoreIcon />
             <Typography variant="h6" className={classes.rightTitle}>
-              Belky Store
+              Shiny Store
             </Typography>
           </IconButton>
           <div className={classes.title}></div>
