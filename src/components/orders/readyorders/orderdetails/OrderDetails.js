@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 650,
   },
   table2: {
-    maxWidth: 650,
+    maxWidth: 950,
     margin: "auto",
   },
   selectTableCell: {
@@ -69,6 +69,11 @@ const useStyles = makeStyles((theme) => ({
   },
   printSubmit: {
     marginTop: theme.spacing(5),
+  },
+  tableRow: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
   },
 }));
 
@@ -203,30 +208,50 @@ const OrderDetails = ({ match }) => {
 
       <hr />
 
-      <TableContainer component={Paper}>
-        <Table className={classes.table2} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>User</TableCell>
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {logs.length > 0 &&
-              logs.reverse().map((log, i) => (
-                <TableRow key={i}>
-                  <TableCell component="th" scope="row">
-                    {moment(log.change_date).format("DD-MM-YY HH:mm")}
-                  </TableCell>
-                  <TableCell>{log.user}</TableCell>
-                  <TableCell>{`${log.type} => ${log.data}`}</TableCell>
-                  <TableCell>{}</TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {logs?.length === 0 ? null : (
+        <TableContainer component={Paper}>
+          <Table className={classes.table2} aria-label="simple table">
+            <TableHead>
+              <TableRow
+                style={{ backgroundColor: "black", borderRadius: "0.5rem" }}
+              >
+                <TableCell align="center" style={{ color: "white" }}>
+                  Date
+                </TableCell>
+                <TableCell align="center" style={{ color: "white" }}>
+                  User
+                </TableCell>
+                <TableCell align="center" style={{ color: "white" }}>
+                  Action
+                </TableCell>
+                <TableCell align="center" style={{ color: "white" }}>
+                  Log Data
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {logs.length > 0 &&
+                logs.reverse().map((log, i) => (
+                  <TableRow key={i} className={classes.tableRow}>
+                    <TableCell component="th" scope="row" align="center">
+                      {moment(log.change_date).format("DD-MM-YY HH:mm")}
+                    </TableCell>
+                    <TableCell align="center">{log.user}</TableCell>
+                    <TableCell align="center">
+                      {log.type.replaceAll("_", " ")}
+                    </TableCell>
+                    <TableCell align="center">
+                      {moment(log.data).format("DD-MM-YY HH:mm") ===
+                      "Invalid date"
+                        ? log.data
+                        : moment(log.data).format("DD-MM-YY HH:mm")}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </div>
   );
 };
