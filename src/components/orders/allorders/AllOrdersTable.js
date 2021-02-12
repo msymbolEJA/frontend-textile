@@ -341,7 +341,7 @@ function AllOrdersTable() {
                 <CustomTableCell
                   {...{
                     row,
-                    name2: "receipt_id",
+                    name2: "receipt",
                     name: "id",
                     name3: "item_index",
                     name4: "is_repeat",
