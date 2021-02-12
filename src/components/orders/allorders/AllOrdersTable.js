@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(0),
   },
   print: {
-    marginTop: "1rem",
+    marginTop: "0.5rem",
     marginBottom: "0.5rem",
   },
   barcodeBox: {
