@@ -9,7 +9,6 @@ import Paper from "@material-ui/core/Paper";
 import TableContainer from "@material-ui/core/TableContainer";
 import CustomTableCell from "../CustomTableCell";
 import Typography from "@material-ui/core/Typography";
-import DATA from "../../../../helper/Data";
 import { Button } from "@material-ui/core";
 import { getOnePdf, getData } from "../../../../helper/PostData";
 import OrderDetailsCargoPage from "./OrderDetailsCargoPage";
