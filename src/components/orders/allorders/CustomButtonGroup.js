@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0.5),
   },
   btnGroup: {
-    marginBottom: theme.spacing(0),
+    marginBottom: theme.spacing(1),
   },
   header: {
     fontSize: "1.5rem",
