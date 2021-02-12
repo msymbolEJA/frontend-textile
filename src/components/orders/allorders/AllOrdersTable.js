@@ -55,7 +55,7 @@ const StyledTableRow = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(2),
     overflowX: "auto",
   },
   container: {
@@ -68,11 +68,17 @@ const useStyles = makeStyles((theme) => ({
     width: 60,
   },
   buttonGroup: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(0),
   },
   print: {
     marginTop: "1rem",
     marginBottom: "0.5rem",
+  },
+  barcodeBox: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 }));
 
@@ -407,28 +413,22 @@ function AllOrdersTable() {
           tagsData={tagsData}
           nonAdminTagsData={nonAdminTagsData}
         />
-        {selectedTag === "ready" ? (
-          <div>
-            <BarcodeInput onError={handleError} onScan={handleScan} />
-            <p>Barcode: {barcodeInput || "No result"}</p>
-          </div>
-        ) : null}
-        {selectedTag === "shipped" ? (
-          <div>
-            <BarcodeInput onError={handleError} onScan={handleScan} />
-            <p>Barcode: {barcodeInput || "No result"}</p>
-          </div>
-        ) : null}
         {selectedTag === "ready" || selectedTag === "shipped" ? (
-          <div className={classes.print}>
-            <TextField
-              label="Barcode"
-              inputRef={barcodeInputRef}
-              id="outlined-size-small"
-              variant="outlined"
-              size="small"
-              onKeyDown={handleBarcodeInputKeyDown}
-            />
+          <div className={classes.barcodeBox}>
+            <div style={{ marginRight: "0.5rem" }}>
+              <BarcodeInput onError={handleError} onScan={handleScan} />
+              <p>Barcode: {barcodeInput || "No result"}</p>
+            </div>
+            <div className={classes.print}>
+              <TextField
+                label="Barcode"
+                inputRef={barcodeInputRef}
+                id="outlined-size-small"
+                variant="outlined"
+                size="small"
+                onKeyDown={handleBarcodeInputKeyDown}
+              />
+            </div>
           </div>
         ) : null}
         <AllTable />
