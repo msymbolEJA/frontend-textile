@@ -111,6 +111,9 @@ function AllOrdersTable() {
   const [refreshTable, setRefreshTable] = useState(false);
 
   const getListFunc = useCallback(() => {
+    if (filters?.status === "shipped") {
+      filters.ordering = "-last_updated";
+    }
     getData(
       `${BASE_URL_MAPPING}?${
         filters?.status ? `status=${filters?.status}` : ""
