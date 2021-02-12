@@ -1,28 +1,33 @@
-import React, { useState, useEffect } from "react";
-//import axios from "axios";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableFooter,
+  Paper,
+  TablePagination,
+  TableContainer,
+  Checkbox,
+  TextField,
+} from "@material-ui/core";
+
 import CustomButtonGroup from "./CustomButtonGroup";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableFooter from "@material-ui/core/TableFooter";
-import Paper from "@material-ui/core/Paper";
-import TableContainer from "@material-ui/core/TableContainer";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import { tagsData, nonAdminTagsData } from "../../../helper/Constants";
-import Button from "@material-ui/core/Button";
 import { getData, putData, getAllPdf } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
 import ViewImageFile from "./ViewImageFile";
-import TextField from "@material-ui/core/TextField";
 import { toastErrorNotify } from "../../otheritems/ToastNotify";
 import { BASE_URL, BASE_URL_MAPPING } from "../../../helper/Constants";
+import { getQueryParams } from "../../../helper/getQueryParams";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -72,7 +77,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const localUser = localStorage.getItem("localUser");
-//console.log("localUser", localUser);
 
 let firstStatu;
 if (
@@ -80,22 +84,24 @@ if (
   localUser === "shop_manager" ||
   localUser === "shop_packer"
 ) {
-  //console.log("admin");
   firstStatu = "pending";
 } else {
   firstStatu = "awaiting";
-  //console.log("awaiting");
 }
 
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
+  const filters = getQueryParams();
+  const barcodeInputRef = useRef();
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(250);
   const classes = useStyles();
   const [count, setCount] = useState(0);
-  const [selectedTag, setSelectedTag] = useState(firstStatu);
+  const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
   const [printFlag, setPrintFlag] = useState(false);
   const [printError, setPrintError] = useState(false);
   const [isStatuReady, setIsStatuReady] = useState(false);
-  const [barcodeManuelInput, setBarcodeManuelInput] = useState();
   const [barcodeInput, setBarcodeInput] = useState();
   const [url, setUrl] = useState(
     `${BASE_URL}etsy/orders/?status=${firstStatu}`
@@ -104,45 +110,94 @@ function AllOrdersTable() {
   const [allPdf, setAllPdf] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
 
-  const getListFunc = () => {
-    getData(url)
-      .then((res) => {
-        setRows(res.data);
-        setCount(res.data?.length || 0);
+  const getListFunc = useCallback(() => {
+    getData(
+      `${BASE_URL_MAPPING}?${
+        filters?.status ? `status=${filters?.status}` : ""
+      }&is_repeat=${filters?.is_repeat}&is_followup=${
+        filters?.is_followup
+      }&ordering=${filters?.ordering}&limit=${rowsPerPage}&offset=${
+        filters?.offset
+      }`
+    )
+      .then((response) => {
+        // setRows(response.data);
+        setRows(response.data.results);
+
+        // setCount(response.data.length);
+        setCount(response.data.count);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error", error);
       });
-  };
+  }, [
+    filters?.is_followup,
+    filters?.is_repeat,
+    filters?.offset,
+    filters?.ordering,
+    filters?.status,
+    rowsPerPage,
+  ]);
 
   useEffect(() => {
     getListFunc();
-    // eslint-disable-next-line
-  }, [url, refreshTable]);
+  }, [
+    filters.ordering,
+    filters.is_followup,
+    filters.status,
+    filters.is_repeat,
+    filters.limit,
+    filters.offset,
+    refreshTable,
+    getListFunc,
+  ]);
 
-  const handleTagChange = (e) => {
-    const statu = e.currentTarget.id;
-    setSelectedTag(statu);
-    setBarcodeInput("");
-    if (statu === "all_orders") {
-      setUrl(`${BASE_URL}etsy/orders/`);
-    } else {
-      setUrl(`${BASE_URL}etsy/orders/?status=${statu}`);
-    }
-    if (statu === "awaiting") {
-      setPrintFlag(true);
-      //console.log("statu awaiting");
-      getAllPdfFunc();
-    } else {
-      setPrintFlag(false);
-      setPrintError(false);
-    }
-    if (statu === "ready") {
-      setIsStatuReady(true);
-    } else {
-      setIsStatuReady(false);
-    }
+  const handleChangePage = (event, newPage) => {
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("offset", newPage * filters?.limit || 0);
+    history.push(history.location.pathname + "?" + currentUrlParams.toString());
+    setPage(newPage);
   };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    let rpp = +event.target.value;
+    setPage(0);
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("limit", rpp || 0);
+    history.push(history.location.pathname + "?" + currentUrlParams.toString());
+  };
+
+  const handleTagChange = useCallback(
+    (e) => {
+      const statu = e.currentTarget.id;
+      setSelectedTag(statu);
+      let newUrl = "";
+      switch (statu) {
+        case "all_orders":
+          newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+          break;
+        case "repeat":
+          newUrl += `is_repeat=true&limit=${rowsPerPage}&offset=${
+            page * rowsPerPage
+          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          break;
+        case "followUp":
+          newUrl += `is_followup=true&limit=${rowsPerPage}&offset=${
+            page * rowsPerPage
+          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          break;
+        default:
+          newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
+            page * rowsPerPage
+          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          break;
+      }
+      history.push(`/all-orders?&${newUrl}`);
+      setPage(0);
+    },
+    [history, page, rowsPerPage]
+  );
 
   const getAllPdfFunc = () => {
     getAllPdf(`${BASE_URL}etsy/all_pdf/`)
@@ -210,31 +265,136 @@ function AllOrdersTable() {
     } catch (error) {
       toastErrorNotify(error?.response?.data?.detail || error?.message);
     } finally {
-      setBarcodeManuelInput(null);
+      barcodeInputRef.current.value = null;
     }
 
     return isInProgress;
   };
 
-  const handleManuelBarcodeInput = (e) => {
-    if (e.keyCode === 13) setBarcodeInput(barcodeManuelInput);
+  const handleBarcodeInputKeyDown = (e) => {
+    if (e.keyCode === 13) setBarcodeInput(barcodeInputRef.current.value);
   };
 
-  const handleRowClick = (id) => {
-    history.push({
-      pathname: `/order-details/${id}`,
-    });
-  };
+  const handleRowClick = useCallback(
+    (id) => {
+      history.push({
+        pathname: `/order-details/${id}`,
+      });
+    },
+    [history]
+  );
 
-  const handleScan = (data) => {
+  const handleScan = useCallback((data) => {
     setBarcodeInput(data);
-    setBarcodeManuelInput(data);
-  };
+    barcodeInputRef.current.value = data;
+  }, []);
 
-  const handleError = (err) => {
+  const handleError = useCallback((err) => {
     console.error(err);
-  };
+  }, []);
 
+  const AllTable = React.memo(
+    () => (
+      <TableContainer className={classes.container}>
+        <Table
+          className={classes.table}
+          stickyHeader
+          aria-label="sticky table"
+          size="small"
+        >
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center">
+                Receipt Id / Id / Index
+              </StyledTableCell>
+              <StyledTableCell align="center">Created TSZ</StyledTableCell>
+              <StyledTableCell align="center">Buyer</StyledTableCell>
+              <StyledTableCell align="center">Supplier</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell align="center">Type</StyledTableCell>
+              <StyledTableCell align="center">Length</StyledTableCell>
+              <StyledTableCell align="center">Color</StyledTableCell>
+              <StyledTableCell align="center">Quantity</StyledTableCell>
+              <StyledTableCell align="center">Size</StyledTableCell>
+              <StyledTableCell align="center">Start</StyledTableCell>
+              <StyledTableCell align="center">Space</StyledTableCell>
+              <StyledTableCell align="center">Explanation</StyledTableCell>
+              <StyledTableCell align="center">Image</StyledTableCell>
+              <StyledTableCell align="center">Note</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows?.map((row) => (
+              <StyledTableRow
+                className={classes.rowStyle}
+                key={row.id}
+                id={row.id}
+                onClick={() => handleRowClick(row.id)}
+                style={{
+                  backgroundColor:
+                    row["type"]?.includes("14K") ||
+                    row["explanation"]?.includes("14K")
+                      ? "#ffef8a"
+                      : null,
+                }}
+              >
+                <CustomTableCell
+                  {...{
+                    row,
+                    name2: "receipt_id",
+                    name: "id",
+                    name3: "item_index",
+                    name4: "is_repeat",
+                  }}
+                />
+                <CustomTableCell {...{ row, name: "creation_tsz" }} />
+                <CustomTableCell {...{ row, name: "buyer" }} />
+                <CustomTableCell {...{ row, name: "supplier" }} />
+                <CustomTableCell {...{ row, name: "status" }} />
+                <CustomTableCell {...{ row, name: "type" }} />
+                <CustomTableCell {...{ row, name: "length" }} />
+                <CustomTableCell {...{ row, name: "color" }} />
+                <CustomTableCell {...{ row, name: "qty" }} />
+                <CustomTableCell {...{ row, name: "size" }} />
+                <CustomTableCell {...{ row, name: "start" }} />
+                <CustomTableCell {...{ row, name: "space" }} />
+                <CustomTableCell {...{ row, name: "explanation" }} />
+                <td style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}>
+                  {row?.image ? (
+                    <ViewImageFile {...{ row, name: "image" }} />
+                  ) : (
+                    <p>No File</p>
+                  )}
+                </td>
+                <CustomTableCell {...{ row, name: "note" }} />
+              </StyledTableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <td>Total Record :</td>
+              <td>{count || 0}</td>
+              <TablePagination
+                rowsPerPageOptions={[25, 50, 100, 250, 500]}
+                colSpan={22}
+                count={count}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    ),
+    []
+  );
   return (
     <div>
       <Paper className={classes.root}>
@@ -250,7 +410,6 @@ function AllOrdersTable() {
             <p>Barcode: {barcodeInput || "No result"}</p>
           </div>
         ) : null}
-
         {selectedTag === "shipped" ? (
           <div>
             <BarcodeInput onError={handleError} onScan={handleScan} />
@@ -261,98 +420,15 @@ function AllOrdersTable() {
           <div className={classes.print}>
             <TextField
               label="Barcode"
+              inputRef={barcodeInputRef}
               id="outlined-size-small"
               variant="outlined"
               size="small"
-              value={barcodeManuelInput || ""}
-              onChange={(e) => setBarcodeManuelInput(e.target.value)}
-              onKeyDown={handleManuelBarcodeInput}
+              onKeyDown={handleBarcodeInputKeyDown}
             />
           </div>
         ) : null}
-        <TableContainer className={classes.container}>
-          <Table
-            className={classes.table}
-            stickyHeader
-            aria-label="sticky table"
-            size="small"
-          >
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center">
-                  Receipt Id / Id / Index
-                </StyledTableCell>
-                <StyledTableCell align="center">Created TSZ</StyledTableCell>
-                <StyledTableCell align="center">Buyer</StyledTableCell>
-                <StyledTableCell align="center">Supplier</StyledTableCell>
-                <StyledTableCell align="center">Status</StyledTableCell>
-                <StyledTableCell align="center">Type</StyledTableCell>
-                <StyledTableCell align="center">Length</StyledTableCell>
-                <StyledTableCell align="center">Color</StyledTableCell>
-                <StyledTableCell align="center">Quantity</StyledTableCell>
-                <StyledTableCell align="center">Size</StyledTableCell>
-                <StyledTableCell align="center">Start</StyledTableCell>
-                <StyledTableCell align="center">Space</StyledTableCell>
-                <StyledTableCell align="center">Explanation</StyledTableCell>
-                <StyledTableCell align="center">Image</StyledTableCell>
-                <StyledTableCell align="center">Note</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows?.map((row) => (
-                <StyledTableRow
-                  className={classes.rowStyle}
-                  key={row.id}
-                  id={row.id}
-                  onClick={() => handleRowClick(row.id)}
-                  style={{
-                    backgroundColor:
-                      row["type"].includes("14K") ||
-                      row["explanation"].includes("14K")
-                        ? "#ffef8a"
-                        : null,
-                  }}
-                >
-                  <CustomTableCell
-                    {...{
-                      row,
-                      name2: "receipt_id",
-                      name: "id",
-                      name3: "item_index",
-                      name4: "is_repeat",
-                    }}
-                  />
-                  <CustomTableCell {...{ row, name: "creation_tsz" }} />
-                  <CustomTableCell {...{ row, name: "buyer" }} />
-                  <CustomTableCell {...{ row, name: "supplier" }} />
-                  <CustomTableCell {...{ row, name: "status" }} />
-                  <CustomTableCell {...{ row, name: "type" }} />
-                  <CustomTableCell {...{ row, name: "length" }} />
-                  <CustomTableCell {...{ row, name: "color" }} />
-                  <CustomTableCell {...{ row, name: "qty" }} />
-                  <CustomTableCell {...{ row, name: "size" }} />
-                  <CustomTableCell {...{ row, name: "start" }} />
-                  <CustomTableCell {...{ row, name: "space" }} />
-                  <CustomTableCell {...{ row, name: "explanation" }} />
-                  <td style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}>
-                    {row?.image ? (
-                      <ViewImageFile {...{ row, name: "image" }} />
-                    ) : (
-                      <p>No File</p>
-                    )}
-                  </td>
-                  <CustomTableCell {...{ row, name: "note" }} />
-                </StyledTableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <td>Total Record :</td>
-                <td>{count || 0}</td>
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
+        <AllTable />
         {printError ? <h1>{printError}</h1> : null}
         {printFlag & printFlag ? (
           <>

@@ -40,16 +40,16 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
           moment(row[name]).format("DD-MM-YY HH:mm")
         ) : name === "note" ? (
           row[name]
-            .replace(
+            ?.replace(
               "**REPEAT: MANUFACTURING ERROR**",
               "**TEKRAR: ÜRETİM HATASI**"
             )
-            .replace("**REPEAT: DISCOLORATION**", "**TEKRAR: RENK ATMA**")
-            .replace("**REPEAT: BREAK OFF**", "")
-            .replace("**REPEAT: LOST IN MAIL**", "")
-            .replace("**REPEAT: SECOND**", "")
+            ?.replace("**REPEAT: DISCOLORATION**", "**TEKRAR: RENK ATMA**")
+            ?.replace("**REPEAT: BREAK OFF**", "")
+            ?.replace("**REPEAT: LOST IN MAIL**", "")
+            ?.replace("**REPEAT: SECOND**", "")
         ) : (
-          row[name].replace("_", " ")
+          row[name]?.replace("_", " ")
         )}
 
         {row[name4] ? <RepeatIcon style={{ color: "red" }} /> : null}

@@ -55,7 +55,7 @@ const CustomButtonGroup = ({
               color: selectedTag === tag ? "white" : null,
             }}
           >
-            {tag.replace("_", " ")}
+            {tag?.replace("_", " ")}
           </Button>
         ))}
       </div>

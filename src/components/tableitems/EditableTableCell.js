@@ -22,7 +22,7 @@ const EditableTableCell = ({ row, name, onChange }) => {
           className={classes.input}
         />
       ) : (
-        row[name]?.replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+        row[name]?.replace(/&quot;/g, '"')?.replace(/&#39;/g, "'")
       )}
     </TableCell>
   );

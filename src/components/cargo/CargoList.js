@@ -58,7 +58,7 @@ const useStyles = makeStyles({
 
 export default function CustomizedTables() {
   const classes = useStyles();
-  const [cargoList, setCargoList] = useState({});
+  const [cargoList, setCargoList] = useState([]);
   const history = useHistory();
   const [getSupplier, setGetSupplier] = useState("");
   const { isAdmin } = useContext(AppContext);
@@ -173,7 +173,7 @@ export default function CustomizedTables() {
             </tr>
           ) : (
             cargoList.map((ws, j) =>
-              ws.map((row, i) => {
+              ws.reverse().map((row, i) => {
                 return (
                   <StyledTableRow
                     key={i}

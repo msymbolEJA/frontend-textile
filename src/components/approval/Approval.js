@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   TableFooter,
+  TablePagination,
   Paper,
   TableContainer,
   Checkbox,
@@ -21,6 +22,7 @@ import {
 } from "@material-ui/icons";
 
 import { putData, getData, globalSearch } from "../../helper/PostData";
+import TablePaginationActions from "../tableitems/TablePaginationActions";
 import OrderStatus from "../tableitems/CustomSelectCell";
 import UploadFile from "../tableitems/UploadFile";
 import { putImage, postData } from "../../helper/PostData";
@@ -119,6 +121,7 @@ function App({ history }) {
   const [rows, setRows] = useState([]);
   const [previous, setPrevious] = useState({});
   const classes = useStyles();
+  const [page, setPage] = useState(0);
   const [count, setCount] = useState(0);
   const [orderBy, setOrderBy] = useState("id");
   const [order, setOrder] = useState("desc");
@@ -128,18 +131,7 @@ function App({ history }) {
   const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
   const [repeatAnchorEl, setRepeatAnchorEl] = useState();
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
-
-  useEffect(() => {
-    getListFunc();
-    // eslint-disable-next-line
-  }, [
-    filters?.ordering,
-    filters?.is_followup,
-    filters?.status,
-    filters?.is_repeat,
-    filters?.limit,
-    filters?.offset,
-  ]);
+  const [rowsPerPage, setRowsPerPage] = useState(250);
 
   const getListFunc = useCallback(() => {
     getData(
@@ -147,11 +139,16 @@ function App({ history }) {
         filters?.status ? `status=${filters?.status}` : ""
       }&is_repeat=${filters?.is_repeat}&is_followup=${
         filters?.is_followup
-      }&ordering=${filters?.ordering}` //&limit=${rowsPerPage}&offset=${filters?.offset}
+      }&ordering=${filters?.ordering}&limit=${rowsPerPage}&offset=${
+        filters?.offset
+      }`
     )
       .then((response) => {
-        setRows(response.data);
-        setCount(response.data.length);
+        // setRows(response.data);
+        setRows(response.data.results);
+
+        // setCount(response.data.length);
+        setCount(response.data.count);
       })
       .catch((error) => {
         console.log("error", error);
@@ -159,8 +156,22 @@ function App({ history }) {
   }, [
     filters?.is_followup,
     filters?.is_repeat,
+    filters?.offset,
     filters?.ordering,
     filters?.status,
+    rowsPerPage,
+  ]);
+
+  useEffect(() => {
+    getListFunc();
+  }, [
+    filters.ordering,
+    filters.is_followup,
+    filters.status,
+    filters.is_repeat,
+    filters.limit,
+    filters.offset,
+    getListFunc,
   ]);
 
   const handleRequestSort = useCallback(
@@ -185,7 +196,7 @@ function App({ history }) {
       const value = e.target.value;
       const name = e.target.name;
       const { id } = row;
-      const newRows = rows.map((row) => {
+      const newRows = rows?.map((row) => {
         if (row.id === id) {
           return { ...row, [name]: value };
         }
@@ -196,12 +207,28 @@ function App({ history }) {
     [previous, rows]
   );
 
+  const handleChangePage = (event, newPage) => {
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("offset", newPage * filters?.limit || 0);
+    history.push(history.location.pathname + "?" + currentUrlParams.toString());
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    let rpp = +event.target.value;
+    setPage(0);
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("limit", rpp || 0);
+    history.push(history.location.pathname + "?" + currentUrlParams.toString());
+  };
+
   const handleRowClick = useCallback(
     (id) => {
       const currentRow = rows.find((row) => row.id === id);
       if (currentRow) {
         if (!currentRow.isEditMode) {
-          const newRows = rows.map((row) => {
+          const newRows = rows?.map((row) => {
             return { ...row, isEditMode: row.id === id };
           });
           setRows(newRows);
@@ -326,20 +353,31 @@ function App({ history }) {
       let newUrl = "";
       switch (statu) {
         case "all_orders":
+          newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
           break;
+        /*        case "pending":
+          newUrl += `status=pending`;
+          break; */
         case "repeat":
-          newUrl += `is_repeat=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          newUrl += `is_repeat=true&limit=${rowsPerPage}&offset=${
+            page * rowsPerPage
+          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
           break;
         case "followUp":
-          newUrl += `is_followup=true`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          newUrl += `is_followup=true&limit=${rowsPerPage}&offset=${
+            page * rowsPerPage
+          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
           break;
         default:
-          newUrl += `status=${statu}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
+            page * rowsPerPage
+          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
           break;
       }
       history.push(`/approval?&${newUrl}`);
+      setPage(0);
     },
-    [history]
+    [history, page, rowsPerPage]
   );
 
   const handlerFlagRepeatChange = useCallback(
@@ -361,7 +399,7 @@ function App({ history }) {
   const handleSelectAllClick = useCallback(
     (event) => {
       if (event.target.checked) {
-        const newSelecteds = rows.map((n) => n?.id);
+        const newSelecteds = rows?.map((n) => n?.id);
         setSelected(newSelecteds);
         return;
       }
@@ -674,7 +712,7 @@ function App({ history }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => {
+            {rows?.map((row, index) => {
               const isItemSelected = selected.indexOf(row.id) !== -1;
               const labelId = `enhanced-table-checkbox-${index}`;
               return (
@@ -688,8 +726,8 @@ function App({ history }) {
                     backgroundColor:
                       (row.status !== "pending") & (row.approved === false)
                         ? "#FF9494"
-                        : row["type"].includes("14K") ||
-                          row["explanation"].includes("14K")
+                        : row["type"]?.includes("14K") ||
+                          row["explanation"]?.includes("14K")
                         ? "#ffef8a"
                         : null,
                   }}
@@ -827,6 +865,20 @@ function App({ history }) {
           <TableFooter>
             <TableRow>
               <td colSpan="2">Total Record:{count || 0}</td>
+              <TablePagination
+                rowsPerPageOptions={[25, 50, 100, 250, 500]}
+                colSpan={22}
+                count={count}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
             </TableRow>
           </TableFooter>
         </Table>

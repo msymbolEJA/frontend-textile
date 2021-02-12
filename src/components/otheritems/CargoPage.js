@@ -62,9 +62,9 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
     cargoForm.ref_number =
       d
         .toISOString()
-        .replaceAll("-", "")
-        .replaceAll(":", "")
-        .replaceAll(".", "") +
+        ?.replaceAll("-", "")
+        ?.replaceAll(":", "")
+        ?.replaceAll(".", "") +
       "-" +
       cargoForm.ref_number_f;
     delete cargoForm.ref_number_f;
