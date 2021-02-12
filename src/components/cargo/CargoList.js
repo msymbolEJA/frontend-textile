@@ -209,7 +209,12 @@ export default function CustomizedTables() {
                     <StyledTableCell align="center">
                       {moment(row.shipment_date).format("DD-MM-YY HH:mm")}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell
+                      align="center"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
                       {tnFunc(row.tracking_number, row.carrier)}
                     </StyledTableCell>
                   </StyledTableRow>
