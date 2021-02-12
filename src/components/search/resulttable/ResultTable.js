@@ -125,7 +125,7 @@ function ResultTable({ list }) {
           </TableBody>
         </Table>
       </TableContainer>
-      {list === undefined || list.length === 0 ? (
+      {list?.length === 0 ? (
         <div colSpan="2" className={classes.bottomSection}>
           <h1 className={classes.warn}>Nothing Found</h1>
         </div>

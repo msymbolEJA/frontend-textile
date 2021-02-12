@@ -6,11 +6,7 @@ import { BASE_URL_MAPPING } from "../../helper/Constants";
 
 const Search = () => {
   const [fail, setFail] = useState(false);
-  const [list, setList] = useState([
-    {
-      id: 1,
-    },
-  ]);
+  const [list, setList] = useState();
   const [info, setInfo] = useState({
     id: "",
     status: "",
