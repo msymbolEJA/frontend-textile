@@ -48,8 +48,10 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
             ?.replace("**REPEAT: BREAK OFF**", "")
             ?.replace("**REPEAT: LOST IN MAIL**", "")
             ?.replace("**REPEAT: SECOND**", "")
-        ) : (
+        ) : row[name] ? (
           row[name]?.replace("_", " ")
+        ) : (
+          "-"
         )}
 
         {row[name4] ? <RepeatIcon style={{ color: "red" }} /> : null}
