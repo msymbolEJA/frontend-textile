@@ -22,7 +22,7 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
   if (name === "status") {
     //console.log("status");
     if (row[name]) {
-      row[name] = row[name].replace("_", " ");
+      row[name] = row[name]?.replace("_", " ");
     }
     //console.log(row[name]);
   }

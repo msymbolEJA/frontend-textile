@@ -62,7 +62,10 @@ const Dashboard = () => {
       const newResult = [];
       response.data[0].forEach((item) => {
         newResult.push({
-          cell1: item.status.replace("_", " ").replace("-", " ").toUpperCase(),
+          cell1: item.status
+            ?.replace("_", " ")
+            ?.replace("-", " ")
+            .toUpperCase(),
           cell2: item.status_count,
         });
       });
@@ -121,7 +124,7 @@ const Dashboard = () => {
       });
   }, []);
   const handleClick = (e) => {
-    history.push(`/${e.currentTarget.id}`);
+    history.push(`/${e.currentTarget.id}?status=pending&limit=250&offset=0`);
   };
 
   return (
@@ -134,7 +137,7 @@ const Dashboard = () => {
             id="all-orders"
             className={classes.button}
             startIcon={<ViewListIcon />}
-            onClick={(e) => handleClick(e)}
+            onClick={handleClick}
           >
             All Orders
           </Button>
@@ -148,7 +151,9 @@ const Dashboard = () => {
                 id="approval"
                 className={classes.button}
                 startIcon={<ThumbUpIcon />}
-                onClick={() => history.push(`/approval?&status=pending`)}
+                onClick={() =>
+                  history.push(`/approval?&status=pending&limit=250&offset=0`)
+                }
               >
                 Approval
               </Button>

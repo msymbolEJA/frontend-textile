@@ -227,7 +227,7 @@ export default function Register() {
             SelectProps={{
               renderValue: (USER_TYPE) =>
                 Object.keys(USER_TYPE).map((key, index) =>
-                  USER_TYPE[key].toUpperCase().replace("_", " ")
+                  USER_TYPE[key].toUpperCase()?.replace("_", " ")
                 ),
             }}
             error={formik.touched.role && Boolean(formik.errors.role)}
@@ -236,7 +236,7 @@ export default function Register() {
           >
             {Object.keys(USER_TYPE).map((key, index) => (
               <MenuItem key={index} value={USER_TYPE[key]}>
-                {USER_TYPE[key].toUpperCase().replace("_", " ")}
+                {USER_TYPE[key].toUpperCase()?.replace("_", " ")}
               </MenuItem>
             ))}
           </TextField>
