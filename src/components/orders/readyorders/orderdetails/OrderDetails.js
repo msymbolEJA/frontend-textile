@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OrderDetails = ({ match }) => {
-  const [rows, setRows] = useState(DATA);
+  const [rows, setRows] = useState([]);
   const [logs, setLogs] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const classes = useStyles();
@@ -180,10 +180,10 @@ const OrderDetails = ({ match }) => {
           </Table>
         </TableContainer>
       </Paper>
-      {rows[0].status === "ready" ? (
+      {rows[0]?.status === "ready" ? (
         <OrderDetailsCargoPage id={match.params.id} setRefresh={setRefresh} />
       ) : null}
-      {rows[0].status === "awaiting" ? (
+      {rows[0]?.status === "awaiting" ? (
         <Button
           onClick={getPdf}
           variant="contained"
@@ -195,7 +195,7 @@ const OrderDetails = ({ match }) => {
       ) : null}
       <hr />
       {["in_progress", "ready", "in_transit", "shipped"].includes(
-        rows[0].status
+        rows[0]?.status
       ) ? (
         <a
           href={`${BASE_URL}media/pdf/${match.params.id}.pdf`}
