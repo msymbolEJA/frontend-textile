@@ -57,7 +57,7 @@ const CustomButtonGroup = ({
       <div>
         <TextField
           label="Global Search"
-          id="outlined-size-small"
+          id="globalSearch"
           defaultValue=""
           variant="outlined"
           size="small"

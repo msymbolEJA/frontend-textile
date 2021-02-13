@@ -12,6 +12,7 @@ import {
   TablePagination,
   TableContainer,
   TextField,
+  CircularProgress,
 } from "@material-ui/core";
 
 import CustomButtonGroup from "./CustomButtonGroup";
@@ -130,25 +131,19 @@ function AllOrdersTable() {
     )
       .then((response) => {
         // setRows(response.data);
-        setRows(response.data.results);
+        setRows(response?.data?.results?.length ? response?.data?.results : []);
 
         // setCount(response.data.length);
-        setCount(response.data.count);
+        setCount(response?.data?.count || 0);
       })
       .catch((error) => {
         console.log("error", error);
       });
-  }, [
-    filters?.is_followup,
-    filters?.is_repeat,
-    filters?.offset,
-    filters?.ordering,
-    filters?.status,
-    rowsPerPage,
-  ]);
+  }, [filters, rowsPerPage]);
 
   useEffect(() => {
     getListFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.ordering,
     filters.is_followup,
@@ -157,7 +152,6 @@ function AllOrdersTable() {
     filters.limit,
     filters.offset,
     refreshTable,
-    getListFunc,
   ]);
 
   const handleChangePage = (event, newPage) => {
@@ -178,6 +172,7 @@ function AllOrdersTable() {
 
   const handleTagChange = useCallback(
     (e) => {
+      setRows(null);
       const statu = e.currentTarget.id;
       setSelectedTag(statu);
       let newUrl = "";
@@ -331,53 +326,63 @@ function AllOrdersTable() {
               <StyledTableCell align="center">Note</StyledTableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {rows?.map((row) => (
-              <StyledTableRow
-                className={classes.rowStyle}
-                key={row.id}
-                id={row.id}
-                onClick={() => handleRowClick(row.id)}
-                style={{
-                  backgroundColor:
-                    row["type"]?.includes("14K") ||
-                    row["explanation"]?.includes("14K")
-                      ? "#ffef8a"
-                      : null,
-                }}
-              >
-                <CustomTableCell
-                  {...{
-                    row,
-                    name2: "receipt_id",
-                    name: "id",
-                    name3: "item_index",
-                    name4: "is_repeat",
+          {rows ? (
+            <TableBody>
+              {rows.map((row) => (
+                <StyledTableRow
+                  className={classes.rowStyle}
+                  key={row.id}
+                  id={row.id}
+                  onClick={() => handleRowClick(row.id)}
+                  style={{
+                    backgroundColor:
+                      row["type"]?.includes("14K") ||
+                      row["explanation"]?.includes("14K")
+                        ? "#ffef8a"
+                        : null,
                   }}
-                />
-                <CustomTableCell {...{ row, name: "creation_tsz" }} />
-                <CustomTableCell {...{ row, name: "buyer" }} />
-                <CustomTableCell {...{ row, name: "supplier" }} />
-                <CustomTableCell {...{ row, name: "status" }} />
-                <CustomTableCell {...{ row, name: "type" }} />
-                <CustomTableCell {...{ row, name: "length" }} />
-                <CustomTableCell {...{ row, name: "color" }} />
-                <CustomTableCell {...{ row, name: "qty" }} />
-                <CustomTableCell {...{ row, name: "size" }} />
-                <CustomTableCell {...{ row, name: "start" }} />
-                <CustomTableCell {...{ row, name: "space" }} />
-                <CustomTableCell {...{ row, name: "explanation" }} />
-                <td style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}>
-                  {row?.image ? (
-                    <ViewImageFile {...{ row, name: "image" }} />
-                  ) : (
-                    <p>No File</p>
-                  )}
+                >
+                  <CustomTableCell
+                    {...{
+                      row,
+                      name2: "receipt_id",
+                      name: "id",
+                      name3: "item_index",
+                      name4: "is_repeat",
+                    }}
+                  />
+                  <CustomTableCell {...{ row, name: "creation_tsz" }} />
+                  <CustomTableCell {...{ row, name: "buyer" }} />
+                  <CustomTableCell {...{ row, name: "supplier" }} />
+                  <CustomTableCell {...{ row, name: "status" }} />
+                  <CustomTableCell {...{ row, name: "type" }} />
+                  <CustomTableCell {...{ row, name: "length" }} />
+                  <CustomTableCell {...{ row, name: "color" }} />
+                  <CustomTableCell {...{ row, name: "qty" }} />
+                  <CustomTableCell {...{ row, name: "size" }} />
+                  <CustomTableCell {...{ row, name: "start" }} />
+                  <CustomTableCell {...{ row, name: "space" }} />
+                  <CustomTableCell {...{ row, name: "explanation" }} />
+                  <td style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}>
+                    {row?.image ? (
+                      <ViewImageFile {...{ row, name: "image" }} />
+                    ) : (
+                      <p>No File</p>
+                    )}
+                  </td>
+                  <CustomTableCell {...{ row, name: "note" }} />
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          ) : (
+            <tbody>
+              <tr>
+                <td colSpan="15" style={{ display: "table-cell" }}>
+                  <CircularProgress />
                 </td>
-                <CustomTableCell {...{ row, name: "note" }} />
-              </StyledTableRow>
-            ))}
-          </TableBody>
+              </tr>
+            </tbody>
+          )}
           <TableFooter>
             <TableRow>
               <td>Total Record :</td>

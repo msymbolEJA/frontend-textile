@@ -13,6 +13,7 @@ import {
   Paper,
   TableContainer,
   Checkbox,
+  CircularProgress,
 } from "@material-ui/core";
 import {
   Flag as FlagIcon,
@@ -152,17 +153,11 @@ function App({ history }) {
       .catch((error) => {
         console.log("error", error);
       });
-  }, [
-    filters?.is_followup,
-    filters?.is_repeat,
-    filters?.offset,
-    filters?.ordering,
-    filters?.status,
-    rowsPerPage,
-  ]);
+  }, [filters, rowsPerPage]);
 
   useEffect(() => {
     getListFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.ordering,
     filters.is_followup,
@@ -170,7 +165,6 @@ function App({ history }) {
     filters.is_repeat,
     filters.limit,
     filters.offset,
-    getListFunc,
   ]);
 
   const handleRequestSort = useCallback(
@@ -346,6 +340,8 @@ function App({ history }) {
 
   const handleTagChange = useCallback(
     (e) => {
+      setRows(null);
+      document.getElementById("globalSearch").value = "";
       const statu = e.currentTarget.id;
       setSelected([]);
       setSelectedTag(statu);
@@ -430,10 +426,10 @@ function App({ history }) {
 
   const searchHandler = useCallback((e) => {
     if (e.keyCode === 13) {
+      setRows(null);
       if (e.target.value) {
         globalSearch(`${BASE_URL_MAPPING}?search=${e.target.value}`)
           .then((response) => {
-            console.log(response.data);
             setRows(response.data);
             setCount(response.data.length);
             //setList(response.data);
@@ -710,157 +706,172 @@ function App({ history }) {
               />
             </TableRow>
           </TableHead>
-          <TableBody>
-            {rows?.map((row, index) => {
-              const isItemSelected = selected.indexOf(row.id) !== -1;
-              const labelId = `enhanced-table-checkbox-${index}`;
-              return (
-                <StyledTableRow
-                  key={row.id}
-                  id={row.id}
-                  onClick={(e) => handleRowClick(row.id)}
-                  onBlur={(e) => handleRowBlur(e, row.id)}
-                  onKeyDown={(e) => handleRowKeyDown(e, row.id)}
-                  style={{
-                    backgroundColor:
-                      (row.status !== "pending") & (row.approved === false)
-                        ? "#FF9494"
-                        : row["type"]?.includes("14K") ||
-                          row["explanation"]?.includes("14K")
-                        ? "#ffef8a"
-                        : null,
-                  }}
-                >
-                  <FlagAndFavCell
-                    {...{
-                      row,
-                      name: "id",
-                      name2: "receipt",
-                      name3: "item_index",
-                      name4: "is_followup",
-                      name5: "is_repeat",
-                      handlerFlagRepeatChange,
+          {rows ? (
+            <TableBody>
+              {rows?.map((row, index) => {
+                const isItemSelected = selected.indexOf(row.id) !== -1;
+                const labelId = `enhanced-table-checkbox-${index}`;
+                return (
+                  <StyledTableRow
+                    key={row.id}
+                    id={row.id}
+                    onClick={(e) => handleRowClick(row.id)}
+                    onBlur={(e) => handleRowBlur(e, row.id)}
+                    onKeyDown={(e) => handleRowKeyDown(e, row.id)}
+                    style={{
+                      backgroundColor:
+                        (row.status !== "pending") & (row.approved === false)
+                          ? "#FF9494"
+                          : row["type"]?.includes("14K") ||
+                            row["explanation"]?.includes("14K")
+                          ? "#ffef8a"
+                          : null,
                     }}
-                  />
-                  <td
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                    onBlur={(e) => {
-                      e.stopPropagation();
-                    }}
-                    style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
                   >
-                    <FlagIcon
-                      style={{
-                        color: row["is_followup"] ? "red" : "grey",
-                        cursor: "pointer",
+                    <FlagAndFavCell
+                      {...{
+                        row,
+                        name: "id",
+                        name2: "receipt",
+                        name3: "item_index",
+                        name4: "is_followup",
+                        name5: "is_repeat",
+                        handlerFlagRepeatChange,
                       }}
-                      onClick={() =>
-                        handlerFlagRepeatChange(
-                          row.id,
-                          "is_followup",
-                          row["is_followup"]
-                        )
-                      }
                     />
-                    <RepeatIcon
-                      style={{
-                        color: row["is_repeat"] ? "red" : "grey",
-                        cursor: "pointer",
-                      }}
+                    <td
                       onClick={(e) => {
                         e.stopPropagation();
-                        handlerRepeatChange(e, row.id);
                       }}
+                      onBlur={(e) => {
+                        e.stopPropagation();
+                      }}
+                      style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
+                    >
+                      <FlagIcon
+                        style={{
+                          color: row["is_followup"] ? "red" : "grey",
+                          cursor: "pointer",
+                        }}
+                        onClick={() =>
+                          handlerFlagRepeatChange(
+                            row.id,
+                            "is_followup",
+                            row["is_followup"]
+                          )
+                        }
+                      />
+                      <RepeatIcon
+                        style={{
+                          color: row["is_repeat"] ? "red" : "grey",
+                          cursor: "pointer",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlerRepeatChange(e, row.id);
+                        }}
+                      />
+                      {Boolean(repeatAnchorEl) && row.id === rowIdToRepeat
+                        ? repeatMenu(row)
+                        : null}
+                      <ThumbUpAltIcon
+                        style={{
+                          color: row["approved"] ? "red" : "grey",
+                          cursor: "pointer",
+                          pointerEvents:
+                            row.status === "pending" ? "auto" : "none",
+                        }}
+                        onClick={() =>
+                          handlerFlagRepeatChange(
+                            row.id,
+                            "approved",
+                            row["approved"]
+                          )
+                        }
+                      />
+                      <OrderStatus
+                        {...{ row, name: "status", onSelectChange }}
+                      />
+                    </td>
+                    <ConstantTableCell
+                      {...{ row, name: "created_date", name3: "buyer" }}
                     />
-                    {Boolean(repeatAnchorEl) && row.id === rowIdToRepeat
-                      ? repeatMenu(row)
-                      : null}
-                    <ThumbUpAltIcon
+                    <EditableTableCell
+                      {...{ row, name: "supplier", onChange }}
+                    />
+                    <EditableTableCell {...{ row, name: "type", onChange }} />
+                    <EditableTableCell {...{ row, name: "length", onChange }} />
+                    <EditableTableCell {...{ row, name: "color", onChange }} />
+                    <EditableTableCell {...{ row, name: "qty", onChange }} />
+                    <EditableTableCell {...{ row, name: "size", onChange }} />
+                    <EditableTableCell {...{ row, name: "start", onChange }} />
+                    <EditableTableCell {...{ row, name: "space", onChange }} />
+                    <td
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
+                    >
+                      <UploadFile
+                        {...{
+                          row,
+                          name: "image",
+                          uploadFile,
+                          fileSelectedHandler,
+                          selectId,
+                          selectedRowId,
+                        }}
+                      />
+                    </td>
+                    <EditableTableCell
+                      {...{ row, name: "explanation", onChange }}
+                    />
+                    <td
                       style={{
-                        color: row["approved"] ? "red" : "grey",
-                        cursor: "pointer",
+                        padding: 0,
+                        borderBottom: "1px solid #e0e0e0",
                         pointerEvents:
                           row.status === "pending" ? "auto" : "none",
                       }}
-                      onClick={() =>
-                        handlerFlagRepeatChange(
-                          row.id,
-                          "approved",
-                          row["approved"]
-                        )
-                      }
-                    />
-                    <OrderStatus {...{ row, name: "status", onSelectChange }} />
-                  </td>
-                  <ConstantTableCell
-                    {...{ row, name: "created_date", name3: "buyer" }}
-                  />
-                  <EditableTableCell {...{ row, name: "supplier", onChange }} />
-                  <EditableTableCell {...{ row, name: "type", onChange }} />
-                  <EditableTableCell {...{ row, name: "length", onChange }} />
-                  <EditableTableCell {...{ row, name: "color", onChange }} />
-                  <EditableTableCell {...{ row, name: "qty", onChange }} />
-                  <EditableTableCell {...{ row, name: "size", onChange }} />
-                  <EditableTableCell {...{ row, name: "start", onChange }} />
-                  <EditableTableCell {...{ row, name: "space", onChange }} />
-                  <td
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                    style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
-                  >
-                    <UploadFile
-                      {...{
-                        row,
-                        name: "image",
-                        uploadFile,
-                        fileSelectedHandler,
-                        selectId,
-                        selectedRowId,
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCheckBoxClick(e, row.id);
                       }}
+                      onBlur={(e) => {
+                        e.stopPropagation();
+                      }}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <Checkbox
+                        checked={isItemSelected}
+                        inputProps={{ "aria-labelledby": labelId }}
+                      />
+                    </td>
+                    <ConstantTableCell
+                      {...{ row, name: "personalization", onChange }}
                     />
-                  </td>
-                  <EditableTableCell
-                    {...{ row, name: "explanation", onChange }}
-                  />
-                  <td
-                    style={{
-                      padding: 0,
-                      borderBottom: "1px solid #e0e0e0",
-                      pointerEvents: row.status === "pending" ? "auto" : "none",
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCheckBoxClick(e, row.id);
-                    }}
-                    onBlur={(e) => {
-                      e.stopPropagation();
-                    }}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Checkbox
-                      checked={isItemSelected}
-                      inputProps={{ "aria-labelledby": labelId }}
+                    <ConstantTableCell
+                      {...{ row, name: "message_from_buyer", onChange }}
                     />
-                  </td>
-                  <ConstantTableCell
-                    {...{ row, name: "personalization", onChange }}
-                  />
-                  <ConstantTableCell
-                    {...{ row, name: "message_from_buyer", onChange }}
-                  />
-                  <EditableTableCell
-                    {...{ row, name: "gift_message", onChange }}
-                  />
-                  <EditableTableCell {...{ row, name: "note", onChange }} />
-                </StyledTableRow>
-              );
-            })}
-          </TableBody>
+                    <EditableTableCell
+                      {...{ row, name: "gift_message", onChange }}
+                    />
+                    <EditableTableCell {...{ row, name: "note", onChange }} />
+                  </StyledTableRow>
+                );
+              })}
+            </TableBody>
+          ) : (
+            <tbody>
+              <tr>
+                <td colSpan="18" style={{ display: "table-cell" }}>
+                  <CircularProgress />
+                </td>
+              </tr>
+            </tbody>
+          )}
           <TableFooter>
             <TableRow>
               <td colSpan="2">Total Record:{count || 0}</td>
