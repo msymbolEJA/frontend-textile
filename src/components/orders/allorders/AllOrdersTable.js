@@ -194,6 +194,8 @@ function AllOrdersTable() {
           newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
             page * rowsPerPage
           }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+          setPrintFlag(statu === "awaiting" ? true : false);
+          setIsStatuReady(statu === "ready" ? true : false);
           break;
       }
       history.push(`/all-orders?&${newUrl}`);
@@ -437,7 +439,7 @@ function AllOrdersTable() {
         ) : null}
         <AllTable />
         {printError ? <h1>{printError}</h1> : null}
-        {printFlag & printFlag ? (
+        {printFlag ? (
           <>
             <Button
               variant="contained"

@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 650,
+    marginBottom: "2rem",
   },
   table2: {
     maxWidth: 950,
@@ -79,6 +80,8 @@ const useStyles = makeStyles((theme) => ({
 const OrderDetails = ({ match }) => {
   const [rows, setRows] = useState([]);
   const [logs, setLogs] = useState([]);
+  const [isPdfExist, setIsPdfExist] = useState(false);
+  console.log("isPdfExist", isPdfExist);
   const [refresh, setRefresh] = useState(false);
   const classes = useStyles();
 
@@ -101,6 +104,14 @@ const OrderDetails = ({ match }) => {
   };
 
   useEffect(() => {
+    fetch(`${BASE_URL}media/pdf/${match.params.id}.pdf`)
+      .then((res) => {
+        if (res.status !== 404) {
+          setIsPdfExist(true);
+        }
+      })
+      .catch((err) => console.log("err", err));
+
     let url = `${BASE_URL}etsy/orders/${match.params.id}/`;
     let urlLogs = `${BASE_URL}etsy/dateLogs/${match.params.id}/`;
     getData(url)
@@ -183,29 +194,33 @@ const OrderDetails = ({ match }) => {
         <OrderDetailsCargoPage id={match.params.id} setRefresh={setRefresh} />
       ) : null}
       {rows[0]?.status === "awaiting" ? (
-        <Button
-          onClick={getPdf}
-          variant="contained"
-          color="primary"
-          className={classes.printSubmit}
-        >
-          Print
-        </Button>
-      ) : null}
-      <hr />
-      {["in_progress", "ready", "in_transit", "shipped"].includes(
-        rows[0]?.status
-      ) ? (
-        <a
-          href={`${BASE_URL}media/pdf/${match.params.id}.pdf`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Open Printed Pdf
-        </a>
+        <>
+          <Button
+            onClick={getPdf}
+            variant="contained"
+            color="primary"
+            className={classes.printSubmit}
+          >
+            Print
+          </Button>
+          <hr />
+        </>
       ) : null}
 
-      <hr />
+      {["in_progress", "ready", "in_transit", "shipped"].includes(
+        rows[0]?.status
+      ) && isPdfExist ? (
+        <>
+          <a
+            href={`${BASE_URL}media/pdf/${match.params.id}.pdf`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open Printed Pdf
+          </a>
+          <hr />
+        </>
+      ) : null}
 
       {logs?.length === 0 ? null : (
         <TableContainer component={Paper}>

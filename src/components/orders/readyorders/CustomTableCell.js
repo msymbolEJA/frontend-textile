@@ -19,14 +19,6 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
   const classes = useStyles();
   const { isEditMode } = row;
 
-  if (name === "status") {
-    //console.log("status");
-    if (row[name]) {
-      row[name] = row[name]?.replace("_", " ");
-    }
-    //console.log(row[name]);
-  }
-
   return (
     <TableCell align="center" className={classes.tableCell}>
       {isEditMode ? (
@@ -38,6 +30,8 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
         />
       ) : name === "created_date" ? (
         moment(row[name]).format("DD-MM-YY HH:mm")
+      ) : name === "status" ? (
+        row[name]?.replace("_", " ")
       ) : (
         row[name]
       )}
