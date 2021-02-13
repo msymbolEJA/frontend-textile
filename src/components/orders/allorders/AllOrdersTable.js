@@ -120,7 +120,7 @@ function AllOrdersTable() {
       filters.ordering = "-last_updated";
     }
     getData(
-      `${BASE_URL_MAPPING}?${
+      `${BASE_URL}etsy/orders/?${
         filters?.status ? `status=${filters?.status}` : ""
       }&is_repeat=${filters?.is_repeat}&is_followup=${
         filters?.is_followup
@@ -349,7 +349,7 @@ function AllOrdersTable() {
                 <CustomTableCell
                   {...{
                     row,
-                    name2: "receipt",
+                    name2: "receipt_id",
                     name: "id",
                     name3: "item_index",
                     name4: "is_repeat",
