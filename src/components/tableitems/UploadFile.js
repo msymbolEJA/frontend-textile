@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UploadFile = ({ row, selectId, fileSelectedHandler }) => {
+const UploadFile = ({ row, selectId, fileSelectedHandler, selectedRowId }) => {
   const classes = useStyles();
   const hasImage = !(
     (row.image === `${BASE_URL}media/2021-01-21%2017%3A24%3A28.978287`) |
@@ -52,7 +52,7 @@ const UploadFile = ({ row, selectId, fileSelectedHandler }) => {
           />
         </label>
         <input
-          onChange={(e) => fileSelectedHandler(e, row.id)}
+          onChange={(e) => fileSelectedHandler(e, selectedRowId)}
           onClick={(event) => event.stopPropagation()}
           id="myInput"
           style={{ display: "none" }}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { ToastContainer } from "react-toastify";
 import {
@@ -295,7 +295,7 @@ function App({ history }) {
       e.stopPropagation();
       try {
         let path = `${BASE_URL_MAPPING}${id}/`;
-        putImage(path, imgFile, imgFile.name)
+        putImage(path, imgFile, "image.png")
           .then((res) => {
             console.log(res);
           })
@@ -306,6 +306,7 @@ function App({ history }) {
             getListFunc();
           });
       } catch (error) {
+        console.log("error", error);
         toastWarnNotify("Select Image!");
       }
     },
@@ -316,7 +317,37 @@ function App({ history }) {
     (e, id) => {
       e.stopPropagation();
       let imgFile = e.target.files[0];
-      uploadFile(e, selectedRowId, imgFile);
+
+      var fr = new FileReader();
+      if (fr.readAsDataURL) {
+        fr.readAsDataURL(imgFile);
+      } else if (fr.readAsDataurl) {
+        fr.readAsDataurl(imgFile);
+      }
+      var img = new Image();
+      fr.onload = function (e) {
+        img.src = e.target.result;
+        img.onload = function () {
+          const canvas = document.createElement("canvas");
+
+          canvas.id = "imageUploadCanvas";
+          canvas.width = img.naturalWidth < 150 ? 200 : img.naturalWidth + 20;
+          canvas.height = img.naturalHeight + 50;
+          canvas.style.border = "2px solid black";
+
+          const ctx = canvas.getContext("2d");
+          ctx.fillStyle = "white";
+          ctx.fillRect(0, 0, canvas.width, canvas.height + 40);
+          ctx.drawImage(img, 10, 40);
+          ctx.font = "16px Comic Sans MS";
+          ctx.fillStyle = "black";
+          ctx.textAlign = "center";
+          ctx.fillText("order no: " + id, canvas.width / 2, 30);
+          canvas.toBlob(function (blob) {
+            uploadFile(e, selectedRowId, blob);
+          });
+        };
+      };
     },
     [selectedRowId, uploadFile]
   );
