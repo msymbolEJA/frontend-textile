@@ -116,7 +116,7 @@ function AllOrdersTable() {
   const [refreshTable, setRefreshTable] = useState(false);
 
   const getListFunc = useCallback(() => {
-    if (filters?.status === "shipped") {
+    if (filters?.status === "shipped" || filters?.status === "ready") {
       filters.ordering = "-last_updated";
     }
     getData(
