@@ -11,7 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import StoreIcon from "@material-ui/icons/Store";
 import Menu from "@material-ui/core/Menu";
 import { AppContext } from "../../context/Context";
-import { BASE_URL } from "../../helper/Constants";
+import { BASE_URL, STORE_NAME } from "../../helper/Constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,7 +92,7 @@ export default function MenuAppBar() {
           >
             <StoreIcon />
             <Typography variant="h6" className={classes.rightTitle}>
-              Shiny Store
+              {STORE_NAME} Store
             </Typography>
           </IconButton>
           <div className={classes.title}></div>
