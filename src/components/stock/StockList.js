@@ -54,6 +54,13 @@ const useStyles = makeStyles({
   btn: {
     margin: "0.3rem",
   },
+  tableDiv: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "fit-content",
+    minWidth: "fit-content",
+  },
 });
 const StockList = () => {
   const [stockListArr, setStockListArr] = useState([]);
@@ -92,83 +99,91 @@ const StockList = () => {
   };
 
   return (
-    <TableContainer component={Paper} className={classes.root}>
-      {isAdmin ? (
-        <div>
-          <Button
-            color="secondary"
-            className={classes.btn}
-            variant="contained"
-            id="all"
-            onClick={handleSupplier}
-          >
-            ALL
-          </Button>
-          {storeNameArr?.map((item) => (
+    <div className={classes.tableDiv}>
+      <TableContainer component={Paper} className={classes.root}>
+        {isAdmin ? (
+          <div>
             <Button
-              key={item}
               color="secondary"
               className={classes.btn}
               variant="contained"
-              id="beyazit"
+              id="all"
               onClick={handleSupplier}
             >
-              {item}
+              ALL
             </Button>
-          ))}
-        </div>
-      ) : null}
-      <Typography className={classes.header} variant="h3">
-        Stock List
-      </Typography>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="center">Id</StyledTableCell>
-            <StyledTableCell align="center">Name of Store</StyledTableCell>
-            <StyledTableCell align="center">Mappin Id</StyledTableCell>
-            <StyledTableCell align="center">Type</StyledTableCell>
-            <StyledTableCell align="center">Length</StyledTableCell>
-            <StyledTableCell align="center">Color</StyledTableCell>
-            <StyledTableCell align="center">Explanation</StyledTableCell>
-          </TableRow>
-        </TableHead>
+            {storeNameArr?.map((item) => (
+              <Button
+                key={item}
+                color="secondary"
+                className={classes.btn}
+                variant="contained"
+                id="beyazit"
+                onClick={handleSupplier}
+              >
+                {item}
+              </Button>
+            ))}
+          </div>
+        ) : null}
+        <Typography className={classes.header} variant="h3">
+          Stock List
+        </Typography>
+        <Table className={classes.table} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center">Id</StyledTableCell>
+              <StyledTableCell align="center">Name of Store</StyledTableCell>
+              <StyledTableCell align="center">Mappin Id</StyledTableCell>
+              <StyledTableCell align="center">Type</StyledTableCell>
+              <StyledTableCell align="center">Length</StyledTableCell>
+              <StyledTableCell align="center">Color</StyledTableCell>
+              <StyledTableCell align="center">Explanation</StyledTableCell>
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {!isLoaded ? (
-            <tr>
-              <td colSpan="7" style={{ display: "table-cell" }}>
-                <CircularProgress />
-              </td>
-            </tr>
-          ) : !stockListArr.length ? (
-            <tr>
-              <td colSpan="7">No Item!</td>
-            </tr>
-          ) : (
-            stockListArr.map((item, index) => {
-              return (
-                <StyledTableRow key={index}>
-                  <StyledTableCell align="center">{item.id}</StyledTableCell>
-                  <StyledTableCell align="center">{item.store}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {item.mapping_id}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{item.type}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {item.length}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{item.color}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    {item.explanation}
-                  </StyledTableCell>
-                </StyledTableRow>
-              );
-            })
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          <TableBody>
+            {!isLoaded ? (
+              <tr>
+                <td colSpan="7" style={{ display: "table-cell" }}>
+                  <CircularProgress />
+                </td>
+              </tr>
+            ) : !stockListArr.length ? (
+              <tr>
+                <td colSpan="7">No Item!</td>
+              </tr>
+            ) : (
+              stockListArr.map((item, index) => {
+                return (
+                  <StyledTableRow key={index}>
+                    <StyledTableCell align="center">{item.id}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.store}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.mapping_id}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.type}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.length}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.color}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.explanation}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                );
+              })
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 };
 
