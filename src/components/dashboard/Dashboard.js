@@ -15,6 +15,7 @@ import {
   AddCircle as AddCircleIcon,
   LocalShipping as LocalShippingIcon,
   CardGiftcard as CardGiftcardIcon,
+  Storage as StorageIcon,
 } from "@material-ui/icons";
 import { getData } from "../../helper/PostData";
 import {
@@ -176,6 +177,16 @@ const Dashboard = () => {
                 onClick={(e) => handleClick(e)}
               >
                 New
+              </Button>
+              <Button
+                color="primary"
+                variant="outlined"
+                id="stock-list"
+                className={classes.button}
+                startIcon={<StorageIcon />}
+                onClick={(e) => handleClick(e)}
+              >
+                Stock List
               </Button>
             </>
           ) : null}
