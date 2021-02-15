@@ -10,9 +10,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import CustomTableCell from "../CustomTableCell";
 import Typography from "@material-ui/core/Typography";
 import { Button } from "@material-ui/core";
-import { getOnePdf, getData } from "../../../../helper/PostData";
+import { getOnePdf, getData, putData } from "../../../../helper/PostData";
 import OrderDetailsCargoPage from "./OrderDetailsCargoPage";
-import { BASE_URL } from "../../../../helper/Constants";
+import { BASE_URL, BASE_URL_MAPPING } from "../../../../helper/Constants";
 import moment from "moment";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -36,7 +36,7 @@ const StyledTableRow = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(1),
     overflowX: "auto",
   },
   rootBottom: {
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   header: {
-    fontSize: "1.5rem",
+    fontSize: "2rem",
   },
   sub: {
     fontSize: "1rem",
@@ -81,7 +81,7 @@ const OrderDetails = ({ match }) => {
   const [rows, setRows] = useState([]);
   const [logs, setLogs] = useState([]);
   const [isPdfExist, setIsPdfExist] = useState(false);
-  console.log("isPdfExist", isPdfExist);
+  // console.log("isPdfExist", isPdfExist);
   const [refresh, setRefresh] = useState(false);
   const classes = useStyles();
 
@@ -128,9 +128,43 @@ const OrderDetails = ({ match }) => {
       });
   }, [match.params.id, refresh]);
 
+  const handleSendToStock = () => {
+    const newData = {
+      status: "cancelled",
+      note: rows[0]?.note + " - SENT TO STOCKS!",
+    };
+    handleStockChange(rows[0]?.id, newData);
+  };
+
+  const handleStockChange = (id, data) => {
+    putData(`${BASE_URL_MAPPING}${id}/`, data)
+      .then((response) => {})
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setRefresh(!refresh));
+  };
+
   return (
     <div>
       <Paper className={classes.root}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row-reverse",
+            marginRight: "0.5rem",
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            className={classes.button}
+            onClick={handleSendToStock}
+          >
+            Send to Stock
+          </Button>
+        </div>
         <Typography className={classes.header}>Order Details</Typography>
         <TableContainer className={classes.container}>
           <Table
