@@ -12,8 +12,12 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import { AppContext } from "../../context/Context";
 import TableBody from "@material-ui/core/TableBody";
-import moment from "moment";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import TableFooter from "@material-ui/core/TableFooter";
+import TablePagination from "@material-ui/core/TablePagination";
+import { useHistory } from "react-router-dom";
+import { getQueryParams } from "../../helper/getQueryParams";
+import TablePaginationActions from "./TablePaginationActions";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -65,37 +69,76 @@ const useStyles = makeStyles({
 const StockList = () => {
   const [stockListArr, setStockListArr] = useState([]);
   const [storeNameArr, setStoreNameArr] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [store, setStore] = useState("");
+  const [listCount, setListCount] = useState(0);
+  const [page, setPage] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const classes = useStyles();
+  const history = useHistory();
+
+  const filters = getQueryParams();
 
   const { isAdmin } = useContext(AppContext);
 
-  console.log("BASE_URL", BASE_URL);
-  useEffect(() => {
+  const getStoreNames = () => {
     getData(`${BASE_URL}etsy/stock/`)
       .then((res) => {
         console.log(res.data);
-        setStockListArr(res.data);
         let storeName = [];
-        storeName = res.data.reduce((a, b) => {
-          if (!storeName.includes(b.store)) {
-            return [...a, b.store];
-          }
+        storeName = res?.data?.reduce((a, b) => {
+          return [...a, b.store];
         }, []);
         const storeNames = storeName.filter(function (item, pos) {
           return storeName.indexOf(item) === pos;
         });
         console.log(storeNames);
         setStoreNameArr(storeNames);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getStoreNames();
+    getData(
+      `${BASE_URL}etsy/stock/?store=${store}&limit=${rowsPerPage}&offset=${
+        page * rowsPerPage
+      }`
+    )
+      .then((res) => {
+        setListCount(res.data.count);
+        setStockListArr(res.data.results);
+
         setIsLoaded(true);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [page, rowsPerPage, store]);
 
   const handleSupplier = (e) => {
     console.log("handleSupplier");
+    console.log(e.currentTarget.id);
+    setStore(e.currentTarget.id);
+    setPage(0);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("offset", newPage * filters?.limit || 0);
+    history.push(history.location.pathname + "?" + currentUrlParams.toString());
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    let rpp = +event.target.value;
+    setPage(0);
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("limit", rpp || 0);
+    history.push(history.location.pathname + "?" + currentUrlParams.toString());
   };
 
   return (
@@ -107,7 +150,7 @@ const StockList = () => {
               color="secondary"
               className={classes.btn}
               variant="contained"
-              id="all"
+              id=""
               onClick={handleSupplier}
             >
               ALL
@@ -118,7 +161,7 @@ const StockList = () => {
                 color="secondary"
                 className={classes.btn}
                 variant="contained"
-                id="beyazit"
+                id={item}
                 onClick={handleSupplier}
               >
                 {item}
@@ -149,7 +192,7 @@ const StockList = () => {
                   <CircularProgress />
                 </td>
               </tr>
-            ) : !stockListArr.length ? (
+            ) : !stockListArr?.length ? (
               <tr>
                 <td colSpan="7">No Item!</td>
               </tr>
@@ -181,6 +224,26 @@ const StockList = () => {
               })
             )}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <td>Total Record :</td>
+              <td>{listCount || 0}</td>
+              <TablePagination
+                rowsPerPageOptions={[25, 50, 100, 250, 500]}
+                colSpan={22}
+                count={listCount ? listCount : 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </div>
