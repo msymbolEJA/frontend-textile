@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { BASE_URL } from "../../helper/Constants";
-import { getData } from "../../helper/PostData";
+import { getData, putData } from "../../helper/PostData";
 import TableContainer from "@material-ui/core/TableContainer";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -18,6 +18,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import { useHistory } from "react-router-dom";
 import { getQueryParams } from "../../helper/getQueryParams";
 import TablePaginationActions from "./TablePaginationActions";
+import EditableTableCell from "./EditableTableCell";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -70,6 +71,7 @@ const StockList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [store, setStore] = useState("");
   const [listCount, setListCount] = useState(0);
+  const [previous, setPrevious] = useState({});
   const [page, setPage] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const classes = useStyles();
@@ -102,8 +104,7 @@ const StockList = () => {
       });
   };
 
-  useEffect(() => {
-    getStoreNames();
+  const getListFunc = () => {
     getData(
       `${BASE_URL}etsy/stock/?store=${store}&limit=${rowsPerPage}&offset=${
         page * rowsPerPage
@@ -118,6 +119,12 @@ const StockList = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    getStoreNames();
+    getListFunc();
+    // eslint-disable-next-line
   }, [page, rowsPerPage, store]);
 
   const handleSupplier = (e) => {
@@ -142,6 +149,78 @@ const StockList = () => {
     currentUrlParams.set("limit", rpp || 0);
     history.push(history.location.pathname + "?" + currentUrlParams.toString());
   };
+
+  const handleRowChange = useCallback(
+    (id, data) => {
+      putData(`${BASE_URL}etsy/stock/${id}/`, data)
+        .then((response) => {})
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => getListFunc());
+    },
+    [getListFunc]
+  );
+
+  const handleRowClick = useCallback(
+    (id) => {
+      const currentRow = stockListArr.find((row) => row.id === id);
+      if (currentRow) {
+        if (!currentRow.isEditMode) {
+          const newRows = stockListArr?.map((row) => {
+            return { ...row, isEditMode: row.id === id };
+          });
+          setStockListArr(newRows);
+        }
+      }
+    },
+    [stockListArr]
+  );
+
+  const handleRowBlur = useCallback(
+    (e, id, item) => {
+      let data = {
+        [e.target.name]: e.target.defaultValue,
+        mapping_id: item.mapping_id,
+        store: item.store,
+      };
+      handleRowChange(id, data);
+    },
+    [handleRowChange]
+  );
+
+  const handleRowKeyDown = useCallback(
+    (e, id, item) => {
+      if (e.key === "Enter") {
+        let data = {
+          [e.target.name]: e.target.defaultValue,
+          mapping_id: item.mapping_id,
+          store: item.store,
+        };
+        handleRowChange(id, data);
+      }
+    },
+    [handleRowChange]
+  );
+
+  const onChange = useCallback(
+    (e, row) => {
+      if (!previous[row.id]) {
+        setPrevious((state) => ({ ...state, [row.id]: row }));
+      }
+      const value = e.target.value;
+      const name = e.target.name;
+      const { id } = row;
+      const newRows = stockListArr?.map((row) => {
+        if (row.id === id) {
+          return { ...row, [name]: value };
+        }
+        return row;
+      });
+      setStockListArr(newRows);
+    },
+    [previous, stockListArr]
+  );
 
   return (
     <div className={classes.tableDiv}>
@@ -179,7 +258,7 @@ const StockList = () => {
             <TableRow>
               <StyledTableCell align="center">Id</StyledTableCell>
               <StyledTableCell align="center">Name of Store</StyledTableCell>
-              <StyledTableCell align="center">Mappin Id</StyledTableCell>
+              <StyledTableCell align="center">Mapping Id</StyledTableCell>
               <StyledTableCell align="center">Type</StyledTableCell>
               <StyledTableCell align="center">Length</StyledTableCell>
               <StyledTableCell align="center">Color</StyledTableCell>
@@ -201,7 +280,12 @@ const StockList = () => {
             ) : (
               stockListArr.map((item, index) => {
                 return (
-                  <StyledTableRow key={index}>
+                  <StyledTableRow
+                    key={index}
+                    onClick={(e) => handleRowClick(item.id)}
+                    onBlur={(e) => handleRowBlur(e, item.id, item)}
+                    onKeyDown={(e) => handleRowKeyDown(e, item.id, item)}
+                  >
                     <StyledTableCell align="center">{item.id}</StyledTableCell>
                     <StyledTableCell align="center">
                       {item.store}
@@ -209,18 +293,14 @@ const StockList = () => {
                     <StyledTableCell align="center">
                       {item.mapping_id}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.type}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.length}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.color}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.explanation}
-                    </StyledTableCell>
+                    <EditableTableCell {...{ item, name: "type", onChange }} />
+                    <EditableTableCell
+                      {...{ item, name: "length", onChange }}
+                    />
+                    <EditableTableCell {...{ item, name: "color", onChange }} />
+                    <EditableTableCell
+                      {...{ item, name: "explanation", onChange }}
+                    />
                   </StyledTableRow>
                 );
               })
