@@ -52,9 +52,7 @@ const useStyles = makeStyles({
     minHeight: "250px",
     width: "95%",
   },
-  header: {
-    marginBottom: "1rem",
-  },
+  header: {},
   btn: {
     margin: "0.3rem",
   },
@@ -68,7 +66,7 @@ const useStyles = makeStyles({
 });
 const StockList = () => {
   const [stockListArr, setStockListArr] = useState([]);
-  const [storeNameArr, setStoreNameArr] = useState([]);
+  const [storeNameArr, setStoreNameArr] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [store, setStore] = useState("");
   const [listCount, setListCount] = useState(0);
@@ -85,15 +83,19 @@ const StockList = () => {
     getData(`${BASE_URL}etsy/stock/`)
       .then((res) => {
         console.log(res.data);
-        let storeName = [];
-        storeName = res?.data?.reduce((a, b) => {
-          return [...a, b.store];
-        }, []);
-        const storeNames = storeName.filter(function (item, pos) {
-          return storeName.indexOf(item) === pos;
-        });
-        console.log(storeNames);
-        setStoreNameArr(storeNames);
+
+        function groupBy(objectArray, property) {
+          return objectArray.reduce(function (acc, obj) {
+            let key = obj[property];
+            if (!acc[key]) {
+              acc[key] = [];
+            }
+            acc[key].push(obj);
+            return acc;
+          }, {});
+        }
+        console.log(groupBy(res?.data, "store"));
+        setStoreNameArr(() => groupBy(res?.data, "store"));
       })
       .catch((err) => {
         console.log(err);
@@ -144,6 +146,9 @@ const StockList = () => {
   return (
     <div className={classes.tableDiv}>
       <TableContainer component={Paper} className={classes.root}>
+        <Typography className={classes.header} variant="h3">
+          Stock List
+        </Typography>
         {isAdmin ? (
           <div>
             <Button
@@ -153,25 +158,22 @@ const StockList = () => {
               id=""
               onClick={handleSupplier}
             >
-              ALL
+              ALL ({listCount})
             </Button>
-            {storeNameArr?.map((item) => (
+            {Object.keys(storeNameArr).map((key, index) => (
               <Button
-                key={item}
+                key={index}
                 color="secondary"
                 className={classes.btn}
                 variant="contained"
-                id={item}
+                id={key}
                 onClick={handleSupplier}
               >
-                {item}
+                {key}({storeNameArr[key]?.length})
               </Button>
             ))}
           </div>
         ) : null}
-        <Typography className={classes.header} variant="h3">
-          Stock List
-        </Typography>
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
