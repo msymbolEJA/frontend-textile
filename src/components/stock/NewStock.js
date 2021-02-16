@@ -46,7 +46,6 @@ export default function Register() {
   const classes = useStyles();
   const history = useHistory();
   const [stockInfo, setStockInfo] = useState({
-    mapping_id: "",
     type: "",
     length: "",
     color: "",
@@ -55,10 +54,8 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    stockInfo.store = STORE_NAME;
-    if (stockInfo.mapping_id === "") {
-      stockInfo.mapping_id = 0;
-    }
+    stockInfo.store = STORE_NAME.toLowerCase();
+    stockInfo.mapping_id = 0;
     console.log(stockInfo);
     // TODO Send Info to BE
     postFormData(`${BELKY_STOCK_BASE_URL}/`, stockInfo)
@@ -75,7 +72,6 @@ export default function Register() {
       length: "",
       color: "",
       explanation: "",
-      mapping_id: "",
     });
   };
 
@@ -99,18 +95,6 @@ export default function Register() {
             Add New Stock
           </Typography>
           <form className={classes.form} onSubmit={handleSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              id="mapping_id"
-              label="Mapping Id"
-              name="mapping_id"
-              autoComplete="mapping_id"
-              onChange={handleChange}
-              autoFocus
-              value={stockInfo.mapping_id}
-            />
             <TextField
               variant="outlined"
               margin="normal"

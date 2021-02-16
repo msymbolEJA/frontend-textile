@@ -309,7 +309,7 @@ const StockList = () => {
                       {item.store}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {item.mapping_id}
+                      {item.mapping_id === 0 ? "-" : item.mapping_id}
                     </StyledTableCell>
                     <EditableTableCell {...{ item, name: "type", onChange }} />
                     <EditableTableCell
