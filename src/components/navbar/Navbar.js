@@ -73,6 +73,10 @@ export default function MenuAppBar() {
     history.push("/");
     setAnchorEl(null);
     localStorage.removeItem("x-auth-token");
+    localStorage.removeItem("localUser");
+    localStorage.removeItem("localEmail");
+    localStorage.removeItem("localRole");
+    localStorage.removeItem("localId");
   };
 
   const localRole = localStorage.getItem("localRole");
