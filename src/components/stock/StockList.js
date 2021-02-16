@@ -53,7 +53,10 @@ const useStyles = makeStyles({
     minHeight: "250px",
     width: "95%",
   },
-  header: {},
+  header: {
+    marginLeft: "1rem",
+    marginTop: "1rem",
+  },
   btn: {
     margin: "0.3rem",
   },
@@ -104,6 +107,7 @@ const StockList = () => {
       });
   };
 
+  // eslint-disable-next-line
   const getListFunc = () => {
     getData(
       `${BASE_URL}etsy/stock/?store=${store}&limit=${rowsPerPage}&offset=${
@@ -222,12 +226,28 @@ const StockList = () => {
     [previous, stockListArr]
   );
 
+  const handleNewStock = () => {
+    //console.log("HandleNewStock");
+    history.push(`/new-stock`);
+  };
+
   return (
     <div className={classes.tableDiv}>
       <TableContainer component={Paper} className={classes.root}>
-        <Typography className={classes.header} variant="h3">
-          Stock List
-        </Typography>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography className={classes.header} variant="h3">
+            Stock List
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            style={{ maxHeight: "30px", margin: "1rem" }}
+            onClick={handleNewStock}
+          >
+            New Stock
+          </Button>
+        </div>
         {isAdmin ? (
           <div>
             <Button
