@@ -132,8 +132,6 @@ const StockList = () => {
   }, [page, rowsPerPage, store]);
 
   const handleSupplier = (e) => {
-    console.log("handleSupplier");
-    console.log(e.currentTarget.id);
     setStore(e.currentTarget.id);
     setPage(0);
   };
