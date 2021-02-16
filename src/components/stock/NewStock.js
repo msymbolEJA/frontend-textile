@@ -4,30 +4,30 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
 import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
 import AddIcon from "@material-ui/icons/Add";
-import { USER_TYPE } from "../../helper/Constants";
+import Paper from "@material-ui/core/Paper";
+import { STORE_NAME, BELKY_STOCK_BASE_URL } from "../../helper/Constants";
+import { postFormData } from "../../helper/PostData";
 import { toastSuccessNotify } from "../otheritems/ToastNotify";
-import { BASE_URL } from "../../helper/Constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
   },
   paper: {
+    margin: "1rem",
+  },
+  divPaper: {
     margin: theme.spacing(8, 4),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
   avatar: {
-    margin: theme.spacing(1),
+    marginTop: "2rem",
     backgroundColor: theme.palette.primary.main,
   },
   form: {
@@ -37,14 +37,16 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  saveBtn: {
+    marginBottom: "1rem",
+  },
 }));
-
-// const workshopName = localStorage.getItem("workshop");
 
 export default function Register() {
   const classes = useStyles();
   const history = useHistory();
   const [stockInfo, setStockInfo] = useState({
+    mapping_id: "",
     type: "",
     length: "",
     color: "",
@@ -53,15 +55,28 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("HandleSubmit");
+    stockInfo.store = STORE_NAME;
+    if (stockInfo.mapping_id === "") {
+      stockInfo.mapping_id = 0;
+    }
     console.log(stockInfo);
+    // TODO Send Info to BE
+    postFormData(`${BELKY_STOCK_BASE_URL}/`, stockInfo)
+      .then((data) => {
+        console.log(data);
+        console.log(data.statusText);
+        toastSuccessNotify(data.statusText + " Succesfully!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setStockInfo({
       type: "",
       length: "",
       color: "",
       explanation: "",
+      mapping_id: "",
     });
-    // TODO Send Info to BE
   };
 
   const handleChange = (e) => {
@@ -74,74 +89,97 @@ export default function Register() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <AddIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Add New Stock
-        </Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="type"
-            label="Type"
-            name="type"
-            autoComplete="type"
-            onChange={handleChange}
-            autoFocus
-            value={stockInfo.type}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="length"
-            label="Length"
-            name="length"
-            autoComplete="length"
-            onChange={handleChange}
-            value={stockInfo.length}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="color"
-            label="Color"
-            name="color"
-            autoComplete="length"
-            onChange={handleChange}
-            value={stockInfo.color}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="explanation"
-            label="Explanation"
-            name="explanation"
-            autoComplete="explanation"
-            onChange={handleChange}
-            value={stockInfo.explanation}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Register
-          </Button>
-          <Button fullWidth variant="contained" onClick={backToStockList}>
-            Back to Stock List
-          </Button>
-        </form>
-      </div>
+      <Paper elevation={3} className={classes.paper}>
+        <CssBaseline />
+        <div className={classes.divPaper}>
+          <Avatar className={classes.avatar}>
+            <AddIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Add New Stock
+          </Typography>
+          <form className={classes.form} onSubmit={handleSubmit}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="mapping_id"
+              label="Mapping Id"
+              name="mapping_id"
+              autoComplete="mapping_id"
+              onChange={handleChange}
+              autoFocus
+              value={stockInfo.mapping_id}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              required
+              id="type"
+              label="Type"
+              name="type"
+              autoComplete="type"
+              onChange={handleChange}
+              value={stockInfo.type}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="length"
+              label="Length"
+              name="length"
+              autoComplete="length"
+              onChange={handleChange}
+              value={stockInfo.length}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="color"
+              required
+              label="Color"
+              name="color"
+              autoComplete="length"
+              onChange={handleChange}
+              value={stockInfo.color}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              required
+              id="explanation"
+              label="Explanation"
+              name="explanation"
+              autoComplete="explanation"
+              onChange={handleChange}
+              value={stockInfo.explanation}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              required
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Save
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={backToStockList}
+              className={classes.saveBtn}
+            >
+              Back to Stock List
+            </Button>
+          </form>
+        </div>
+      </Paper>
     </Container>
   );
 }
