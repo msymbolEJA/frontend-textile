@@ -272,22 +272,22 @@ const StockList = () => {
         {isAdmin ? (
           <div>
             <Button
-              color="secondary"
               className={classes.btn}
               variant="contained"
               id=""
               onClick={handleSupplier}
+              style={{ backgroundColor: "orange" }}
             >
               ALL ({listCount})
             </Button>
             {Object.keys(storeNameArr).map((key, index) => (
               <Button
                 key={index}
-                color="secondary"
                 className={classes.btn}
                 variant="contained"
                 id={key}
                 onClick={handleSupplier}
+                style={{ backgroundColor: "orange" }}
               >
                 {key}({storeNameArr[key]?.length})
               </Button>
@@ -351,10 +351,10 @@ const StockList = () => {
                       <Button
                         variant="contained"
                         size="small"
+                        color="secondary"
                         style={{
                           maxHeight: "30px",
                           marginRight: "0.2rem",
-                          backgroundColor: "orange",
                         }}
                         onClick={() => handleDeleteButton(item.id)}
                       >
@@ -366,7 +366,7 @@ const StockList = () => {
                         style={{ maxHeight: "30px" }}
                         onClick={handleSellButton}
                       >
-                        Sell
+                        Sold
                       </Button>
                     </td>
                   </StyledTableRow>
