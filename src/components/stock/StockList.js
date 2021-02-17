@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { BASE_URL } from "../../helper/Constants";
-import { getData, putData } from "../../helper/PostData";
+import { BELKY_STOCK_BASE_URL } from "../../helper/Constants";
+import { getData, putData, deleteProduct } from "../../helper/PostData";
 import TableContainer from "@material-ui/core/TableContainer";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -19,6 +19,10 @@ import { useHistory } from "react-router-dom";
 import { getQueryParams } from "../../helper/getQueryParams";
 import TablePaginationActions from "./TablePaginationActions";
 import EditableTableCell from "./EditableTableCell";
+import {
+  toastErrorNotify,
+  toastSuccessNotify,
+} from "../otheritems/ToastNotify";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -36,7 +40,7 @@ const StyledTableRow = withStyles((theme) => ({
       backgroundColor: theme.palette.action.hover,
     },
     "&:hover": {
-      cursor: "pointer",
+      //cursor: "pointer",
       //boxShadow: "1px 2px",
       backgroundColor: "#add8e6",
     },
@@ -85,7 +89,7 @@ const StockList = () => {
   const { isAdmin } = useContext(AppContext);
 
   const getStoreNames = () => {
-    getData(`${BASE_URL}etsy/stock/`)
+    getData(`${BELKY_STOCK_BASE_URL}`)
       .then((res) => {
         console.log(res.data);
 
@@ -110,7 +114,7 @@ const StockList = () => {
   // eslint-disable-next-line
   const getListFunc = () => {
     getData(
-      `${BASE_URL}etsy/stock/?store=${store}&limit=${rowsPerPage}&offset=${
+      `${BELKY_STOCK_BASE_URL}?store=${store}&limit=${rowsPerPage}&offset=${
         page * rowsPerPage
       }`
     )
@@ -154,7 +158,7 @@ const StockList = () => {
 
   const handleRowChange = useCallback(
     (id, data) => {
-      putData(`${BASE_URL}etsy/stock/${id}/`, data)
+      putData(`${BELKY_STOCK_BASE_URL}${id}/`, data)
         .then((response) => {})
         .catch((error) => {
           console.log(error);
@@ -229,6 +233,25 @@ const StockList = () => {
     history.push(`/new-stock`);
   };
 
+  const handleSellButton = () => {
+    console.log("HANDLESELLBUTTON");
+  };
+  const handleDeleteButton = (id) => {
+    console.log("HANDLEDELETEBUTTON");
+    console.log(id);
+    console.log(BELKY_STOCK_BASE_URL + id);
+    deleteProduct(`${BELKY_STOCK_BASE_URL}${id}/`)
+      .then((response) => {
+        console.log(response);
+        getListFunc();
+        toastSuccessNotify("Deleted Succesfully!");
+      })
+      .catch((error) => {
+        console.log(error);
+        toastErrorNotify("Something went wrong!");
+      });
+  };
+
   return (
     <div className={classes.tableDiv}>
       <TableContainer component={Paper} className={classes.root}>
@@ -281,6 +304,7 @@ const StockList = () => {
               <StyledTableCell align="center">Length</StyledTableCell>
               <StyledTableCell align="center">Color</StyledTableCell>
               <StyledTableCell align="center">Explanation</StyledTableCell>
+              <StyledTableCell align="center">Delete/Sell</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -319,6 +343,32 @@ const StockList = () => {
                     <EditableTableCell
                       {...{ item, name: "explanation", onChange }}
                     />
+                    <td
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        size="small"
+                        style={{
+                          maxHeight: "30px",
+                          marginRight: "0.2rem",
+                          backgroundColor: "orange",
+                        }}
+                        onClick={() => handleDeleteButton(item.id)}
+                      >
+                        Delete
+                      </Button>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        style={{ maxHeight: "30px" }}
+                        onClick={handleSellButton}
+                      >
+                        Sell
+                      </Button>
+                    </td>
                   </StyledTableRow>
                 );
               })
