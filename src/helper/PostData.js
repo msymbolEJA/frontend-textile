@@ -116,3 +116,12 @@ export const globalSearch = async (path) => {
   });
   return response;
 };
+
+export const deleteProduct = async (path) => {
+  const token = localStorage.getItem("x-auth-token");
+  const response = await axios.delete(path, {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "multipart/form-data",
+  });
+  return response;
+};
