@@ -1,6 +1,6 @@
 export const BASE_URL = "http://45.76.57.100:8080/";
 export const BASE_URL_MAPPING = "http://45.76.57.100:8080/etsy/mapping/";
-export const BELKY_STOCK_BASE_URL = "http://45.76.57.100:8080/etsy/stock";
+export const BELKY_STOCK_BASE_URL = "http://45.76.57.100:8080/etsy/stock/";
 export const STORE_NAME = "Belky";
 
 export const tagsData = [
