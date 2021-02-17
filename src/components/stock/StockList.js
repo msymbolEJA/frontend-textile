@@ -233,9 +233,6 @@ const StockList = () => {
     history.push(`/new-stock`);
   };
 
-  const handleSellButton = () => {
-    console.log("HANDLESELLBUTTON");
-  };
   const handleDeleteButton = (id) => {
     console.log("HANDLEDELETEBUTTON");
     console.log(id);
@@ -304,7 +301,7 @@ const StockList = () => {
               <StyledTableCell align="center">Length</StyledTableCell>
               <StyledTableCell align="center">Color</StyledTableCell>
               <StyledTableCell align="center">Explanation</StyledTableCell>
-              <StyledTableCell align="center">Delete/Sell</StyledTableCell>
+              <StyledTableCell align="center">Delete</StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -359,14 +356,6 @@ const StockList = () => {
                         onClick={() => handleDeleteButton(item.id)}
                       >
                         Delete
-                      </Button>
-                      <Button
-                        variant="contained"
-                        size="small"
-                        style={{ maxHeight: "30px" }}
-                        onClick={handleSellButton}
-                      >
-                        Sold
                       </Button>
                     </td>
                   </StyledTableRow>
