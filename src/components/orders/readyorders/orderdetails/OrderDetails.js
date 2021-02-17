@@ -62,7 +62,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   header: {
-    fontSize: "2rem",
+    fontSize: "2.5rem",
+    marginLeft: "0.5rem",
   },
   sub: {
     fontSize: "1rem",
@@ -135,6 +136,12 @@ const OrderDetails = ({ match }) => {
     };
     handleStockChange(rows[0]?.id, newData);
   };
+  const handleSoldFromStock = () => {
+    const newData = {
+      note: rows[0]?.note + " - SOLD FROM STOCKS!",
+    };
+    handleStockChange(rows[0]?.id, newData);
+  };
 
   const handleStockChange = (id, data) => {
     putData(`${BASE_URL_MAPPING}${id}/`, data)
@@ -148,24 +155,39 @@ const OrderDetails = ({ match }) => {
   return (
     <div>
       <Paper className={classes.root}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row-reverse",
-            marginRight: "0.5rem",
-          }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            className={classes.button}
-            onClick={handleSendToStock}
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography className={classes.header}>Order Details</Typography>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row-reverse",
+              marginRight: "0.5rem",
+            }}
           >
-            Send to Stock
-          </Button>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                className={classes.button}
+                onClick={handleSendToStock}
+              >
+                Send to Stock
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+                className={classes.button}
+                style={{ marginTop: "0.3rem", marginBottom: "0.2rem" }}
+                onClick={handleSoldFromStock}
+              >
+                sold from stock
+              </Button>
+            </div>
+          </div>
         </div>
-        <Typography className={classes.header}>Order Details</Typography>
+
         <TableContainer className={classes.container}>
           <Table
             className={classes.table}
