@@ -8,7 +8,7 @@ import {
   toastErrorNotify,
   toastSuccessNotify,
 } from "../../../otheritems/ToastNotify";
-import { BASE_URL } from "../../../../helper/Constants";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
   root: {

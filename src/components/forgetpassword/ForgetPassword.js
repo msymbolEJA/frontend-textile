@@ -13,7 +13,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import { BASE_URL } from "../../helper/Constants";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const validationSchema = yup.object({
   email: yup.string().email("Invalid email").required("Required"),

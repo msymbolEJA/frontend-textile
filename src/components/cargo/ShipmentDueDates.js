@@ -9,7 +9,8 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import CardGiftcardIcon from "@material-ui/icons/CardGiftcard";
 import { getData } from "../../helper/PostData";
-import { BASE_URL } from "../../helper/Constants";
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

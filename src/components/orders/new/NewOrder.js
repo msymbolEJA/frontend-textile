@@ -2,7 +2,7 @@ import { useState } from "react";
 import Table from "./Table";
 import Form from "./Form";
 import { postFormData } from "../../../helper/PostData";
-import { BASE_URL } from "../../../helper/Constants";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 function NewOrder() {
   const [list, setList] = useState("");

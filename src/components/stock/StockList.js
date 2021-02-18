@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { BELKY_STOCK_BASE_URL } from "../../helper/Constants";
 import { getData, putData, deleteProduct } from "../../helper/PostData";
 import TableContainer from "@material-ui/core/TableContainer";
 import Button from "@material-ui/core/Button";
@@ -23,6 +22,7 @@ import {
   toastErrorNotify,
   toastSuccessNotify,
 } from "../otheritems/ToastNotify";
+const BELKY_STOCK_BASE_URL = process.env.REACT_APP_BELKY_STOCK_BASE_URL;
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

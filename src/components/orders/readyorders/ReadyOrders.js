@@ -16,7 +16,7 @@ import DATA from "../../../helper/Data";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import Typography from "@material-ui/core/Typography";
-import { BASE_URL } from "../../../helper/Constants";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

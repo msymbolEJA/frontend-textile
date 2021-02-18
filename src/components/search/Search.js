@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Form from "./Form";
 import ResultTable from "./resulttable/ResultTable";
 import { queryData, globalSearch } from "../../helper/PostData";
-import { BASE_URL_MAPPING } from "../../helper/Constants";
+const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 
 const Search = () => {
   const [fail, setFail] = useState(false);

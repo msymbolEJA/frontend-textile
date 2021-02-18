@@ -9,9 +9,10 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import Paper from "@material-ui/core/Paper";
-import { STORE_NAME, BELKY_STOCK_BASE_URL } from "../../helper/Constants";
 import { postFormData } from "../../helper/PostData";
 import { toastSuccessNotify } from "../otheritems/ToastNotify";
+const STORE_NAME = process.env.REACT_APP_STORE_NAME;
+const BELKY_STOCK_BASE_URL = process.env.REACT_APP_BELKY_STOCK_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
   root: {

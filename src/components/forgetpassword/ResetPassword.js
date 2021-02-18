@@ -14,7 +14,7 @@ import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import { BASE_URL } from "../../helper/Constants";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const validationSchema = yup.object({
   password: yup

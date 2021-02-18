@@ -11,10 +11,10 @@ import { getData } from "../../helper/PostData";
 import moment from "moment";
 import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
-// import {  BASE_URL} from "../../helper/Constants";
 import { AppContext } from "../../context/Context";
 import Button from "@material-ui/core/Button";
-import { BASE_URL } from "../../helper/Constants";
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

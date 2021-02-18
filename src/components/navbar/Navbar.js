@@ -11,7 +11,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import StoreIcon from "@material-ui/icons/Store";
 import Menu from "@material-ui/core/Menu";
 import { AppContext } from "../../context/Context";
-import { BASE_URL, STORE_NAME } from "../../helper/Constants";
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+const STORE_NAME = process.env.REACT_APP_STORE_NAME;
 
 const useStyles = makeStyles((theme) => ({
   root: {

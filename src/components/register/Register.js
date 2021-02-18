@@ -19,7 +19,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { USER_TYPE } from "../../helper/Constants";
 import { toastSuccessNotify } from "../otheritems/ToastNotify";
-import { BASE_URL } from "../../helper/Constants";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const validationSchema = yup.object({
   username: yup

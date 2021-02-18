@@ -12,8 +12,9 @@ import Typography from "@material-ui/core/Typography";
 import { Button } from "@material-ui/core";
 import { getOnePdf, getData, putData } from "../../../../helper/PostData";
 import OrderDetailsCargoPage from "./OrderDetailsCargoPage";
-import { BASE_URL, BASE_URL_MAPPING } from "../../../../helper/Constants";
 import moment from "moment";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

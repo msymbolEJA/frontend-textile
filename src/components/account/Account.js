@@ -12,7 +12,8 @@ import { AppContext } from "../../context/Context";
 import { getData, putData } from "../../helper/PostData";
 import PublishIcon from "@material-ui/icons/Publish";
 import { putImage } from "../../helper/PostData";
-import { BASE_URL } from "../../helper/Constants";
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
   paper: {

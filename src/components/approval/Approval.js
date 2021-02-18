@@ -33,15 +33,13 @@ import FlagAndFavCell from "./FlagAndFavCell";
 import EditableTableCell from "../tableitems/EditableTableCell";
 import SortableTableCell from "./SortableTableCell";
 import CustomButtonGroup from "./CustomButtonGroup";
-import {
-  tagsData,
-  BASE_URL_MAPPING,
-  BASE_URL,
-  repeatReasons,
-} from "../../helper/Constants";
+import { tagsData, repeatReasons } from "../../helper/Constants";
 import Menu from "@material-ui/core/Menu";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 
 const StyledMenu = withStyles({
   paper: {

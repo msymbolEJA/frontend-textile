@@ -9,7 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import { getData } from "../../helper/PostData";
-import { BASE_URL } from "../../helper/Constants";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

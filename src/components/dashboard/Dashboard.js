@@ -18,11 +18,9 @@ import {
   Storage as StorageIcon,
 } from "@material-ui/icons";
 import { getData } from "../../helper/PostData";
-import {
-  sortingArrayAdmin,
-  sortingArrayUser,
-  BASE_URL,
-} from "../../helper/Constants";
+import { sortingArrayAdmin, sortingArrayUser } from "../../helper/Constants";
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
   root: {

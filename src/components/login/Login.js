@@ -15,7 +15,7 @@ import { postAuthData } from "../../helper/PostData";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { AppContext } from "../../context/Context";
-import { BASE_URL } from "../../helper/Constants";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const validationSchema = yup.object({
   username: yup

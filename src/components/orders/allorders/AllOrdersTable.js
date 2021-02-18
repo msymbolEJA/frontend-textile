@@ -26,8 +26,9 @@ import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
 import ViewImageFile from "./ViewImageFile";
 import { toastErrorNotify } from "../../otheritems/ToastNotify";
-import { BASE_URL, BASE_URL_MAPPING } from "../../../helper/Constants";
 import { getQueryParams } from "../../../helper/getQueryParams";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
