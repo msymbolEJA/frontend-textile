@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "15rem",
+    width: "25rem",
   },
 }));
 
@@ -36,10 +36,11 @@ export default function SearchForm({
   handleSubmit,
   handleChange,
   info,
-  fail,
+
   clearBtn,
   setGlobalSearchKey,
   globalSearchKey,
+  fillError,
 }) {
   const classes = useStyles();
 
@@ -170,10 +171,10 @@ export default function SearchForm({
             Clear
           </Button>
         </form>
-        {fail ? (
+        {fillError ? (
           <div className={classes.bottomSection}>
             <div className={classes.warn}>
-              <Typography>Please fill any field!</Typography>
+              <Typography>{fillError}</Typography>
             </div>
           </div>
         ) : null}
