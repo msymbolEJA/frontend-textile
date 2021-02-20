@@ -22,6 +22,8 @@ import {
   toastErrorNotify,
   toastSuccessNotify,
 } from "../otheritems/ToastNotify";
+import TextField from "@material-ui/core/TextField";
+import { globalSearch } from "../../helper/PostData";
 const BELKY_STOCK_BASE_URL = process.env.REACT_APP_BELKY_STOCK_BASE_URL;
 
 const StyledTableCell = withStyles((theme) => ({
@@ -81,6 +83,7 @@ const StockList = () => {
   const [previous, setPrevious] = useState({});
   const [page, setPage] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [searchKey, setSearchKey] = useState("");
   const classes = useStyles();
   const history = useHistory();
 
@@ -121,7 +124,6 @@ const StockList = () => {
       .then((res) => {
         setListCount(res.data.count);
         setStockListArr(res.data.results);
-
         setIsLoaded(true);
       })
       .catch((err) => {
@@ -249,18 +251,49 @@ const StockList = () => {
       });
   };
 
+  const searchKeyPress = (event) => {
+    if (!(searchKey === "") && event.key === "Enter") {
+      console.log(searchKey);
+      globalSearch(`${BELKY_STOCK_BASE_URL}?search=${searchKey}`)
+        .then((response) => {
+          console.log(response.data.length);
+          console.log(response.data);
+          setListCount(response.data.length);
+          setStockListArr(response.data);
+          //setList(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          //setList([]);
+        });
+    }
+  };
+
   return (
     <div className={classes.tableDiv}>
       <TableContainer component={Paper} className={classes.root}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <TextField
+            className={classes.item}
+            variant="outlined"
+            margin="dense"
+            name="globalSearch"
+            required
+            label="Search"
+            type="text"
+            id="globalSearch"
+            style={{ maxHeight: "30px", margin: "1rem", width: 130 }}
+            onChange={(e) => setSearchKey(e.target.value)}
+            onKeyPress={searchKeyPress}
+            value={searchKey}
+          />
           <Typography className={classes.header} variant="h3">
             Stock List
           </Typography>
           <Button
             variant="contained"
             color="primary"
-            size="small"
-            style={{ maxHeight: "30px", margin: "1rem" }}
+            style={{ margin: "1rem" }}
             onClick={handleNewStock}
           >
             New Stock
