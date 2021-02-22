@@ -142,7 +142,9 @@ export default function SummaryTable({
               <tbody>
                 <tr>
                   <td colSpan="2" style={{ display: "table-cell" }}>
-                    <CircularProgress />
+                    <CircularProgress
+                      style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                    />
                   </td>
                 </tr>
               </tbody>

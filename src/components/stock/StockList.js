@@ -342,7 +342,7 @@ const StockList = () => {
             {!isLoaded ? (
               <tr>
                 <td colSpan="7" style={{ display: "table-cell" }}>
-                  <CircularProgress />
+                  <CircularProgress style={{ marginTop: "1rem" }} />
                 </td>
               </tr>
             ) : !stockListArr?.length ? (

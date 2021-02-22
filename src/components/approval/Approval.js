@@ -896,7 +896,7 @@ function App({ history }) {
             <tbody>
               <tr>
                 <td colSpan="18" style={{ display: "table-cell" }}>
-                  <CircularProgress />
+                  <CircularProgress style={{ marginTop: "1rem" }} />
                 </td>
               </tr>
             </tbody>
