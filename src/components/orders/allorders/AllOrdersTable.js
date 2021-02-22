@@ -97,7 +97,7 @@ if (
 }
 
 function AllOrdersTable() {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState(null);
   const filters = getQueryParams();
   const barcodeInputRef = useRef();
 
@@ -116,6 +116,8 @@ function AllOrdersTable() {
   const history = useHistory();
   const [allPdf, setAllPdf] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
+
+  console.log(rows);
 
   const getListFunc = useCallback(() => {
     if (filters?.status === "shipped" || filters?.status === "ready") {
