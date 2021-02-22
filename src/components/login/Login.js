@@ -15,6 +15,8 @@ import { postAuthData } from "../../helper/PostData";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { AppContext } from "../../context/Context";
+import LinearProgress from "@material-ui/core/LinearProgress";
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const validationSchema = yup.object({
@@ -81,6 +83,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
+  lProgress: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
 
 export default function Login() {
@@ -89,6 +97,7 @@ export default function Login() {
   const { setUser, setAuth } = useContext(AppContext);
   const [loginFailed, setLoginFailed] = useState(false);
   const [errorText, setErrorText] = useState("");
+  const [linProgress, setLinProgress] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -97,6 +106,7 @@ export default function Login() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      setLinProgress(true);
       postAuthData(`${BASE_URL}account/login/`, values)
         .then((response) => {
           setUser(response?.data);
@@ -115,6 +125,7 @@ export default function Login() {
         .catch(({ response }) => {
           if (response) {
             setLoginFailed(true);
+            setLinProgress(false);
             try {
               setErrorText(response?.data?.non_field_errors[0]);
             } catch (error) {
@@ -185,6 +196,13 @@ export default function Login() {
             >
               Log In
             </Button>
+
+            {linProgress && (
+              <div className={classes.lProgress}>
+                <LinearProgress />
+                <LinearProgress color="secondary" />
+              </div>
+            )}
             <Grid container>
               <Grid item xs>
                 <Link href="/forgot" variant="body2">
