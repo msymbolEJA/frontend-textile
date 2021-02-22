@@ -311,12 +311,7 @@ const OrderDetails = ({ match }) => {
                     <TableCell align="center">
                       {log.type.replaceAll("_", " ")}
                     </TableCell>
-                    <TableCell align="center">
-                      {moment(log.data).format("DD-MM-YY HH:mm") ===
-                      "Invalid date"
-                        ? log.data
-                        : moment(log.data).format("DD-MM-YY HH:mm")}
-                    </TableCell>
+                    <TableCell align="center">{log.data}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>
