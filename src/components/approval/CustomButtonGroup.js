@@ -64,7 +64,7 @@ const CustomButtonGroup = ({
           style={{
             marginTop: "0.22rem",
             marginRight: "0.3rem",
-            width: 200,
+            width: 150,
           }}
           onKeyDown={(e) => searchHandler(e)}
         />
