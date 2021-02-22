@@ -117,8 +117,6 @@ function AllOrdersTable() {
   const [allPdf, setAllPdf] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
 
-  console.log(rows);
-
   const getListFunc = useCallback(() => {
     if (filters?.status === "shipped" || filters?.status === "ready") {
       filters.ordering = "-last_updated";
@@ -383,7 +381,7 @@ function AllOrdersTable() {
             <tbody>
               <tr>
                 <td colSpan="15" style={{ display: "table-cell" }}>
-                  <CircularProgress />
+                  <CircularProgress style={{ marginTop: "1rem" }} />
                 </td>
               </tr>
             </tbody>
