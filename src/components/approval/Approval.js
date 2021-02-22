@@ -116,7 +116,7 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 function App({ history }) {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState(null);
   const [previous, setPrevious] = useState({});
   const classes = useStyles();
   const [page, setPage] = useState(0);
