@@ -159,7 +159,10 @@ export default function Login() {
               margin="normal"
               fullWidth
               id="username"
-              label="User Name"
+              label={formatMessage({
+                id: "userName",
+                defaultMessage: "User Name",
+              })}
               name="username"
               autoComplete="username"
               onChange={formik.handleChange}

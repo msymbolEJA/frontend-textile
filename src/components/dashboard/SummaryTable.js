@@ -13,7 +13,7 @@ import {
   TableRow,
   CircularProgress,
 } from "@material-ui/core";
-
+import { FormattedMessage, useIntl } from "react-intl";
 import { ArrowForwardIos as ArrowForwardIosIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
@@ -98,7 +98,7 @@ export default function SummaryTable({
               endIcon={<ArrowForwardIosIcon />}
               onClick={(e) => handleClick(e)}
             >
-              View All
+              <FormattedMessage id="wiewAll" defaultMessage="View All" />
             </Button>
           </div>
         </div>
@@ -124,14 +124,21 @@ export default function SummaryTable({
                       component="th"
                       scope="row"
                     >
-                      EVERYTHING IS ON SCHEDULE
+                      <FormattedMessage
+                        id="everythingOnSchedule"
+                        defaultMessage="EVERYTHING IS ON SCHEDULE"
+                      />
                     </TableCell>
                   </TableRow>
                 ) : (
                   data.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell align="center" component="th" scope="row">
-                        {item.cell1}
+                        <FormattedMessage
+                          id={item.cell1.toLowerCase()}
+                          defaultMessage={item.cell1}
+                        />
+                        {console.log(item.cell1)}
                       </TableCell>
                       <TableCell align="center">{item.cell2}</TableCell>
                     </TableRow>

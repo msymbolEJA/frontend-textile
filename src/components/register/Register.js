@@ -6,13 +6,12 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Link from "@material-ui/core/Link";
 import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import CreateIcon from "@material-ui/icons/Create";
 import MenuItem from "@material-ui/core/MenuItem";
-
+import { FormattedMessage, useIntl } from "react-intl";
 // Post Data
 import { postAuthData } from "../../helper/PostData";
 import { useFormik } from "formik";
@@ -45,18 +44,6 @@ const validationSchema = yup.object({
     .oneOf([yup.ref("password"), null], "Passwords must match")
     .required("Confirm Password"),
 });
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://example.com/">
-        Our Website
-      </Link>
-      {new Date().getFullYear()}.
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -111,6 +98,7 @@ export default function Register() {
   const history = useHistory();
   const [loginError, setLoginError] = useState("");
   const [loginFailed, setLoginFailed] = useState(false);
+  const { formatMessage } = useIntl();
 
   const formik = useFormik({
     initialValues: {
@@ -150,7 +138,7 @@ export default function Register() {
           <CreateIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Register
+          <FormattedMessage id="register" defaultMessage="Register" />
         </Typography>
         <form className={classes.form} onSubmit={formik.handleSubmit}>
           <TextField
@@ -158,7 +146,10 @@ export default function Register() {
             margin="normal"
             fullWidth
             id="username"
-            label="User Name"
+            label={formatMessage({
+              id: "userName",
+              defaultMessage: "User Name",
+            })}
             name="username"
             autoComplete="username"
             onChange={formik.handleChange}
@@ -173,7 +164,10 @@ export default function Register() {
             margin="normal"
             fullWidth
             id="first_name"
-            label="First Name"
+            label={formatMessage({
+              id: "firstName",
+              defaultMessage: "First Name",
+            })}
             name="first_name"
             autoComplete="first_name"
             onChange={formik.handleChange}
@@ -190,7 +184,10 @@ export default function Register() {
             margin="normal"
             fullWidth
             id="last_name"
-            label="Last Name"
+            label={formatMessage({
+              id: "lastName",
+              defaultMessage: "Last Name",
+            })}
             name="last_name"
             autoComplete="name"
             onChange={formik.handleChange}
@@ -204,7 +201,10 @@ export default function Register() {
             margin="normal"
             fullWidth
             id="email"
-            label="Email"
+            label={formatMessage({
+              id: "email",
+              defaultMessage: "Email",
+            })}
             name="email"
             autoComplete="email"
             onChange={formik.handleChange}
@@ -218,7 +218,10 @@ export default function Register() {
             margin="normal"
             fullWidth
             id="role"
-            label="Role"
+            label={formatMessage({
+              id: "role",
+              defaultMessage: "Role",
+            })}
             name="role"
             select
             onChange={formik.handleChange}
@@ -236,7 +239,12 @@ export default function Register() {
           >
             {Object.keys(USER_TYPE).map((key, index) => (
               <MenuItem key={index} value={USER_TYPE[key]}>
-                {USER_TYPE[key].toUpperCase()?.replace("_", " ")}
+                <FormattedMessage
+                  id={USER_TYPE[key]}
+                  defaultMessage={USER_TYPE[key]
+                    .toUpperCase()
+                    ?.replace("_", " ")}
+                />
               </MenuItem>
             ))}
           </TextField>
@@ -247,7 +255,10 @@ export default function Register() {
               fullWidth
               required
               id="workshop"
-              label="Workshop Name"
+              label={formatMessage({
+                id: "workshopName",
+                defaultMessage: "Workshop Name",
+              })}
               name="workshop"
               autoComplete="workshop"
               onChange={formik.handleChange}
@@ -260,7 +271,10 @@ export default function Register() {
             margin="normal"
             fullWidth
             name="password"
-            label="Password"
+            label={formatMessage({
+              id: "password",
+              defaultMessage: "Password",
+            })}
             type="password"
             id="password"
             value={formik.values.password}
@@ -274,7 +288,10 @@ export default function Register() {
             margin="normal"
             fullWidth
             name="password2"
-            label="Confirm Password"
+            label={formatMessage({
+              id: "confirmPassword",
+              defaultMessage: "Confirm Password",
+            })}
             type="password"
             id="password2"
             value={formik.values.password2}
@@ -295,19 +312,19 @@ export default function Register() {
             color="primary"
             className={classes.submit}
           >
-            Register
+            <FormattedMessage id="register" defaultMessage="Register" />
           </Button>
           <Grid container>
             <Grid item xs className={classes.accountCheck}>
               <Link href="/" variant="body2">
-                Already have an account? Login
+                <FormattedMessage
+                  id="alreadyHaveAccount"
+                  defaultMessage="Already have an account? Login"
+                />
               </Link>
             </Grid>
           </Grid>
         </form>
-        <Box mt={5}>
-          <Copyright />
-        </Box>
       </div>
     </Container>
   );

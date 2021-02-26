@@ -1,6 +1,14 @@
 {
-  "login": "Log in e",
+  "login": "Log in",
+  "register": "Register",
+  "userName": "User Name",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "email": "Email",
+  "role": "Role",
+  "workshopName" :"Workshop Name",
   "forgotPassword": "Forgot password?",
   "dontHaveAccount": "Don't have an account? Sign Up",
-  "password": "Password"
+  "password": "Password",
+  "confirmPassword": "Confirm Password"
 }

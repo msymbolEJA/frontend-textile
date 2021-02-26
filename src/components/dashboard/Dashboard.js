@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import SummaryTable from "./SummaryTable";
 import { AppContext } from "../../context/Context";
 import Button from "@material-ui/core/Button";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useHistory } from "react-router-dom";
 // Icons
 import {
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: "0.3rem",
-    width: "10rem",
+    width: "10.5rem",
   },
 }));
 
@@ -49,6 +50,7 @@ const Dashboard = () => {
   const classes = useStyles();
   const { user } = useContext(AppContext);
   const history = useHistory();
+  const { formatMessage } = useIntl();
   const [orderSummary, setOrderSummary] = useState();
   const [workshopDueDates, setWorkshopDueDates] = useState();
   const [shipmentDueDates, setShipmentDueDates] = useState();
@@ -138,7 +140,7 @@ const Dashboard = () => {
             startIcon={<ViewListIcon />}
             onClick={handleClick}
           >
-            All Orders
+            <FormattedMessage id="allOrders" defaultMessage="All Orders" />
           </Button>
           {userRole === "admin" ||
           userRole === "shop_manager" ||
@@ -154,7 +156,7 @@ const Dashboard = () => {
                   history.push(`/approval?&status=pending&limit=250&offset=0`)
                 }
               >
-                Approval
+                <FormattedMessage id="approval" defaultMessage="Approval" />
               </Button>
               <Button
                 color="primary"
@@ -164,7 +166,7 @@ const Dashboard = () => {
                 startIcon={<FindInPageIcon />}
                 onClick={(e) => handleClick(e)}
               >
-                Search
+                <FormattedMessage id="search" defaultMessage="Search" />
               </Button>
               <Button
                 color="primary"
@@ -174,7 +176,7 @@ const Dashboard = () => {
                 startIcon={<AddCircleIcon />}
                 onClick={(e) => handleClick(e)}
               >
-                New
+                <FormattedMessage id="new" defaultMessage="New" />
               </Button>
               <Button
                 color="primary"
@@ -184,7 +186,7 @@ const Dashboard = () => {
                 startIcon={<StorageIcon />}
                 onClick={(e) => handleClick(e)}
               >
-                Stock List
+                <FormattedMessage id="stockList" defaultMessage="Stock List" />
               </Button>
             </>
           ) : null}
@@ -196,42 +198,70 @@ const Dashboard = () => {
             startIcon={<LocalShippingIcon />}
             onClick={(e) => handleClick(e)}
           >
-            Cargo List
+            <FormattedMessage id="cargoList" defaultMessage="Cargo List" />
           </Button>
         </div>
         <Grid container spacing={2} style={{ justifyContent: "center" }}>
           <SummaryTable
-            title="Orders"
+            title={formatMessage({
+              id: "orders",
+              defaultMessage: "Orders",
+            })}
             total={0}
             next="/all-orders"
             icon={<ListAltIcon className={classes.icon} color="primary" />}
-            header1="STATUS"
-            header2="COUNT"
+            header1={formatMessage({
+              id: "status",
+              defaultMessage: "STATUS",
+            }).toUpperCase()}
+            header2={formatMessage({
+              id: "count",
+              defaultMessage: "COUNT",
+            }).toUpperCase()}
             data={orderSummary}
           />
           <SummaryTable
-            title="Behind Schedule"
+            title={formatMessage({
+              id: "behindSchedule",
+              defaultMessage: "Behind Schedule",
+            })}
             total={0}
             next="/workshop-due-dates"
             icon={
               <LocalShippingIcon className={classes.icon} color="primary" />
             }
-            header1="WORKSHOP DUE DATE"
-            header2="QUANTITY"
+            header1={formatMessage({
+              id: "workshopDueDate",
+              defaultMessage: "WORKSHOP DUE DATE",
+            }).toUpperCase()}
+            header2={formatMessage({
+              id: "quantity",
+              defaultMessage: "QUANTITY",
+            }).toUpperCase()}
             data={workshopDueDates}
           />
           {userRole === "admin" ||
           userRole === "shop_manager" ||
           userRole === "shop_packer" ? (
             <SummaryTable
-              title="Behind Overall Schedule"
+              title={formatMessage({
+                id: "behindOverallSchedule",
+                defaultMessage: "Behind Overall Schedulee",
+              })}
               total={0}
               next="/shipment-due-dates"
               icon={
                 <CardGiftcardIcon className={classes.icon} color="primary" />
               }
               header1="SHIPMENT DUE DATE"
-              header2="QUANTITY"
+              header1={formatMessage({
+                id: "shipmentDueDate",
+                defaultMessage: "SHIPMENT DUE DATE",
+              }).toUpperCase()}
+              header2={formatMessage({
+                id: "quantity",
+                defaultMessage: "QUANTITY",
+              }).toUpperCase()}
               data={shipmentDueDates}
             />
           ) : null}

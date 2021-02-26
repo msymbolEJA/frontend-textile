@@ -2,6 +2,7 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,7 +51,10 @@ const CustomButtonGroup = ({
               color: selectedTag === tag ? "white" : null,
             }}
           >
-            {tag?.replace("_", " ")}
+            <FormattedMessage
+              id={tag?.replace("_", " ")}
+              defaultMessage={tag?.replace("_", " ")}
+            />
           </Button>
         ))}
       </div>
@@ -80,7 +84,7 @@ const CustomButtonGroup = ({
             color: selectedTag === "all_orders" ? "white" : null,
           }}
         >
-          ALL ORDERS
+          <FormattedMessage id="all_orders" defaultMessage="ALL ORDERS" />
         </Button>
         <Button
           className={classes.btn}
@@ -93,7 +97,7 @@ const CustomButtonGroup = ({
             color: selectedTag === "repeat" ? "white" : null,
           }}
         >
-          Repeat
+          <FormattedMessage id="repeat" defaultMessage="REPEAT" />
         </Button>
         <Button
           className={classes.btn}
@@ -106,7 +110,7 @@ const CustomButtonGroup = ({
             color: selectedTag === "followUp" ? "white" : null,
           }}
         >
-          Follow Up
+          <FormattedMessage id="followUp" defaultMessage="FOLLOW UP" />
         </Button>
       </div>
     </div>

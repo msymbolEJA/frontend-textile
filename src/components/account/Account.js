@@ -12,6 +12,7 @@ import { AppContext } from "../../context/Context";
 import { getData, putData } from "../../helper/PostData";
 import PublishIcon from "@material-ui/icons/Publish";
 import { putImage } from "../../helper/PostData";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -74,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Account() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const { formatMessage } = useIntl();
   const { user, setUser } = useContext(AppContext);
   const [accountData, setAccountData] = useState();
   const [updateIcon, setUpdateIcon] = useState(false);
@@ -141,7 +143,10 @@ export default function Account() {
               variant="outlined"
               fullWidth
               id="first_name"
-              label="First Name"
+              label={formatMessage({
+                id: "firstName",
+                defaultMessage: "First Name",
+              })}
               defaultValue={accountData?.first_name}
               onChange={(e) => changeHandler(e)}
             />
@@ -153,7 +158,10 @@ export default function Account() {
               variant="outlined"
               fullWidth
               id="last_name"
-              label="Last Name"
+              label={formatMessage({
+                id: "lastName",
+                defaultMessage: "Last Name",
+              })}
               defaultValue={accountData?.last_name}
               onChange={(e) => changeHandler(e)}
             />
@@ -164,7 +172,10 @@ export default function Account() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={formatMessage({
+                id: "email",
+                defaultMessage: "Email",
+              })}
               name="email"
               autoComplete="email"
               defaultValue={accountData?.email}
@@ -180,7 +191,7 @@ export default function Account() {
           className={classes.submit}
           onClick={(e) => updateUser(e)}
         >
-          Update
+          <FormattedMessage id="update" defaultMessage="Update" />
         </Button>
         <Button
           fullWidth
@@ -188,7 +199,7 @@ export default function Account() {
           color="secondary"
           onClick={handleClose}
         >
-          Cancel
+          <FormattedMessage id="cancel" defaultMessage="Cancel" />
         </Button>
       </form>
     </div>
@@ -250,14 +261,14 @@ export default function Account() {
         </label>
         <div className={classes.info}>
           <Typography variant="h6" className={classes.header}>
-            Username:
+            <FormattedMessage id="userName" defaultMessage="Username" />:
           </Typography>
           <Typography component="h1" variant="h5">
             {accountData?.username}
           </Typography>
           <hr className={classes.hrStyle} />
           <Typography variant="h6" className={classes.header}>
-            Email:
+            <FormattedMessage id="email" defaultMessage="Email" />:
           </Typography>
           <Typography variant="h6">{accountData?.email}</Typography>
           <hr className={classes.hrStyle} />
@@ -265,7 +276,7 @@ export default function Account() {
           {accountData?.first_name ? (
             <>
               <Typography variant="h6" className={classes.header}>
-                First Name:
+                <FormattedMessage id="firstName" defaultMessage="First Name" />:
               </Typography>
               <Typography variant="h6">{accountData?.first_name}</Typography>
               <hr className={classes.hrStyle} />
@@ -274,14 +285,14 @@ export default function Account() {
           {accountData?.last_name ? (
             <>
               <Typography variant="h6" className={classes.header}>
-                Last Name:
+                <FormattedMessage id="lastName" defaultMessage="Last Name" />:
               </Typography>
               <Typography variant="h6">{accountData?.last_name}</Typography>
               <hr className={classes.hrStyle} />
             </>
           ) : null}
           <Typography variant="h6" className={classes.header}>
-            User Role:
+            <FormattedMessage id="role" defaultMessage="User Role" />:
           </Typography>
           <Typography variant="h6">{accountData?.role}</Typography>
           <hr className={classes.hrStyle} />
@@ -289,7 +300,7 @@ export default function Account() {
           {accountData?.workshop ? (
             <>
               <Typography variant="h6" className={classes.header}>
-                Workshop:
+                <FormattedMessage id="workshop" defaultMessage="Workshop" />:
               </Typography>
               <Typography variant="h6">{accountData?.workshop}</Typography>
               <hr className={classes.hrStyle} />
@@ -305,7 +316,10 @@ export default function Account() {
             onClick={(e) => handleOpen(e)}
             className={classes.modalButton}
           >
-            Update Profile
+            <FormattedMessage
+              id="updateProfile"
+              defaultMessage="Update Profile"
+            />
           </Button>
           <Modal
             open={open}
