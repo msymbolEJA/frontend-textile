@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useHistory } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -94,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
+  const { formatMessage } = useIntl();
   const { setUser, setAuth } = useContext(AppContext);
   const [loginFailed, setLoginFailed] = useState(false);
   const [errorText, setErrorText] = useState("");
@@ -149,7 +151,7 @@ export default function Login() {
             <LocalMallIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Log In
+            <FormattedMessage id="login" defaultMessage="Login" />
           </Typography>
           <form className={classes.form} onSubmit={formik.handleSubmit}>
             <TextField
@@ -172,7 +174,10 @@ export default function Login() {
               margin="normal"
               fullWidth
               name="password"
-              label="Password"
+              label={formatMessage({
+                id: "password",
+                defaultMessage: "Password",
+              })}
               type="password"
               id="password"
               autoComplete="password"
@@ -194,7 +199,7 @@ export default function Login() {
               color="primary"
               className={classes.submit}
             >
-              Log In
+              <FormattedMessage id="login" defaultMessage="Login" />
             </Button>
 
             {linProgress && (
@@ -206,14 +211,20 @@ export default function Login() {
             <Grid container>
               <Grid item xs>
                 <Link href="/forgot" variant="body2">
-                  Forgot password?
+                  <FormattedMessage
+                    id="forgotPassword"
+                    defaultMessage="Forgot password?"
+                  />
                 </Link>
               </Grid>
             </Grid>
             <Grid container>
               <Grid item xs className={classes.accountCheck}>
                 <Link href="/register" variant="body2">
-                  Don't have an account? Sign Up
+                  <FormattedMessage
+                    id="dontHaveAccount"
+                    defaultMessage="Don't have an account? Sign Up"
+                  />
                 </Link>
               </Grid>
             </Grid>

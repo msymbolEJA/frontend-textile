@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Button from "@material-ui/core/Button";
 import { AppContext } from "../../../context/Context";
 import { makeStyles } from "@material-ui/core/styles";
+import {FormattedMessage} from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,7 +56,10 @@ const CustomButtonGroup = ({
               color: selectedTag === tag ? "white" : null,
             }}
           >
-            {tag?.replace("_", " ")}
+            <FormattedMessage
+              id={tag?.replace("_", " ")}
+              defaultMessage={tag?.replace("_", " ")}
+            />
           </Button>
         ))}
       </div>

@@ -1,0 +1,13 @@
+{
+  "login": "Giriş",
+  "forgotPassword": "Parolayı unuttum",
+  "dontHaveAccount": "Hesabım yok? Kayıt",
+  "password": "parola",
+  "pending": "yeni",
+  "ready": "hazır",
+  "in progress": "işlemde",
+  "in transit": "kargoda",
+  "awaiting": "bekleyen",
+  "cancelled": "iptal",
+  "shipped": "tamamlandı"
+}
