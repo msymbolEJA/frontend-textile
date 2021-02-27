@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
 import { AppContext } from "../../context/Context";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { FormattedMessage, useIntl } from "react-intl";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -48,6 +49,7 @@ const useStyles = makeStyles({
     margin: "1rem",
     minWidth: "500px",
     width: "95%",
+    minHeight: "250px",
   },
   header: {
     marginBottom: "1rem",
@@ -59,7 +61,7 @@ const useStyles = makeStyles({
 
 export default function CustomizedTables() {
   const classes = useStyles();
-  const [cargoList, setCargoList] = useState([]);
+  const [cargoList, setCargoList] = useState();
   const history = useHistory();
   const [getSupplier, setGetSupplier] = useState("");
   const { isAdmin } = useContext(AppContext);
@@ -192,9 +194,15 @@ export default function CustomizedTables() {
         </TableHead>
 
         <TableBody>
-          {!cargoList.length ? (
+          {cargoList === undefined ? (
             <tr>
-              <td colSpan="4">No Item!</td>
+              <td colSpan="7" style={{ display: "table-cell" }}>
+                <CircularProgress style={{ marginTop: "1rem" }} />
+              </td>
+            </tr>
+          ) : cargoList?.length === 0 ? (
+            <tr>
+              <td colSpan="7">No Item!</td>
             </tr>
           ) : (
             cargoList.map((ws, j) =>
