@@ -13,6 +13,8 @@ import { Button } from "@material-ui/core";
 import { getOnePdf, getData, putData } from "../../../../helper/PostData";
 import OrderDetailsCargoPage from "./OrderDetailsCargoPage";
 import moment from "moment";
+import { FormattedMessage, useIntl } from "react-intl";
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 
@@ -86,6 +88,7 @@ const OrderDetails = ({ match }) => {
   // console.log("isPdfExist", isPdfExist);
   const [refresh, setRefresh] = useState(false);
   const classes = useStyles();
+  const { formatMessage } = useIntl();
 
   const getPdf = () => {
     let data = match.params.id;
@@ -157,7 +160,12 @@ const OrderDetails = ({ match }) => {
     <div>
       <Paper className={classes.root}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography className={classes.header}>Order Details</Typography>
+          <Typography className={classes.header}>
+            <FormattedMessage
+              id="orderDetails"
+              defaultMessage="Order Details"
+            />
+          </Typography>
           <div
             style={{
               display: "flex",
@@ -173,7 +181,10 @@ const OrderDetails = ({ match }) => {
                 className={classes.button}
                 onClick={handleSendToStock}
               >
-                Send to Stock
+                <FormattedMessage
+                  id="sendToStock"
+                  defaultMessage="Send To Stock"
+                />
               </Button>
               <Button
                 variant="contained"
@@ -183,7 +194,10 @@ const OrderDetails = ({ match }) => {
                 style={{ marginTop: "0.3rem", marginBottom: "0.2rem" }}
                 onClick={handleSoldFromStock}
               >
-                sold from stock
+                <FormattedMessage
+                  id="soldFromStock"
+                  defaultMessage="Sold from Stock"
+                />
               </Button>
             </div>
           </div>
@@ -198,20 +212,54 @@ const OrderDetails = ({ match }) => {
           >
             <TableHead>
               <TableRow>
-                <StyledTableCell align="center">Id</StyledTableCell>
-                <StyledTableCell align="center">Receipt Id</StyledTableCell>
-                <StyledTableCell align="center">Date</StyledTableCell>
-                <StyledTableCell align="center">Statu</StyledTableCell>
-                <StyledTableCell align="center">Buyer</StyledTableCell>
-                <StyledTableCell align="center">Supplier</StyledTableCell>
-                <StyledTableCell align="center">Type</StyledTableCell>
-                <StyledTableCell align="center">length</StyledTableCell>
-                <StyledTableCell align="center">Color</StyledTableCell>
-                <StyledTableCell align="center">Qty</StyledTableCell>
-                <StyledTableCell align="center">size</StyledTableCell>
-                <StyledTableCell align="center">start</StyledTableCell>
-                <StyledTableCell align="center">explanation</StyledTableCell>
-                <StyledTableCell align="center">note</StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="id" defaultMessage="Id" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage
+                    id="receiptId"
+                    defaultMessage="Receipt Id"
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="date" defaultMessage="Date" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="status" defaultMessage="Status" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="buyer" defaultMessage="Buyer" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="supplier" defaultMessage="Supplier" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="type" defaultMessage="Type" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="length" defaultMessage="Length" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="color" defaultMessage="Color" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="quantity" defaultMessage="Quantity" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="size" defaultMessage="Size" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="start" defaultMessage="Start" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage
+                    id="explanation"
+                    defaultMessage="Explanation"
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="note" defaultMessage="Note" />
+                </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -239,7 +287,10 @@ const OrderDetails = ({ match }) => {
               ) : (
                 <tr>
                   <td colSpan="13" style={{ fontSize: "2rem" }}>
-                    "Nothing Found!"
+                    <FormattedMessage
+                      id="nothingFound"
+                      defaultMessage="Nothing Found!"
+                    />
                   </td>
                 </tr>
               )}
@@ -273,7 +324,10 @@ const OrderDetails = ({ match }) => {
             target="_blank"
             rel="noreferrer"
           >
-            Open Printed Pdf
+            <FormattedMessage
+              id="openPrintedPDF"
+              defaultMessage="Open Printed Pdf"
+            />
           </a>
           <hr />
         </>
@@ -287,16 +341,16 @@ const OrderDetails = ({ match }) => {
                 style={{ backgroundColor: "black", borderRadius: "0.5rem" }}
               >
                 <TableCell align="center" style={{ color: "white" }}>
-                  Date
+                  <FormattedMessage id="date" defaultMessage="Date" />
                 </TableCell>
                 <TableCell align="center" style={{ color: "white" }}>
-                  User
+                  <FormattedMessage id="user" defaultMessage="User" />
                 </TableCell>
                 <TableCell align="center" style={{ color: "white" }}>
-                  Action
+                  <FormattedMessage id="action" defaultMessage="Action" />
                 </TableCell>
                 <TableCell align="center" style={{ color: "white" }}>
-                  Log Data
+                  <FormattedMessage id="logData" defaultMessage="Log Data" />
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -309,9 +363,17 @@ const OrderDetails = ({ match }) => {
                     </TableCell>
                     <TableCell align="center">{log.user}</TableCell>
                     <TableCell align="center">
-                      {log.type.replaceAll("_", " ")}
+                      {formatMessage({
+                        id: log.type,
+                        defaultMessage: log.type?.replace("_", " "),
+                      })}
                     </TableCell>
-                    <TableCell align="center">{log.data}</TableCell>
+                    <TableCell align="center">
+                      {formatMessage({
+                        id: log.data,
+                        defaultMessage: log.data,
+                      })}
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>

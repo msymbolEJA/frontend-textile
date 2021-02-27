@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import moment from "moment";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const CustomTableCell = ({ row, name, name2, onChange }) => {
   const classes = useStyles();
   const { isEditMode } = row;
+  const { formatMessage } = useIntl();
 
   return (
     <TableCell align="center" className={classes.tableCell}>
@@ -28,6 +30,11 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
           onChange={(e) => onChange(e, row)}
           className={classes.input}
         />
+      ) : name === "status" ? (
+        formatMessage({
+          id: row[name],
+          defaultMessage: row[name]?.replace("_", " "),
+        })
       ) : name === "created_date" ? (
         moment(row[name]).format("DD-MM-YY HH:mm")
       ) : name === "status" ? (

@@ -2,6 +2,7 @@ import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import RepeatIcon from "@material-ui/icons/Repeat";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
   const classes = useStyles();
+  const { formatMessage } = useIntl();
 
   return (
     <TableCell align="center" className={classes.tableCell}>
@@ -52,6 +54,11 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
             ?.replace("**REPEAT: BREAK OFF**", "")
             ?.replace("**REPEAT: LOST IN MAIL**", "")
             ?.replace("**REPEAT: SECOND**", "")
+        ) : name === "status" ? (
+          formatMessage({
+            id: row[name],
+            defaultMessage: row[name]?.replace("_", " "),
+          })
         ) : row[name] ? (
           row[name]?.replace("_", " ")
         ) : (

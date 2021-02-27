@@ -8,6 +8,8 @@ import {
   toastErrorNotify,
   toastSuccessNotify,
 } from "../otheritems/ToastNotify";
+import { FormattedMessage, useIntl } from "react-intl";
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
@@ -54,6 +56,7 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
   });
   const [result, setResult] = useState();
   const classes = useStyles();
+  const { formatMessage } = useIntl();
   //console.log("CP Id", id);
 
   const cargoFormPost = (e) => {
@@ -100,7 +103,12 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.rootBottom}>
-        <h1>Create A New Shipment</h1>
+        <h1>
+          <FormattedMessage
+            id="createANewShipment"
+            defaultMessage="Create A New Shipment"
+          />
+        </h1>
         <form
           className={classes.root}
           autoComplete="off"
@@ -109,7 +117,10 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
           <TextField
             className={classes.inputStyle}
             id="tracking_number"
-            label="Tracking Number"
+            label={formatMessage({
+              id: "trackingNumber",
+              defaultMessage: "Tracking Number",
+            })}
             required
             type="text"
             onChange={handleChange}
@@ -120,7 +131,10 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
           <TextField
             className={classes.inputStyle}
             id="carrier"
-            label="Carrier"
+            label={formatMessage({
+              id: "carrier",
+              defaultMessage: "Carrier",
+            })}
             required
             type="text"
             name="carrier"
@@ -131,7 +145,10 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
           <TextField
             className={classes.inputStyle}
             id="ref_number_f"
-            label="Description"
+            label={formatMessage({
+              id: "description",
+              defaultMessage: "Description",
+            })}
             type="text"
             variant="outlined"
             name="ref_number_f"
@@ -146,7 +163,10 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
             color="primary"
             className={classes.submit}
           >
-            Are you sure for package?
+            <FormattedMessage
+              id="areYouSureForPackage"
+              defaultMessage="Are you sure for package?"
+            />
           </Button>
         </form>
       </Paper>

@@ -319,7 +319,7 @@ export default function Register() {
               <Link href="/" variant="body2">
                 <FormattedMessage
                   id="alreadyHaveAccount"
-                  defaultMessage="Already have an account? Login"
+                  defaultMessage="Already have an account? Login."
                 />
               </Link>
             </Grid>

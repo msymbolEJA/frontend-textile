@@ -14,7 +14,7 @@ import {
   TextField,
   CircularProgress,
 } from "@material-ui/core";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import CustomButtonGroup from "./CustomButtonGroup";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import TablePaginationActions from "./TablePaginationActions";
@@ -407,7 +407,12 @@ function AllOrdersTable() {
                     {row?.image ? (
                       <ViewImageFile {...{ row, name: "image" }} />
                     ) : (
-                      <p>No File</p>
+                      <p>
+                        <FormattedMessage
+                          id="noFile"
+                          defaultMessage="No File"
+                        />
+                      </p>
                     )}
                   </td>
                   <CustomTableCell {...{ row, name: "note" }} />
@@ -425,7 +430,13 @@ function AllOrdersTable() {
           )}
           <TableFooter>
             <TableRow>
-              <td>Total Record :</td>
+              <td>
+                <FormattedMessage
+                  id="totalRecord"
+                  defaultMessage="Total Record"
+                />
+                :
+              </td>
               <td>{count || 0}</td>
               <TablePagination
                 rowsPerPageOptions={[25, 50, 100, 250, 500]}
@@ -485,9 +496,11 @@ function AllOrdersTable() {
               className={classes.print}
               onClick={printHandler}
             >
-              Print
+              <FormattedMessage id="print" defaultMessage="Print" />
             </Button>
-            <h2>Labels</h2>
+            <h1>
+              <FormattedMessage id="labels" defaultMessage="Labels" />
+            </h1>
             {allPdf ? (
               allPdf?.map((pdf, index) => (
                 <div key={`${index}${pdf}`}>
@@ -501,7 +514,12 @@ function AllOrdersTable() {
                 </div>
               ))
             ) : (
-              <h2>Dont have any label!</h2>
+              <h2>
+                <FormattedMessage
+                  id="dontHaveAnyLabel"
+                  defaultMessage="Dont have any label!"
+                />
+              </h2>
             )}
           </>
         ) : null}

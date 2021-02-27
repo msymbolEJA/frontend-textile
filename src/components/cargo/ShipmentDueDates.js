@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import CardGiftcardIcon from "@material-ui/icons/CardGiftcard";
 import { getData } from "../../helper/PostData";
+import { FormattedMessage } from "react-intl";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -74,16 +75,25 @@ export default function CustomizedTables() {
           >
             <CardGiftcardIcon className={classes.icon} color="primary" />
             <h1 style={{ display: "inline", marginLeft: "0.5rem" }}>
-              Shipment Due Dates
+              <FormattedMessage
+                id="shipmentDueDate"
+                defaultMessage="Shipment Due Dates"
+              />
             </h1>
           </div>
         </div>
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">DATE</StyledTableCell>
-              <StyledTableCell align="center">QUANTITY</StyledTableCell>
-              <StyledTableCell align="center">ORDERS</StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="date" defaultMessage="DATE" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="quantity" defaultMessage="Quantity" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="orders" defaultMessage="Orders" />
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
