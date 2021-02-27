@@ -5,6 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,24 +36,33 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "15rem"
-  }
+    width: "15rem",
+  },
 }));
 
 export default function InputForm({ handleSubmit, handleChange, info }) {
   const classes = useStyles();
- 
+  const { formatMessage } = useIntl();
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            New Order Creation
+            <FormattedMessage
+              id="newOrderCreation"
+              defaultMessage="New Order Creation"
+            />
           </Typography>
           <div className={classes.warn}>
-                <Typography>Please fill all the fields!</Typography>
-              </div>
+            <Typography>
+              <FormattedMessage
+                id="fillAllFields"
+                defaultMessage="Please fill all the fields!"
+              />
+            </Typography>
+          </div>
           <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
@@ -60,7 +70,10 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               required
               fullWidth
               id="customer"
-              label="Customer"
+              label={formatMessage({
+                id: "customer",
+                defaultMessage: "Customer",
+              })}
               name="customer"
               autoComplete="customer"
               type="text"
@@ -74,7 +87,10 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               required
               fullWidth
               name="supplier"
-              label="Supplier"
+              label={formatMessage({
+                id: "supplier",
+                defaultMessage: "Supplier",
+              })}
               type="text"
               id="supplier"
               autoComplete="supplier"
@@ -87,7 +103,10 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               required
               fullWidth
               name="type"
-              label="Type"
+              label={formatMessage({
+                id: "type",
+                defaultMessage: "Type",
+              })}
               type="text"
               id="type"
               autoComplete="type"
@@ -100,7 +119,10 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               required
               fullWidth
               name="length"
-              label="Length"
+              label={formatMessage({
+                id: "length",
+                defaultMessage: "Length",
+              })}
               type="text"
               id="length"
               autoComplete="length"
@@ -113,7 +135,10 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               required
               fullWidth
               name="color"
-              label="Color"
+              label={formatMessage({
+                id: "color",
+                defaultMessage: "Color",
+              })}
               type="text"
               id="color"
               autoComplete="color"
@@ -126,7 +151,10 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               required
               fullWidth
               name="qty"
-              label="Qty"
+              label={formatMessage({
+                id: "quantity",
+                defaultMessage: "Quantity",
+              })}
               type="text"
               id="qty"
               autoComplete="qty"
@@ -139,7 +167,10 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               required
               fullWidth
               name="size"
-              label="Size"
+              label={formatMessage({
+                id: "size",
+                defaultMessage: "Size",
+              })}
               type="text"
               id="size"
               autoComplete="size"
@@ -152,7 +183,10 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               required
               fullWidth
               name="start"
-              label="Start"
+              label={formatMessage({
+                id: "start",
+                defaultMessage: "Start",
+              })}
               type="text"
               id="start"
               autoComplete="start"
@@ -165,7 +199,10 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               required
               fullWidth
               name="space"
-              label="Space"
+              label={formatMessage({
+                id: "space",
+                defaultMessage: "Space",
+              })}
               type="text"
               id="space"
               autoComplete="space"
@@ -178,7 +215,10 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               required
               fullWidth
               name="explanation"
-              label="Explanation"
+              label={formatMessage({
+                id: "explanation",
+                defaultMessage: "Explanation",
+              })}
               type="text"
               id="explanation"
               autoComplete="explanation"
@@ -192,7 +232,7 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               color="primary"
               className={classes.submit}
             >
-              Create
+              <FormattedMessage id="create" defaultMessage="Create" />
             </Button>
           </form>
         </div>

@@ -24,6 +24,8 @@ import {
 } from "../otheritems/ToastNotify";
 import TextField from "@material-ui/core/TextField";
 import { globalSearch } from "../../helper/PostData";
+import { FormattedMessage, useIntl } from "react-intl";
+
 const BELKY_STOCK_BASE_URL = process.env.REACT_APP_BELKY_STOCK_BASE_URL;
 
 const StyledTableCell = withStyles((theme) => ({
@@ -86,6 +88,7 @@ const StockList = () => {
   const [searchKey, setSearchKey] = useState("");
   const classes = useStyles();
   const history = useHistory();
+  const { formatMessage } = useIntl();
 
   const filters = getQueryParams();
 
@@ -279,7 +282,10 @@ const StockList = () => {
             margin="dense"
             name="globalSearch"
             required
-            label="Search"
+            label={formatMessage({
+              id: "search",
+              defaultMessage: "Search",
+            })}
             type="text"
             id="globalSearch"
             style={{ maxHeight: "30px", margin: "1rem", width: 130 }}
@@ -288,7 +294,7 @@ const StockList = () => {
             value={searchKey}
           />
           <Typography className={classes.header} variant="h3">
-            Stock List
+            <FormattedMessage id="stockList" defaultMessage="Stock List" />
           </Typography>
           <Button
             variant="contained"
@@ -296,7 +302,7 @@ const StockList = () => {
             style={{ margin: "1rem" }}
             onClick={handleNewStock}
           >
-            New Stock
+            <FormattedMessage id="newStock" defaultMessage="New Stock" />
           </Button>
         </div>
         {isAdmin ? (
@@ -308,7 +314,7 @@ const StockList = () => {
               onClick={handleSupplier}
               style={{ backgroundColor: "orange" }}
             >
-              ALL ({listCount})
+              <FormattedMessage id="all" defaultMessage="ALL" />({listCount})
             </Button>
             {Object.keys(storeNameArr).map((key, index) => (
               <Button
@@ -327,14 +333,36 @@ const StockList = () => {
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Id</StyledTableCell>
-              <StyledTableCell align="center">Name of Store</StyledTableCell>
-              <StyledTableCell align="center">Mapping Id</StyledTableCell>
-              <StyledTableCell align="center">Type</StyledTableCell>
-              <StyledTableCell align="center">Length</StyledTableCell>
-              <StyledTableCell align="center">Color</StyledTableCell>
-              <StyledTableCell align="center">Explanation</StyledTableCell>
-              <StyledTableCell align="center">Delete</StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="id" defaultMessage="Id" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage
+                  id="nameOfStore"
+                  defaultMessage="Name of Store"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="mappingId" defaultMessage="Mapping Id" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="type" defaultMessage="Type" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="length" defaultMessage="Length" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="color" defaultMessage="Color" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage
+                  id="explanation"
+                  defaultMessage="Explanation"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="delete" defaultMessage="Delete" />
+              </StyledTableCell>
             </TableRow>
           </TableHead>
 
@@ -388,7 +416,7 @@ const StockList = () => {
                         }}
                         onClick={() => handleDeleteButton(item.id)}
                       >
-                        Delete
+                        <FormattedMessage id="delete" defaultMessage="Delete" />
                       </Button>
                     </td>
                   </StyledTableRow>

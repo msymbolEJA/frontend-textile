@@ -253,7 +253,6 @@ const Dashboard = () => {
               icon={
                 <CardGiftcardIcon className={classes.icon} color="primary" />
               }
-              header1="SHIPMENT DUE DATE"
               header1={formatMessage({
                 id: "shipmentDueDate",
                 defaultMessage: "SHIPMENT DUE DATE",

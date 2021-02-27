@@ -13,7 +13,7 @@ import {
   TableRow,
   CircularProgress,
 } from "@material-ui/core";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { ArrowForwardIos as ArrowForwardIosIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
@@ -70,7 +70,13 @@ export default function SummaryTable({
   return (
     <Grid item xs={12} md={6} className={classes.root}>
       <Paper className={classes.paper}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            minHeight: "5.5rem",
+          }}
+        >
           <div
             style={{
               display: "flex",

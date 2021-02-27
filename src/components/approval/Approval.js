@@ -36,6 +36,7 @@ import CustomButtonGroup from "./CustomButtonGroup";
 import { tagsData, repeatReasons } from "../../helper/Constants";
 import Menu from "@material-ui/core/Menu";
 import ListItemText from "@material-ui/core/ListItemText";
+import { FormattedMessage } from "react-intl";
 import MenuItem from "@material-ui/core/MenuItem";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -569,12 +570,12 @@ function App({ history }) {
             <TableRow>
               <SortableTableCell
                 property="id"
-                property2="Receipt/"
-                property3="Index"
+                property2="receipt"
+                property3="index"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Id/"
+                colName="id"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -582,16 +583,16 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Status"
+                colName="status"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
                 property="created_date"
-                property3="Buyer"
+                property3="buyer"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Created Date"
+                colName="createdDate"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -599,7 +600,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Supplier"
+                colName="supplier"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -607,7 +608,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Type"
+                colName="type"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -615,7 +616,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Length"
+                colName="length"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -623,7 +624,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Color"
+                colName="color"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -631,7 +632,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Quantity"
+                colName="quantity"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -639,7 +640,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Size"
+                colName="size"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -647,7 +648,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Start"
+                colName="start"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -655,7 +656,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Space"
+                colName="space"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -663,7 +664,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Upload File"
+                colName="uploadFile"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -671,7 +672,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Explanation"
+                colName="explanation"
                 setOrderBy={setOrderBy}
               />
               <StyledTableCell
@@ -688,7 +689,8 @@ function App({ history }) {
                   className={classes.approveButton}
                   disabled={!selected?.length}
                 >
-                  Approve ({selected?.length})
+                  <FormattedMessage id="approve" defaultMessage="Approve" /> (
+                  {selected?.length})
                 </Button>
                 <Checkbox
                   indeterminate={
@@ -706,7 +708,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Personalization"
+                colName="personalization"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -714,7 +716,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Customer Note"
+                colName="customerNote"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -722,7 +724,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Gift Message"
+                colName="giftMessage"
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
@@ -730,7 +732,7 @@ function App({ history }) {
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="Internal Note"
+                colName="internalNote"
                 setOrderBy={setOrderBy}
               />
             </TableRow>

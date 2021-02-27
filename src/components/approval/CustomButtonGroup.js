@@ -2,7 +2,7 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +34,7 @@ const CustomButtonGroup = ({
   searchHandler,
 }) => {
   const classes = useStyles();
+  const { formatMessage } = useIntl();
 
   return (
     <div>
@@ -60,7 +61,10 @@ const CustomButtonGroup = ({
       </div>
       <div>
         <TextField
-          label="Global Search"
+          label={formatMessage({
+            id: "globalSearch",
+            defaultMessage: "Global Search",
+          })}
           id="globalSearch"
           defaultValue=""
           variant="outlined"

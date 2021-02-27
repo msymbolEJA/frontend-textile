@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
 import { AppContext } from "../../context/Context";
 import Button from "@material-ui/core/Button";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -62,6 +63,7 @@ export default function CustomizedTables() {
   const history = useHistory();
   const [getSupplier, setGetSupplier] = useState("");
   const { isAdmin } = useContext(AppContext);
+  const { formatMessage } = useIntl();
 
   useEffect(() => {
     getData(`${BASE_URL}etsy/cargo_list/${getSupplier}`).then((response) => {
@@ -128,7 +130,7 @@ export default function CustomizedTables() {
             onClick={handleSupplier}
             className={classes.btn}
           >
-            All
+            <FormattedMessage id="all" defaultMessage="ALL" />
           </Button>
           <Button
             className={classes.btn}
@@ -151,18 +153,41 @@ export default function CustomizedTables() {
         </div>
       ) : null}
       <Typography className={classes.header} variant="h3">
-        Cargo List
+        <FormattedMessage id="cargoList" defaultMessage="Cargo List" />
       </Typography>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell align="center">Id</StyledTableCell>
-            <StyledTableCell align="center">Reference Number</StyledTableCell>
-            <StyledTableCell align="center">Carrier</StyledTableCell>
-            <StyledTableCell align="center">Content</StyledTableCell>
-            <StyledTableCell align="center">Count</StyledTableCell>
-            <StyledTableCell align="center">Shipment Date</StyledTableCell>
-            <StyledTableCell align="center">Tracking Number</StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="id" defaultMessage="Id" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage
+                id="referenceNumber"
+                defaultMessage="Reference Number"
+              />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="carrier" defaultMessage="Carrier" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="content" defaultMessage="Content" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="count" defaultMessage="Count" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage
+                id="shipmentDate"
+                defaultMessage="Shipment Date"
+              />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage
+                id="trackingNumber"
+                defaultMessage="Tracking Number"
+              />
+            </StyledTableCell>
           </TableRow>
         </TableHead>
 

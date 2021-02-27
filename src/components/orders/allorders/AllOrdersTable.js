@@ -14,7 +14,7 @@ import {
   TextField,
   CircularProgress,
 } from "@material-ui/core";
-
+import { FormattedMessage, useIntl } from "react-intl";
 import CustomButtonGroup from "./CustomButtonGroup";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import TablePaginationActions from "./TablePaginationActions";
@@ -311,22 +311,59 @@ function AllOrdersTable() {
           <TableHead>
             <TableRow>
               <StyledTableCell align="center">
-                Receipt Id / Id / Index
+                <FormattedMessage id="receiptId" defaultMessage="Receipt Id" />{" "}
+                /
+                <FormattedMessage id="id" defaultMessage="Id" /> /
+                <FormattedMessage id="index" defaultMessage="Index" />
               </StyledTableCell>
-              <StyledTableCell align="center">Created TSZ</StyledTableCell>
-              <StyledTableCell align="center">Buyer</StyledTableCell>
-              <StyledTableCell align="center">Supplier</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">Type</StyledTableCell>
-              <StyledTableCell align="center">Length</StyledTableCell>
-              <StyledTableCell align="center">Color</StyledTableCell>
-              <StyledTableCell align="center">Quantity</StyledTableCell>
-              <StyledTableCell align="center">Size</StyledTableCell>
-              <StyledTableCell align="center">Start</StyledTableCell>
-              <StyledTableCell align="center">Space</StyledTableCell>
-              <StyledTableCell align="center">Explanation</StyledTableCell>
-              <StyledTableCell align="center">Image</StyledTableCell>
-              <StyledTableCell align="center">Note</StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage
+                  id="createdTSZ"
+                  defaultMessage="Created TSZ"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="buyer" defaultMessage="Buyer" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="supplier" defaultMessage="Supplier" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="status" defaultMessage="Status" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="type" defaultMessage="Type" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="length" defaultMessage="Length" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="color" defaultMessage="Color" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="quantity" defaultMessage="Quantity" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="size" defaultMessage="Size" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="start" defaultMessage="Start" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="space" defaultMessage="Space" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage
+                  id="explanation"
+                  defaultMessage="Explanation"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="image" defaultMessage="Image" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="note" defaultMessage="Note" />
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           {rows ? (

@@ -10,6 +10,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 // Local Sample Data
 import CustomTableCell from "./CustomTableCell";
 import Typography from "@material-ui/core/Typography";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -75,7 +76,9 @@ function ResultTable({ list }) {
 
   return (
     <Paper className={classes.root}>
-      <Typography className={classes.header}>Result Table</Typography>
+      <Typography className={classes.header}>
+        <FormattedMessage id="resultTable" defaultMessage="Result Table" />
+      </Typography>
       <TableContainer className={classes.container}>
         <Table
           className={classes.table}
@@ -85,21 +88,60 @@ function ResultTable({ list }) {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Id</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">Supplier</StyledTableCell>
-              <StyledTableCell align="center">Created Data</StyledTableCell>
-              <StyledTableCell align="center">Created Tsz</StyledTableCell>
-              <StyledTableCell align="center">Color</StyledTableCell>
-              <StyledTableCell align="center">Length</StyledTableCell>
-              <StyledTableCell align="center">Buyer</StyledTableCell>
-              <StyledTableCell align="center">Item Index</StyledTableCell>
-              <StyledTableCell align="center">Size</StyledTableCell>
-              <StyledTableCell align="center">Start</StyledTableCell>
-              <StyledTableCell align="center">QTY</StyledTableCell>
-              <StyledTableCell align="center">SKU</StyledTableCell>
-              <StyledTableCell align="center">Type</StyledTableCell>
-              <StyledTableCell align="center">Transaction</StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="id" defaultMessage="Id" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="status" defaultMessage="Status" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="supplier" defaultMessage="Supplier" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage
+                  id="createdDate"
+                  defaultMessage="Created Date"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage
+                  id="createdTSZ"
+                  defaultMessage="Created TSZ"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="color" defaultMessage="Color" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="length" defaultMessage="Length" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="buyer" defaultMessage="Buyer" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="itemIndex" defaultMessage="Item Index" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="size" defaultMessage="Size" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="start" defaultMessage="Start" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="quantity" defaultMessage="Quantity" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="SKU" defaultMessage="SKU" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="type" defaultMessage="Type" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage
+                  id="transaction"
+                  defaultMessage="Transaction"
+                />
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>

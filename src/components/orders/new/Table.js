@@ -7,6 +7,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import CustomTableCell from "../CustomTableCell";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -73,16 +74,36 @@ function Orders({ list }) {
       <Table className={classes.table} aria-label="caption table" size="small">
         <TableHead>
           <TableRow>
-            <StyledTableCell align="center">Customer</StyledTableCell>
-            <StyledTableCell align="center">Supplier</StyledTableCell>
-            <StyledTableCell align="center">Type</StyledTableCell>
-            <StyledTableCell align="center">Length</StyledTableCell>
-            <StyledTableCell align="center">Color</StyledTableCell>
-            <StyledTableCell align="center">Qty</StyledTableCell>
-            <StyledTableCell align="center">Size</StyledTableCell>
-            <StyledTableCell align="center">Start</StyledTableCell>
-            <StyledTableCell align="center">Space</StyledTableCell>
-            <StyledTableCell align="center">Explanation</StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="customer" defaultMessage="Customer" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="supplier" defaultMessage="Supplier" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="type" defaultMessage="Type" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="length" defaultMessage="Length" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="color" defaultMessage="Color" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="quantity" defaultMessage="Quantity" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="size" defaultMessage="Size" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="start" defaultMessage="Start" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="space" defaultMessage="Space" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="explanation" defaultMessage="Explanation" />
+            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

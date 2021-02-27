@@ -99,7 +99,7 @@ export default function MenuAppBar() {
           >
             <StoreIcon />
             <Typography variant="h6" className={classes.rightTitle}>
-              {STORE_NAME} Store
+              {STORE_NAME}
             </Typography>
           </IconButton>
           <div className={classes.title}></div>

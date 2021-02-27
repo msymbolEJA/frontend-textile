@@ -1,6 +1,7 @@
 import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
+import { FormattedMessage } from "react-intl";
 import { withStyles } from "@material-ui/core/styles";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -38,16 +39,16 @@ const SortableTableCell = ({
         >
           {property2 ? (
             <>
-              {property2}
+              <FormattedMessage id={property2} defaultMessage={property2} />/
               <br />
             </>
           ) : null}
-
-          {colName}
+          <FormattedMessage id={colName} defaultMessage={colName} />
           {property3 ? (
             <>
+              /
               <br />
-              {property3}
+              <FormattedMessage id={property3} defaultMessage={property3} />
             </>
           ) : null}
         </TableSortLabel>

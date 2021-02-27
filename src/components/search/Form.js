@@ -3,6 +3,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,7 @@ export default function SearchForm({
   fillError,
 }) {
   const classes = useStyles();
+  const { formatMessage } = useIntl();
 
   return (
     <div>
@@ -52,7 +54,10 @@ export default function SearchForm({
             variant="outlined"
             margin="dense"
             id="id"
-            label="Id"
+            label={formatMessage({
+              id: "id",
+              defaultMessage: "Id",
+            })}
             type="text"
             name="id"
             autoComplete="id"
@@ -66,7 +71,10 @@ export default function SearchForm({
             variant="outlined"
             margin="dense"
             id="status"
-            label="Status"
+            label={formatMessage({
+              id: "status",
+              defaultMessage: "Status",
+            })}
             type="text"
             name="status"
             autoComplete="status"
@@ -78,7 +86,10 @@ export default function SearchForm({
             variant="outlined"
             margin="dense"
             id="buyer"
-            label="Buyer"
+            label={formatMessage({
+              id: "buyer",
+              defaultMessage: "Buyer",
+            })}
             type="text"
             name="buyer"
             autoComplete="buyer"
@@ -90,7 +101,10 @@ export default function SearchForm({
             variant="outlined"
             margin="dense"
             id="sku"
-            label="SKU"
+            label={formatMessage({
+              id: "sku",
+              defaultMessage: "SKU",
+            })}
             type="text"
             name="sku"
             autoComplete="sku"
@@ -102,7 +116,10 @@ export default function SearchForm({
             variant="outlined"
             margin="dense"
             name="supplier"
-            label="Supplier"
+            label={formatMessage({
+              id: "supplier",
+              defaultMessage: "Supplier",
+            })}
             type="text"
             id="supplier"
             onChange={handleChange}
@@ -113,7 +130,10 @@ export default function SearchForm({
             variant="outlined"
             margin="dense"
             name="explanation"
-            label="Internal Note"
+            label={formatMessage({
+              id: "internalNote",
+              defaultMessage: "Internal Note",
+            })}
             type="text"
             id="explanation"
             onChange={handleChange}
@@ -124,7 +144,10 @@ export default function SearchForm({
             variant="outlined"
             margin="dense"
             name="receipt_id"
-            label="Receipt Id"
+            label={formatMessage({
+              id: "receiptId",
+              defaultMessage: "Receipt Id",
+            })}
             type="nmuber"
             id="receipt_id"
             onChange={handleChange}
@@ -135,7 +158,10 @@ export default function SearchForm({
             variant="outlined"
             margin="dense"
             name="tracking_code"
-            label="Tracking Code"
+            label={formatMessage({
+              id: "trackingCode",
+              defaultMessage: "Tracking Code",
+            })}
             type="text"
             id="tracking_code"
             onChange={handleChange}
@@ -147,7 +173,10 @@ export default function SearchForm({
             variant="outlined"
             margin="dense"
             name="globalSearch"
-            label="Global Search"
+            label={formatMessage({
+              id: "globalSearch",
+              defaultMessage: "Global Search",
+            })}
             type="text"
             id="globalSearch"
             onChange={(e) => setGlobalSearchKey(e.target.value)}
@@ -160,7 +189,7 @@ export default function SearchForm({
             className={classes.btn}
             onClick={(e) => handleSubmit(e)}
           >
-            Search
+            <FormattedMessage id="search" defaultMessage="Search" />
           </Button>
           <Button
             variant="contained"
@@ -168,7 +197,7 @@ export default function SearchForm({
             className={classes.btn}
             onClick={clearBtn}
           >
-            Clear
+            <FormattedMessage id="clear" defaultMessage="Clear" />
           </Button>
         </form>
         {fillError ? (
