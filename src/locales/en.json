@@ -31,7 +31,7 @@
   "shipmentDueDate":"Shipment Due Date",
   "quantity" : "Quantity",
   "wiewAll":"View All",
-  "pending": "NEW",
+  "pending": "Pending",
   "ready": "READY",
   "in progress": "IN PROGRESS",
   "in transit": "IN TRANSIT",
