@@ -905,7 +905,14 @@ function App({ history }) {
           )}
           <TableFooter>
             <TableRow>
-              <td colSpan="2">Total Record:{count || 0}</td>
+              <td>
+                <FormattedMessage
+                  id="totalRecord"
+                  defaultMessage="Total Record"
+                />
+                :
+              </td>
+              <td>{count || 0}</td>
               <TablePagination
                 rowsPerPageOptions={[25, 50, 100, 250, 500]}
                 colSpan={22}

@@ -14,7 +14,7 @@ import {
   TextField,
   CircularProgress,
 } from "@material-ui/core";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import CustomButtonGroup from "./CustomButtonGroup";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import TablePaginationActions from "./TablePaginationActions";
@@ -100,7 +100,7 @@ function AllOrdersTable() {
   const [rows, setRows] = useState(null);
   const filters = getQueryParams();
   const barcodeInputRef = useRef();
-
+  const { formatMessage } = useIntl();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(250);
   const classes = useStyles();
@@ -472,11 +472,21 @@ function AllOrdersTable() {
           <div className={classes.barcodeBox}>
             <div style={{ marginRight: "0.5rem" }}>
               <BarcodeInput onError={handleError} onScan={handleScan} />
-              <p>Barcode: {barcodeInput || "No result"}</p>
+              <p>
+                <FormattedMessage id="barcode" defaultMessage="Barcode" /> :{" "}
+                {barcodeInput ||
+                  formatMessage({
+                    id: "noResult",
+                    defaultMessage: "No result",
+                  })}
+              </p>
             </div>
             <div className={classes.print}>
               <TextField
-                label="Barcode"
+                label={formatMessage({
+                  id: "barcode",
+                  defaultMessage: "Barcode",
+                })}
                 inputRef={barcodeInputRef}
                 id="outlined-size-small"
                 variant="outlined"

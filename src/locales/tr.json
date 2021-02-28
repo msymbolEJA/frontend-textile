@@ -113,5 +113,7 @@
   "action":"Aksiyon",
   "logData":"Log Bilgisi",
   "is_ready" :"Hazır mı?",
-  "processing":"ISLEM"
+  "processing":"ISLEM",
+  "barcode":"Barkod",
+  "noResult" :"Sonuç yok!"
 }

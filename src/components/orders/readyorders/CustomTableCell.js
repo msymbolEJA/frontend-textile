@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import moment from "moment";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {

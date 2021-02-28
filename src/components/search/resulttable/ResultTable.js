@@ -10,7 +10,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 // Local Sample Data
 import CustomTableCell from "./CustomTableCell";
 import Typography from "@material-ui/core/Typography";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

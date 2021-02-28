@@ -156,6 +156,17 @@ const OrderDetails = ({ match }) => {
       .finally(() => setRefresh(!refresh));
   };
 
+  const formMesFunc = (data) => {
+    try {
+      return formatMessage({
+        id: data,
+        defaultMessage: data,
+      });
+    } catch (error) {
+      return data;
+    }
+  };
+
   return (
     <div>
       <Paper className={classes.root}>
@@ -369,10 +380,7 @@ const OrderDetails = ({ match }) => {
                       })}
                     </TableCell>
                     <TableCell align="center">
-                      {formatMessage({
-                        id: log.data,
-                        defaultMessage: log.data,
-                      })}
+                      {formMesFunc(log.data)}
                     </TableCell>
                   </TableRow>
                 ))}

@@ -14,7 +14,7 @@ import { useHistory } from "react-router-dom";
 import { AppContext } from "../../context/Context";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -65,7 +65,6 @@ export default function CustomizedTables() {
   const history = useHistory();
   const [getSupplier, setGetSupplier] = useState("");
   const { isAdmin } = useContext(AppContext);
-  const { formatMessage } = useIntl();
 
   useEffect(() => {
     getData(`${BASE_URL}etsy/cargo_list/${getSupplier}`).then((response) => {

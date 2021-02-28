@@ -86,7 +86,7 @@ export default function SummaryTable({
           >
             {icon}
             <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>
-              {title} ({total})
+              <FormattedMessage id={title} defaultMessage={title} /> ({total})
             </h3>
           </div>
           <div
@@ -140,11 +140,14 @@ export default function SummaryTable({
                   data.map((item, index) => (
                     <TableRow key={index}>
                       <TableCell align="center" component="th" scope="row">
-                        <FormattedMessage
-                          id={item.cell1.toLowerCase()}
-                          defaultMessage={item.cell1}
-                        />
-                        {console.log(item.cell1)}
+                        {title === "orders" ? (
+                          <FormattedMessage
+                            id={item.cell1.toLowerCase()}
+                            defaultMessage={item.cell1}
+                          />
+                        ) : (
+                          item.cell1
+                        )}
                       </TableCell>
                       <TableCell align="center">{item.cell2}</TableCell>
                     </TableRow>

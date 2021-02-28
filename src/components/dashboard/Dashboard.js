@@ -203,10 +203,7 @@ const Dashboard = () => {
         </div>
         <Grid container spacing={2} style={{ justifyContent: "center" }}>
           <SummaryTable
-            title={formatMessage({
-              id: "orders",
-              defaultMessage: "Orders",
-            })}
+            title="orders"
             total={0}
             next="/all-orders"
             icon={<ListAltIcon className={classes.icon} color="primary" />}
@@ -221,10 +218,7 @@ const Dashboard = () => {
             data={orderSummary}
           />
           <SummaryTable
-            title={formatMessage({
-              id: "behindSchedule",
-              defaultMessage: "Behind Schedule",
-            })}
+            title="behindSchedule"
             total={0}
             next="/workshop-due-dates"
             icon={
@@ -244,10 +238,7 @@ const Dashboard = () => {
           userRole === "shop_manager" ||
           userRole === "shop_packer" ? (
             <SummaryTable
-              title={formatMessage({
-                id: "behindOverallSchedule",
-                defaultMessage: "Behind Overall Schedulee",
-              })}
+              title="behindOverallSchedule"
               total={0}
               next="/shipment-due-dates"
               icon={
