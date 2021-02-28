@@ -142,6 +142,7 @@ const OrderDetails = ({ match }) => {
   };
   const handleSoldFromStock = () => {
     const newData = {
+      status: "shipped",
       note: rows[0]?.note + " - SOLD FROM STOCKS!",
     };
     handleStockChange(rows[0]?.id, newData);
