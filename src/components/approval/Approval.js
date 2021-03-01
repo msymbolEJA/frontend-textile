@@ -122,8 +122,8 @@ function App({ history }) {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(0);
-  const [orderBy, setOrderBy] = useState("id");
-  const [order, setOrder] = useState("desc");
+  const [orderBy, setOrderBy] = useState("created_date");
+  const [order, setOrder] = useState("asc");
   const [selectedRowId, setSelectedRowId] = useState();
   const [selected, setSelected] = useState([]);
   const filters = getQueryParams();
@@ -138,9 +138,9 @@ function App({ history }) {
         filters?.status ? `status=${filters?.status}` : ""
       }&is_repeat=${filters?.is_repeat}&is_followup=${
         filters?.is_followup
-      }&ordering=${filters?.ordering}&limit=${rowsPerPage}&offset=${
-        filters?.offset
-      }`
+      }&ordering=${
+        filters?.ordering || "-created_date"
+      }&limit=${rowsPerPage}&offset=${filters?.offset}`
     )
       .then((response) => {
         // setRows(response.data);
