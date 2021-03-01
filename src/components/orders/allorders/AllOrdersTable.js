@@ -120,6 +120,11 @@ function AllOrdersTable() {
   const getListFunc = useCallback(() => {
     if (filters?.status === "shipped" || filters?.status === "ready") {
       filters.ordering = "-last_updated";
+    } else if (
+      filters?.status === "pending" ||
+      filters?.status === "awaiting"
+    ) {
+      filters.ordering = "-created_date";
     }
     getData(
       `${BASE_URL}etsy/orders/?${
