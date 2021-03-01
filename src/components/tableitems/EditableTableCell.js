@@ -6,6 +6,7 @@ const useStyles = makeStyles(() => ({
   tableCell: {
     padding: 0,
     width: "fit-content",
+    borderRight: "0.5px solid grey",
   },
 }));
 

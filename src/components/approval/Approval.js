@@ -660,14 +660,6 @@ function App({ history }) {
                 setOrderBy={setOrderBy}
               />
               <SortableTableCell
-                property="image"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="uploadFile"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
                 property="explanation"
                 handleRequestSort={handleRequestSort}
                 order={order}
@@ -735,6 +727,14 @@ function App({ history }) {
                 colName="internalNote"
                 setOrderBy={setOrderBy}
               />
+              <SortableTableCell
+                property="image"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="uploadFile"
+                setOrderBy={setOrderBy}
+              />
             </TableRow>
           </TableHead>
           {rows ? (
@@ -777,7 +777,11 @@ function App({ history }) {
                       onBlur={(e) => {
                         e.stopPropagation();
                       }}
-                      style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
+                      style={{
+                        padding: 0,
+                        borderBottom: "1px solid #e0e0e0",
+                        borderRight: "0.5px solid grey",
+                      }}
                     >
                       <FlagIcon
                         style={{
@@ -805,7 +809,7 @@ function App({ history }) {
                       {Boolean(repeatAnchorEl) && row.id === rowIdToRepeat
                         ? repeatMenu(row)
                         : null}
-                      <ThumbUpAltIcon
+                      {/* <ThumbUpAltIcon
                         style={{
                           color: row["approved"] ? "red" : "grey",
                           cursor: "pointer",
@@ -819,7 +823,7 @@ function App({ history }) {
                             row["approved"]
                           )
                         }
-                      />
+                      /> */}
                       <OrderStatus
                         {...{ row, name: "status", onSelectChange }}
                       />
@@ -837,23 +841,6 @@ function App({ history }) {
                     <EditableTableCell {...{ row, name: "size", onChange }} />
                     <EditableTableCell {...{ row, name: "start", onChange }} />
                     <EditableTableCell {...{ row, name: "space", onChange }} />
-                    <td
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                      style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
-                    >
-                      <UploadFile
-                        {...{
-                          row,
-                          name: "image",
-                          uploadFile,
-                          fileSelectedHandler,
-                          selectId,
-                          selectedRowId,
-                        }}
-                      />
-                    </td>
                     <EditableTableCell
                       {...{ row, name: "explanation", onChange }}
                     />
@@ -863,6 +850,7 @@ function App({ history }) {
                         borderBottom: "1px solid #e0e0e0",
                         pointerEvents:
                           row.status === "pending" ? "auto" : "none",
+                        borderRight: "0.5px solid grey",
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -890,6 +878,23 @@ function App({ history }) {
                       {...{ row, name: "gift_message", onChange }}
                     />
                     <EditableTableCell {...{ row, name: "note", onChange }} />
+                    <td
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
+                    >
+                      <UploadFile
+                        {...{
+                          row,
+                          name: "image",
+                          uploadFile,
+                          fileSelectedHandler,
+                          selectId,
+                          selectedRowId,
+                        }}
+                      />
+                    </td>
                   </StyledTableRow>
                 );
               })}
