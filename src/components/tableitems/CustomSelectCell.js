@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { statusData } from "../../helper/Constants";
+import { useIntl } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   opt: {
@@ -11,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 const OrderStatus = ({ row, name, onSelectChange }) => {
   const classes = useStyles();
+  const { formatMessage } = useIntl();
 
   return (
     <div>
@@ -25,7 +27,7 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         <optgroup>
           {statusData.map((item, index) => (
             <option key={`${index}+${item}`} value={item}>
-              {item}
+              {formatMessage({ id: item, defaultMessage: item })}
             </option>
           ))}
         </optgroup>
