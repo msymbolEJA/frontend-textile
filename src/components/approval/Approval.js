@@ -18,7 +18,7 @@ import {
 import {
   Flag as FlagIcon,
   Repeat as RepeatIcon,
-  ThumbUpAlt as ThumbUpAltIcon,
+  // ThumbUpAlt as ThumbUpAltIcon,
 } from "@material-ui/icons";
 
 import { putData, getData, globalSearch } from "../../helper/PostData";
@@ -269,6 +269,14 @@ function App({ history }) {
       if (
         (name === "status") &
         (value === "pending") &
+        (row.is_repeat === true)
+      ) {
+        let data = { [name]: value, is_repeat: false };
+        handleRowChange(id, data);
+      }
+      if (
+        (name === "status") &
+        (value === "pending") &
         (row.approved === true)
       ) {
         let data = { [name]: value, approved: false };
@@ -478,9 +486,15 @@ function App({ history }) {
     setRepeatAnchorEl(null);
   }, []);
 
-  const handlerRepeatChange = useCallback((e, id) => {
-    setRowIdToRepeat(id);
-    setRepeatAnchorEl(e.currentTarget);
+  const handlerRepeatChange = useCallback((e, id, is_repeat) => {
+    if (is_repeat) {
+      console.log("is_repeat");
+      let data = { is_repeat: false };
+      handleRowChange(id, data);
+    } else {
+      setRowIdToRepeat(id);
+      setRepeatAnchorEl(e.currentTarget);
+    }
   }, []);
 
   const menuClickHandler = useCallback(
@@ -803,7 +817,7 @@ function App({ history }) {
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          handlerRepeatChange(e, row.id);
+                          handlerRepeatChange(e, row.id, row.is_repeat);
                         }}
                       />
                       {Boolean(repeatAnchorEl) && row.id === rowIdToRepeat

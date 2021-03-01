@@ -31,7 +31,7 @@
   "shipmentDueDate":"Shipment Due Date",
   "quantity" : "Quantity",
   "wiewAll":"View All",
-  "pending": "Pending",
+  "pending": "PENDING",
   "ready": "READY",
   "in progress": "IN PROGRESS",
   "in transit": "IN TRANSIT",
@@ -91,5 +91,7 @@
   "carrier":"Carrier",
   "content":"Content",
   "shipmentDate":"Shipment Date",
-  "trackingNumber":"Tracking Number"
+  "trackingNumber":"Tracking Number",
+  "in_transit" : "IN TRANSIT",
+  "in_progress" : "IN PROGRESS"
 }

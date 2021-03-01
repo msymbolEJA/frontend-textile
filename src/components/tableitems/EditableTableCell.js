@@ -8,6 +8,10 @@ const useStyles = makeStyles(() => ({
     width: "fit-content",
     borderRight: "0.5px solid grey",
   },
+  input: {
+    fontSize: "0.75rem",
+    //wordWrap: "break-word"
+  },
 }));
 
 const EditableTableCell = ({ row, name, onChange }) => {
