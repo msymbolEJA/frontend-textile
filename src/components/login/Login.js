@@ -17,6 +17,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { AppContext } from "../../context/Context";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import FormControl from "@material-ui/core/FormControl";
+import NativeSelect from "@material-ui/core/NativeSelect";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -100,6 +102,7 @@ export default function Login() {
   const [loginFailed, setLoginFailed] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [linProgress, setLinProgress] = useState(false);
+  const { lang, setLang } = useContext(AppContext);
 
   const formik = useFormik({
     initialValues: {
@@ -141,11 +144,42 @@ export default function Login() {
     },
   });
 
+  const handleLangChange = (e) => {
+    setLang(e.target.value);
+  };
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginRight: "2rem",
+            marginTop: "2rem",
+          }}
+        >
+          <FormControl className={classes.formControl}>
+            <NativeSelect
+              value={lang}
+              onChange={handleLangChange}
+              className={classes.whiteColor}
+              inputProps={{
+                name: "age",
+                id: "age-native-label-placeholder",
+              }}
+            >
+              <option value="en" style={{ color: "black" }}>
+                🇺🇸
+              </option>
+              <option value="tr" style={{ color: "black" }}>
+                🇹🇷
+              </option>
+            </NativeSelect>
+          </FormControl>
+        </div>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
             <LocalMallIcon />
