@@ -12,6 +12,8 @@ import StoreIcon from "@material-ui/icons/Store";
 import Menu from "@material-ui/core/Menu";
 import { AppContext } from "../../context/Context";
 import { FormattedMessage } from "react-intl";
+import FormControl from "@material-ui/core/FormControl";
+import NativeSelect from "@material-ui/core/NativeSelect";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const STORE_NAME = process.env.REACT_APP_STORE_NAME;
@@ -45,13 +47,16 @@ const useStyles = makeStyles((theme) => ({
   userName: {
     fontSize: "1.2rem",
   },
+  whiteColor: {
+    color: "white",
+  },
 }));
 
 export default function MenuAppBar() {
   const classes = useStyles(); // eslint-disable-next-line
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
-  const { user } = useContext(AppContext);
+  const { user, lang, setLang } = useContext(AppContext);
   //console.log("user", user);
   const open = Boolean(anchorEl);
   const history = useHistory();
@@ -85,6 +90,10 @@ export default function MenuAppBar() {
   const localRole = localStorage.getItem("localRole");
   const localUser = localStorage.getItem("localUser");
 
+  const handleLangChange = (e) => {
+    setLang(e.target.value);
+  };
+
   return (
     <div className={classes.root}>
       <FormGroup></FormGroup>
@@ -103,6 +112,26 @@ export default function MenuAppBar() {
             </Typography>
           </IconButton>
           <div className={classes.title}></div>
+          <div style={{ marginRight: "2rem" }}>
+            <FormControl className={classes.formControl}>
+              <NativeSelect
+                value={lang}
+                onChange={handleLangChange}
+                className={classes.whiteColor}
+                inputProps={{
+                  name: "age",
+                  id: "age-native-label-placeholder",
+                }}
+              >
+                <option value="en" style={{ color: "black" }}>
+                  🇺🇸
+                </option>
+                <option value="tr" style={{ color: "black" }}>
+                  🇹🇷
+                </option>
+              </NativeSelect>
+            </FormControl>
+          </div>
           {auth && (
             <div className={classes.rightTop}>
               <div className={classes.userInfo}>

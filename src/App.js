@@ -1,6 +1,7 @@
+import { useContext } from "react";
 import "./App.css";
 import AppRouter from "./router/Router";
-import { ContextProvider } from "./context/Context";
+import { AppContext } from "./context/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { IntlProvider } from "react-intl";
@@ -11,20 +12,15 @@ const messages = {
   tr: messages_tr,
   en: messages_en,
 };
-const language = navigator.language.split(/[-_]/)[0];
 
 function App() {
+  const { lang } = useContext(AppContext);
+
   return (
     <div className="App">
-      <IntlProvider
-        messages={messages[language]}
-        locale={language}
-        defaultLocale="en"
-      >
-        <ContextProvider>
-          <AppRouter />
-          <ToastContainer />
-        </ContextProvider>
+      <IntlProvider messages={messages[lang]} locale={lang} defaultLocale="en">
+        <AppRouter />
+        <ToastContainer />
       </IntlProvider>
     </div>
   );
