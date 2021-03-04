@@ -140,6 +140,9 @@ export default function Login() {
             setLoginFailed(true);
             setErrorText("Something went wrong!");
           }
+        })
+        .finally(() => {
+          setLinProgress(false);
         });
     },
   });
