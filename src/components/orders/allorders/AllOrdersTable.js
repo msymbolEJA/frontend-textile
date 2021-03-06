@@ -415,7 +415,7 @@ function AllOrdersTable() {
                       <p>
                         <FormattedMessage
                           id="noFile"
-                          defaultMessage="No File"
+                          defaultMessage="-"
                         />
                       </p>
                     )}
