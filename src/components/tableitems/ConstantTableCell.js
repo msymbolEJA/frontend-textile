@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ConstantTableCell = ({ row, name, name2, name3 }) => {
+  console.log("row", row);
   const classes = useStyles();
   return (
     <TableCell
@@ -34,7 +35,7 @@ const ConstantTableCell = ({ row, name, name2, name3 }) => {
       {name === "id" ? (
         <a href={`/order-details/${row.id}`}>{row[name]}</a>
       ) : name === "created_date" ? (
-        moment(row[name]).format("DD-MM-YY HH:mm")
+        moment(row?.creation_tsz || row.created_date).format("DD-MM-YY HH:mm")
       ) : (
         row[name]?.replace(/&quot;/g, '"')?.replace(/&#39;/g, "'")
       )}
