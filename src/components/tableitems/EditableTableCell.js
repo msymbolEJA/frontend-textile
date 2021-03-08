@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
     borderRight: "0.5px solid grey",
   },
   input: {
-    fontSize: "0.75rem",
+    fontSize: "1rem",
     maxHeight: "100%",
     width: "100%",
     minWidth: "90px",
