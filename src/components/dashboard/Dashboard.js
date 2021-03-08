@@ -54,6 +54,7 @@ const Dashboard = () => {
   const [orderSummary, setOrderSummary] = useState();
   const [workshopDueDates, setWorkshopDueDates] = useState();
   const [shipmentDueDates, setShipmentDueDates] = useState();
+  const [lastDateOfOrder, setlastDateOfOrder] = useState();
   const localUser = localStorage.getItem("localUser");
 
   const userRole = user.role || localUser;
@@ -61,6 +62,8 @@ const Dashboard = () => {
   useEffect(() => {
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
       const newResult = [];
+      //console.log("response", response.data[3]);
+      setlastDateOfOrder(response.data[3]);
       response.data[0].forEach((item) => {
         newResult.push({
           cell1: item.status
@@ -216,6 +219,7 @@ const Dashboard = () => {
               defaultMessage: "COUNT",
             }).toUpperCase()}
             data={orderSummary}
+            lastDateOfOrder={lastDateOfOrder}
           />
           <SummaryTable
             title="behindSchedule"

@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
-
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import {
   Paper,
   Grid,
@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { ArrowForwardIos as ArrowForwardIosIcon } from "@material-ui/icons";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +52,7 @@ export default function SummaryTable({
   header1,
   header2,
   data,
+  lastDateOfOrder,
 }) {
   let total =
     (data !== "noOrders" &&
@@ -167,6 +169,35 @@ export default function SummaryTable({
             )}
           </Table>
         </div>
+        {title === "orders" && lastDateOfOrder ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              fontSize: "1rem",
+            }}
+          >
+            <div>
+              Date of Last Order :{" "}
+              {lastDateOfOrder
+                ? moment(lastDateOfOrder?.creation_tsz).format("DD-MM-YY HH:mm")
+                : "-"}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <p>Health Check: </p>
+              <CheckCircleIcon
+                style={{ color: "green", marginLeft: "0.5rem" }}
+              />
+            </div>
+          </div>
+        ) : null}
       </Paper>
     </Grid>
   );
