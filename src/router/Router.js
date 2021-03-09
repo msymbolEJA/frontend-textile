@@ -6,6 +6,7 @@ import { Router } from "react-router";
 // Pages
 import Dashboard from "../components/dashboard/Dashboard";
 import Account from "../components/account/Account";
+import Settings from "../components/settings/Settings";
 import Login from "../components/login/Login";
 import Navbar from "../components/navbar/Navbar";
 import NewOrder from "../components/orders/new/NewOrder";
@@ -50,6 +51,7 @@ const DefaultContainer = () => (
     <PrivateRouter exact path="/dashboard" component={Dashboard} />
     <PrivateRouter exact path="/all-orders" component={AllOrdersTable} />
     <PrivateRouter exact path="/account" component={Account} />
+    <PrivateRouter exact path="/settings" component={Settings} />
     <PrivateRouter exact path="/new-order" component={NewOrder} />
     <PrivateRouter exact path="/due-date" component={DueDate} />
     <PrivateRouter exact path="/order-prep" component={OrderPrep} />
