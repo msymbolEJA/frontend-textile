@@ -186,9 +186,9 @@ export default function MenuAppBar() {
                 <MenuItem onClick={handleAccountPage}>
                   <FormattedMessage id="account" defaultMessage="Account" />
                 </MenuItem>
-                <MenuItem onClick={handleSettingsPage}>
+                {/*         <MenuItem onClick={handleSettingsPage}>
                   <FormattedMessage id="settings" defaultMessage="Settings" />
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={handleLogout}>
                   <FormattedMessage id="logout" defaultMessage="Logout" />
                 </MenuItem>
