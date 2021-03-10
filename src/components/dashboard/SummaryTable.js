@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { ArrowForwardIos as ArrowForwardIosIcon } from "@material-ui/icons";
+import CancelIcon from "@material-ui/icons/Cancel";
 import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
@@ -53,6 +54,7 @@ export default function SummaryTable({
   header2,
   data,
   lastDateOfOrder,
+  healthCheck,
 }) {
   let total =
     (data !== "noOrders" &&
@@ -68,6 +70,10 @@ export default function SummaryTable({
   const handleClick = () => {
     history.push(next);
   };
+
+  // if (title === "orders") {
+  //   console.log("healthCheck", healthCheck);
+  // }
 
   return (
     <Grid item xs={12} md={6} className={classes.root}>
@@ -192,9 +198,15 @@ export default function SummaryTable({
               }}
             >
               <p>Health Check: </p>
-              <CheckCircleIcon
-                style={{ color: "green", marginLeft: "0.5rem" }}
-              />
+              {healthCheck ? (
+                <CheckCircleIcon
+                  style={{ color: "green", marginLeft: "0.5rem" }}
+                />
+              ) : (
+                <CancelIcon
+                  style={{ color: "#ff3333", marginLeft: "0.5rem" }}
+                />
+              )}
             </div>
           </div>
         ) : null}

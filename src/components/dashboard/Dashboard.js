@@ -55,6 +55,8 @@ const Dashboard = () => {
   const [workshopDueDates, setWorkshopDueDates] = useState();
   const [shipmentDueDates, setShipmentDueDates] = useState();
   const [lastDateOfOrder, setlastDateOfOrder] = useState();
+  const [healthCheck, setHealthCheck] = useState(false);
+
   const localUser = localStorage.getItem("localUser");
 
   const userRole = user.role || localUser;
@@ -62,8 +64,9 @@ const Dashboard = () => {
   useEffect(() => {
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
       const newResult = [];
-      //console.log("response", response.data[3]);
+      //console.log("response-Health_Check", response.data[4]);
       setlastDateOfOrder(response.data[3]);
+      setHealthCheck(response.data[4]);
       response.data[0].forEach((item) => {
         newResult.push({
           cell1: item.status
@@ -220,6 +223,7 @@ const Dashboard = () => {
             }).toUpperCase()}
             data={orderSummary}
             lastDateOfOrder={lastDateOfOrder}
+            healthCheck={healthCheck}
           />
           <SummaryTable
             title="behindSchedule"
