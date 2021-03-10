@@ -27,6 +27,7 @@ import BarcodeInput from "../../otheritems/BarcodeInput";
 import ViewImageFile from "./ViewImageFile";
 import { toastErrorNotify } from "../../otheritems/ToastNotify";
 import { getQueryParams } from "../../../helper/getQueryParams";
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 
@@ -83,19 +84,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const localUser = localStorage.getItem("localUser");
-
-let firstStatu;
-if (
-  localUser === "admin" ||
-  localUser === "shop_manager" ||
-  localUser === "shop_packer"
-) {
-  firstStatu = "pending";
-} else {
-  firstStatu = "awaiting";
-}
-
 function AllOrdersTable() {
   const [rows, setRows] = useState(null);
   const filters = getQueryParams();
@@ -105,13 +93,13 @@ function AllOrdersTable() {
   const [rowsPerPage, setRowsPerPage] = useState(250);
   const classes = useStyles();
   const [count, setCount] = useState(0);
-  const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
+  const [selectedTag, setSelectedTag] = useState(filters?.status);
   const [printFlag, setPrintFlag] = useState(false);
   const [printError, setPrintError] = useState(false);
   const [isStatuReady, setIsStatuReady] = useState(false);
   const [barcodeInput, setBarcodeInput] = useState();
   const [url, setUrl] = useState(
-    `${BASE_URL}etsy/orders/?status=${firstStatu}`
+    `${BASE_URL}etsy/orders/?status=${filters?.status}`
   );
   const history = useHistory();
   const [allPdf, setAllPdf] = useState();
@@ -413,10 +401,7 @@ function AllOrdersTable() {
                       <ViewImageFile {...{ row, name: "image" }} />
                     ) : (
                       <p>
-                        <FormattedMessage
-                          id="noFile"
-                          defaultMessage="-"
-                        />
+                        <FormattedMessage id="noFile" defaultMessage="-" />
                       </p>
                     )}
                   </td>

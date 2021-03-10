@@ -131,7 +131,21 @@ const Dashboard = () => {
       });
   }, []);
   const handleClick = (e) => {
-    history.push(`/${e.currentTarget.id}?status=pending&limit=250&offset=0`);
+    // const newStatu = getFirstStatu();
+    // console.log("newStatu", newStatu);
+    const localUser = localStorage.getItem("localUser");
+    console.log("localUser", localUser);
+    console.log(localUser === "admin");
+    const newStatu =
+      localUser === "admin" ||
+      localUser === "shop_manager" ||
+      localUser === "shop_packer"
+        ? "pending"
+        : "awaiting";
+    console.log(localUser);
+    history.push(
+      `/${e.currentTarget.id}?status=${newStatu}&limit=250&offset=0`
+    );
   };
 
   return (
