@@ -185,7 +185,11 @@ export default function SummaryTable({
             }}
           >
             <div>
-              Date of Last Order :{" "}
+              <FormattedMessage
+                id={"dateOfLastOrder"}
+                defaultMessage={"Date of Last Order"}
+              />
+              {" : "}
               {lastDateOfOrder
                 ? moment(lastDateOfOrder?.creation_tsz).format("DD-MM-YY HH:mm")
                 : "-"}

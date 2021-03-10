@@ -77,6 +77,10 @@ export default function MenuAppBar() {
     history.push("/dashboard");
     setAnchorEl(null);
   };
+  const handleSettingsPage = () => {
+    history.push("/settings");
+    setAnchorEl(null);
+  };
   const handleLogout = () => {
     history.push("/");
     setAnchorEl(null);
@@ -182,6 +186,9 @@ export default function MenuAppBar() {
                 <MenuItem onClick={handleAccountPage}>
                   <FormattedMessage id="account" defaultMessage="Account" />
                 </MenuItem>
+                {/*         <MenuItem onClick={handleSettingsPage}>
+                  <FormattedMessage id="settings" defaultMessage="Settings" />
+                </MenuItem> */}
                 <MenuItem onClick={handleLogout}>
                   <FormattedMessage id="logout" defaultMessage="Logout" />
                 </MenuItem>
