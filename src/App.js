@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import "./App.css";
 import AppRouter from "./router/Router";
 import { AppContext } from "./context/Context";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,7 +16,7 @@ function App() {
   const { lang } = useContext(AppContext);
 
   return (
-    <div className="App">
+    <div>
       <IntlProvider messages={messages[lang]} locale={lang} defaultLocale="en">
         <AppRouter />
         <ToastContainer />
