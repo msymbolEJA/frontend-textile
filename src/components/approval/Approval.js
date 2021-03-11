@@ -131,6 +131,7 @@ function App({ history }) {
   const [repeatAnchorEl, setRepeatAnchorEl] = useState();
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
   const [rowsPerPage, setRowsPerPage] = useState(250);
+  const [editName, setEditName] = useState();
 
   const getListFunc = useCallback(() => {
     getData(
@@ -216,7 +217,9 @@ function App({ history }) {
   };
 
   const handleRowClick = useCallback(
-    (id) => {
+    (id, name) => {
+      console.log(id, name);
+      setEditName(name);
       const currentRow = rows.find((row) => row.id === id);
       if (currentRow) {
         if (!currentRow.isEditMode) {
@@ -761,7 +764,6 @@ function App({ history }) {
                   <StyledTableRow
                     key={row.id}
                     id={row.id}
-                    onClick={(e) => handleRowClick(row.id)}
                     onBlur={(e) => handleRowBlur(e, row.id)}
                     onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                     style={{
@@ -847,17 +849,85 @@ function App({ history }) {
                       {...{ row, name: "created_date", name3: "buyer" }}
                     />
                     <EditableTableCell
-                      {...{ row, name: "supplier", onChange }}
+                      {...{
+                        row,
+                        name: "supplier",
+                        onChange,
+                        handleRowClick,
+                        editName,
+                      }}
                     />
-                    <EditableTableCell {...{ row, name: "type", onChange }} />
-                    <EditableTableCell {...{ row, name: "length", onChange }} />
-                    <EditableTableCell {...{ row, name: "color", onChange }} />
-                    <EditableTableCell {...{ row, name: "qty", onChange }} />
-                    <EditableTableCell {...{ row, name: "size", onChange }} />
-                    <EditableTableCell {...{ row, name: "start", onChange }} />
-                    <EditableTableCell {...{ row, name: "space", onChange }} />
                     <EditableTableCell
-                      {...{ row, name: "explanation", onChange }}
+                      {...{
+                        row,
+                        name: "type",
+                        onChange,
+                        handleRowClick,
+                        editName,
+                      }}
+                    />
+                    <EditableTableCell
+                      {...{
+                        row,
+                        name: "length",
+                        onChange,
+                        handleRowClick,
+                        editName,
+                      }}
+                    />
+                    <EditableTableCell
+                      {...{
+                        row,
+                        name: "color",
+                        onChange,
+                        handleRowClick,
+                        editName,
+                      }}
+                    />
+                    <EditableTableCell
+                      {...{
+                        row,
+                        name: "qty",
+                        onChange,
+                        handleRowClick,
+                        editName,
+                      }}
+                    />
+                    <EditableTableCell
+                      {...{
+                        row,
+                        name: "size",
+                        onChange,
+                        handleRowClick,
+                        editName,
+                      }}
+                    />
+                    <EditableTableCell
+                      {...{
+                        row,
+                        name: "start",
+                        onChange,
+                        handleRowClick,
+                        editName,
+                      }}
+                    />
+                    <EditableTableCell
+                      {...{
+                        row,
+                        name: "space",
+                        onChange,
+                        handleRowClick,
+                        editName,
+                      }}
+                    />
+                    <EditableTableCell
+                      {...{
+                        row,
+                        name: "explanation",
+                        onChange,
+                        handleRowClick,
+                        editName,
+                      }}
                     />
                     <td
                       style={{
