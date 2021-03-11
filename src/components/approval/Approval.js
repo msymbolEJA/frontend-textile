@@ -698,6 +698,7 @@ function App({ history }) {
                   <FormattedMessage id="approve" defaultMessage="Approve" /> (
                   {selected?.length})
                 </Button>
+                <br />
                 <Checkbox
                   indeterminate={
                     selected?.length > 0 && selected?.length < rows?.length

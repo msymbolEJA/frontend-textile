@@ -17,21 +17,46 @@ const useStyles = makeStyles(() => ({
     maxWidth: "90px",
     //wordWrap: "break-word"
   },
+  explanationTableCell: {
+    padding: 0,
+    minWidth: "100px",
+    maxWidth: "100px",
+    borderRight: "0.5px solid grey",
+  },
+  explanationInput: {
+    fontSize: "1rem",
+    maxHeight: "100%",
+    width: "100%",
+    minWidth: "190px",
+    maxWidth: "190px",
+    //wordWrap: "break-word"
+  },
 }));
 /* <TextareaAutosize aria-label="empty textarea" placeholder="Empty" />
  */
+
 const EditableTableCell = ({ row, name, onChange }) => {
   const classes = useStyles();
   const { isEditMode } = row;
+
+  let expTableCell;
+  let expInput;
+  if (name === "explanation") {
+    expTableCell = classes.explanationTableCell;
+    expInput = classes.explanationInput;
+  } else {
+    expTableCell = classes.tableCell;
+    expInput = classes.input;
+  }
   return (
-    <TableCell align="center" className={classes.tableCell}>
+    <TableCell align="center" className={expTableCell}>
       {isEditMode ? (
         <TextareaAutosize
           rowsMin={3}
           value={row[name] ? row[name] : ""} // first : value={row[name]} // i've changed
           name={name}
           onChange={(e) => onChange(e, row)}
-          className={classes.input}
+          className={expInput}
         />
       ) : (
         row[name]?.replace(/&quot;/g, '"')?.replace(/&#39;/g, "'")

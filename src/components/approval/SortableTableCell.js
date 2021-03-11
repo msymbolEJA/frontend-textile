@@ -24,11 +24,20 @@ const SortableTableCell = ({
   colName,
   setOrderBy,
 }) => {
+  let customStyle;
+  if (property === "explanation") {
+    customStyle = { padding: 0, textAlign: "center", minWidth: "200px" };
+  } else if (property === "id") {
+    customStyle = { padding: 0, textAlign: "center", maxWidth: "30px" };
+  } else {
+    customStyle = { padding: 0, textAlign: "center" };
+  }
+
   return (
     <>
       <StyledTableCell
         align="center"
-        style={{ padding: 0, textAlign: "center" }}
+        style={customStyle}
         //sortDirection={orderBy === "id" ? order : false}
         onClick={() => setOrderBy(property)}
       >
