@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
     width: 130,
     height: 40,
     borderRight: "0.5px solid grey",
+    maxWidth: "190px",
   },
 }));
 
