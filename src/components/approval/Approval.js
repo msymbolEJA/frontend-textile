@@ -465,25 +465,37 @@ function App({ history }) {
     [selected]
   );
 
-  const searchHandler = useCallback((e) => {
-    if (e.keyCode === 13) {
-      setRows(null);
-      if (e.target.value) {
-        globalSearch(`${BASE_URL_MAPPING}?search=${e.target.value}`)
-          .then((response) => {
-            setRows(response.data);
-            setCount(response.data.length);
-            //setList(response.data);
-          })
-          .catch((error) => {
-            console.log(error);
-            setRows([]);
-          });
+  const searchHandler = useCallback(
+    (e) => {
+      if (e.keyCode === 13) {
+        setRows(null);
+        let searchWord = e.target.value;
+        if (searchWord) {
+          globalSearch(
+            `${BASE_URL_MAPPING}?search=${searchWord}&limit=${rowsPerPage}&offset=${
+              page * rowsPerPage
+            }`
+          )
+            .then((response) => {
+              console.log(response.data.count);
+              setRows(response.data.results);
+              setCount(response?.data?.count || 0);
+              //setList(response.data.results);
+              let newUrl = "";
+              newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+              history.push(`/approval?&${searchWord}&${newUrl}`);
+            })
+            .catch((error) => {
+              console.log(error);
+              setRows([]);
+            });
+        }
+      } else {
+        // console.log(e.target.value);
       }
-    } else {
-      // console.log(e.target.value);
-    }
-  }, []);
+    },
+    [rowsPerPage, page]
+  );
 
   const handleClose = useCallback(() => {
     setRepeatAnchorEl(null);
