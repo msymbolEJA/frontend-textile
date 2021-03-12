@@ -112,7 +112,7 @@ function AllOrdersTable() {
       filters?.status === "pending" ||
       filters?.status === "awaiting"
     ) {
-      filters.ordering = "-created_date";
+      filters.ordering = "-creation_tsz";
     }
     getData(
       `${BASE_URL}etsy/orders/?${

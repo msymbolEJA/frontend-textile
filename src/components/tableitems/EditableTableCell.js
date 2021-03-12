@@ -60,7 +60,7 @@ const EditableTableCell = ({
       className={expTableCell}
       onClick={(e) => handleRowClick(row.id, name)}
     >
-      {isEditMode && editName == name ? (
+      {isEditMode && editName === name ? (
         <TextareaAutosize
           rowsMin={3}
           value={row[name] ? row[name] : ""} // first : value={row[name]} // i've changed
