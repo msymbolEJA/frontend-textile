@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
     width: "100px",
 
     //minWidth: "100px",
-    //maxWidth: "100px",
+    maxWidth: "100px",
     borderRight: "0.5px solid grey",
   },
   input: {
@@ -27,6 +27,7 @@ const useStyles = makeStyles(() => ({
     width: "100px",
     // minHeight: "100px",
     borderRight: "0.5px solid grey",
+    maxWidth: "300px",
   },
   explanationInput: {
     fontSize: "1rem",
