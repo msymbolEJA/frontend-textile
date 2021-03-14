@@ -191,7 +191,7 @@ export default function SummaryTable({
               />
               {" : "}
               {lastDateOfOrder
-                ? moment(lastDateOfOrder?.creation_tsz).format("DD-MM-YY HH:mm")
+                ? moment(lastDateOfOrder?.creation_tsz).format("MM-DD-YY HH:mm")
                 : "-"}
             </div>
             <div

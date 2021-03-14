@@ -139,9 +139,9 @@ function App({ history }) {
         filters?.status ? `status=${filters?.status}` : ""
       }&is_repeat=${filters?.is_repeat}&is_followup=${
         filters?.is_followup
-      }&ordering=${
-        filters?.ordering || "-created_date"
-      }&limit=${rowsPerPage}&offset=${filters?.offset}`
+      }&ordering=${filters?.ordering || "-id"}&limit=${rowsPerPage}&offset=${
+        filters?.offset
+      }`
     )
       .then((response) => {
         // setRows(response.data);
@@ -181,24 +181,13 @@ function App({ history }) {
     [history, order]
   );
 
-  const onChange = useCallback(
-    (e, row) => {
-      if (!previous[row.id]) {
-        setPrevious((state) => ({ ...state, [row.id]: row }));
-      }
-      const value = e.target.value;
-      const name = e.target.name;
-      const { id } = row;
-      const newRows = rows?.map((row) => {
-        if (row.id === id) {
-          return { ...row, [name]: value };
-        }
-        return row;
-      });
-      setRows(newRows);
-    },
-    [previous, rows]
-  );
+  const onChange = useCallback((e, id, name) => {
+    if (!name || !e?.target?.innerText) return;
+    console.log("test:", name, e.target.innerText);
+    handleRowChange(id, { [name]: e.target.innerText });
+
+    //    setEditedCellInfo({ rowId: id, field: name, value: e.target.innerText });
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     let currentUrlParams = new URLSearchParams(window.location.search);
@@ -216,7 +205,7 @@ function App({ history }) {
     history.push(history.location.pathname + "?" + currentUrlParams.toString());
   };
 
-  const handleRowClick = useCallback(
+  /*  const handleRowClick = useCallback(
     (id, name) => {
       console.log(id, name);
       setEditName(name);
@@ -231,10 +220,13 @@ function App({ history }) {
       }
     },
     [rows]
-  );
+  ); */
 
   const handleRowChange = useCallback(
     (id, data) => {
+      console.log("id", id);
+      console.log("data", data);
+      console.log("handleRowChange");
       putData(`${BASE_URL_MAPPING}${id}/`, data)
         .then((response) => {})
         .catch((error) => {
@@ -247,9 +239,10 @@ function App({ history }) {
 
   const handleRowKeyDown = useCallback(
     (e, id) => {
+      console.log("handleRowKeyDown");
       if (e.key === "Enter") {
         let data = { [e.target.name]: e.target.defaultValue };
-        handleRowChange(id, data);
+        //  handleRowChange(id, data);
       }
     },
     [handleRowChange]
@@ -257,8 +250,9 @@ function App({ history }) {
 
   const handleRowBlur = useCallback(
     (e, id) => {
+      console.log("handleRowBlur");
       let data = { [e.target.name]: e.target.defaultValue };
-      handleRowChange(id, data);
+      // handleRowChange(id, data);
     },
     [handleRowChange]
   );
@@ -865,7 +859,7 @@ function App({ history }) {
                         row,
                         name: "supplier",
                         onChange,
-                        handleRowClick,
+                        // handleRowClick,
                         editName,
                       }}
                     />
@@ -874,7 +868,7 @@ function App({ history }) {
                         row,
                         name: "type",
                         onChange,
-                        handleRowClick,
+                        // handleRowClick,
                         editName,
                       }}
                     />
@@ -883,7 +877,7 @@ function App({ history }) {
                         row,
                         name: "length",
                         onChange,
-                        handleRowClick,
+                        // handleRowClick,
                         editName,
                       }}
                     />
@@ -892,7 +886,7 @@ function App({ history }) {
                         row,
                         name: "color",
                         onChange,
-                        handleRowClick,
+                        // handleRowClick,
                         editName,
                       }}
                     />
@@ -901,7 +895,7 @@ function App({ history }) {
                         row,
                         name: "qty",
                         onChange,
-                        handleRowClick,
+                        // handleRowClick,
                         editName,
                       }}
                     />
@@ -910,7 +904,7 @@ function App({ history }) {
                         row,
                         name: "size",
                         onChange,
-                        handleRowClick,
+                        // handleRowClick,
                         editName,
                       }}
                     />
@@ -919,7 +913,7 @@ function App({ history }) {
                         row,
                         name: "start",
                         onChange,
-                        handleRowClick,
+                        // handleRowClick,
                         editName,
                       }}
                     />
@@ -928,7 +922,7 @@ function App({ history }) {
                         row,
                         name: "space",
                         onChange,
-                        handleRowClick,
+                        // handleRowClick,
                         editName,
                       }}
                     />
@@ -937,7 +931,7 @@ function App({ history }) {
                         row,
                         name: "explanation",
                         onChange,
-                        handleRowClick,
+                        // handleRowClick,
                         editName,
                       }}
                     />
