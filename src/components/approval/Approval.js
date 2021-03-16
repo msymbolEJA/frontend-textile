@@ -511,7 +511,7 @@ function App({ history }) {
       const data = {
         is_repeat: true,
         status: "awaiting",
-        note: "**REPEAT: " + reason + "** " + row?.note,
+        explanation: "**REPEAT: " + reason + "** " + row?.explanation,
       };
       handleRowChange(row.id, data);
       handleClose();
