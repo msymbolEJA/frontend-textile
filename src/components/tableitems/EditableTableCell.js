@@ -37,7 +37,14 @@ const useStyles = makeStyles(() => ({
     maxWidth: "190px",
     //wordWrap: "break-word"
   },
+  editable: {
+    minHeight: "109px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 }));
+
 /* <TextareaAutosize aria-label="empty textarea" placeholder="Empty" />
  */
 
@@ -79,6 +86,7 @@ const EditableTableCell = ({
       //  onClick={(e) => handleRowClick(row.id, name)}
     >
       <ContentEditable
+        className={classes.editable}
         html={content} // innerHTML of the editable div
         disabled={false} // use true to disable edition
         onChange={handleContentChange} // handle innerHTML change
