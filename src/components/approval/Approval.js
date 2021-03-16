@@ -698,7 +698,7 @@ function App({ history }) {
                 }}
               >
                 <Button
-                  color="secondary"
+                  color="primary"
                   variant="contained"
                   onClick={handleApproveSelected}
                   className={classes.approveButton}
@@ -715,6 +715,7 @@ function App({ history }) {
                   checked={
                     rows?.length > 0 && selected?.length === rows?.length
                   }
+                  color="primary"
                   onChange={handleSelectAllClick}
                   inputProps={{ "aria-label": "select all" }}
                 />
@@ -956,6 +957,7 @@ function App({ history }) {
                     >
                       <Checkbox
                         checked={isItemSelected}
+                        color="primary"
                         inputProps={{ "aria-labelledby": labelId }}
                       />
                     </td>
