@@ -695,6 +695,7 @@ function App({ history }) {
                 style={{
                   padding: 0,
                   pointerEvents: selectedTag === "pending" ? "auto" : "none",
+                  borderRight: "0.5px solid grey",
                 }}
               >
                 <Button
