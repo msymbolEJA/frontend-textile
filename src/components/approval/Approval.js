@@ -695,7 +695,7 @@ function App({ history }) {
                 style={{
                   padding: 0,
                   pointerEvents: selectedTag === "pending" ? "auto" : "none",
-                  borderRight: "0.5px solid grey",
+                  borderRight: "0.5px solid #E0E0E0",
                 }}
               >
                 <Button
@@ -805,7 +805,7 @@ function App({ history }) {
                       style={{
                         padding: 0,
                         borderBottom: "1px solid #e0e0e0",
-                        borderRight: "0.5px solid grey",
+                        borderRight: "0.5px solid #E0E0E0",
                       }}
                     >
                       <FlagIcon
@@ -943,7 +943,7 @@ function App({ history }) {
                         borderBottom: "1px solid #e0e0e0",
                         pointerEvents:
                           row.status === "pending" ? "auto" : "none",
-                        borderRight: "0.5px solid grey",
+                        borderRight: "0.5px solid #E0E0E0",
                       }}
                       onClick={(e) => {
                         e.stopPropagation();

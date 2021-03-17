@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   tableCell: {
     width: 130,
     height: 40,
-    borderRight: "0.5px solid grey",
+    borderRight: "0.5px solid #E0E0E0",
     maxWidth: "190px",
   },
 }));

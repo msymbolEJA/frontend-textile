@@ -66,4 +66,5 @@ export const STORE_BASE_URLS = {
   SHINY: "http://144.202.67.136:8080/",
   SILVERISTIC: "http://45.32.195.132:8080/",
   SILVERBYSWAN: "http://209.250.229.146:8080/",
+  LALYN: "http://37.148.213.60:8080/",
 };
