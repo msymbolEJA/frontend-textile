@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useContext,
+} from "react";
 
 import {
   Button,
@@ -14,6 +20,7 @@ import {
   TextField,
   CircularProgress,
 } from "@material-ui/core";
+import { AppContext } from "../../../context/Context";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomButtonGroup from "./CustomButtonGroup";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
@@ -86,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AllOrdersTable() {
   const [rows, setRows] = useState(null);
+  const { user } = useContext(AppContext);
   const filters = getQueryParams();
   const barcodeInputRef = useRef();
   const { formatMessage } = useIntl();
@@ -94,7 +102,9 @@ function AllOrdersTable() {
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [selectedTag, setSelectedTag] = useState(filters?.status);
-  const [printFlag, setPrintFlag] = useState(false);
+  const [printFlag, setPrintFlag] = useState(
+    filters?.status === "awaiting" ? true : false
+  );
   const [printError, setPrintError] = useState(false);
   const [isStatuReady, setIsStatuReady] = useState(false);
   const [barcodeInput, setBarcodeInput] = useState();
@@ -104,6 +114,9 @@ function AllOrdersTable() {
   const history = useHistory();
   const [allPdf, setAllPdf] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
+  const localUser = localStorage.getItem("localUser");
+
+  const userRole = user.role || localUser;
 
   const getListFunc = useCallback(() => {
     if (filters?.status === "shipped" || filters?.status === "ready") {
@@ -167,7 +180,7 @@ function AllOrdersTable() {
   const handleTagChange = useCallback(
     (e) => {
       setRows(null);
-      const statu = e.currentTarget.id;
+      const statu = e.currentTarget.id || filters?.status;
       setSelectedTag(statu);
       let newUrl = "";
       switch (statu) {
@@ -195,7 +208,7 @@ function AllOrdersTable() {
       history.push(`/all-orders?&${newUrl}`);
       setPage(0);
     },
-    [history, page, rowsPerPage]
+    [filters, history, page, rowsPerPage]
   );
 
   const getAllPdfFunc = () => {
@@ -315,12 +328,19 @@ function AllOrdersTable() {
                   defaultMessage="Created TSZ"
                 />
               </StyledTableCell>
-              <StyledTableCell align="center">
-                <FormattedMessage id="buyer" defaultMessage="Buyer" />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <FormattedMessage id="supplier" defaultMessage="Supplier" />
-              </StyledTableCell>
+              {userRole === "admin" ||
+              userRole === "shop_manager" ||
+              userRole === "shop_packer" ? (
+                <>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="buyer" defaultMessage="Buyer" />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="supplier" defaultMessage="Supplier" />
+                  </StyledTableCell>
+                </>
+              ) : null}
+
               <StyledTableCell align="center">
                 <FormattedMessage id="status" defaultMessage="Status" />
               </StyledTableCell>
@@ -385,8 +405,14 @@ function AllOrdersTable() {
                     }}
                   />
                   <CustomTableCell {...{ row, name: "creation_tsz" }} />
-                  <CustomTableCell {...{ row, name: "buyer" }} />
-                  <CustomTableCell {...{ row, name: "supplier" }} />
+                  {userRole === "admin" ||
+                  userRole === "shop_manager" ||
+                  userRole === "shop_packer" ? (
+                    <>
+                      <CustomTableCell {...{ row, name: "buyer" }} />
+                      <CustomTableCell {...{ row, name: "supplier" }} />
+                    </>
+                  ) : null}
                   <CustomTableCell {...{ row, name: "status" }} />
                   <CustomTableCell {...{ row, name: "type" }} />
                   <CustomTableCell {...{ row, name: "length" }} />
