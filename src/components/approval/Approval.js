@@ -186,6 +186,7 @@ function App({ history }) {
     handleRowChange(id, { [name]: e.target.innerText });
 
     //    setEditedCellInfo({ rowId: id, field: name, value: e.target.innerText });
+    // eslint-disable-next-line
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -236,25 +237,25 @@ function App({ history }) {
     [getListFunc]
   );
 
-  const handleRowKeyDown = useCallback(
-    (e, id) => {
-      console.log("handleRowKeyDown");
-      if (e.key === "Enter") {
-        let data = { [e.target.name]: e.target.defaultValue };
-        //  handleRowChange(id, data);
-      }
-    },
-    [handleRowChange]
-  );
+  // const handleRowKeyDown = useCallback(
+  //   (e, id) => {
+  //     console.log("handleRowKeyDown");
+  //     if (e.key === "Enter") {
+  //       let data = { [e.target.name]: e.target.defaultValue };
+  //       //  handleRowChange(id, data);
+  //     }
+  //   },
+  //   [handleRowChange]
+  // );
 
-  const handleRowBlur = useCallback(
-    (e, id) => {
-      console.log("handleRowBlur");
-      let data = { [e.target.name]: e.target.defaultValue };
-      // handleRowChange(id, data);
-    },
-    [handleRowChange]
-  );
+  // const handleRowBlur = useCallback(
+  //   (e, id) => {
+  //     console.log("handleRowBlur");
+  //     let data = { [e.target.name]: e.target.defaultValue };
+  //     // handleRowChange(id, data);
+  //   },
+  //   [handleRowChange]
+  // );
 
   const onSelectChange = useCallback(
     (e, row) => {
@@ -487,6 +488,7 @@ function App({ history }) {
         // console.log(e.target.value);
       }
     },
+    // eslint-disable-next-line
     [rowsPerPage, page]
   );
 
@@ -503,6 +505,7 @@ function App({ history }) {
       setRowIdToRepeat(id);
       setRepeatAnchorEl(e.currentTarget);
     }
+    // eslint-disable-next-line
   }, []);
 
   const menuClickHandler = useCallback(
@@ -771,8 +774,8 @@ function App({ history }) {
                   <StyledTableRow
                     key={row.id}
                     id={row.id}
-                    onBlur={(e) => handleRowBlur(e, row.id)}
-                    onKeyDown={(e) => handleRowKeyDown(e, row.id)}
+                    //onBlur={(e) => handleRowBlur(e, row.id)}
+                    //onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                     style={{
                       backgroundColor:
                         (row.status !== "pending") & (row.approved === false)
