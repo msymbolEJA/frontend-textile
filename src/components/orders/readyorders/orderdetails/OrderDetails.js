@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -14,6 +14,7 @@ import { getOnePdf, getData, putData } from "../../../../helper/PostData";
 import OrderDetailsCargoPage from "./OrderDetailsCargoPage";
 import moment from "moment";
 import { FormattedMessage, useIntl } from "react-intl";
+import { AppContext } from "../../../../context/Context";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
@@ -83,12 +84,17 @@ const useStyles = makeStyles((theme) => ({
 
 const OrderDetails = ({ match }) => {
   const [rows, setRows] = useState([]);
+  const { user } = useContext(AppContext);
+
   const [logs, setLogs] = useState([]);
   const [isPdfExist, setIsPdfExist] = useState(false);
   // console.log("isPdfExist", isPdfExist);
   const [refresh, setRefresh] = useState(false);
   const classes = useStyles();
   const { formatMessage } = useIntl();
+  const localUser = localStorage.getItem("localUser");
+
+  const userRole = user.role || localUser;
 
   const getPdf = () => {
     let data = match.params.id;
@@ -178,41 +184,47 @@ const OrderDetails = ({ match }) => {
               defaultMessage="Order Details"
             />
           </Typography>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row-reverse",
-              marginRight: "0.5rem",
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                className={classes.button}
-                onClick={handleSendToStock}
+          {userRole === "admin" ||
+          userRole === "shop_manager" ||
+          userRole === "shop_packer" ? (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row-reverse",
+                  marginRight: "0.5rem",
+                }}
               >
-                <FormattedMessage
-                  id="sendToStock"
-                  defaultMessage="Send To Stock"
-                />
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                size="small"
-                className={classes.button}
-                style={{ marginTop: "0.3rem", marginBottom: "0.2rem" }}
-                onClick={handleSoldFromStock}
-              >
-                <FormattedMessage
-                  id="soldFromStock"
-                  defaultMessage="Sold from Stock"
-                />
-              </Button>
-            </div>
-          </div>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    className={classes.button}
+                    onClick={handleSendToStock}
+                  >
+                    <FormattedMessage
+                      id="sendToStock"
+                      defaultMessage="Send To Stock"
+                    />
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    className={classes.button}
+                    style={{ marginTop: "0.3rem", marginBottom: "0.2rem" }}
+                    onClick={handleSoldFromStock}
+                  >
+                    <FormattedMessage
+                      id="soldFromStock"
+                      defaultMessage="Sold from Stock"
+                    />
+                  </Button>
+                </div>
+              </div>
+            </>
+          ) : null}
         </div>
 
         <TableContainer className={classes.container}>
@@ -239,12 +251,21 @@ const OrderDetails = ({ match }) => {
                 <StyledTableCell align="center">
                   <FormattedMessage id="status" defaultMessage="Status" />
                 </StyledTableCell>
-                <StyledTableCell align="center">
-                  <FormattedMessage id="buyer" defaultMessage="Buyer" />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <FormattedMessage id="supplier" defaultMessage="Supplier" />
-                </StyledTableCell>
+                {userRole === "admin" ||
+                userRole === "shop_manager" ||
+                userRole === "shop_packer" ? (
+                  <>
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="buyer" defaultMessage="Buyer" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <FormattedMessage
+                        id="supplier"
+                        defaultMessage="Supplier"
+                      />
+                    </StyledTableCell>
+                  </>
+                ) : null}
                 <StyledTableCell align="center">
                   <FormattedMessage id="type" defaultMessage="Type" />
                 </StyledTableCell>
@@ -284,8 +305,14 @@ const OrderDetails = ({ match }) => {
                     />
                     <CustomTableCell {...{ row, name: "created_date" }} />
                     <CustomTableCell {...{ row, name: "status" }} />
-                    <CustomTableCell {...{ row, name: "buyer" }} />
-                    <CustomTableCell {...{ row, name: "supplier" }} />
+                    {userRole === "admin" ||
+                    userRole === "shop_manager" ||
+                    userRole === "shop_packer" ? (
+                      <>
+                        <CustomTableCell {...{ row, name: "buyer" }} />
+                        <CustomTableCell {...{ row, name: "supplier" }} />
+                      </>
+                    ) : null}
                     <CustomTableCell {...{ row, name: "type" }} />
                     <CustomTableCell {...{ row, name: "length" }} />
                     <CustomTableCell {...{ row, name: "color" }} />

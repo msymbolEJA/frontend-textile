@@ -136,7 +136,6 @@ function App({ history }) {
 
   const getListFunc = useCallback(() => {
     if (!searchProg) {
-      console.log("getListFunc");
       getData(
         `${BASE_URL_MAPPING}?${
           filters?.status ? `status=${filters?.status}` : ""

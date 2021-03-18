@@ -121,12 +121,8 @@ function AllOrdersTable() {
   const getListFunc = useCallback(() => {
     if (filters?.status === "shipped" || filters?.status === "ready") {
       filters.ordering = "-last_updated";
-    } else if (
-      filters?.status === "pending" ||
-      filters?.status === "awaiting"
-    ) {
-      filters.ordering = "-creation_tsz";
-    }
+    } else filters.ordering = "-id";
+
     getData(
       `${BASE_URL}etsy/orders/?${
         filters?.status ? `status=${filters?.status}` : ""
@@ -273,10 +269,18 @@ function AllOrdersTable() {
       } else if (isInProgress) {
         changeOrderStatus(id, "ready");
       } else {
-        toastErrorNotify(`Current status: ${res?.data?.status}`.toUpperCase());
+        alert(
+          `${formatMessage({
+            id: "status",
+            defaultMessage: "Status",
+          })}: ${formatMessage({
+            id: res?.data?.status,
+            defaultMessage: res?.data?.status.toUpperCase(),
+          })}`
+        );
       }
     } catch (error) {
-      toastErrorNotify(error?.response?.data?.detail || error?.message);
+      alert(error?.response?.data?.detail || error?.message);
     } finally {
       barcodeInputRef.current.value = null;
     }
