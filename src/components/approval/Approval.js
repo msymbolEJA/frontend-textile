@@ -131,28 +131,33 @@ function App({ history }) {
   const [repeatAnchorEl, setRepeatAnchorEl] = useState();
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
   const [rowsPerPage, setRowsPerPage] = useState(250);
+  const [searchProg, setSearchProg] = useState(false);
+  const [searchWord, setSearchWord] = useState("");
 
   const getListFunc = useCallback(() => {
-    getData(
-      `${BASE_URL_MAPPING}?${
-        filters?.status ? `status=${filters?.status}` : ""
-      }&is_repeat=${filters?.is_repeat}&is_followup=${
-        filters?.is_followup
-      }&ordering=${filters?.ordering || "-id"}&limit=${rowsPerPage}&offset=${
-        filters?.offset
-      }`
-    )
-      .then((response) => {
-        // setRows(response.data);
-        setRows(response.data.results);
+    if (!searchProg) {
+      console.log("getListFunc");
+      getData(
+        `${BASE_URL_MAPPING}?${
+          filters?.status ? `status=${filters?.status}` : ""
+        }&is_repeat=${filters?.is_repeat}&is_followup=${
+          filters?.is_followup
+        }&ordering=${filters?.ordering || "-id"}&limit=${rowsPerPage}&offset=${
+          filters?.offset
+        }`
+      )
+        .then((response) => {
+          // setRows(response.data);
+          setRows(response.data.results);
 
-        // setCount(response.data.length);
-        setCount(response.data.count);
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  }, [filters, rowsPerPage]);
+          // setCount(response.data.length);
+          setCount(response.data.count);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    }
+  }, [filters, rowsPerPage, searchProg]);
 
   useEffect(() => {
     getListFunc();
@@ -375,6 +380,7 @@ function App({ history }) {
 
   const handleTagChange = useCallback(
     (e) => {
+      setSearchProg(false);
       setRows(null);
       document.getElementById("globalSearch").value = "";
       const statu = e.currentTarget.id;
@@ -459,30 +465,47 @@ function App({ history }) {
     [selected]
   );
 
+  //let searchWord;
+  useEffect(() => {
+    if (searchWord) {
+      globalSearchFunc(searchWord);
+    }
+  }, [rowsPerPage, page, searchWord]);
+
+  const globalSearchFunc = useCallback(
+    (searchWord) => {
+      globalSearch(
+        `${BASE_URL_MAPPING}?search=${searchWord}&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`
+      )
+        .then((response) => {
+          console.log(response.data.count);
+          setRows(response.data.results);
+          setCount(response?.data?.count || 0);
+          //setList(response.data.results);
+          let newUrl = "";
+          newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+          history.push(`/approval?&${searchWord}&${newUrl}`);
+        })
+        .catch((error) => {
+          console.log(error);
+          setRows([]);
+        });
+    },
+    [rowsPerPage, page, searchWord]
+  );
+
   const searchHandler = useCallback(
     (e) => {
       if (e.keyCode === 13) {
         setRows(null);
-        let searchWord = e.target.value;
+        setSearchProg(!(e.target.value === ""));
+        setSearchWord(e.target.value);
+        // searchWord = ;
         if (searchWord) {
-          globalSearch(
-            `${BASE_URL_MAPPING}?search=${searchWord}&limit=${rowsPerPage}&offset=${
-              page * rowsPerPage
-            }`
-          )
-            .then((response) => {
-              console.log(response.data.count);
-              setRows(response.data.results);
-              setCount(response?.data?.count || 0);
-              //setList(response.data.results);
-              let newUrl = "";
-              newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
-              history.push(`/approval?&${searchWord}&${newUrl}`);
-            })
-            .catch((error) => {
-              console.log(error);
-              setRows([]);
-            });
+          globalSearchFunc(searchWord);
+          setPage(0);
         }
       } else {
         // console.log(e.target.value);
