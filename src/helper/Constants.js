@@ -68,3 +68,11 @@ export const STORE_BASE_URLS = {
   SILVERBYSWAN: "http://209.250.229.146:8080/",
   LALYN: "http://37.148.213.60:8080/",
 };
+
+export const STORE_SERIES = {
+  BELKY: "Kalpli Serisi",
+  SHINY: "Güneş Serisi",
+  SILVERISTIC: "Hilal Serisi",
+  SILVERBYSWAN: "Papyon Serisi",
+  LALYN: "Ankara Serisi",
+};
