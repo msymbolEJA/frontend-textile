@@ -498,14 +498,14 @@ function App({ history }) {
 
   const searchHandler = useCallback(
     (e) => {
-      if (e.keyCode === 13) {
+      if (e.keyCode === 13 && !(e.target.value === "")) {
         setRows(null);
         setSearchProg(!(e.target.value === ""));
         setSearchWord(e.target.value);
+        setPage(0);
         // searchWord = ;
         if (searchWord) {
           globalSearchFunc(searchWord);
-          setPage(0);
         }
       } else {
         // console.log(e.target.value);
