@@ -226,7 +226,7 @@ const Dashboard = () => {
           <SummaryTable
             title="orders"
             total={0}
-            next="/all-orders?status=pending&limit=250&offset=0"
+            next="/all-orders?&status=awaiting&limit=250&offset=0"
             icon={<ListAltIcon className={classes.icon} color="primary" />}
             header1={formatMessage({
               id: "status",
