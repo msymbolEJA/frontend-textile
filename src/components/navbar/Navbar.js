@@ -77,10 +77,10 @@ export default function MenuAppBar() {
     history.push("/dashboard");
     setAnchorEl(null);
   };
-  const handleSettingsPage = () => {
-    history.push("/settings");
-    setAnchorEl(null);
-  };
+  // const handleSettingsPage = () => {
+  //   history.push("/settings");
+  //   setAnchorEl(null);
+  // };
   const handleLogout = () => {
     history.push("/");
     setAnchorEl(null);
