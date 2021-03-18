@@ -57,7 +57,7 @@ const Dashboard = () => {
   const [lastDateOfOrder, setlastDateOfOrder] = useState();
   const [healthCheck, setHealthCheck] = useState(false);
 
-  const localUser = localStorage.getItem("localUser");
+  let localUser = localStorage.getItem("localUser");
 
   const userRole = user.role || localUser;
 
@@ -131,19 +131,20 @@ const Dashboard = () => {
         setShipmentDueDates("noOrders");
       });
   }, []);
+
+  console.log("localUser", localUser);
+  console.log(localUser === "admin");
+  const newStatu =
+    localUser === "admin" ||
+    localUser === "shop_manager" ||
+    localUser === "shop_packer"
+      ? "pending"
+      : "awaiting";
+  console.log(localUser);
+
   const handleClick = (e) => {
     // const newStatu = getFirstStatu();
     // console.log("newStatu", newStatu);
-    const localUser = localStorage.getItem("localUser");
-    console.log("localUser", localUser);
-    console.log(localUser === "admin");
-    const newStatu =
-      localUser === "admin" ||
-      localUser === "shop_manager" ||
-      localUser === "shop_packer"
-        ? "pending"
-        : "awaiting";
-    console.log(localUser);
     history.push(
       `/${e.currentTarget.id}?status=${newStatu}&limit=250&offset=0`
     );
@@ -226,7 +227,7 @@ const Dashboard = () => {
           <SummaryTable
             title="orders"
             total={0}
-            next="/all-orders?&status=awaiting&limit=250&offset=0"
+            next={`/all-orders?&status=${newStatu}&limit=250&offset=0`}
             icon={<ListAltIcon className={classes.icon} color="primary" />}
             header1={formatMessage({
               id: "status",
