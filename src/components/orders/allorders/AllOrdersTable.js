@@ -150,6 +150,7 @@ function AllOrdersTable() {
 
   useEffect(() => {
     getListFunc();
+    getAllPdfFunc();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.ordering,
