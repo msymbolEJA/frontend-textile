@@ -118,7 +118,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 function App({ history }) {
   const [rows, setRows] = useState(null);
-  const [previous, setPrevious] = useState({});
+  //const [previous, setPrevious] = useState({});
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(0);
@@ -131,7 +131,6 @@ function App({ history }) {
   const [repeatAnchorEl, setRepeatAnchorEl] = useState();
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
   const [rowsPerPage, setRowsPerPage] = useState(250);
-  const [editName, setEditName] = useState();
 
   const getListFunc = useCallback(() => {
     getData(
@@ -861,8 +860,6 @@ function App({ history }) {
                         row,
                         name: "supplier",
                         onChange,
-                        // handleRowClick,
-                        editName,
                       }}
                     />
                     <EditableTableCell
@@ -870,8 +867,6 @@ function App({ history }) {
                         row,
                         name: "type",
                         onChange,
-                        // handleRowClick,
-                        editName,
                       }}
                     />
                     <EditableTableCell
@@ -879,8 +874,6 @@ function App({ history }) {
                         row,
                         name: "length",
                         onChange,
-                        // handleRowClick,
-                        editName,
                       }}
                     />
                     <EditableTableCell
@@ -888,8 +881,6 @@ function App({ history }) {
                         row,
                         name: "color",
                         onChange,
-                        // handleRowClick,
-                        editName,
                       }}
                     />
                     <EditableTableCell
@@ -897,8 +888,6 @@ function App({ history }) {
                         row,
                         name: "qty",
                         onChange,
-                        // handleRowClick,
-                        editName,
                       }}
                     />
                     <EditableTableCell
@@ -906,8 +895,6 @@ function App({ history }) {
                         row,
                         name: "size",
                         onChange,
-                        // handleRowClick,
-                        editName,
                       }}
                     />
                     <EditableTableCell
@@ -915,8 +902,6 @@ function App({ history }) {
                         row,
                         name: "start",
                         onChange,
-                        // handleRowClick,
-                        editName,
                       }}
                     />
                     <EditableTableCell
@@ -924,8 +909,6 @@ function App({ history }) {
                         row,
                         name: "space",
                         onChange,
-                        // handleRowClick,
-                        editName,
                       }}
                     />
                     <EditableTableCell
@@ -933,8 +916,6 @@ function App({ history }) {
                         row,
                         name: "explanation",
                         onChange,
-                        // handleRowClick,
-                        editName,
                       }}
                     />
                     <td

@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import ContentEditable from "react-contenteditable";
 
 const useStyles = makeStyles(() => ({
@@ -48,15 +47,8 @@ const useStyles = makeStyles(() => ({
 /* <TextareaAutosize aria-label="empty textarea" placeholder="Empty" />
  */
 
-const EditableTableCell = ({
-  row,
-  name,
-  onChange,
-  handleRowClick,
-  editName,
-}) => {
+const EditableTableCell = ({ row, name, onChange }) => {
   const classes = useStyles();
-  const { isEditMode } = row;
   const [content, setContent] = useState(row[name] || "");
 
   const handleContentChange = useCallback((e) => {
@@ -67,17 +59,16 @@ const EditableTableCell = ({
     (e) => {
       onChange(e, row.id, name);
     },
+    // eslint-disable-next-line
     [onChange, row]
   );
 
   let expTableCell;
-  let expInput;
+
   if (name === "explanation") {
     expTableCell = classes.explanationTableCell;
-    expInput = classes.explanationInput;
   } else {
     expTableCell = classes.tableCell;
-    expInput = classes.input;
   }
   return (
     <TableCell
