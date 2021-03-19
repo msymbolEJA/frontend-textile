@@ -517,6 +517,10 @@ function AllOrdersTable() {
             </div>
           </div>
         ) : null}
+        <div style={{ display: "flex", color: "#001A33" }}>
+          <FormattedMessage id="totalRecord" defaultMessage="Total Record" /> :{" "}
+          {count}
+        </div>
         <AllTable />
         {printError ? <h1>{printError}</h1> : null}
         {printFlag ? (
