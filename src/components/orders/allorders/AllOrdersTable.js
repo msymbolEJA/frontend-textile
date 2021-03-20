@@ -32,7 +32,7 @@ import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
 import ViewImageFile from "./ViewImageFile";
-import { toastErrorNotify } from "../../otheritems/ToastNotify";
+//import { toastErrorNotify } from "../../otheritems/ToastNotify";
 import { getQueryParams } from "../../../helper/getQueryParams";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;

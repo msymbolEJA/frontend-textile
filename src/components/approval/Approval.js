@@ -469,6 +469,7 @@ function App({ history }) {
     if (searchWord) {
       globalSearchFunc(searchWord);
     }
+    // eslint-disable-next-line
   }, [rowsPerPage, page, searchWord]);
 
   const globalSearchFunc = useCallback(
@@ -492,6 +493,7 @@ function App({ history }) {
           setRows([]);
         });
     },
+    // eslint-disable-next-line
     [rowsPerPage, page, searchWord]
   );
 
