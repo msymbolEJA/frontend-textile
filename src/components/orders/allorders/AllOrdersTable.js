@@ -27,7 +27,12 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import { tagsData, nonAdminTagsData } from "../../../helper/Constants";
-import { getData, putData, getAllPdf } from "../../../helper/PostData";
+import {
+  getData,
+  putData,
+  getAllPdf,
+  globalSearch,
+} from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
@@ -114,35 +119,42 @@ function AllOrdersTable() {
   const history = useHistory();
   const [allPdf, setAllPdf] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
+  //const [searchProg, setSearchProg] = useState(false);
+  const [searchWord, setSearchWord] = useState("");
+
   const localUser = localStorage.getItem("localUser");
 
   const userRole = user.role || localUser;
 
   const getListFunc = useCallback(() => {
-    if (filters?.status === "shipped" || filters?.status === "ready") {
-      filters.ordering = "-last_updated";
-    } else filters.ordering = "-id";
+    if (!searchWord) {
+      if (filters?.status === "shipped" || filters?.status === "ready") {
+        filters.ordering = "-last_updated";
+      } else filters.ordering = "-id";
 
-    getData(
-      `${BASE_URL}etsy/orders/?${
-        filters?.status ? `status=${filters?.status}` : ""
-      }&is_repeat=${filters?.is_repeat}&is_followup=${
-        filters?.is_followup
-      }&ordering=${filters?.ordering}&limit=${rowsPerPage}&offset=${
-        filters?.offset
-      }`
-    )
-      .then((response) => {
-        // setRows(response.data);
-        setRows(response?.data?.results?.length ? response?.data?.results : []);
+      getData(
+        `${BASE_URL}etsy/orders/?${
+          filters?.status ? `status=${filters?.status}` : ""
+        }&is_repeat=${filters?.is_repeat}&is_followup=${
+          filters?.is_followup
+        }&ordering=${filters?.ordering}&limit=${rowsPerPage}&offset=${
+          filters?.offset
+        }`
+      )
+        .then((response) => {
+          // setRows(response.data);
+          setRows(
+            response?.data?.results?.length ? response?.data?.results : []
+          );
 
-        // setCount(response.data.length);
-        setCount(response?.data?.count || 0);
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  }, [filters, rowsPerPage]);
+          // setCount(response.data.length);
+          setCount(response?.data?.count || 0);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    }
+  }, [filters, rowsPerPage, searchWord]);
 
   useEffect(() => {
     getListFunc();
@@ -176,6 +188,7 @@ function AllOrdersTable() {
 
   const handleTagChange = useCallback(
     (e) => {
+      setSearchWord("");
       setRows(null);
       const statu = e.currentTarget.id || filters?.status;
       setSelectedTag(statu);
@@ -299,6 +312,57 @@ function AllOrdersTable() {
       });
     },
     [history]
+  );
+
+  useEffect(() => {
+    if (searchWord) {
+      globalSearchFunc(searchWord);
+    }
+    // eslint-disable-next-line
+  }, [rowsPerPage, page, searchWord]);
+
+  const globalSearchFunc = useCallback(
+    (searchWord) => {
+      console.log(searchWord);
+      globalSearch(
+        `${BASE_URL_MAPPING}?search=${searchWord}&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`
+      )
+        .then((response) => {
+          console.log(response.data.count);
+          setRows(response.data.results);
+          setCount(response?.data?.count || 0);
+          //setList(response.data.results);
+          let newUrl = "";
+          newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+          history.push(`/all-orders?&${searchWord}&${newUrl}`);
+        })
+        .catch((error) => {
+          console.log(error);
+          setRows([]);
+        });
+    },
+    // eslint-disable-next-line
+    [rowsPerPage, page, searchWord]
+  );
+
+  const searchHandler = useCallback(
+    (e) => {
+      if (e.keyCode === 13 && !(e.target.value === "")) {
+        //setRows(null);
+        //setSearchProg(!(e.target.value === ""));
+        setSearchWord(e.target.value);
+        setPage(0);
+        console.log(e.target.value);
+        // searchWord = ;
+        if (e.target.value) {
+          globalSearchFunc(e.target.value);
+        }
+      }
+    },
+    // eslint-disable-next-line
+    [rowsPerPage, page]
   );
 
   const handleScan = useCallback((data) => {
@@ -488,6 +552,7 @@ function AllOrdersTable() {
           handleTagChange={handleTagChange}
           tagsData={tagsData}
           nonAdminTagsData={nonAdminTagsData}
+          searchHandler={searchHandler}
         />
         {selectedTag === "ready" || selectedTag === "shipped" ? (
           <div className={classes.barcodeBox}>
