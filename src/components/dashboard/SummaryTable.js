@@ -6,7 +6,7 @@ import {
   Paper,
   Grid,
   Table,
-  Button,
+  // Button,
   TableBody,
   TableCell,
   TableHead,
@@ -14,7 +14,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { ArrowForwardIos as ArrowForwardIosIcon } from "@material-ui/icons";
+//import { ArrowForwardIos as ArrowForwardIosIcon } from "@material-ui/icons";
 import CancelIcon from "@material-ui/icons/Cancel";
 import moment from "moment";
 
@@ -52,8 +52,10 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#add8e6",
       borderRadius: "0.5rem 0.5rem 0 0",
+      fontSize: "1.1rem",
+      transition: "0.5s",
     },
-    minHeight: "5.5rem",
+    minHeight: "6rem",
   },
 }));
 
