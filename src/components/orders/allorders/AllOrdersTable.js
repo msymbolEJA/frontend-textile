@@ -443,9 +443,6 @@ function AllOrdersTable() {
               <StyledTableCell align="center">
                 <FormattedMessage id="image" defaultMessage="Image" />
               </StyledTableCell>
-              <StyledTableCell align="center">
-                <FormattedMessage id="note" defaultMessage="Note" />
-              </StyledTableCell>
             </TableRow>
           </TableHead>
           {rows ? (
@@ -500,7 +497,6 @@ function AllOrdersTable() {
                       </p>
                     )}
                   </td>
-                  <CustomTableCell {...{ row, name: "note" }} />
                 </StyledTableRow>
               ))}
             </TableBody>
