@@ -7,6 +7,8 @@ const useStyles = makeStyles((theme) => ({
   opt: {
     fontSize: "0.9rem",
     width: "100px",
+    backgroundColor: "transparent",
+    borderColor: "#E0E0E0",
   },
 }));
 
