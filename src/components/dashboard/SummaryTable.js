@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     marginTop: 30,
-    maxWidth: "500px",
+    maxWidth: "300px",
   },
   table: {
     minWidth: 150,
@@ -51,8 +51,9 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     "&:hover": {
       backgroundColor: "#add8e6",
-      borderRadius: "0.5rem",
+      borderRadius: "0.5rem 0.5rem 0 0",
     },
+    minHeight: "5.5rem",
   },
 }));
 
@@ -168,6 +169,7 @@ export default function SummaryTable({
                 defaultMessage={"Date of Last Order"}
               />
               {" : "}
+              <br />
               {lastDateOfOrder
                 ? moment(lastDateOfOrder?.creation_tsz).format("MM-DD-YY HH:mm")
                 : "-"}{" "}
