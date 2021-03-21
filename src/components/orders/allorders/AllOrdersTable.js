@@ -397,6 +397,9 @@ function AllOrdersTable() {
                   defaultMessage="Created TSZ"
                 />
               </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="ready_date" defaultMessage="Ready Date" />
+              </StyledTableCell>
               {userRole === "admin" ||
               userRole === "shop_manager" ||
               userRole === "shop_packer" ? (
@@ -471,6 +474,7 @@ function AllOrdersTable() {
                     }}
                   />
                   <CustomTableCell {...{ row, name: "creation_tsz" }} />
+                  <CustomTableCell {...{ row, name: "ready_date" }} />
                   {userRole === "admin" ||
                   userRole === "shop_manager" ||
                   userRole === "shop_packer" ? (
