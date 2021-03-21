@@ -44,6 +44,16 @@ const useStyles = makeStyles((theme) => ({
     height: "2rem ",
     minWidth: "8rem",
   },
+  titleStyle: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#add8e6",
+      borderRadius: "0.5rem",
+    },
+  },
 }));
 
 export default function SummaryTable({
@@ -78,52 +88,20 @@ export default function SummaryTable({
   return (
     <Grid item xs={12} md={6} className={classes.root}>
       <Paper className={classes.paper}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            minHeight: "5.5rem",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            {icon}
-            <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>
-              <FormattedMessage id={title} defaultMessage={title} /> ({total})
-            </h3>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              color="primary"
-              variant="outlined"
-              id="approval"
-              className={classes.button}
-              endIcon={<ArrowForwardIosIcon />}
-              onClick={(e) => handleClick(e)}
-            >
-              <FormattedMessage id="wiewAll" defaultMessage="View All" />
-            </Button>
-          </div>
+        <div className={classes.titleStyle} onClick={(e) => handleClick(e)}>
+          {icon}
+          <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>
+            <FormattedMessage id={title} defaultMessage={title} /> ({total})
+          </h3>
         </div>
         <div>
           <Table className={classes.table}>
             <TableHead style={{ backgroundColor: "black" }}>
               <TableRow>
-                <TableCell align="center" style={{ color: "white" }}>
+                <TableCell align="left" style={{ color: "white" }}>
                   {header1}
                 </TableCell>
-                <TableCell align="center" style={{ color: "white" }}>
+                <TableCell align="right" style={{ color: "white" }}>
                   {header2}
                 </TableCell>
               </TableRow>
@@ -147,7 +125,7 @@ export default function SummaryTable({
                 ) : (
                   data.map((item, index) => (
                     <TableRow key={index}>
-                      <TableCell align="center" component="th" scope="row">
+                      <TableCell align="left" component="th" scope="row">
                         {title === "orders" ? (
                           <FormattedMessage
                             id={item.cell1.toLowerCase()}
@@ -157,7 +135,7 @@ export default function SummaryTable({
                           item.cell1
                         )}
                       </TableCell>
-                      <TableCell align="center">{item.cell2}</TableCell>
+                      <TableCell align="right">{item.cell2}</TableCell>
                     </TableRow>
                   ))
                 )}
@@ -178,9 +156,9 @@ export default function SummaryTable({
         {title === "orders" && lastDateOfOrder ? (
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-around",
-              alignItems: "center",
+              // display: "flex",
+              // justifyContent: "space-around",
+              // alignItems: "center",
               fontSize: "1rem",
             }}
           >
