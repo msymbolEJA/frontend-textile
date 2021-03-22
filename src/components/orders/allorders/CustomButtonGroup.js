@@ -60,8 +60,16 @@ const CustomButtonGroup = ({
             }}
           >
             <FormattedMessage
-              id={tag?.replace("_", " ")}
-              defaultMessage={tag?.replace("_", " ")}
+              id={
+                tag?.replace("_", " ") === "awaiting"
+                  ? "approved"
+                  : tag?.replace("_", " ")
+              }
+              defaultMessage={
+                tag?.replace("_", " ") === "awaiting"
+                  ? "approved"
+                  : tag?.replace("_", " ")
+              }
             />
           </Button>
         ))}

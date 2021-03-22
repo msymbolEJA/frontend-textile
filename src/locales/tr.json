@@ -39,6 +39,7 @@
   "in_progress": "ISLEMDE",
   "in transit": "KARGODA",
   "in_transit": "KARGODA",
+  "approved" : "ONAYLI",
   "awaiting": "BEKLEYEN",
   "cancelled": "IPTAL",
   "shipped": "TAMAMLANDI",
@@ -118,5 +119,6 @@
   "barcode": "Barkod",
   "noResult": "Sonuç yok!",
   "dateOfLastOrder": "Son Sipariş Tarihi",
-  "settings": "Ayarlar"
+  "settings": "Ayarlar",
+  "ready_date" : "Hazır Tarihi"
 }

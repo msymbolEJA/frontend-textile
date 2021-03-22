@@ -132,15 +132,15 @@ const Dashboard = () => {
       });
   }, []);
 
-  console.log("localUser", localUser);
-  console.log(localUser === "admin");
+  // console.log("localUser", localUser);
+  // console.log(localUser === "admin");
   const newStatu =
     localUser === "admin" ||
     localUser === "shop_manager" ||
     localUser === "shop_packer"
       ? "pending"
       : "awaiting";
-  console.log(localUser);
+  // console.log(localUser);
 
   const handleClick = (e) => {
     // const newStatu = getFirstStatu();

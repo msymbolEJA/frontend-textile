@@ -131,8 +131,16 @@ export default function SummaryTable({
                       <TableCell align="left" component="th" scope="row">
                         {title === "orders" ? (
                           <FormattedMessage
-                            id={item.cell1.toLowerCase()}
-                            defaultMessage={item.cell1}
+                            id={
+                              item.cell1.toLowerCase() === "awaiting"
+                                ? "approved"
+                                : item.cell1.toLowerCase()
+                            }
+                            defaultMessage={
+                              item.cell1.toLowerCase() === "awaiting"
+                                ? "APPROVED"
+                                : item.cell1
+                            }
                           />
                         ) : (
                           item.cell1
