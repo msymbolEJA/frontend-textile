@@ -6,7 +6,7 @@ import { useIntl } from "react-intl";
 const useStyles = makeStyles((theme) => ({
   opt: {
     fontSize: "0.9rem",
-    width: "100px",
+    width: "125px",
     backgroundColor: "transparent",
     borderColor: "#E0E0E0",
   },
@@ -29,7 +29,10 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         <optgroup>
           {statusData.map((item, index) => (
             <option key={`${index}+${item}`} value={item}>
-              {formatMessage({ id: item, defaultMessage: item })}
+              {formatMessage({
+                id: item === "awaiting" ? "approved" : item,
+                defaultMessage: item === "awaiting" ? "APPROVED" : item,
+              })}
             </option>
           ))}
         </optgroup>

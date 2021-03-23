@@ -56,8 +56,11 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
             ?.replace("**REPEAT: SECOND**", "")
         ) : name === "status" ? (
           formatMessage({
-            id: row[name],
-            defaultMessage: row[name]?.replace("_", " "),
+            id: row[name] === "awaiting" ? "approved" : row[name],
+            defaultMessage:
+              row[name]?.replace("_", " ") === "awaiting"
+                ? "APPROVED"
+                : row[name].replace("_", " "),
           })
         ) : row[name] ? (
           row[name]?.replace("_", " ")

@@ -96,5 +96,6 @@
   "in_transit": "IN TRANSIT",
   "in_progress": "IN PROGRESS",
   "dateOfLastOrder": "Date of Last Order",
-  "settings": "Settings"
+  "settings": "Settings",
+  "approved":"APPROVED"
 }
