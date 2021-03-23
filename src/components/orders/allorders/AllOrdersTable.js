@@ -631,7 +631,10 @@ function AllOrdersTable() {
         ) : null}
         <div
           style={{
-            display: "flex",
+            display:
+              process.env.REACT_APP_STORE_NAME === "Hilal Serisi"
+                ? "flex"
+                : "none",
             color: "#001A33",
             marginBottom: 16,
             marginLeft: 16,
