@@ -30,6 +30,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.action.hover,
     },
   },
+  tableRow: {
+    cursor: "pointer",
+    "&:hover": {
+      background: "#efefef",
+    },
+  },
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
@@ -127,7 +133,17 @@ export default function SummaryTable({
                   </TableRow>
                 ) : (
                   data.map((item, index) => (
-                    <TableRow key={index}>
+                    <TableRow
+                      key={index}
+                      className={classes.tableRow}
+                      onClick={() =>
+                        title === "orders"
+                          ? history.push(
+                              `/all-orders?&status=${item.cell1.toLowerCase()}&limit=250&offset=0`
+                            )
+                          : null
+                      }
+                    >
                       <TableCell align="left" component="th" scope="row">
                         {title === "orders" ? (
                           <FormattedMessage
@@ -170,6 +186,7 @@ export default function SummaryTable({
               // display: "flex",
               // justifyContent: "space-around",
               // alignItems: "center",
+              marginTop: "1rem",
               fontSize: "1rem",
             }}
           >
