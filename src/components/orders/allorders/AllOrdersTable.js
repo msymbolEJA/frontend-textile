@@ -88,6 +88,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "0.5rem",
     marginBottom: "0.5rem",
   },
+  countryFilter: {
+    marginLeft: "0.5rem",
+  },
   barcodeBox: {
     display: "flex",
     flexDirection: "row",
@@ -97,7 +100,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AllOrdersTable() {
-  const [rows, setRows] = useState(null);
+  const [rows, setRows] = useState([]);
+  const [filteredRows, setFilteredRows] = useState(rows);
+  const [countryFilter, setCountryFilter] = useState("all");
   const { user } = useContext(AppContext);
   const filters = getQueryParams();
   const barcodeInputRef = useRef();
@@ -315,6 +320,19 @@ function AllOrdersTable() {
   );
 
   useEffect(() => {
+    const resultFilteredByCountry =
+      countryFilter === "all"
+        ? rows
+        : rows.filter((item) =>
+            countryFilter === "usa"
+              ? item.country_id === "209"
+              : item.country_id !== "209"
+          );
+    setFilteredRows(resultFilteredByCountry);
+    setCount(resultFilteredByCountry?.length || 0);
+  }, [countryFilter, rows]);
+
+  useEffect(() => {
     if (searchWord) {
       globalSearchFunc(searchWord);
     }
@@ -461,9 +479,9 @@ function AllOrdersTable() {
               ) : null}
             </TableRow>
           </TableHead>
-          {rows ? (
+          {filteredRows?.length ? (
             <TableBody>
-              {rows.map((row) => (
+              {filteredRows.map((row) => (
                 <StyledTableRow
                   className={classes.rowStyle}
                   key={row.id}
@@ -611,7 +629,49 @@ function AllOrdersTable() {
             </div>
           </div>
         ) : null}
-        <div style={{ display: "flex", color: "#001A33" }}>
+        <div
+          style={{
+            display: "flex",
+            color: "#001A33",
+            marginBottom: 16,
+            marginLeft: 16,
+            fontSize: "2rem",
+          }}
+        >
+          <Button
+            variant="contained"
+            color={countryFilter === "all" ? "primary" : "default"}
+            className={classes.countryFilter}
+            onClick={() => setCountryFilter("all")}
+          >
+            <FormattedMessage id="all" defaultMessage="All" />
+          </Button>
+          <Button
+            variant="contained"
+            color={countryFilter === "usa" ? "primary" : "default"}
+            className={classes.countryFilter}
+            onClick={() => setCountryFilter("usa")}
+          >
+            <FormattedMessage id="usa" defaultMessage="USA" />
+          </Button>
+          <Button
+            variant="contained"
+            color={countryFilter === "int" ? "primary" : "default"}
+            className={classes.countryFilter}
+            onClick={() => setCountryFilter("int")}
+          >
+            <FormattedMessage id="int" defaultMessage="International" />
+          </Button>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            color: "#001A33",
+            marginBottom: 16,
+            fontSize: "2rem",
+            marginLeft: 16,
+          }}
+        >
           <FormattedMessage id="totalRecord" defaultMessage="Total Record" /> :{" "}
           {count}
         </div>

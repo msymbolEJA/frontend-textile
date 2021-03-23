@@ -121,5 +121,7 @@
   "dateOfLastOrder": "Son Sipariş Tarihi",
   "settings": "Ayarlar",
   "ready_date": "Onay Tarihi",
-  "remove":"Kaldır"
+  "remove": "Kaldır",
+  "int": "U/A",
+  "usa": "ABD"
 }

@@ -97,5 +97,7 @@
   "in_progress": "IN PROGRESS",
   "dateOfLastOrder": "Date of Last Order",
   "settings": "Settings",
-  "approved":"APPROVED"
+  "approved": "APPROVED",
+  "int": "International",
+  "usa": "USA"
 }
