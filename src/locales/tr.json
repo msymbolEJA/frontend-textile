@@ -120,5 +120,6 @@
   "noResult": "Sonuç yok!",
   "dateOfLastOrder": "Son Sipariş Tarihi",
   "settings": "Ayarlar",
-  "ready_date": "Onay Tarihi"
+  "ready_date": "Onay Tarihi",
+  "remove":"Kaldır"
 }

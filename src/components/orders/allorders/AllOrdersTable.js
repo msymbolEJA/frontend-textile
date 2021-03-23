@@ -374,6 +374,11 @@ function AllOrdersTable() {
     console.error(err);
   }, []);
 
+  const removeFunc = (id) => {
+    //console.log(id, "in_progress");
+    changeOrderStatus(id, "in_progress");
+  };
+
   const AllTable = React.memo(
     () => (
       <TableContainer className={classes.container}>
@@ -449,6 +454,11 @@ function AllOrdersTable() {
               <StyledTableCell align="center">
                 <FormattedMessage id="image" defaultMessage="Image" />
               </StyledTableCell>
+              {selectedTag === "ready" ? (
+                <StyledTableCell align="center">
+                  <FormattedMessage id="remove" defaultMessage="Remove" />
+                </StyledTableCell>
+              ) : null}
             </TableRow>
           </TableHead>
           {rows ? (
@@ -504,6 +514,22 @@ function AllOrdersTable() {
                       </p>
                     )}
                   </td>
+                  {selectedTag === "ready" ? (
+                    <td>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        className={classes.print}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeFunc(row.id);
+                        }}
+                        size="small"
+                      >
+                        <FormattedMessage id="remove" defaultMessage="Remove" />
+                      </Button>
+                    </td>
+                  ) : null}
                 </StyledTableRow>
               ))}
             </TableBody>
