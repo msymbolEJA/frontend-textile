@@ -398,7 +398,10 @@ function AllOrdersTable() {
                 />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage id="ready_date" defaultMessage="Ready Date" />
+                <FormattedMessage
+                  id="ready_date"
+                  defaultMessage="Approval Date"
+                />
               </StyledTableCell>
               {userRole === "admin" ||
               userRole === "shop_manager" ||

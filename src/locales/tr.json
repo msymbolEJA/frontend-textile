@@ -39,8 +39,8 @@
   "in_progress": "ISLEMDE",
   "in transit": "KARGODA",
   "in_transit": "KARGODA",
-  "approved" : "ONAYLI",
-  "awaiting": "BEKLEYEN",
+  "approved": "ONAYLI",
+  "awaiting": "ONAYLI",
   "cancelled": "IPTAL",
   "shipped": "TAMAMLANDI",
   "all_orders": "HEPSI",
@@ -120,5 +120,5 @@
   "noResult": "Sonuç yok!",
   "dateOfLastOrder": "Son Sipariş Tarihi",
   "settings": "Ayarlar",
-  "ready_date" : "Hazır Tarihi"
+  "ready_date": "Onay Tarihi"
 }
