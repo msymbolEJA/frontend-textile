@@ -90,11 +90,11 @@ const useStyles = makeStyles((theme) => ({
     width: 60,
   },
   approveButton: {
-    float: "left",
-    margin: "5px 0 0",
+    margin: "5px auto 0",
     padding: "5px 2px",
     lineHeight: 1,
     fontSize: "small",
+    maxWidth: 64,
   },
 }));
 

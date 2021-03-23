@@ -6,7 +6,7 @@ import { useIntl } from "react-intl";
 const useStyles = makeStyles((theme) => ({
   opt: {
     fontSize: "0.9rem",
-    width: "125px",
+    width: "100px",
     backgroundColor: "transparent",
     borderColor: "#E0E0E0",
   },

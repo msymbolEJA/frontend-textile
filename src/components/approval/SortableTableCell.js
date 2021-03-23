@@ -3,9 +3,17 @@ import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { FormattedMessage } from "react-intl";
 import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  icon: {
+    display: "none",
+  },
+});
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
+    paddng: 0,
     backgroundColor: "#f5f5dc",
     color: theme.palette.common.black,
     borderRight: "0.5px solid #E0E0E0",
@@ -33,6 +41,7 @@ const SortableTableCell = ({
   } else {
     customStyle = { padding: 0, textAlign: "center" };
   }
+  const classes = useStyles();
 
   return (
     <>
@@ -46,6 +55,7 @@ const SortableTableCell = ({
           active={orderBy === property}
           direction={orderBy === property ? order : "asc"}
           onClick={(event) => handleRequestSort(event, property)}
+          classes={{ icon: classes.icon }}
         >
           {property2 ? (
             <>

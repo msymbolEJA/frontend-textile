@@ -13,15 +13,15 @@ const useStyles = makeStyles((theme) => ({
     width: "3rem",
   },
   icon: {
-    fontSize: "2rem",
-    marginLeft: "2.5rem",
+    fontSize: "1.5rem",
+    // marginLeft: "2.5rem",
     cursor: "pointer",
   },
   vFile: {
-    marginLeft: "2.5rem",
+    // marginLeft: "2.5rem",
   },
   btn: {
-    marginLeft: "2.5rem",
+    // marginLeft: "2.5rem",
   },
 }));
 

@@ -4,7 +4,8 @@ import TableCell from "@material-ui/core/TableCell";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {
-    width: 130,
+    padding: 1,
+    width: 120,
     height: 40,
     borderRight: "0.5px solid #E0E0E0",
   },
