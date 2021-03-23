@@ -117,8 +117,7 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 function App({ history }) {
-  const [rows, setRows] = useState(null);
-  //const [previous, setPrevious] = useState({});
+  const [rows, setRows] = useState([]);
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(0);
@@ -134,7 +133,7 @@ function App({ history }) {
   const [searchProg, setSearchProg] = useState(false);
   const [searchWord, setSearchWord] = useState("");
 
-  const getListFunc = useCallback(() => {
+  const getListFunc = () => {
     if (!searchProg) {
       getData(
         `${BASE_URL_MAPPING}?${
@@ -156,7 +155,7 @@ function App({ history }) {
           console.log("error", error);
         });
     }
-  }, [filters, rowsPerPage, searchProg]);
+  };
 
   useEffect(() => {
     getListFunc();
@@ -170,28 +169,24 @@ function App({ history }) {
     filters.offset,
   ]);
 
-  const handleRequestSort = useCallback(
-    (event, property) => {
-      const isAsc = order === "asc";
-      let currentUrlParams = new URLSearchParams(window.location.search);
-      currentUrlParams.set("ordering", `${isAsc ? "" : "-"}${property}`);
-      history.push(
-        history.location.pathname + "?" + currentUrlParams.toString()
-      );
-      setOrder(isAsc ? "desc" : "asc");
-      setOrderBy(property);
-    },
-    [history, order]
-  );
+  const handleRequestSort = (event, property) => {
+    const isAsc = order === "asc";
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("ordering", `${isAsc ? "" : "-"}${property}`);
+    history.push(history.location.pathname + "?" + currentUrlParams.toString());
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
 
-  const onChange = useCallback((e, id, name) => {
-    if (!name || !e?.target?.innerText) return;
-    console.log("test:", name, e.target.innerText);
+  const onChange = (e, id, name) => {
+    if (!rows.length || !name || !e?.target?.innerText) return;
+    if (
+      rows?.filter((item) => item.id === name)?.[0]?.[name] ===
+      e.target.innerText
+    )
+      return;
     handleRowChange(id, { [name]: e.target.innerText });
-
-    //    setEditedCellInfo({ rowId: id, field: name, value: e.target.innerText });
-    // eslint-disable-next-line
-  }, []);
+  };
 
   const handleChangePage = (event, newPage) => {
     let currentUrlParams = new URLSearchParams(window.location.search);
@@ -209,163 +204,113 @@ function App({ history }) {
     history.push(history.location.pathname + "?" + currentUrlParams.toString());
   };
 
-  /*  const handleRowClick = useCallback(
-    (id, name) => {
-      console.log(id, name);
-      setEditName(name);
-      const currentRow = rows.find((row) => row.id === id);
-      if (currentRow) {
-        if (!currentRow.isEditMode) {
-          const newRows = rows?.map((row) => {
-            return { ...row, isEditMode: row.id === id };
-          });
-          setRows(newRows);
-        }
-      }
-    },
-    [rows]
-  ); */
+  const handleRowChange = (id, data) => {
+    if (!data) return;
+    if (
+      rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
+      Object.values(data)[0]
+    )
+      return;
+    putData(`${BASE_URL_MAPPING}${id}/`, data)
+      .then((response) => {})
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => getListFunc());
+  };
 
-  const handleRowChange = useCallback(
-    (id, data) => {
-      console.log("id", id);
-      console.log("data", data);
-      console.log("handleRowChange");
-      putData(`${BASE_URL_MAPPING}${id}/`, data)
-        .then((response) => {})
-        .catch((error) => {
-          console.log(error);
+  const onSelectChange = (e, row) => {
+    e.preventDefault();
+    const value = e.target.value;
+    const name = e.target.name;
+    const { id } = row;
+    if (
+      (name === "status") &
+      (value === "pending") &
+      (row.is_repeat === true)
+    ) {
+      let data = { [name]: value, is_repeat: false };
+      handleRowChange(id, data);
+    }
+    if ((name === "status") & (value === "pending") & (row.approved === true)) {
+      let data = { [name]: value, approved: false };
+      handleRowChange(id, data);
+    } else if (
+      (name === "status") &
+      (value === "awaiting") &
+      (row.approved === false)
+    ) {
+      let data = { [name]: value, approved: true };
+      handleRowChange(id, data);
+    } else {
+      let data = { [name]: value };
+      handleRowChange(id, data);
+    }
+    getListFunc();
+  };
+
+  const uploadFile = (e, id, imgFile) => {
+    e.stopPropagation();
+    try {
+      let path = `${BASE_URL_MAPPING}${id}/`;
+      putImage(path, imgFile, "image.png")
+        .then((res) => {
+          console.log(res);
         })
-        .finally(() => getListFunc());
-    },
-    [getListFunc]
-  );
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          getListFunc();
+        });
+    } catch (error) {
+      console.log("error", error);
+      toastWarnNotify("Select Image!");
+    }
+  };
 
-  // const handleRowKeyDown = useCallback(
-  //   (e, id) => {
-  //     console.log("handleRowKeyDown");
-  //     if (e.key === "Enter") {
-  //       let data = { [e.target.name]: e.target.defaultValue };
-  //       //  handleRowChange(id, data);
-  //     }
-  //   },
-  //   [handleRowChange]
-  // );
+  const fileSelectedHandler = (e, id) => {
+    e.stopPropagation();
+    let imgFile = e.target.files[0];
 
-  // const handleRowBlur = useCallback(
-  //   (e, id) => {
-  //     console.log("handleRowBlur");
-  //     let data = { [e.target.name]: e.target.defaultValue };
-  //     // handleRowChange(id, data);
-  //   },
-  //   [handleRowChange]
-  // );
+    var fr = new FileReader();
+    if (fr.readAsDataURL) {
+      fr.readAsDataURL(imgFile);
+    } else if (fr.readAsDataurl) {
+      fr.readAsDataurl(imgFile);
+    }
+    var img = new Image();
+    fr.onload = function (e) {
+      img.src = e.target.result;
+      img.onload = function () {
+        const canvas = document.createElement("canvas");
 
-  const onSelectChange = useCallback(
-    (e, row) => {
-      e.preventDefault();
-      const value = e.target.value;
-      const name = e.target.name;
-      const { id } = row;
-      if (
-        (name === "status") &
-        (value === "pending") &
-        (row.is_repeat === true)
-      ) {
-        let data = { [name]: value, is_repeat: false };
-        handleRowChange(id, data);
-      }
-      if (
-        (name === "status") &
-        (value === "pending") &
-        (row.approved === true)
-      ) {
-        let data = { [name]: value, approved: false };
-        handleRowChange(id, data);
-      } else if (
-        (name === "status") &
-        (value === "awaiting") &
-        (row.approved === false)
-      ) {
-        let data = { [name]: value, approved: true };
-        handleRowChange(id, data);
-      } else {
-        let data = { [name]: value };
-        handleRowChange(id, data);
-      }
-      getListFunc();
-    },
-    [getListFunc, handleRowChange]
-  );
+        canvas.id = "imageUploadCanvas";
+        canvas.width = img.naturalWidth < 150 ? 200 : img.naturalWidth + 20;
+        canvas.height = img.naturalHeight + 50;
+        canvas.style.border = "2px solid black";
 
-  const uploadFile = useCallback(
-    (e, id, imgFile) => {
-      e.stopPropagation();
-      try {
-        let path = `${BASE_URL_MAPPING}${id}/`;
-        putImage(path, imgFile, "image.png")
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-          .finally(() => {
-            getListFunc();
-          });
-      } catch (error) {
-        console.log("error", error);
-        toastWarnNotify("Select Image!");
-      }
-    },
-    [getListFunc]
-  );
-
-  const fileSelectedHandler = useCallback(
-    (e, id) => {
-      e.stopPropagation();
-      let imgFile = e.target.files[0];
-
-      var fr = new FileReader();
-      if (fr.readAsDataURL) {
-        fr.readAsDataURL(imgFile);
-      } else if (fr.readAsDataurl) {
-        fr.readAsDataurl(imgFile);
-      }
-      var img = new Image();
-      fr.onload = function (e) {
-        img.src = e.target.result;
-        img.onload = function () {
-          const canvas = document.createElement("canvas");
-
-          canvas.id = "imageUploadCanvas";
-          canvas.width = img.naturalWidth < 150 ? 200 : img.naturalWidth + 20;
-          canvas.height = img.naturalHeight + 50;
-          canvas.style.border = "2px solid black";
-
-          const ctx = canvas.getContext("2d");
-          ctx.fillStyle = "white";
-          ctx.fillRect(0, 0, canvas.width, canvas.height + 40);
-          ctx.drawImage(img, 10, 40);
-          ctx.font = "16px Comic Sans MS";
-          ctx.fillStyle = "black";
-          ctx.textAlign = "center";
-          ctx.fillText("order no: " + id, canvas.width / 2, 30);
-          canvas.toBlob(function (blob) {
-            uploadFile(e, selectedRowId, blob);
-          });
-        };
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height + 40);
+        ctx.drawImage(img, 10, 40);
+        ctx.font = "16px Comic Sans MS";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.fillText("order no: " + id, canvas.width / 2, 30);
+        canvas.toBlob(function (blob) {
+          uploadFile(e, selectedRowId, blob);
+        });
       };
-    },
-    [selectedRowId, uploadFile]
-  );
+    };
+  };
 
   const selectId = useCallback((event, id) => {
     event.stopPropagation();
     setSelectedRowId(id);
   }, []);
 
-  const handleApproveSelected = useCallback(() => {
+  const handleApproveSelected = () => {
     postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
       .then((res) => {
         toastWarnNotify("Selected 'PENDING' orders are approved");
@@ -375,94 +320,82 @@ function App({ history }) {
       .catch(({ response }) => {
         toastWarnNotify(response?.data?.detail);
       });
-  }, [getListFunc, selected]);
+  };
 
-  const handleTagChange = useCallback(
-    (e) => {
-      setSearchProg(false);
-      setRows(null);
-      document.getElementById("globalSearch").value = "";
-      const statu = e.currentTarget.id;
-      setSelected([]);
-      setSelectedTag(statu);
-      let newUrl = "";
-      switch (statu) {
-        case "all_orders":
-          newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
-          break;
-        /*        case "pending":
+  const handleTagChange = (e) => {
+    setSearchProg(false);
+    setRows([]);
+    document.getElementById("globalSearch").value = "";
+    const statu = e.currentTarget.id;
+    setSelected([]);
+    setSelectedTag(statu);
+    let newUrl = "";
+    switch (statu) {
+      case "all_orders":
+        newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+        break;
+      /*        case "pending":
           newUrl += `status=pending`;
           break; */
-        case "repeat":
-          newUrl += `is_repeat=true&limit=${rowsPerPage}&offset=${
-            page * rowsPerPage
-          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-          break;
-        case "followUp":
-          newUrl += `is_followup=true&limit=${rowsPerPage}&offset=${
-            page * rowsPerPage
-          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-          break;
-        default:
-          newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
-            page * rowsPerPage
-          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-          break;
-      }
-      history.push(`/approval?&${newUrl}`);
-      setPage(0);
-    },
-    [history, page, rowsPerPage]
-  );
+      case "repeat":
+        newUrl += `is_repeat=true&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        break;
+      case "followUp":
+        newUrl += `is_followup=true&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        break;
+      default:
+        newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        break;
+    }
+    history.push(`/approval?&${newUrl}`);
+    setPage(0);
+  };
 
-  const handlerFlagRepeatChange = useCallback(
-    (id, name, value) => {
-      if (name === "is_repeat" && value === false) {
-        let data = { [name]: !value, status: "awaiting" };
-        handleRowChange(id, data);
-      } else if (name === "approved" && value === false) {
-        let data = { [name]: !value, status: "awaiting" };
-        handleRowChange(id, data);
-      } else {
-        let data = { [name]: !value };
-        handleRowChange(id, data);
-      }
-    },
-    [handleRowChange]
-  );
+  const handlerFlagRepeatChange = (id, name, value) => {
+    if (name === "is_repeat" && value === false) {
+      let data = { [name]: !value, status: "awaiting" };
+      handleRowChange(id, data);
+    } else if (name === "approved" && value === false) {
+      let data = { [name]: !value, status: "awaiting" };
+      handleRowChange(id, data);
+    } else {
+      let data = { [name]: !value };
+      handleRowChange(id, data);
+    }
+  };
 
-  const handleSelectAllClick = useCallback(
-    (event) => {
-      if (event.target.checked) {
-        const newSelecteds = rows?.map((n) => n?.id);
-        setSelected(newSelecteds);
-        return;
-      }
-      setSelected([]);
-    },
-    [rows]
-  );
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = rows?.map((n) => n?.id);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
 
-  const handleCheckBoxClick = useCallback(
-    (event, id) => {
-      const selectedIndex = selected.indexOf(id);
-      let newSelected = [];
-      if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selected, id);
-      } else if (selectedIndex === 0) {
-        newSelected = newSelected.concat(selected.slice(1));
-      } else if (selectedIndex === selected?.length - 1) {
-        newSelected = newSelected.concat(selected.slice(0, -1));
-      } else if (selectedIndex > 0) {
-        newSelected = newSelected.concat(
-          selected.slice(0, selectedIndex),
-          selected.slice(selectedIndex + 1)
-        );
-      }
-      setSelected(newSelected);
-    },
-    [selected]
-  );
+  const handleCheckBoxClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected?.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+  };
 
   //let searchWord;
   useEffect(() => {
@@ -472,55 +405,47 @@ function App({ history }) {
     // eslint-disable-next-line
   }, [rowsPerPage, page, searchWord]);
 
-  const globalSearchFunc = useCallback(
-    (searchWord) => {
-      globalSearch(
-        `${BASE_URL_MAPPING}?search=${searchWord}&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`
-      )
-        .then((response) => {
-          console.log(response.data.count);
-          setRows(response.data.results);
-          setCount(response?.data?.count || 0);
-          //setList(response.data.results);
-          let newUrl = "";
-          newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
-          history.push(`/approval?&${searchWord}&${newUrl}`);
-        })
-        .catch((error) => {
-          console.log(error);
-          setRows([]);
-        });
-    },
-    // eslint-disable-next-line
-    [rowsPerPage, page, searchWord]
-  );
+  const globalSearchFunc = (searchWord) => {
+    globalSearch(
+      `${BASE_URL_MAPPING}?search=${searchWord}&limit=${rowsPerPage}&offset=${
+        page * rowsPerPage
+      }`
+    )
+      .then((response) => {
+        console.log(response.data.count);
+        setRows(response.data.results);
+        setCount(response?.data?.count || 0);
+        //setList(response.data.results);
+        let newUrl = "";
+        newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+        history.push(`/approval?&${searchWord}&${newUrl}`);
+      })
+      .catch((error) => {
+        console.log(error);
+        setRows([]);
+      });
+  };
 
-  const searchHandler = useCallback(
-    (e) => {
-      if (e.keyCode === 13 && !(e.target.value === "")) {
-        setRows(null);
-        setSearchProg(!(e.target.value === ""));
-        setSearchWord(e.target.value);
-        setPage(0);
-        // searchWord = ;
-        if (searchWord) {
-          globalSearchFunc(searchWord);
-        }
-      } else {
-        // console.log(e.target.value);
+  const searchHandler = (e) => {
+    if (e.keyCode === 13 && !(e.target.value === "")) {
+      setRows([]);
+      setSearchProg(!(e.target.value === ""));
+      setSearchWord(e.target.value);
+      setPage(0);
+      // searchWord = ;
+      if (searchWord) {
+        globalSearchFunc(searchWord);
       }
-    },
-    // eslint-disable-next-line
-    [rowsPerPage, page]
-  );
+    } else {
+      // console.log(e.target.value);
+    }
+  };
 
-  const handleClose = useCallback(() => {
+  const handleClose = () => {
     setRepeatAnchorEl(null);
-  }, []);
+  };
 
-  const handlerRepeatChange = useCallback((e, id, is_repeat) => {
+  const handlerRepeatChange = (e, id, is_repeat) => {
     if (is_repeat) {
       console.log("is_repeat");
       let data = { is_repeat: false };
@@ -530,20 +455,17 @@ function App({ history }) {
       setRepeatAnchorEl(e.currentTarget);
     }
     // eslint-disable-next-line
-  }, []);
+  };
 
-  const menuClickHandler = useCallback(
-    (row, reason) => () => {
-      const data = {
-        is_repeat: true,
-        status: "awaiting",
-        explanation: "**REPEAT: " + reason + "** " + row?.explanation,
-      };
-      handleRowChange(row.id, data);
-      handleClose();
-    },
-    [handleClose, handleRowChange]
-  );
+  const menuClickHandler = (row, reason) => () => {
+    const data = {
+      is_repeat: true,
+      status: "awaiting",
+      explanation: "**REPEAT: " + reason + "** " + row?.explanation,
+    };
+    handleRowChange(row.id, data);
+    handleClose();
+  };
 
   const repeatMenu = useCallback(
     (row) => {
@@ -598,7 +520,7 @@ function App({ history }) {
         </>
       );
     },
-    [handleClose, menuClickHandler, repeatAnchorEl]
+    [repeatAnchorEl]
   );
 
   return (

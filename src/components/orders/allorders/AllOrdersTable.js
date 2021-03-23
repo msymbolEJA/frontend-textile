@@ -194,7 +194,7 @@ function AllOrdersTable() {
   const handleTagChange = useCallback(
     (e) => {
       setSearchWord("");
-      setRows(null);
+      setRows([]);
       const statu = e.currentTarget.id || filters?.status;
       setSelectedTag(statu);
       let newUrl = "";
