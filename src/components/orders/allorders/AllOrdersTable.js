@@ -191,40 +191,38 @@ function AllOrdersTable() {
     history.push(history.location.pathname + "?" + currentUrlParams.toString());
   };
 
-  const handleTagChange = useCallback(
-    (e) => {
-      setSearchWord("");
-      setRows([]);
-      const statu = e.currentTarget.id || filters?.status;
-      setSelectedTag(statu);
-      let newUrl = "";
-      switch (statu) {
-        case "all_orders":
-          newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
-          break;
-        case "repeat":
-          newUrl += `is_repeat=true&limit=${rowsPerPage}&offset=${
-            page * rowsPerPage
-          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-          break;
-        case "followUp":
-          newUrl += `is_followup=true&limit=${rowsPerPage}&offset=${
-            page * rowsPerPage
-          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-          break;
-        default:
-          newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
-            page * rowsPerPage
-          }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-          setPrintFlag(statu === "awaiting" ? true : false);
-          setIsStatuReady(statu === "ready" ? true : false);
-          break;
-      }
-      history.push(`/all-orders?&${newUrl}`);
-      setPage(0);
-    },
-    [filters, history, page, rowsPerPage]
-  );
+  const handleTagChange = (e) => {
+    setSearchWord("");
+    if (e.currentTarget.id === filters?.status) return;
+    setRows([]);
+    const statu = e.currentTarget.id || filters?.status;
+    setSelectedTag(statu);
+    let newUrl = "";
+    switch (statu) {
+      case "all_orders":
+        newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+        break;
+      case "repeat":
+        newUrl += `is_repeat=true&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        break;
+      case "followUp":
+        newUrl += `is_followup=true&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        break;
+      default:
+        newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
+          page * rowsPerPage
+        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        setPrintFlag(statu === "awaiting" ? true : false);
+        setIsStatuReady(statu === "ready" ? true : false);
+        break;
+    }
+    history.push(`/all-orders?&${newUrl}`);
+    setPage(0);
+  };
 
   const getAllPdfFunc = () => {
     getAllPdf(`${BASE_URL}etsy/all_pdf/`)

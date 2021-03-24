@@ -324,6 +324,7 @@ function App({ history }) {
 
   const handleTagChange = (e) => {
     setSearchProg(false);
+    if (e.currentTarget.id === filters?.status) return;
     setRows([]);
     document.getElementById("globalSearch").value = "";
     const statu = e.currentTarget.id;
