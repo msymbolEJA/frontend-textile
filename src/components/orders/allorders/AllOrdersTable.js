@@ -729,6 +729,7 @@ function AllOrdersTable() {
         <CargoPage
           getListFunc={getListFunc}
           setRefreshTable={setRefreshTable}
+          countryFilter={countryFilter}
         />
       ) : null}
     </div>

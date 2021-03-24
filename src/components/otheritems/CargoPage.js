@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
+const CargoPage = ({ getListFunc, id, setRefreshTable, countryFilter }) => {
   const [cargoForm, setCargoForm] = useState({
     tracking_number: "",
     carrier: "",
@@ -58,6 +58,13 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
   const classes = useStyles();
   const { formatMessage } = useIntl();
   //console.log("CP Id", id);
+
+  let urlCargo;
+  if (countryFilter === "usa") {
+    urlCargo = `${BASE_URL}etsy/cargo/?type=us`;
+  } else if (countryFilter === "int") {
+    urlCargo = `${BASE_URL}etsy/cargo/?type=int`;
+  } else urlCargo = `${BASE_URL}etsy/cargo/`;
 
   const cargoFormPost = (e) => {
     e.preventDefault();
@@ -72,7 +79,7 @@ const CargoPage = ({ getListFunc, id, setRefreshTable }) => {
       cargoForm.ref_number_f;
     delete cargoForm.ref_number_f;
 
-    postFormData(`${BASE_URL}etsy/cargo/`, cargoForm)
+    postFormData(urlCargo, cargoForm)
       .then((res) => {
         toastSuccessNotify(res.data.Success);
         setResult(res.data.Success);
