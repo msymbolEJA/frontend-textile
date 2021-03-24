@@ -238,7 +238,16 @@ function AllOrdersTable() {
 
   const printHandler = () => {
     const data = "";
-    getData(`${BASE_URL}etsy/print_all/`, data)
+    let urlPrint;
+    if (countryFilter === "usa") {
+      urlPrint = `${BASE_URL}etsy/print_all/?type=us`;
+    } else if (countryFilter === "int") {
+      urlPrint = `${BASE_URL}etsy/print_all/?type=int`;
+    } else urlPrint = `${BASE_URL}etsy/print_all/`;
+
+    //console.log(urlPrint);
+
+    getData(urlPrint, data)
       .then((data) => {
         // Open pdf after get
         const link = document.createElement("a");
