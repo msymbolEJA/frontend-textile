@@ -30,11 +30,6 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
           onChange={(e) => onChange(e, row)}
           className={classes.input}
         />
-      ) : name === "status" ? (
-        formatMessage({
-          id: row[name],
-          defaultMessage: row[name]?.replace("_", " "),
-        })
       ) : name === "created_date" ? (
         moment(row[name]).format("MM-DD-YY HH:mm") === "Invalid date" ? (
           row[name]
@@ -42,7 +37,13 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
           moment.utc(row[name]).local().format("MM-DD-YY HH:mm")
         )
       ) : name === "status" ? (
-        row[name]?.replace("_", " ")
+        formatMessage({
+          id: row[name] === "awaiting" ? "approved" : row[name],
+          defaultMessage:
+            row[name]?.replace("_", " ") === "awaiting"
+              ? "APPROVED"
+              : row[name].replace("_", " "),
+        })
       ) : (
         row[name]
       )}
