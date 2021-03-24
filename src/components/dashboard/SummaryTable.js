@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import {
   Paper,
   Grid,
@@ -14,9 +13,6 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-//import { ArrowForwardIos as ArrowForwardIosIcon } from "@material-ui/icons";
-import CancelIcon from "@material-ui/icons/Cancel";
-import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -180,48 +176,6 @@ export default function SummaryTable({
             )}
           </Table>
         </div>
-        {title === "orders" && lastDateOfOrder ? (
-          <div
-            style={{
-              // display: "flex",
-              // justifyContent: "space-around",
-              // alignItems: "center",
-              marginTop: "1rem",
-              fontSize: "1rem",
-            }}
-          >
-            <div>
-              <FormattedMessage
-                id={"dateOfLastOrder"}
-                defaultMessage={"Date of Last Order"}
-              />
-              {" : "}
-              <br />
-              {lastDateOfOrder
-                ? moment(lastDateOfOrder?.creation_tsz).format("MM-DD-YY HH:mm")
-                : "-"}{" "}
-              GMT
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p>Health Check: </p>
-              {healthCheck ? (
-                <CheckCircleIcon
-                  style={{ color: "green", marginLeft: "0.5rem" }}
-                />
-              ) : (
-                <CancelIcon
-                  style={{ color: "#ff3333", marginLeft: "0.5rem" }}
-                />
-              )}
-            </div>
-          </div>
-        ) : null}
       </Paper>
     </Grid>
   );

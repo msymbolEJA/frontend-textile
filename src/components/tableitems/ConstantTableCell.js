@@ -37,7 +37,10 @@ const ConstantTableCell = ({ row, name, name2, name3 }) => {
       {name === "id" ? (
         <a href={`/order-details/${row.id}`}>{row[name]}</a>
       ) : name === "created_date" ? (
-        moment(row?.creation_tsz || row.created_date).format("MM-DD-YY HH:mm")
+        moment
+          .utc(row?.creation_tsz || row.created_date)
+          .local()
+          .format("MM-DD-YY HH:mm")
       ) : (
         row[name]?.replace(/&quot;/g, '"')?.replace(/&#39;/g, "'")
       )}

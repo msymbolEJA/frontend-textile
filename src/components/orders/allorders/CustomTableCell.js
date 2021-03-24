@@ -38,11 +38,11 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
           <>
             <a href={`/order-details/${row.id}`}>{row[name]}</a>
           </>
-        ) : name === "creation_tsz" ? (
+        ) : name === "creation_tsz" || name === "ready_date" ? (
           moment(row[name]).format("MM-DD-YY HH:mm") === "Invalid date" ? (
-            "-"
+            row[name]
           ) : (
-            moment(row[name]).format("MM-DD-YY HH:mm")
+            moment.utc(row[name]).local().format("MM-DD-YY HH:mm")
           )
         ) : name === "note" ? (
           row[name]

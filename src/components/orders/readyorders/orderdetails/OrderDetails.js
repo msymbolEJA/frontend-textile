@@ -398,7 +398,10 @@ const OrderDetails = ({ match }) => {
                 logs.reverse().map((log, i) => (
                   <TableRow key={i} className={classes.tableRow}>
                     <TableCell component="th" scope="row" align="center">
-                      {moment(log.change_date).format("MM-DD-YY HH:mm")}
+                      {moment
+                        .utc(log.change_date)
+                        .local()
+                        .format("MM-DD-YY HH:mm")}
                     </TableCell>
                     <TableCell align="center">{log.user}</TableCell>
                     <TableCell align="center">

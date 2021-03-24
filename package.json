@@ -12,6 +12,7 @@
     "form-data": "^3.0.0",
     "formik": "^2.2.6",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "react": "^17.0.1",
     "react-barcode-reader": "^0.0.2",
     "react-contenteditable": "^3.3.5",

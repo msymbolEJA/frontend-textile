@@ -99,5 +99,6 @@
   "settings": "Settings",
   "approved": "APPROVED",
   "int": "International",
-  "usa": "USA"
+  "usa": "USA",
+  "currentTimeZone": "Current Time Zone"
 }

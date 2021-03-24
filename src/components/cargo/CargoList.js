@@ -239,7 +239,10 @@ export default function CustomizedTables() {
                       {row.content.length}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {moment(row.shipment_date).format("MM-DD-YY HH:mm")}
+                      {moment
+                        .utc(row.shipment_date)
+                        .local()
+                        .format("MM-DD-YY HH:mm")}
                     </StyledTableCell>
                     <StyledTableCell
                       align="center"

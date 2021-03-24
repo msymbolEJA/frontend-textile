@@ -17,7 +17,12 @@ import {
   LocalShipping as LocalShippingIcon,
   CardGiftcard as CardGiftcardIcon,
   Storage as StorageIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as CancelIcon,
 } from "@material-ui/icons";
+import moment from "moment";
+import mt from "moment-timezone";
+
 import { getData } from "../../helper/PostData";
 import { sortingArrayAdmin, sortingArrayUser } from "../../helper/Constants";
 
@@ -153,6 +158,52 @@ const Dashboard = () => {
   return (
     <div className={classes.root}>
       <div className={classes.boxes}>
+        <div
+          style={{
+            textAlign: "left",
+            marginTop: "1rem",
+            fontSize: "1rem",
+          }}
+        >
+          <div>
+            <FormattedMessage
+              id={"currentTimeZone"}
+              defaultMessage={"Current Time Zone"}
+            />
+            {" : "}
+            {mt.tz(mt.tz.guess()).zoneAbbr()} - {mt.tz.guess()}
+          </div>
+          <div>
+            <FormattedMessage
+              id={"dateOfLastOrder"}
+              defaultMessage={"Date of Last Order"}
+            />
+            {" : "}
+            {lastDateOfOrder
+              ? moment
+                  .utc(lastDateOfOrder?.creation_tsz)
+                  .local()
+                  .format("MM-DD-YY HH:mm")
+              : "-"}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "left",
+              alignItems: "center",
+            }}
+          >
+            <span>Health Check:</span>
+            {healthCheck ? (
+              <CheckCircleIcon
+                style={{ color: "green", marginLeft: "0.5rem" }}
+              />
+            ) : (
+              <CancelIcon style={{ color: "#ff3333", marginLeft: "0.5rem" }} />
+            )}
+          </div>
+        </div>
+
         <div style={{ flexDirection: "row" }}>
           <Button
             color="primary"

@@ -36,7 +36,11 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
           defaultMessage: row[name]?.replace("_", " "),
         })
       ) : name === "created_date" ? (
-        moment(row[name]).format("MM-DD-YY HH:mm")
+        moment(row[name]).format("MM-DD-YY HH:mm") === "Invalid date" ? (
+          row[name]
+        ) : (
+          moment.utc(row[name]).local().format("MM-DD-YY HH:mm")
+        )
       ) : name === "status" ? (
         row[name]?.replace("_", " ")
       ) : (

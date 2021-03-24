@@ -123,5 +123,6 @@
   "ready_date": "Onay Tarihi",
   "remove": "Kaldır",
   "int": "U/A",
-  "usa": "ABD"
+  "usa": "ABD",
+  "currentTimeZone": "Mevcut Zaman Dilimi"
 }
