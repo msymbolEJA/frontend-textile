@@ -132,8 +132,10 @@ function App({ history }) {
   const [rowsPerPage, setRowsPerPage] = useState(250);
   const [searchProg, setSearchProg] = useState(false);
   const [searchWord, setSearchWord] = useState("");
+  const [loading, setloading] = useState(true);
 
   const getListFunc = () => {
+    setloading(true);
     if (!searchProg) {
       getData(
         `${BASE_URL_MAPPING}?${
@@ -153,7 +155,8 @@ function App({ history }) {
         })
         .catch((error) => {
           console.log("error", error);
-        });
+        })
+        .finally(() => setloading(false));
     }
   };
 
@@ -712,7 +715,7 @@ function App({ history }) {
               />
             </TableRow>
           </TableHead>
-          {rows ? (
+          {rows.length ? (
             <TableBody>
               {rows?.map((row, index) => {
                 const isItemSelected = selected.indexOf(row.id) !== -1;
@@ -924,7 +927,7 @@ function App({ history }) {
                 );
               })}
             </TableBody>
-          ) : (
+          ) : !loading ? null : (
             <tbody>
               <tr>
                 <td colSpan="18" style={{ display: "table-cell" }}>

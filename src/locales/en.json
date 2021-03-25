@@ -100,5 +100,6 @@
   "approved": "APPROVED",
   "int": "International",
   "usa": "USA",
-  "currentTimeZone": "Current Time Zone"
+  "currentTimeZone": "Current Time Zone",
+  "loading": "Loading..."
 }

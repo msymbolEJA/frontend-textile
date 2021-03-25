@@ -124,7 +124,7 @@ function AllOrdersTable() {
   const history = useHistory();
   const [allPdf, setAllPdf] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
-  //const [searchProg, setSearchProg] = useState(false);
+  const [loading, setloading] = useState(true);
   const [searchWord, setSearchWord] = useState("");
 
   const localUser = localStorage.getItem("localUser");
@@ -132,6 +132,7 @@ function AllOrdersTable() {
   const userRole = user.role || localUser;
 
   const getListFunc = useCallback(() => {
+    setloading(true);
     if (!searchWord) {
       if (filters?.status === "shipped" || filters?.status === "ready") {
         filters.ordering = "-last_updated";
@@ -152,12 +153,12 @@ function AllOrdersTable() {
             response?.data?.results?.length ? response?.data?.results : []
           );
 
-          // setCount(response.data.length);
           setCount(response?.data?.count || 0);
         })
         .catch((error) => {
           console.log("error", error);
-        });
+        })
+        .finally(() => setloading(false));
     }
   }, [filters, rowsPerPage, searchWord]);
 
@@ -558,7 +559,7 @@ function AllOrdersTable() {
                 </StyledTableRow>
               ))}
             </TableBody>
-          ) : (
+          ) : !loading ? null : (
             <tbody>
               <tr>
                 <td colSpan="15" style={{ display: "table-cell" }}>
@@ -598,6 +599,7 @@ function AllOrdersTable() {
     ),
     []
   );
+
   return (
     <div>
       <Paper className={classes.root}>
@@ -682,8 +684,18 @@ function AllOrdersTable() {
             marginLeft: 16,
           }}
         >
-          <FormattedMessage id="totalRecord" defaultMessage="Total Record" /> :{" "}
-          {count}
+          {loading ? (
+            <FormattedMessage id="loading" defaultMessage="Loading..." />
+          ) : (
+            <>
+              <FormattedMessage id="total" defaultMessage="Total" />{" "}
+              <FormattedMessage
+                id={filters?.status}
+                defaultMessage={filters?.status.toUpperCase()}
+              />{" "}
+              : {count}
+            </>
+          )}
         </div>
         <AllTable />
         {printError ? <h1>{printError}</h1> : null}

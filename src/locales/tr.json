@@ -99,6 +99,7 @@
   "trackingNumber": "Takip Numarası",
   "date": "Tarih",
   "totalRecord": "Toplam Kayıt",
+  "total": "Toplam",
   "print": "Yazdır",
   "dontHaveAnyLabel": "Herhangi bir etiket yok!",
   "labels": "Etiketler",
@@ -124,5 +125,6 @@
   "remove": "Kaldır",
   "int": "U/A",
   "usa": "ABD",
-  "currentTimeZone": "Mevcut Zaman Dilimi"
+  "currentTimeZone": "Mevcut Zaman Dilimi",
+  "loading": "Yükleniyor..."
 }
