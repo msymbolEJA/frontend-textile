@@ -118,7 +118,7 @@
   "is_ready": "Hazır mı?",
   "processing": "ISLEM",
   "barcode": "Barkod",
-  "noResult": "Sonuç yok!",
+  "noResult": "-",
   "dateOfLastOrder": "Son Sipariş Tarihi",
   "settings": "Ayarlar",
   "ready_date": "Onay Tarihi",

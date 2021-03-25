@@ -309,6 +309,7 @@ function AllOrdersTable() {
       alert(error?.response?.data?.detail || error?.message);
     } finally {
       barcodeInputRef.current.value = null;
+      setBarcodeInput(null);
     }
 
     return isInProgress;
@@ -620,7 +621,7 @@ function AllOrdersTable() {
                 {barcodeInput ||
                   formatMessage({
                     id: "noResult",
-                    defaultMessage: "No result",
+                    defaultMessage: "-",
                   })}
               </p>
             </div>
