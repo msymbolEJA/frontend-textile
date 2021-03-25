@@ -126,5 +126,6 @@
   "int": "U/A",
   "usa": "ABD",
   "currentTimeZone": "Mevcut Zaman Dilimi",
-  "loading": "Yükleniyor..."
+  "loading": "Yükleniyor...",
+  "result" :"SONUÇ"
 }

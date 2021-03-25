@@ -301,7 +301,7 @@ function AllOrdersTable() {
             defaultMessage: "Status",
           })}: ${formatMessage({
             id: res?.data?.status,
-            defaultMessage: res?.data?.status.toUpperCase(),
+            defaultMessage: res?.data?.status?.toUpperCase(),
           })}`
         );
       }
@@ -367,7 +367,8 @@ function AllOrdersTable() {
         .catch((error) => {
           console.log(error);
           setRows([]);
-        });
+        })
+        .finally(() => setloading(false));
     },
     // eslint-disable-next-line
     [rowsPerPage, page, searchWord]
@@ -690,8 +691,10 @@ function AllOrdersTable() {
             <>
               <FormattedMessage id="total" defaultMessage="Total" />{" "}
               <FormattedMessage
-                id={filters?.status}
-                defaultMessage={filters?.status.toUpperCase()}
+                id={filters?.status || "result"}
+                defaultMessage={
+                  filters?.status?.toUpperCase() || "Result".toUpperCase()
+                }
               />{" "}
               : {count}
             </>
