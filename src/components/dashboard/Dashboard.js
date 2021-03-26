@@ -151,7 +151,7 @@ const Dashboard = () => {
     // const newStatu = getFirstStatu();
     // console.log("newStatu", newStatu);
     history.push(
-      `/${e.currentTarget.id}?status=${newStatu}&limit=250&offset=0`
+      `/${e.currentTarget.id}?status=${newStatu}&limit=2500&offset=0`
     );
   };
 
@@ -226,7 +226,7 @@ const Dashboard = () => {
                 className={classes.button}
                 startIcon={<ThumbUpIcon />}
                 onClick={() =>
-                  history.push(`/approval?&status=pending&limit=250&offset=0`)
+                  history.push(`/approval?&status=pending&limit=2500&offset=0`)
                 }
               >
                 <FormattedMessage id="approval" defaultMessage="Approval" />
@@ -278,7 +278,7 @@ const Dashboard = () => {
           <SummaryTable
             title="orders"
             total={0}
-            next={`/all-orders?&status=${newStatu}&limit=250&offset=0`}
+            next={`/all-orders?&status=${newStatu}&limit=2500&offset=0`}
             icon={<ListAltIcon className={classes.icon} color="primary" />}
             header1={formatMessage({
               id: "status",

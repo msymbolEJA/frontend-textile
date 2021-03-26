@@ -108,7 +108,7 @@ function AllOrdersTable() {
   const barcodeInputRef = useRef();
   const { formatMessage } = useIntl();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(250);
+  const [rowsPerPage, setRowsPerPage] = useState(2500);
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [selectedTag, setSelectedTag] = useState(filters?.status);
@@ -581,7 +581,7 @@ function AllOrdersTable() {
               </td>
               <td>{count || 0}</td>
               <TablePagination
-                rowsPerPageOptions={[25, 50, 100, 250, 500]}
+                rowsPerPageOptions={[25, 50, 100, 250, 500, 2500]}
                 colSpan={22}
                 count={count}
                 rowsPerPage={rowsPerPage}

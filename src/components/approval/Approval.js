@@ -129,7 +129,7 @@ function App({ history }) {
   const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
   const [repeatAnchorEl, setRepeatAnchorEl] = useState();
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
-  const [rowsPerPage, setRowsPerPage] = useState(250);
+  const [rowsPerPage, setRowsPerPage] = useState(2500);
   const [searchProg, setSearchProg] = useState(false);
   const [searchWord, setSearchWord] = useState("");
   const [loading, setloading] = useState(true);
@@ -535,6 +535,30 @@ function App({ history }) {
         tagsData={tagsData}
         searchHandler={searchHandler}
       />
+      <div
+        style={{
+          display: "flex",
+          color: "#001A33",
+          marginBottom: 16,
+          fontSize: "2rem",
+          marginLeft: 16,
+        }}
+      >
+        {loading ? (
+          <FormattedMessage id="loading" defaultMessage="Loading..." />
+        ) : (
+          <>
+            <FormattedMessage id="total" defaultMessage="Total" />{" "}
+            <FormattedMessage
+              id={filters?.status || "result"}
+              defaultMessage={
+                filters?.status?.toUpperCase() || "Result".toUpperCase()
+              }
+            />{" "}
+            : {count}
+          </>
+        )}
+      </div>
       <TableContainer className={classes.container}>
         <Table
           className={classes.table}
@@ -947,7 +971,7 @@ function App({ history }) {
               </td>
               <td>{count || 0}</td>
               <TablePagination
-                rowsPerPageOptions={[25, 50, 100, 250, 500]}
+                rowsPerPageOptions={[25, 50, 100, 250, 500, 2500]}
                 colSpan={22}
                 count={count}
                 rowsPerPage={rowsPerPage}

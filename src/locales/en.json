@@ -36,7 +36,7 @@
   "ready": "READY",
   "in progress": "IN PROGRESS",
   "in transit": "IN TRANSIT",
-  "awaiting": "AWAITING",
+  "awaiting": "APPROVED",
   "cancelled": "CANCELLED",
   "shipped": "SHIPPED",
   "all_orders": "ALL ORDERS",

@@ -22,14 +22,14 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 150,
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
   },
   tableRow: {
     cursor: "pointer",
+    "&:nth-of-type(odd)": {
+      backgroundColor: "#efefef",
+    },
     "&:hover": {
-      background: "#efefef",
+      background: "#e2f1e5",
     },
   },
   paper: {
@@ -135,7 +135,7 @@ export default function SummaryTable({
                       onClick={() =>
                         title === "orders"
                           ? history.push(
-                              `/all-orders?&status=${item.cell1.toLowerCase()}&limit=250&offset=0`
+                              `/all-orders?&status=${item.cell1.toLowerCase()}&limit=2500&offset=0`
                             )
                           : null
                       }

@@ -429,7 +429,7 @@ const StockList = () => {
               <td>Total Record :</td>
               <td>{listCount || 0}</td>
               <TablePagination
-                rowsPerPageOptions={[25, 50, 100, 250, 500]}
+                rowsPerPageOptions={[25, 50, 100, 250, 500, 2500]}
                 colSpan={22}
                 count={listCount ? listCount : 0}
                 rowsPerPage={rowsPerPage}
