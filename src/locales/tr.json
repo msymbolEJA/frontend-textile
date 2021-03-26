@@ -39,8 +39,8 @@
   "in_progress": "ISLEMDE",
   "in transit": "TRANSFER",
   "in_transit": "TRANSFER",
-  "approved": "ONAYLI",
-  "awaiting": "ONAYLI",
+  "approved": "BEKLEYEN",
+  "awaiting": "BEKLEYEN",
   "cancelled": "IPTAL",
   "shipped": "KARGO",
   "all_orders": "HEPSI",
@@ -127,5 +127,6 @@
   "usa": "ABD",
   "currentTimeZone": "Mevcut Zaman Dilimi",
   "loading": "Yükleniyor...",
-  "result" :"SONUÇ"
+  "result": "SONUÇ",
+  "cargoDate": "Kargo Tarihi"
 }

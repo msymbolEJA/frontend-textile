@@ -8,6 +8,8 @@ import {
   toastErrorNotify,
   toastSuccessNotify,
 } from "../../../otheritems/ToastNotify";
+import { FormattedMessage, useIntl } from "react-intl";
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
@@ -47,11 +49,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CargoPage = ({ getListFunc, id, setRefresh }) => {
+  const { formatMessage } = useIntl();
+
   const [cargoForm, setCargoForm] = useState({
     ref_number_f: "",
     tracking_number: "",
     carrier: "",
     id: id,
+    date: "",
   });
   const [result, setResult] = useState();
   const classes = useStyles();
@@ -59,19 +64,16 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
 
   const cargoFormPost = (e) => {
     e.preventDefault();
-    console.log("CFB");
     let d = new Date();
-    console.log("CFB");
     cargoForm.ref_number =
       d
         .toISOString()
         ?.replaceAll("-", "")
         ?.replaceAll(":", "")
         ?.replaceAll(".", "") +
-      "-" +
-      cargoForm.ref_number_f;
+      `- ${cargoForm.ref_number_f} (${cargoForm.date})`;
     delete cargoForm.ref_number_f;
-    console.log(cargoForm);
+    delete cargoForm.date;
 
     postFormData(`${BASE_URL}etsy/cargo_one/`, cargoForm)
       .then((res) => {
@@ -104,7 +106,12 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.rootBottom}>
-        <h1>Create A New Shipment</h1>
+        <h1>
+          <FormattedMessage
+            id="createANewShipment"
+            defaultMessage="Create A New Shipment"
+          />
+        </h1>
         <form
           className={classes.root}
           autoComplete="off"
@@ -113,7 +120,10 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
           <TextField
             className={classes.inputStyle}
             id="tracking_number"
-            label="Tracking Number"
+            label={formatMessage({
+              id: "trackingNumber",
+              defaultMessage: "Tracking Number",
+            })}
             required
             type="text"
             onChange={handleChange}
@@ -124,7 +134,10 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
           <TextField
             className={classes.inputStyle}
             id="carrier"
-            label="Carrier"
+            label={formatMessage({
+              id: "carrier",
+              defaultMessage: "Carrier",
+            })}
             required
             type="text"
             name="carrier"
@@ -135,13 +148,32 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
           <TextField
             className={classes.inputStyle}
             id="ref_number_f"
-            label="Description"
+            label={formatMessage({
+              id: "description",
+              defaultMessage: "Description",
+            })}
             required={true}
             type="text"
             variant="outlined"
             name="ref_number_f"
             onChange={handleChange}
             value={cargoForm.ref_number_f}
+          />
+          <TextField
+            id="date"
+            name="date"
+            label={formatMessage({
+              id: "cargoDate",
+              defaultMessage: "Cargo Date",
+            })}
+            type="date"
+            variant="outlined"
+            value={cargoForm.date}
+            onChange={handleChange}
+            className={classes.inputStyle}
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
           <br />
           <br />

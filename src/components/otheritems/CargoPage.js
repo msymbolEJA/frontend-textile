@@ -53,6 +53,7 @@ const CargoPage = ({ getListFunc, id, setRefreshTable, countryFilter }) => {
     tracking_number: "",
     carrier: "",
     ref_number_f: "",
+    date: "",
   });
   const [result, setResult] = useState();
   const classes = useStyles();
@@ -75,9 +76,9 @@ const CargoPage = ({ getListFunc, id, setRefreshTable, countryFilter }) => {
         ?.replaceAll("-", "")
         ?.replaceAll(":", "")
         ?.replaceAll(".", "") +
-      "-" +
-      cargoForm.ref_number_f;
+      `- ${cargoForm.ref_number_f} (${cargoForm.date})`;
     delete cargoForm.ref_number_f;
+    delete cargoForm.date;
 
     postFormData(urlCargo, cargoForm)
       .then((res) => {
@@ -161,6 +162,22 @@ const CargoPage = ({ getListFunc, id, setRefreshTable, countryFilter }) => {
             name="ref_number_f"
             onChange={handleChange}
             value={cargoForm.ref_number_f}
+          />
+          <TextField
+            id="date"
+            name="date"
+            label={formatMessage({
+              id: "cargoDate",
+              defaultMessage: "Cargo Date",
+            })}
+            type="date"
+            variant="outlined"
+            value={cargoForm.date}
+            onChange={handleChange}
+            className={classes.inputStyle}
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
           <br />
           <br />
