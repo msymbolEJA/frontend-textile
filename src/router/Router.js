@@ -38,7 +38,7 @@ const AppRouter = () => {
         <Route path="/register" component={Register} />
         <Route path="/reset/:id" component={ResetPassword} />
         <Route path="/forgot" component={ForgetPassword} />
-        <Route exact path="/" component={Login} />
+        <Route exact path="/login" component={Login} />
         <Route component={DefaultContainer} />
       </Switch>
     </Router>
@@ -48,7 +48,7 @@ const AppRouter = () => {
 const DefaultContainer = () => (
   <div>
     <Navbar />
-    <PrivateRouter exact path="/dashboard" component={Dashboard} />
+    <PrivateRouter exact path="/" component={Dashboard} />
     <PrivateRouter exact path="/all-orders" component={AllOrdersTable} />
     <PrivateRouter exact path="/account" component={Account} />
     <PrivateRouter exact path="/settings" component={Settings} />

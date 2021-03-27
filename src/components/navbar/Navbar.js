@@ -74,7 +74,7 @@ export default function MenuAppBar() {
     setAnchorEl(null);
   };
   const handleMainPage = () => {
-    history.push("/dashboard");
+    history.push("/");
     setAnchorEl(null);
   };
   // const handleSettingsPage = () => {
