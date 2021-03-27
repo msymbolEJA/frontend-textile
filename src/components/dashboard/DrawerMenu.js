@@ -8,6 +8,7 @@ import mt from "moment-timezone";
 import moment from "moment";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
+import "./DrawerStyle.css";
 
 const useStyles = makeStyles({
   list: {
@@ -42,7 +43,7 @@ export default function DrawerMenu({ lastDateOfOrder, healthCheck }) {
           textAlign: "left",
           marginTop: "1rem",
           fontSize: "1rem",
-          marginLeft: "10px",
+          marginLeft: "20px",
         }}
       >
         <div>
@@ -97,7 +98,7 @@ export default function DrawerMenu({ lastDateOfOrder, healthCheck }) {
     <div>
       <Button
         onClick={toggleDrawer(true)}
-        style={{ position: "absolute", left: "0px", top: "0px" }}
+        style={{ position: "absolute", left: "-40px", top: "-10px" }}
       >
         <InfoIcon style={{ color: healthCheck ? "green" : "#ff3333" }} />
       </Button>
