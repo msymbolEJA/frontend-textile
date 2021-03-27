@@ -125,7 +125,7 @@ export default function Login() {
             localStorage.setItem("localId", response?.data?.id);
             console.log("Logged in succesfully!");
             setAuth(true);
-            history.push("/dashboard");
+            history.push("/");
           }
         })
         .catch(({ response }) => {
