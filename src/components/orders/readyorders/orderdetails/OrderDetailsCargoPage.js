@@ -146,20 +146,6 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
             value={cargoForm.carrier}
           />
           <TextField
-            className={classes.inputStyle}
-            id="ref_number_f"
-            label={formatMessage({
-              id: "description",
-              defaultMessage: "Description",
-            })}
-            required={true}
-            type="text"
-            variant="outlined"
-            name="ref_number_f"
-            onChange={handleChange}
-            value={cargoForm.ref_number_f}
-          />
-          <TextField
             id="date"
             name="date"
             label={formatMessage({
@@ -175,6 +161,21 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
               shrink: true,
             }}
           />
+          <TextField
+            className={classes.inputStyle}
+            id="ref_number_f"
+            label={formatMessage({
+              id: "description",
+              defaultMessage: "Description",
+            })}
+            required={true}
+            type="text"
+            variant="outlined"
+            name="ref_number_f"
+            onChange={handleChange}
+            value={cargoForm.ref_number_f}
+          />
+
           <br />
           <br />
           <Button
