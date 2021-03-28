@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       cursor: "pointer",
       padding: "10px",
-      width: "200px",
+      width: "250px",
       color: "#fff",
       height: "220px",
       backgroundColor: "rgba(39, 174, 96, 1)",
