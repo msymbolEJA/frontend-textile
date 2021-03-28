@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   aStyle: {
     display: "block",
     marginLeft: "-2px",
-    fontSize: "1.5rem",
+    fontSize: "1rem",
     height: "60px",
     width: "60px",
     borderRadius: "0 25px 25px 0",
@@ -33,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       cursor: "pointer",
       padding: "10px",
-      width: "275px",
+      width: "200px",
       color: "#fff",
-      height: "205px",
+      height: "220px",
       backgroundColor: "rgba(39, 174, 96, 1)",
       "& span": {
         left: 0,
