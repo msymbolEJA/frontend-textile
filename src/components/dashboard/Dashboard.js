@@ -26,6 +26,7 @@ import mt from "moment-timezone";
 
 import { getData } from "../../helper/PostData";
 import { sortingArrayAdmin, sortingArrayUser } from "../../helper/Constants";
+import FloatingMenu from "./FloatingMenu";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -161,6 +162,10 @@ const Dashboard = () => {
     <div className={classes.root}>
       <div className={classes.boxes}>
         <DrawerMenu
+          lastDateOfOrder={lastDateOfOrder}
+          healthCheck={healthCheck}
+        />
+        <FloatingMenu
           lastDateOfOrder={lastDateOfOrder}
           healthCheck={healthCheck}
         />
