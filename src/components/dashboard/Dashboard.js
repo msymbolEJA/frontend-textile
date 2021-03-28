@@ -7,7 +7,6 @@ import { AppContext } from "../../context/Context";
 import Button from "@material-ui/core/Button";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useHistory } from "react-router-dom";
-import DrawerMenu from "./DrawerMenu";
 // Icons
 import {
   ThumbUp as ThumbUpIcon,
@@ -21,8 +20,6 @@ import {
   CheckCircle as CheckCircleIcon,
   Cancel as CancelIcon,
 } from "@material-ui/icons";
-import moment from "moment";
-import mt from "moment-timezone";
 
 import { getData } from "../../helper/PostData";
 import { sortingArrayAdmin, sortingArrayUser } from "../../helper/Constants";
@@ -161,10 +158,6 @@ const Dashboard = () => {
   return (
     <div className={classes.root}>
       <div className={classes.boxes}>
-        <DrawerMenu
-          lastDateOfOrder={lastDateOfOrder}
-          healthCheck={healthCheck}
-        />
         <FloatingMenu
           lastDateOfOrder={lastDateOfOrder}
           healthCheck={healthCheck}

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       cursor: "pointer",
       padding: "10px",
-      width: "300px",
+      width: "275px",
       color: "#fff",
       height: "205px",
       backgroundColor: "rgba(39, 174, 96, 1)",
@@ -43,6 +43,36 @@ const useStyles = makeStyles((theme) => ({
     },
     backgroundColor: "rgba(39, 174, 96, 0.1)",
     borderColor: "#27ae60",
+    color: "#fff",
+  },
+  aErrorStyle: {
+    display: "block",
+    marginLeft: "-2px",
+    fontSize: "1.5rem",
+    height: "60px",
+    width: "60px",
+    borderRadius: "0 25px 25px 0",
+    border: "2px solid #000",
+    background: "#fff",
+    marginBottom: "1em",
+    transition: "all 0.4s ease",
+    //color: "#2980b9",
+    textDecoration: "none",
+    lineHeight: "30px",
+    position: "relative",
+    "&:hover": {
+      cursor: "pointer",
+      padding: "10px",
+      width: "300px",
+      color: "#fff",
+      height: "205px",
+      backgroundColor: "rgba(255, 37, 15, 1)",
+      "& span": {
+        left: 0,
+      },
+    },
+    backgroundColor: "rgba(255, 37, 15, 0.1)",
+    borderColor: "rgba(255, 37, 15)",
     color: "#fff",
   },
   spanStyle: {
@@ -59,6 +89,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "2rem",
     color: "rgba(39, 174, 96, 1)",
   },
+  iconErrorStyle: {
+    position: "absolute",
+    top: "50%",
+    right: "20px",
+    transform: "translateY(-50%)",
+    fontSize: "2rem",
+    color: "rgba(255, 37, 15, 1)",
+  },
 }));
 
 const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
@@ -68,7 +106,10 @@ const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
     <React.Fragment>
       <ul className={classes.ulStyle}>
         <li>
-          <a href="#" className={classes.aStyle}>
+          <a
+            href="#"
+            className={healthCheck ? classes.aStyle : classes.aErrorStyle}
+          >
             <span className={classes.spanStyle}>
               <FormattedMessage
                 id={"currentTimeZone"}
@@ -93,9 +134,32 @@ const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
                 : "-"}
               <br />
               <br />
-              HealthCheck: <CheckCircleIcon />
+              <div>
+                HealthCheck:
+                {healthCheck ? (
+                  <CheckCircleIcon
+                    style={{
+                      marginLeft: "10px",
+                      position: "relative",
+                      top: "5px",
+                    }}
+                  />
+                ) : (
+                  <CancelIcon
+                    style={{
+                      marginLeft: "10px",
+                      position: "relative",
+                      top: "5px",
+                    }}
+                  />
+                )}
+              </div>
             </span>
-            <InfoIcon className={classes.iconStyle} />
+            <InfoIcon
+              className={
+                healthCheck ? classes.iconStyle : classes.iconErrorStyle
+              }
+            />
           </a>
         </li>
       </ul>
