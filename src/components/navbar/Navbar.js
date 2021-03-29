@@ -14,6 +14,19 @@ import { AppContext } from "../../context/Context";
 import { FormattedMessage } from "react-intl";
 import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
+import Button from "@material-ui/core/Button";
+import {
+  ThumbUp as ThumbUpIcon,
+  ListAlt as ListAltIcon,
+  ViewList as ViewListIcon,
+  FindInPage as FindInPageIcon,
+  AddCircle as AddCircleIcon,
+  LocalShipping as LocalShippingIcon,
+  CardGiftcard as CardGiftcardIcon,
+  Storage as StorageIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as CancelIcon,
+} from "@material-ui/icons";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const STORE_NAME = process.env.REACT_APP_STORE_NAME;
@@ -49,6 +62,15 @@ const useStyles = makeStyles((theme) => ({
   },
   whiteColor: {
     color: "white",
+  },
+  button: {
+    backgroundColor: "white",
+    margin: "0.1rem",
+    width: "10.5rem",
+    "&:hover": {
+      color: "white",
+      borderColor: "white",
+    },
   },
 }));
 
@@ -94,8 +116,28 @@ export default function MenuAppBar() {
   const localRole = localStorage.getItem("localRole");
   const localUser = localStorage.getItem("localUser");
 
+  const userRole = user.role || localUser;
+
   const handleLangChange = (e) => {
     setLang(e.target.value);
+  };
+
+  // console.log("localUser", localUser);
+  // console.log(localUser === "admin");
+  const newStatu =
+    localUser === "admin" ||
+    localUser === "shop_manager" ||
+    localUser === "shop_packer"
+      ? "pending"
+      : "awaiting";
+  // console.log(localUser);
+
+  const handleClick = (e) => {
+    // const newStatu = getFirstStatu();
+    // console.log("newStatu", newStatu);
+    history.push(
+      `/${e.currentTarget.id}?status=${newStatu}&limit=2500&offset=0`
+    );
   };
 
   return (
@@ -115,7 +157,83 @@ export default function MenuAppBar() {
               {STORE_NAME}
             </Typography>
           </IconButton>
-          <div className={classes.title}></div>
+          <div className={classes.title}>
+            <div style={{ flexDirection: "row" }}>
+              <Button
+                color="primary"
+                variant="outlined"
+                id="all-orders"
+                className={classes.button}
+                startIcon={<ViewListIcon />}
+                onClick={handleClick}
+              >
+                <FormattedMessage id="allOrders" defaultMessage="All Orders" />
+              </Button>
+              {userRole === "admin" ||
+              userRole === "shop_manager" ||
+              userRole === "shop_packer" ? (
+                <>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    id="approval"
+                    className={classes.button}
+                    startIcon={<ThumbUpIcon />}
+                    onClick={() =>
+                      history.push(
+                        `/approval?&status=pending&limit=2500&offset=0`
+                      )
+                    }
+                  >
+                    <FormattedMessage id="approval" defaultMessage="Approval" />
+                  </Button>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    id="search"
+                    className={classes.button}
+                    startIcon={<FindInPageIcon />}
+                    onClick={(e) => handleClick(e)}
+                  >
+                    <FormattedMessage id="search" defaultMessage="Search" />
+                  </Button>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    id="new-order"
+                    className={classes.button}
+                    startIcon={<AddCircleIcon />}
+                    onClick={(e) => handleClick(e)}
+                  >
+                    <FormattedMessage id="new" defaultMessage="New" />
+                  </Button>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    id="stock-list"
+                    className={classes.button}
+                    startIcon={<StorageIcon />}
+                    onClick={(e) => handleClick(e)}
+                  >
+                    <FormattedMessage
+                      id="stockList"
+                      defaultMessage="Stock List"
+                    />
+                  </Button>
+                </>
+              ) : null}
+              <Button
+                color="primary"
+                variant="outlined"
+                id="cargo-list"
+                className={classes.button}
+                startIcon={<LocalShippingIcon />}
+                onClick={(e) => handleClick(e)}
+              >
+                <FormattedMessage id="cargoList" defaultMessage="Cargo List" />
+              </Button>
+            </div>
+          </div>
           <div style={{ marginRight: "2rem" }}>
             <FormControl className={classes.formControl}>
               <NativeSelect
