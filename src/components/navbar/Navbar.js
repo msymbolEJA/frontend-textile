@@ -266,6 +266,12 @@ export default function MenuAppBar() {
                         Admin Panel
                       </a>
                     </MenuItem>
+                  </div>
+                )}
+                {(userRole === "admin" ||
+                  userRole === "shop_manager" ||
+                  userRole === "shop_packer") && (
+                  <div>
                     <MenuItem id="search" onClick={(e) => handleClick(e)}>
                       <FormattedMessage id="search" defaultMessage="Search" />
                     </MenuItem>
