@@ -4,21 +4,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import SummaryTable from "./SummaryTable";
 import { AppContext } from "../../context/Context";
-import Button from "@material-ui/core/Button";
-import { FormattedMessage, useIntl } from "react-intl";
-import { useHistory } from "react-router-dom";
+import { useIntl } from "react-intl";
 // Icons
 import {
-  ThumbUp as ThumbUpIcon,
   ListAlt as ListAltIcon,
-  ViewList as ViewListIcon,
-  FindInPage as FindInPageIcon,
-  AddCircle as AddCircleIcon,
   LocalShipping as LocalShippingIcon,
   CardGiftcard as CardGiftcardIcon,
-  Storage as StorageIcon,
-  CheckCircle as CheckCircleIcon,
-  Cancel as CancelIcon,
 } from "@material-ui/icons";
 
 import { getData } from "../../helper/PostData";
@@ -54,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
   const { user } = useContext(AppContext);
-  const history = useHistory();
   const { formatMessage } = useIntl();
   const [orderSummary, setOrderSummary] = useState();
   const [workshopDueDates, setWorkshopDueDates] = useState();
@@ -146,14 +136,6 @@ const Dashboard = () => {
       ? "pending"
       : "awaiting";
   // console.log(localUser);
-
-  const handleClick = (e) => {
-    // const newStatu = getFirstStatu();
-    // console.log("newStatu", newStatu);
-    history.push(
-      `/${e.currentTarget.id}?status=${newStatu}&limit=2500&offset=0`
-    );
-  };
 
   return (
     <div className={classes.root}>

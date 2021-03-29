@@ -17,15 +17,11 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import Button from "@material-ui/core/Button";
 import {
   ThumbUp as ThumbUpIcon,
-  ListAlt as ListAltIcon,
   ViewList as ViewListIcon,
   FindInPage as FindInPageIcon,
   AddCircle as AddCircleIcon,
   LocalShipping as LocalShippingIcon,
-  CardGiftcard as CardGiftcardIcon,
   Storage as StorageIcon,
-  CheckCircle as CheckCircleIcon,
-  Cancel as CancelIcon,
 } from "@material-ui/icons";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
