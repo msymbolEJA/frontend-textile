@@ -134,6 +134,7 @@ export default function MenuAppBar() {
     history.push(
       `/${e.currentTarget.id}?status=${newStatu}&limit=2500&offset=0`
     );
+    setAnchorEl(null);
   };
 
   return (
@@ -182,39 +183,6 @@ export default function MenuAppBar() {
                     }
                   >
                     <FormattedMessage id="approval" defaultMessage="Approval" />
-                  </Button>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    id="search"
-                    className={classes.button}
-                    startIcon={<FindInPageIcon />}
-                    onClick={(e) => handleClick(e)}
-                  >
-                    <FormattedMessage id="search" defaultMessage="Search" />
-                  </Button>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    id="new-order"
-                    className={classes.button}
-                    startIcon={<AddCircleIcon />}
-                    onClick={(e) => handleClick(e)}
-                  >
-                    <FormattedMessage id="new" defaultMessage="New" />
-                  </Button>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    id="stock-list"
-                    className={classes.button}
-                    startIcon={<StorageIcon />}
-                    onClick={(e) => handleClick(e)}
-                  >
-                    <FormattedMessage
-                      id="stockList"
-                      defaultMessage="Stock List"
-                    />
                   </Button>
                 </>
               ) : null}
@@ -286,16 +254,30 @@ export default function MenuAppBar() {
                 onClose={handleClose}
               >
                 {localRole === "admin" && (
-                  <MenuItem>
-                    <a
-                      className={classes.hrefStyle}
-                      href={`${BASE_URL}admin/`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Admin Panel
-                    </a>
-                  </MenuItem>
+                  <div>
+                    <MenuItem>
+                      <a
+                        className={classes.hrefStyle}
+                        href={`${BASE_URL}admin/`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Admin Panel
+                      </a>
+                    </MenuItem>
+                    <MenuItem id="search" onClick={(e) => handleClick(e)}>
+                      <FormattedMessage id="search" defaultMessage="Search" />
+                    </MenuItem>
+                    <MenuItem id="new-order" onClick={(e) => handleClick(e)}>
+                      <FormattedMessage id="new" defaultMessage="New" />
+                    </MenuItem>
+                    <MenuItem id="stock-list" onClick={(e) => handleClick(e)}>
+                      <FormattedMessage
+                        id="stockList"
+                        defaultMessage="Stock List"
+                      />
+                    </MenuItem>
+                  </div>
                 )}
                 <MenuItem onClick={handleAccountPage}>
                   <FormattedMessage id="account" defaultMessage="Account" />
