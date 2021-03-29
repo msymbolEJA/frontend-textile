@@ -39,6 +39,7 @@ import BarcodeInput from "../../otheritems/BarcodeInput";
 import ViewImageFile from "./ViewImageFile";
 //import { toastErrorNotify } from "../../otheritems/ToastNotify";
 import { getQueryParams } from "../../../helper/getQueryParams";
+import CustomDialog from "./CustomDialog";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
@@ -124,6 +125,7 @@ function AllOrdersTable() {
   const [refreshTable, setRefreshTable] = useState(false);
   const [loading, setloading] = useState(true);
   const [searchWord, setSearchWord] = useState("");
+  const [dialogId, setDialogId] = useState(false);
 
   const localUser = localStorage.getItem("localUser");
 
@@ -295,14 +297,21 @@ function AllOrdersTable() {
       setCurrentBarcodeList([...currentBarcodeList, id]);
       changeOrderStatus(id, "ready");
     } else {
-      alert(
-        `${id} - ${formatMessage({
-          id: "statusNotInProgress",
-        })}`
-      );
+      console.log("Status Not In Progress");
+      console.log(id);
+      setDialogId(id);
+      // alert(
+      //   `${id} - ${formatMessage({
+      //     id: "statusNotInProgress",
+      //   })}`
+      //);
     }
     barcodeInputRef.current.value = null;
     setBarcodeInput(null);
+  };
+
+  const handleDialogClose = () => {
+    setDialogId(false);
   };
 
   const handleScan = useCallback((data) => {
@@ -773,6 +782,7 @@ function AllOrdersTable() {
           countryFilter={countryFilter}
         />
       ) : null}
+      <CustomDialog dialogId={dialogId} handleDialogClose={handleDialogClose} />
     </div>
   );
 }
