@@ -70,7 +70,7 @@ const StyledTableRow = withStyles((theme) => ({
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginTop: 30,
+    marginTop: 10,
     overflowX: "auto",
   },
   container: {

@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0.5),
   },
   btnGroup: {
-    marginBottom: theme.spacing(1),
+    // marginBottom: theme.spacing(1),
+    marginTop: "1rem",
   },
   header: {
     fontSize: "1.5rem",
@@ -44,52 +45,50 @@ const CustomButtonGroup = ({
   let statusTags = isAdmin ? tagsData : nonAdminTagsData;
 
   return (
-    <div>
-      <div className={classes.btnGroup}>
-        {statusTags.map((tag) => (
-          <Button
-            className={classes.btn}
-            id={tag}
-            key={tag}
-            checked={selectedTag?.indexOf(tag) > -1}
-            onClick={(e) => handleTagChange(e)}
-            variant="contained"
-            style={{
-              backgroundColor: selectedTag === tag ? "#3F51B5" : null,
-              color: selectedTag === tag ? "white" : null,
-            }}
-          >
-            <FormattedMessage
-              id={
-                tag?.replace("_", " ") === "awaiting"
-                  ? "approved"
-                  : tag?.replace("_", " ")
-              }
-              defaultMessage={
-                tag?.replace("_", " ") === "awaiting"
-                  ? "approved"
-                  : tag?.replace("_", " ")
-              }
-            />
-          </Button>
-        ))}
-        <TextField
-          label={formatMessage({
-            id: "globalSearch",
-            defaultMessage: "Global Search",
-          })}
-          id="globalSearch"
-          defaultValue=""
-          variant="outlined"
-          size="small"
+    <div className={classes.btnGroup}>
+      {statusTags.map((tag) => (
+        <Button
+          className={classes.btn}
+          id={tag}
+          key={tag}
+          checked={selectedTag?.indexOf(tag) > -1}
+          onClick={(e) => handleTagChange(e)}
+          variant="contained"
           style={{
-            marginTop: "0.22rem",
-            marginRight: "0.3rem",
-            width: 150,
+            backgroundColor: selectedTag === tag ? "#3F51B5" : null,
+            color: selectedTag === tag ? "white" : null,
           }}
-          onKeyDown={(e) => searchHandler(e)}
-        />
-      </div>
+        >
+          <FormattedMessage
+            id={
+              tag?.replace("_", " ") === "awaiting"
+                ? "approved"
+                : tag?.replace("_", " ")
+            }
+            defaultMessage={
+              tag?.replace("_", " ") === "awaiting"
+                ? "approved"
+                : tag?.replace("_", " ")
+            }
+          />
+        </Button>
+      ))}
+      <TextField
+        label={formatMessage({
+          id: "globalSearch",
+          defaultMessage: "Global Search",
+        })}
+        id="globalSearch"
+        defaultValue=""
+        variant="outlined"
+        size="small"
+        style={{
+          marginTop: "0.22rem",
+          marginLeft: "0.3rem",
+          width: 150,
+        }}
+        onKeyDown={(e) => searchHandler(e)}
+      />
     </div>
   );
 };
