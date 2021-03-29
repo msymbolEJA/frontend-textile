@@ -18,7 +18,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: 80,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",

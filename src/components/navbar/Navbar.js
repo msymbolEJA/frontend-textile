@@ -30,6 +30,7 @@ const STORE_NAME = process.env.REACT_APP_STORE_NAME;
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginTop: 50,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -140,7 +141,7 @@ export default function MenuAppBar() {
   return (
     <div className={classes.root}>
       <FormGroup></FormGroup>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             edge="start"

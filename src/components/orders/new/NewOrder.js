@@ -78,7 +78,7 @@ function NewOrder() {
   };
 
   return (
-    <div className="App">
+    <div className="App" style={{ marginTop: 40 }}>
       <Form
         handleSubmit={handleSubmit}
         handleChange={handleChange}

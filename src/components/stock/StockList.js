@@ -59,6 +59,7 @@ const useStyles = makeStyles({
     margin: "1rem",
     minWidth: "500px",
     minHeight: "250px",
+    marginTop: 40,
     width: "95%",
   },
   header: {

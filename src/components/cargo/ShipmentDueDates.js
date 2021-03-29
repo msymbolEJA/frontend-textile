@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     // cursor: "pointer",
     margin: 0,
-    marginTop: 30,
+    marginTop: 10,
     minWidth: "400px",
   },
   icon: {

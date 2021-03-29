@@ -81,7 +81,7 @@ const Search = () => {
   };
 
   return (
-    <div>
+    <div style={{ marginTop: 20 }}>
       <Form
         handleChange={handleChange}
         handleSubmit={handleSubmit}
