@@ -102,6 +102,8 @@ const useStyles = makeStyles((theme) => ({
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState(rows);
+  const [ordersInProgress, setOrdersInProgress] = useState([]);
+  const [currentBarcodeList, setCurrentBarcodeList] = useState([]);
   const [countryFilter, setCountryFilter] = useState("all");
   const { user } = useContext(AppContext);
   const filters = getQueryParams();
@@ -112,11 +114,7 @@ function AllOrdersTable() {
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [selectedTag, setSelectedTag] = useState(filters?.status);
-  const [printFlag, setPrintFlag] = useState(
-    filters?.status === "awaiting" ? true : false
-  );
   const [printError, setPrintError] = useState(false);
-  const [isStatuReady, setIsStatuReady] = useState(false);
   const [barcodeInput, setBarcodeInput] = useState();
   const [url, setUrl] = useState(
     `${BASE_URL}etsy/orders/?status=${filters?.status}`
@@ -131,6 +129,20 @@ function AllOrdersTable() {
 
   const userRole = user.role || localUser;
 
+  const getOrdersInProgress = useCallback(() => {
+    setloading(true);
+    getData(`${BASE_URL}etsy/orders/?status=in_progress&limit=2500&offset=0`)
+      .then((response) => {
+        setOrdersInProgress(
+          response?.data?.results?.length ? response?.data?.results : []
+        );
+      })
+      .catch((error) => {
+        console.log("error", error);
+      })
+      .finally(() => setloading(false));
+  }, []);
+
   const getListFunc = useCallback(() => {
     setloading(true);
     if (!searchWord) {
@@ -143,7 +155,7 @@ function AllOrdersTable() {
           filters?.status ? `status=${filters?.status}` : ""
         }&is_repeat=${filters?.is_repeat}&is_followup=${
           filters?.is_followup
-        }&ordering=${filters?.ordering}&limit=${rowsPerPage}&offset=${
+        }&ordering=${filters?.ordering}&limit=${filters?.limit}&offset=${
           filters?.offset
         }`
       )
@@ -160,11 +172,12 @@ function AllOrdersTable() {
         })
         .finally(() => setloading(false));
     }
-  }, [filters, rowsPerPage, searchWord]);
+  }, [filters, searchWord]);
 
   useEffect(() => {
     getListFunc();
     getAllPdfFunc();
+    if (filters.status === "ready") getOrdersInProgress();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.ordering,
@@ -184,7 +197,6 @@ function AllOrdersTable() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
     let rpp = +event.target.value;
     setPage(0);
     let currentUrlParams = new URLSearchParams(window.location.search);
@@ -198,27 +210,23 @@ function AllOrdersTable() {
     setRows([]);
     const statu = e.currentTarget.id || filters?.status;
     setSelectedTag(statu);
+
     let newUrl = "";
     switch (statu) {
       case "all_orders":
-        newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+        newUrl += `limit=${25}&offset=${0}`;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_repeat=true&limit=${2500}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "followUp":
-        newUrl += `is_followup=true&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_followup=true&limit=${2500}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        break;
+      case "shipped":
+        newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       default:
-        newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-        setPrintFlag(statu === "awaiting" ? true : false);
-        setIsStatuReady(statu === "ready" ? true : false);
+        newUrl += `status=${statu}&limit=${2500}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
     }
     history.push(`/all-orders?&${newUrl}`);
@@ -243,8 +251,6 @@ function AllOrdersTable() {
     } else if (countryFilter === "int") {
       urlPrint = `${BASE_URL}etsy/print_all/?type=int`;
     } else urlPrint = `${BASE_URL}etsy/print_all/`;
-
-    //console.log(urlPrint);
 
     getData(urlPrint, data)
       .then((data) => {
@@ -279,45 +285,38 @@ function AllOrdersTable() {
       });
   };
 
-  useEffect(() => {
-    if (barcodeInput) checkOrderIfInProgress(barcodeInput);
-    // eslint-disable-next-line
-  }, [barcodeInput]);
-
   const checkOrderIfInProgress = async (id) => {
     let isInProgress = false;
-    const url = `${BASE_URL_MAPPING}${id}/`;
-    try {
-      const res = await getData(url);
-      isInProgress = res?.data?.status === "in_progress";
-      if (selectedTag === "shipped") {
-        changeOrderStatus(id, "shipped");
-      } else if (isInProgress) {
-        changeOrderStatus(id, "ready");
-      } else {
-        alert(
-          `${formatMessage({
-            id: "status",
-            defaultMessage: "Status",
-          })}: ${formatMessage({
-            id: res?.data?.status,
-            defaultMessage: res?.data?.status?.toUpperCase(),
-          })}`
-        );
-      }
-    } catch (error) {
-      alert(error?.response?.data?.detail || error?.message);
-    } finally {
-      barcodeInputRef.current.value = null;
-      setBarcodeInput(null);
+    isInProgress =
+      ordersInProgress.filter((item) => item.id.toString() === id)?.length || 0;
+    if (selectedTag === "shipped") {
+      changeOrderStatus(id, "shipped");
+    } else if (isInProgress) {
+      setCurrentBarcodeList([...currentBarcodeList, id]);
+      changeOrderStatus(id, "ready");
+    } else {
+      alert(
+        `${id} - ${formatMessage({
+          id: "statusNotInProgress",
+        })}`
+      );
     }
-
-    return isInProgress;
+    barcodeInputRef.current.value = null;
+    setBarcodeInput(null);
   };
+
+  const handleScan = useCallback((data) => {
+    setBarcodeInput(data);
+    barcodeInputRef.current.value = data;
+  }, []);
 
   const handleBarcodeInputKeyDown = (e) => {
     if (e.keyCode === 13) setBarcodeInput(barcodeInputRef.current.value);
   };
+
+  useEffect(() => {
+    if (barcodeInput) checkOrderIfInProgress(barcodeInput);
+  }, [barcodeInput]);
 
   const handleRowClick = useCallback(
     (id) => {
@@ -338,7 +337,6 @@ function AllOrdersTable() {
               : item.country_id !== "209"
           );
     setFilteredRows(resultFilteredByCountry);
-    setCount(resultFilteredByCountry?.length || 0);
   }, [countryFilter, rows]);
 
   useEffect(() => {
@@ -346,23 +344,21 @@ function AllOrdersTable() {
       globalSearchFunc(searchWord);
     }
     // eslint-disable-next-line
-  }, [rowsPerPage, page, searchWord]);
+  }, [page, searchWord]);
 
   const globalSearchFunc = useCallback(
     (searchWord) => {
-      console.log(searchWord);
       globalSearch(
-        `${BASE_URL_MAPPING}?search=${searchWord}&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
+        `${BASE_URL_MAPPING}?search=${searchWord}&limit=${2500}&offset=${
+          page * 2500
         }`
       )
         .then((response) => {
-          console.log(response.data.count);
           setRows(response.data.results);
           setCount(response?.data?.count || 0);
           //setList(response.data.results);
           let newUrl = "";
-          newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+          newUrl += `limit=${2500}&offset=${page * 2500}`;
           history.push(`/all-orders?&${searchWord}&${newUrl}`);
         })
         .catch((error) => {
@@ -372,7 +368,7 @@ function AllOrdersTable() {
         .finally(() => setloading(false));
     },
     // eslint-disable-next-line
-    [rowsPerPage, page, searchWord]
+    [page, searchWord]
   );
 
   const searchHandler = useCallback(
@@ -382,7 +378,6 @@ function AllOrdersTable() {
         //setSearchProg(!(e.target.value === ""));
         setSearchWord(e.target.value);
         setPage(0);
-        console.log(e.target.value);
         // searchWord = ;
         if (e.target.value) {
           globalSearchFunc(e.target.value);
@@ -390,21 +385,16 @@ function AllOrdersTable() {
       }
     },
     // eslint-disable-next-line
-    [rowsPerPage, page]
+    [page]
   );
-
-  const handleScan = useCallback((data) => {
-    setBarcodeInput(data);
-    barcodeInputRef.current.value = data;
-  }, []);
 
   const handleError = useCallback((err) => {
     console.error(err);
   }, []);
 
   const removeFunc = (id) => {
-    //console.log(id, "in_progress");
     changeOrderStatus(id, "in_progress");
+    getOrdersInProgress();
   };
 
   const AllTable = React.memo(
@@ -448,7 +438,6 @@ function AllOrdersTable() {
                   </StyledTableCell>
                 </>
               ) : null}
-
               <StyledTableCell align="center">
                 <FormattedMessage id="status" defaultMessage="Status" />
               </StyledTableCell>
@@ -584,7 +573,7 @@ function AllOrdersTable() {
                 rowsPerPageOptions={[25, 50, 100, 250, 500, 2500]}
                 colSpan={22}
                 count={count}
-                rowsPerPage={rowsPerPage}
+                rowsPerPage={Number(filters.limit)}
                 page={page}
                 SelectProps={{
                   inputProps: { "aria-label": "rows per page" },
@@ -640,6 +629,41 @@ function AllOrdersTable() {
             </div>
           </div>
         ) : null}
+        <div
+          style={{ display: filters?.status === "ready" ? "block" : "none" }}
+        >
+          <hr />
+          <div style={{ display: "flex", textAlign: "left" }}>
+            <div style={{ display: "inline-block", marginLeft: 16 }}>
+              <p style={{ margin: 0 }}>
+                <FormattedMessage id="lastScannedOrder" />
+              </p>
+              <Button color="primary" onClick={() => setCurrentBarcodeList([])}>
+                <FormattedMessage id="clear" />
+              </Button>
+            </div>
+            <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
+              {currentBarcodeList.map((item) => (
+                <p
+                  key={item}
+                  style={{
+                    border: "1px blue solid",
+                    borderRadius: 4,
+                    color: "blue",
+                    margin: "0 5px",
+                    padding: "0 5px",
+                    fontWeight: "bold",
+                    height: "23px",
+                  }}
+                >
+                  {item}
+                </p>
+              ))}
+            </div>
+          </div>
+          <hr />
+        </div>
+
         <div
           style={{
             display:
@@ -697,13 +721,16 @@ function AllOrdersTable() {
                   filters?.status?.toUpperCase() || "Result".toUpperCase()
                 }
               />{" "}
-              : {count}
+              :{" "}
+              {filteredRows.length === count
+                ? count
+                : `${filteredRows.length}/${count}`}
             </>
           )}
         </div>
         <AllTable />
         {printError ? <h1>{printError}</h1> : null}
-        {printFlag ? (
+        {filters?.status === "awaiting" ? (
           <>
             <Button
               variant="contained"
@@ -739,7 +766,7 @@ function AllOrdersTable() {
           </>
         ) : null}
       </Paper>
-      {isStatuReady ? (
+      {filters?.status === "ready" ? (
         <CargoPage
           getListFunc={getListFunc}
           setRefreshTable={setRefreshTable}

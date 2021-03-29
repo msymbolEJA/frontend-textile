@@ -128,5 +128,8 @@
   "currentTimeZone": "Mevcut Zaman Dilimi",
   "loading": "Yükleniyor...",
   "result": "SONUÇ",
-  "cargoDate": "Kargo Tarihi"
+  "cargoDate": "Kargo Tarihi",
+  "statusNotInProgress": "Sipariş işlemde değil!!!",
+  "lastScannedOrder": "Son okutulan ürünler:",
+  "SKU": "SKU"
 }
