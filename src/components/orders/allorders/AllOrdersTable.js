@@ -111,7 +111,6 @@ function AllOrdersTable() {
   const barcodeInputRef = useRef();
   const { formatMessage } = useIntl();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(2500);
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [selectedTag, setSelectedTag] = useState(filters?.status);
@@ -125,6 +124,7 @@ function AllOrdersTable() {
   const [refreshTable, setRefreshTable] = useState(false);
   const [loading, setloading] = useState(true);
   const [searchWord, setSearchWord] = useState("");
+  const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogId, setDialogId] = useState(false);
 
   const localUser = localStorage.getItem("localUser");
@@ -297,18 +297,15 @@ function AllOrdersTable() {
       setCurrentBarcodeList([...currentBarcodeList, id]);
       changeOrderStatus(id, "ready");
     } else {
-      console.log("Status Not In Progress");
-      console.log(id);
       setDialogId(id);
-      // alert(
-      //   `${id} - ${formatMessage({
-      //     id: "statusNotInProgress",
-      //   })}`
-      //);
     }
     barcodeInputRef.current.value = null;
     setBarcodeInput(null);
   };
+
+  useEffect(() => {
+    setDialogOpen(dialogId ? true : false);
+  }, [dialogId]);
 
   const handleDialogClose = () => {
     setDialogId(false);
@@ -779,7 +776,11 @@ function AllOrdersTable() {
           countryFilter={countryFilter}
         />
       ) : null}
-      <CustomDialog dialogId={dialogId} handleDialogClose={handleDialogClose} />
+      <CustomDialog
+        open={isDialogOpen}
+        id={dialogId}
+        handleDialogClose={handleDialogClose}
+      />
     </div>
   );
 }
