@@ -524,6 +524,7 @@ function App({ history }) {
         </>
       );
     },
+    // eslint-disable-next-line
     [repeatAnchorEl]
   );
 

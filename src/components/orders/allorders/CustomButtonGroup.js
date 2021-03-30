@@ -2,7 +2,6 @@ import React, { useContext, useRef } from "react";
 import Button from "@material-ui/core/Button";
 import { AppContext } from "../../../context/Context";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import { FormattedMessage, useIntl } from "react-intl";
 import IconButton from "@material-ui/core/IconButton";
 import OutlinedInput from "@material-ui/core/OutlinedInput";

@@ -18,10 +18,7 @@ import Button from "@material-ui/core/Button";
 import {
   ThumbUp as ThumbUpIcon,
   ViewList as ViewListIcon,
-  FindInPage as FindInPageIcon,
-  AddCircle as AddCircleIcon,
   LocalShipping as LocalShippingIcon,
-  Storage as StorageIcon,
 } from "@material-ui/icons";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;

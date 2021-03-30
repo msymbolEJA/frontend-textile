@@ -322,6 +322,7 @@ function AllOrdersTable() {
 
   useEffect(() => {
     if (barcodeInput) checkOrderIfInProgress(barcodeInput);
+    // eslint-disable-next-line
   }, [barcodeInput]);
 
   const handleRowClick = useCallback(

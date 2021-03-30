@@ -106,10 +106,7 @@ const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
     <React.Fragment>
       <ul className={classes.ulStyle}>
         <li>
-          <a
-            href="#"
-            className={healthCheck ? classes.aStyle : classes.aErrorStyle}
-          >
+          <div className={healthCheck ? classes.aStyle : classes.aErrorStyle}>
             <span className={classes.spanStyle}>
               <FormattedMessage
                 id={"currentTimeZone"}
@@ -160,7 +157,7 @@ const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
                 healthCheck ? classes.iconStyle : classes.iconErrorStyle
               }
             />
-          </a>
+          </div>
         </li>
       </ul>
     </React.Fragment>
