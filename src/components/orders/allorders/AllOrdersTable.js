@@ -378,15 +378,23 @@ function AllOrdersTable() {
   );
 
   const searchHandler = useCallback(
-    (e) => {
+    (e, second) => {
       if (e.keyCode === 13 && !(e.target.value === "")) {
         //setRows(null);
         //setSearchProg(!(e.target.value === ""));
+
         setSearchWord(e.target.value);
         setPage(0);
         // searchWord = ;
         if (e.target.value) {
           globalSearchFunc(e.target.value);
+        }
+      } else if (e === 1 && !(second === "")) {
+        setSearchWord(second);
+        setPage(0);
+        // searchWord = ;
+        if (second) {
+          globalSearchFunc(second);
         }
       }
     },

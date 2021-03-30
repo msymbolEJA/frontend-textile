@@ -1,9 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import Button from "@material-ui/core/Button";
 import { AppContext } from "../../../context/Context";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { FormattedMessage, useIntl } from "react-intl";
+import IconButton from "@material-ui/core/IconButton";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   btn: {
     width: 150,
     margin: theme.spacing(0.5),
+    marginTop: "0.8rem",
   },
   btnGroup: {
     // marginBottom: theme.spacing(1),
@@ -27,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     fontSize: "1.5rem",
+  },
+  textField: {
+    marginTop: "0.6rem",
   },
 }));
 
@@ -39,10 +49,15 @@ const CustomButtonGroup = ({
 }) => {
   const classes = useStyles();
   const { formatMessage } = useIntl();
+  const inputRef = useRef(null);
 
   const { isAdmin } = useContext(AppContext);
 
   let statusTags = isAdmin ? tagsData : nonAdminTagsData;
+
+  const searcMyhHandler = (e) => {
+    searchHandler(1, inputRef.current.childNodes[0].value);
+  };
 
   return (
     <div className={classes.btnGroup}>
@@ -73,22 +88,43 @@ const CustomButtonGroup = ({
           />
         </Button>
       ))}
-      <TextField
-        label={formatMessage({
-          id: "globalSearch",
-          defaultMessage: "Global Search",
-        })}
-        id="globalSearch"
-        defaultValue=""
-        variant="outlined"
-        size="small"
-        style={{
-          marginTop: "0.22rem",
-          marginLeft: "0.3rem",
-          width: 150,
-        }}
-        onKeyDown={(e) => searchHandler(e)}
-      />
+
+      <FormControl className={classes.textField} variant="outlined">
+        <InputLabel
+          htmlFor="outlined-adornment-password"
+          style={{ marginTop: "-0.1rem" }}
+        >
+          {formatMessage({
+            id: "globalSearch",
+            defaultMessage: "Global Search",
+          })}
+        </InputLabel>
+        <OutlinedInput
+          id="outlined-adornment-password"
+          type="text"
+          defaultValue=""
+          ref={inputRef}
+          onKeyDown={(e) => searchHandler(e)}
+          style={{
+            marginTop: "0.3rem",
+            marginLeft: "0.3rem",
+            width: 150,
+            height: 38,
+          }}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={(e) => searcMyhHandler(e)}
+                edge="end"
+              >
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          }
+          labelWidth={100}
+        />
+      </FormControl>
     </div>
   );
 };
