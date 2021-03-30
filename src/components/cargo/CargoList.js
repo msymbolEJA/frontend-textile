@@ -220,7 +220,12 @@ export default function CustomizedTables() {
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {row.content.map((key, i) => (
-                        <span key={i}>
+                        <span
+                          key={i}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                        >
                           <a
                             href={`/order-details/${key}/`}
                             key={i}
@@ -231,7 +236,7 @@ export default function CustomizedTables() {
                             {key}
                           </a>
                           {" - "}
-                          {(i + 1) % 4 === 0 ? <br /> : null}
+                          {(i + 1) % 10 === 0 ? <br /> : null}
                         </span>
                       ))}
                     </StyledTableCell>

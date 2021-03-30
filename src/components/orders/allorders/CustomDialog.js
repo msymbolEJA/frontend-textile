@@ -19,7 +19,7 @@ export default function AlertDialog({ open, handleDialogClose, id }) {
       {id ? (
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {id} -
+            {id} -{" "}
             {formatMessage({
               id: "statusNotInProgress",
             })}
