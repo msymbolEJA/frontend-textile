@@ -133,8 +133,9 @@ function App({ history }) {
   const [searchProg, setSearchProg] = useState(false);
   const [searchWord, setSearchWord] = useState("");
   const [loading, setloading] = useState(true);
+  const [repeatMenuData, setRepeatMenuData] = useState({});
 
-  const getListFunc = () => {
+  const getListFunc = useCallback(() => {
     setloading(true);
     if (!searchProg) {
       getData(
@@ -158,7 +159,15 @@ function App({ history }) {
         })
         .finally(() => setloading(false));
     }
-  };
+  }, [
+    filters?.is_followup,
+    filters?.is_repeat,
+    filters?.offset,
+    filters?.ordering,
+    filters?.status,
+    rowsPerPage,
+    searchProg,
+  ]);
 
   useEffect(() => {
     getListFunc();
@@ -207,20 +216,23 @@ function App({ history }) {
     history.push(history.location.pathname + "?" + currentUrlParams.toString());
   };
 
-  const handleRowChange = (id, data) => {
-    if (!data) return;
-    if (
-      rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
-      Object.values(data)[0]
-    )
-      return;
-    putData(`${BASE_URL_MAPPING}${id}/`, data)
-      .then((response) => {})
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => getListFunc());
-  };
+  const handleRowChange = useCallback(
+    (id, data) => {
+      if (!data) return;
+      if (
+        rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
+        Object.values(data)[0]
+      )
+        return;
+      putData(`${BASE_URL_MAPPING}${id}/`, data)
+        .then((response) => {})
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => getListFunc());
+    },
+    [getListFunc, rows]
+  );
 
   const onSelectChange = (e, row) => {
     e.preventDefault();
@@ -401,7 +413,6 @@ function App({ history }) {
     setSelected(newSelected);
   };
 
-  //let searchWord;
   useEffect(() => {
     if (searchWord) {
       globalSearchFunc(searchWord);
@@ -451,31 +462,41 @@ function App({ history }) {
     }
   };
 
-  const handleClose = () => {
-    setRepeatAnchorEl(null);
-  };
-
   const handlerRepeatChange = (e, id, is_repeat) => {
     if (is_repeat) {
-      console.log("is_repeat");
       let data = { is_repeat: false };
       handleRowChange(id, data);
     } else {
       setRowIdToRepeat(id);
       setRepeatAnchorEl(e.currentTarget);
     }
-    // eslint-disable-next-line
   };
 
-  const menuClickHandler = (row, reason) => () => {
-    const data = {
-      is_repeat: true,
-      status: "awaiting",
-      explanation: "**REPEAT: " + reason + "** " + row?.explanation,
-    };
-    handleRowChange(row.id, data);
-    handleClose();
-  };
+  const handleRepeatMenuClose = useCallback(() => {
+    setRepeatAnchorEl(null);
+    setRepeatMenuData({});
+  }, []);
+
+  const handleRepeatMenuConfirm = useCallback(() => {
+    console.log("repeatMenuData", repeatMenuData);
+    if (repeatMenuData.rowId) {
+      handleRowChange(repeatMenuData.rowId, repeatMenuData);
+    }
+    handleRepeatMenuClose();
+  }, [handleRowChange, repeatMenuData, handleRepeatMenuClose]);
+
+  const handleRepeatMenuItemClick = useCallback(
+    (row, reason) => () => {
+      const data = {
+        rowId: row.id,
+        is_repeat: true,
+        status: "awaiting",
+        explanation: "**REPEAT: " + reason + "** " + row?.explanation,
+      };
+      setRepeatMenuData(data);
+    },
+    []
+  );
 
   const repeatMenu = useCallback(
     (row) => {
@@ -486,13 +507,13 @@ function App({ history }) {
             anchorEl={repeatAnchorEl}
             keepMounted
             open={Boolean(repeatAnchorEl)}
-            onClose={handleClose}
+            onClose={handleRepeatMenuClose}
           >
             <StyledMenuItem>
               <ListItemText
                 primary="Wrong manufacturing"
                 id="Wrong manufacturing"
-                onClick={menuClickHandler(
+                onClick={handleRepeatMenuItemClick(
                   row,
                   repeatReasons.MANUFACTURING_ERROR
                 )}
@@ -502,36 +523,65 @@ function App({ history }) {
               <ListItemText
                 primary="Discoloration"
                 id="discoloration"
-                onClick={menuClickHandler(row, repeatReasons.DISCOLORATION)}
+                onClick={handleRepeatMenuItemClick(
+                  row,
+                  repeatReasons.DISCOLORATION
+                )}
               />
             </StyledMenuItem>
             <StyledMenuItem>
               <ListItemText
                 primary="Break off"
                 id="break off"
-                onClick={menuClickHandler(row, repeatReasons.BREAK_OFF)}
+                onClick={handleRepeatMenuItemClick(
+                  row,
+                  repeatReasons.BREAK_OFF
+                )}
               />
             </StyledMenuItem>
             <StyledMenuItem>
               <ListItemText
                 primary="Lost in mail"
                 id="lost in mail"
-                onClick={menuClickHandler(row, repeatReasons.LOST_IN_MAIL)}
+                onClick={handleRepeatMenuItemClick(
+                  row,
+                  repeatReasons.LOST_IN_MAIL
+                )}
               />
             </StyledMenuItem>
             <StyledMenuItem>
               <ListItemText
                 primary="Second"
                 id="Second"
-                onClick={menuClickHandler(row, repeatReasons.SECOND)}
+                onClick={handleRepeatMenuItemClick(row, repeatReasons.SECOND)}
               />
+            </StyledMenuItem>
+            <StyledMenuItem style={{ justifyContent: "space-around" }}>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={handleRepeatMenuClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                color="secondary"
+                variant="contained"
+                onClick={handleRepeatMenuConfirm}
+              >
+                OK
+              </Button>
             </StyledMenuItem>
           </StyledMenu>
         </>
       );
     },
-    // eslint-disable-next-line
-    [repeatAnchorEl]
+    [
+      handleRepeatMenuClose,
+      handleRepeatMenuConfirm,
+      handleRepeatMenuItemClick,
+      repeatAnchorEl,
+    ]
   );
 
   return (
