@@ -329,7 +329,7 @@ function App({ history }) {
     setSearchProg(false);
     if (e.currentTarget.id === filters?.status) return;
     setRows([]);
-    document.getElementById("globalSearch").value = "";
+    //document.getElementById("globalSearch").value = "";
     const statu = e.currentTarget.id;
     setSelected([]);
     setSelectedTag(statu);
@@ -416,7 +416,7 @@ function App({ history }) {
       }`
     )
       .then((response) => {
-        console.log(response.data.count);
+        //console.log(response.data.count);
         setRows(response.data.results);
         setCount(response?.data?.count || 0);
         //setList(response.data.results);
@@ -430,18 +430,24 @@ function App({ history }) {
       });
   };
 
-  const searchHandler = (e) => {
+  const searchHandler = (e, second) => {
     if (e.keyCode === 13 && !(e.target.value === "")) {
       setRows([]);
       setSearchProg(!(e.target.value === ""));
+
       setSearchWord(e.target.value);
       setPage(0);
       // searchWord = ;
       if (searchWord) {
         globalSearchFunc(searchWord);
       }
-    } else {
-      // console.log(e.target.value);
+    } else if (e === 1 && !(second === "")) {
+      setSearchWord(second);
+      setPage(0);
+      // searchWord = ;
+      if (second) {
+        globalSearchFunc(second);
+      }
     }
   };
 

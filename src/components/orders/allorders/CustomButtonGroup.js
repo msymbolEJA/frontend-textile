@@ -48,14 +48,14 @@ const CustomButtonGroup = ({
 }) => {
   const classes = useStyles();
   const { formatMessage } = useIntl();
-  const inputRef = useRef(null);
+  const myInputRef = useRef(null);
 
   const { isAdmin } = useContext(AppContext);
 
   let statusTags = isAdmin ? tagsData : nonAdminTagsData;
 
   const searcMyhHandler = (e) => {
-    searchHandler(1, inputRef.current.childNodes[0].value);
+    searchHandler(1, myInputRef.current.childNodes[0].value);
   };
 
   return (
@@ -94,15 +94,15 @@ const CustomButtonGroup = ({
           style={{ marginTop: "-0.1rem" }}
         >
           {formatMessage({
-            id: "globalSearch",
-            defaultMessage: "Global Search",
+            id: "search",
+            defaultMessage: "Search",
           })}
         </InputLabel>
         <OutlinedInput
           id="outlined-adornment-password"
           type="text"
           defaultValue=""
-          ref={inputRef}
+          ref={myInputRef}
           onKeyDown={(e) => searchHandler(e)}
           style={{
             marginTop: "0.3rem",
@@ -121,7 +121,7 @@ const CustomButtonGroup = ({
               </IconButton>
             </InputAdornment>
           }
-          labelWidth={100}
+          labelWidth={55}
         />
       </FormControl>
     </div>

@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useRef } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { FormattedMessage, useIntl } from "react-intl";
+import IconButton from "@material-ui/core/IconButton";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +41,12 @@ const CustomButtonGroup = ({
 }) => {
   const classes = useStyles();
   const { formatMessage } = useIntl();
+  const myInputRef = useRef(null);
+
+  const searcMyhHandler = (e) => {
+    //console.log(myInputRef.current.childNodes[0].value);
+    searchHandler(1, myInputRef.current.childNodes[0].value);
+  };
 
   return (
     <div>
@@ -68,22 +80,43 @@ const CustomButtonGroup = ({
         ))}
       </div>
       <div>
-        <TextField
-          label={formatMessage({
-            id: "globalSearch",
-            defaultMessage: "Global Search",
-          })}
-          id="globalSearch"
-          defaultValue=""
-          variant="outlined"
-          size="small"
-          style={{
-            marginTop: "0.22rem",
-            marginRight: "0.3rem",
-            width: 150,
-          }}
-          onKeyDown={(e) => searchHandler(e)}
-        />
+        <FormControl className={classes.textField} variant="outlined">
+          <InputLabel
+            htmlFor="outlined-adornment-password"
+            style={{ marginTop: "-0.1rem" }}
+          >
+            {formatMessage({
+              id: "search",
+              defaultMessage: "Search",
+            })}
+          </InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type="text"
+            defaultValue=""
+            // ref={myInputRef}
+            ref={myInputRef}
+            onKeyDown={(e) => searchHandler(e)}
+            style={{
+              marginTop: "0.25rem",
+              marginRight: "0.3rem",
+              width: 150,
+              height: 38,
+            }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={(e) => searcMyhHandler(e)}
+                  edge="end"
+                >
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            }
+            labelWidth={55}
+          />
+        </FormControl>
 
         <Button
           className={classes.btn}
