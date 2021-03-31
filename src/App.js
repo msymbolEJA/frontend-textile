@@ -6,6 +6,21 @@ import { ToastContainer } from "react-toastify";
 import { IntlProvider } from "react-intl";
 import messages_tr from "./locales/tr.json";
 import messages_en from "./locales/en.json";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: ["Courier New", "Courier", "monospace"].join(","),
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        fontWeight: 700,
+      },
+    },
+  },
+});
 
 const messages = {
   tr: messages_tr,
@@ -16,12 +31,12 @@ function App() {
   const { lang } = useContext(AppContext);
 
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <IntlProvider messages={messages[lang]} locale={lang} defaultLocale="en">
         <AppRouter />
         <ToastContainer />
       </IntlProvider>
-    </div>
+    </ThemeProvider>
   );
 }
 
