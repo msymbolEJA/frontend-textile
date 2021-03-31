@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: "white",
     margin: "0.1rem",
-    width: "10.5rem",
+    width: "11.5rem",
     "&:hover": {
       color: "white",
       borderColor: "white",
