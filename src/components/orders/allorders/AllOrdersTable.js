@@ -453,7 +453,9 @@ function AllOrdersTable() {
                   </StyledTableCell>
                 </>
               ) : null}
-
+              <StyledTableCell align="center">
+                <FormattedMessage id="status" defaultMessage="Status" />
+              </StyledTableCell>
               <StyledTableCell align="center">
                 <FormattedMessage id="type" defaultMessage="Type" />
               </StyledTableCell>
@@ -526,6 +528,7 @@ function AllOrdersTable() {
                       <CustomTableCell {...{ row, name: "supplier" }} />
                     </>
                   ) : null}
+                  <CustomTableCell {...{ row, name: "status" }} />
                   <CustomTableCell {...{ row, name: "type" }} />
                   <CustomTableCell {...{ row, name: "length" }} />
                   <CustomTableCell {...{ row, name: "color" }} />
