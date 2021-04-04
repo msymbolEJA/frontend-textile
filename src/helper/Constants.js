@@ -77,3 +77,41 @@ export const STORE_SERIES = {
   SILVERBYSWAN: "Papyon Serisi",
   LALYN: "Ankara Serisi",
 };
+
+export const FONTS = {
+  SHINY: {
+    FONT1: "Hello Honey",
+    FONT2: "Alex Brush",
+    FONT3: "Black Jack",
+    FONT4: "Dynalight",
+    FONT5: "",
+    FONT6: "Originality Script",
+    FONT7: "",
+    FONT8: "",
+    FONT9: "Auteur Script",
+    FONT10: "",
+    FONT11: "Fineday",
+    FONT12: "Above the Beyond Sc.",
+    FONT13: "Supa Mega Fantastic",
+    FONT14: "Notera",
+    FONT15: "Great Day",
+    FONT16: "Old English Text",
+  },
+  SILVERISTIC: {
+    FONT1: "Alex Brush",
+    FONT2: "Brush Script MT",
+    FONT3: "Commercial Script MT",
+    FONT4: "Elaine Hanks Bold",
+    FONT5: "Fabfelt Script Bold",
+    FONT6: "Harlow Solid İtalic",
+    FONT7: "Sofia",
+    FONT8: "Old English Text MT",
+    FONT9: "Harmonie Script",
+    FONT10: "Love Hewits",
+  },
+  SILVERBYSWAN: {
+    FONT1: "Marketing Script",
+    FONT2: "Scriptina",
+    FONT3: "Pasifico",
+  },
+};
