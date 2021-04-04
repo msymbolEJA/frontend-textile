@@ -3,6 +3,7 @@ import React, { useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import ContentEditable from "react-contenteditable";
+import FontPreview from "./FontPreview";
 
 const useStyles = makeStyles(() => ({
   tableCell: {
@@ -77,6 +78,11 @@ const EditableTableCell = ({ row, name, onChange }) => {
       className={expTableCell}
       //  onClick={(e) => handleRowClick(row.id, name)}
     >
+      {name === "qty" && content.includes("FONT") ? (
+        <>
+          <FontPreview font={content} text={row["personalization"]} />
+        </>
+      ) : null}
       <ContentEditable
         className={classes.editable}
         html={content} // innerHTML of the editable div

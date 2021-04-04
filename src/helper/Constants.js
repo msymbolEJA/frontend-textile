@@ -79,7 +79,7 @@ export const STORE_SERIES = {
 };
 
 export const FONTS = {
-  SHINY: {
+  Shiny: {
     FONT1: "Hello Honey",
     FONT2: "Alex Brush",
     FONT3: "Black Jack",
@@ -97,15 +97,15 @@ export const FONTS = {
     FONT15: "Great Day",
     FONT16: "Old English Text",
   },
-  SILVERISTIC: {
+  Silveristic: {
     FONT1: "Alex Brush",
-    FONT2: "Brush Script MT",
+    FONT2: "Brush Script MT", //works
     FONT3: "Commercial Script MT",
     FONT4: "Elaine Hanks Bold",
     FONT5: "Fabfelt Script Bold",
-    FONT6: "Harlow Solid İtalic",
+    FONT6: "Harlow Solid", //works
     FONT7: "Sofia",
-    FONT8: "Old English Text MT",
+    FONT8: "Old English Text MT", //works
     FONT9: "Harmonie Script",
     FONT10: "Love Hewits",
   },
