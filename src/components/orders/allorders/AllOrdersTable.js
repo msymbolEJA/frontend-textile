@@ -31,13 +31,17 @@ import {
   getData,
   putData,
   getAllPdf,
+  postData,
   globalSearch,
 } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
 import ViewImageFile from "./ViewImageFile";
-//import { toastErrorNotify } from "../../otheritems/ToastNotify";
+import {
+  toastErrorNotify,
+  toastSuccessNotify,
+} from "../../otheritems/ToastNotify";
 import { getQueryParams } from "../../../helper/getQueryParams";
 import CustomDialog from "./CustomDialog";
 
@@ -109,12 +113,14 @@ function AllOrdersTable() {
   const { user } = useContext(AppContext);
   const filters = getQueryParams();
   const barcodeInputRef = useRef();
+  const uploadLabelRef = useRef();
   const { formatMessage } = useIntl();
   const [page, setPage] = useState(0);
   const classes = useStyles();
   const [count, setCount] = useState(0);
   const [selectedTag, setSelectedTag] = useState(filters?.status);
   const [printError, setPrintError] = useState(false);
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [barcodeInput, setBarcodeInput] = useState();
   const [url, setUrl] = useState(
     `${BASE_URL}etsy/orders/?status=${filters?.status}`
@@ -410,6 +416,27 @@ function AllOrdersTable() {
   const removeFunc = (id) => {
     changeOrderStatus(id, "in_progress");
     getOrdersInProgress();
+  };
+
+  const handleLabelUpload = (e) => {
+    e.stopPropagation();
+    let file = e.target.files[0];
+    setIsUploadingFile(true);
+    console.log("IsUploadingFile", isUploadingFile);
+    let path = `${BASE_URL}etsy/UploadShipment/`;
+    postData(path, file)
+      .then((res) => {
+        console.log(res);
+        toastSuccessNotify("Success uploading file");
+      })
+      .catch((err) => {
+        console.log(err.response);
+        toastErrorNotify("Error uploading file");
+      })
+      .finally(() => {
+        getListFunc();
+        setIsUploadingFile(false);
+      });
   };
 
   const AllTable = React.memo(
@@ -719,29 +746,57 @@ function AllOrdersTable() {
         <div
           style={{
             display: "flex",
-            color: "#001A33",
-            marginBottom: 16,
-            fontSize: "2rem",
-            marginLeft: 16,
+            justifyContent: "space-between",
           }}
         >
-          {loading ? (
-            <FormattedMessage id="loading" defaultMessage="Loading..." />
-          ) : (
+          <div
+            style={{
+              display: "flex",
+              color: "#001A33",
+              marginBottom: 16,
+              fontSize: "2rem",
+              marginLeft: 16,
+            }}
+          >
+            {loading ? (
+              <FormattedMessage id="loading" defaultMessage="Loading..." />
+            ) : (
+              <>
+                <FormattedMessage id="total" defaultMessage="Total" />{" "}
+                <FormattedMessage
+                  id={filters?.status || "result"}
+                  defaultMessage={
+                    filters?.status?.toUpperCase() || "Result".toUpperCase()
+                  }
+                />{" "}
+                :{" "}
+                {filteredRows.length === count
+                  ? count
+                  : `${filteredRows.length}/${count}`}
+              </>
+            )}
+          </div>
+          {filters.status === "shipped" ? (
             <>
-              <FormattedMessage id="total" defaultMessage="Total" />{" "}
-              <FormattedMessage
-                id={filters?.status || "result"}
-                defaultMessage={
-                  filters?.status?.toUpperCase() || "Result".toUpperCase()
-                }
-              />{" "}
-              :{" "}
-              {filteredRows.length === count
-                ? count
-                : `${filteredRows.length}/${count}`}
+              <Button
+                color="secondary"
+                onClick={() => uploadLabelRef.current.click()}
+              >
+                <FormattedMessage
+                  id={isUploadingFile ? "loading" : "uploadLabel"}
+                />
+              </Button>
+              <input
+                onChange={(e) => handleLabelUpload(e)}
+                onClick={(event) => event.stopPropagation()}
+                id="myInput"
+                style={{ display: "none" }}
+                type={"file"}
+                accept="application/pdf"
+                ref={uploadLabelRef}
+              />
             </>
-          )}
+          ) : null}
         </div>
         <AllTable />
         {printError ? <h1>{printError}</h1> : null}
