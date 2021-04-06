@@ -1,0 +1,158 @@
+@font-face {
+  font-family: "Above the Beyond Script";
+  src: local("Above_the_Beyond_Script"), local("Above the Beyond Script"),
+    url(./fonts/Above_the_Beyond_Script.otf) format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Alex Brush";
+  src: local("AlexBrush-Regular"), local("Alex Brush Regular"),
+    local("Alex Brush"), url(./fonts/AlexBrush-Regular.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Auteur Script";
+  src: local("AuteurScript"), local("Auteur Script"),
+    url(./fonts/Auteur_Script.otf) format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Blackjack";
+  src: local("Blackjack"), local("Black Jack"),
+    url(./fonts/Blackjack.otf) format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Brush Script MT";
+  src: local("BrushScriptMT"), local("Brush Script"), local("BrushScript"),
+    url(./fonts/Brush_script_mt.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Commercial Script MT";
+  src: local("Commercial Script MT"), local("Commercial Script"),
+    local("CommercialScriptMT"),
+    url(./fonts/Commercialscriptmt.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Dynalight";
+  src: local("Dynalight-Regular"), local("Dynalight Regular"),
+    local("Dynalight"), url(./fonts/Dynalight-Regular.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fabfelt Script Bold";
+  src: local("FabfeltScriptBold"), local("Fabfelt Script Bold"),
+    url("fonts/Fabfeltscript-Bold.eot?#iefix") format("embedded-opentype"),
+    url("fonts/Fabfeltscript-Bold.woff2") format("woff2"),
+    url("fonts/Fabfeltscript-Bold.woff") format("woff"),
+    url("fonts/Fabfeltscript-Bold.ttf") format("truetype")
+      url(./fonts/Fabfeltscript-Bold.otf) format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fineday";
+  src: local("Fineday"), local("Fine Day"),
+    url("fonts/Fineday-StyleOne.eot?#iefix") format("embedded-opentype"),
+    url("fonts/Fineday-StyleOne.woff2") format("woff2"),
+    url("fonts/Fineday-StyleOne.woff") format("woff"),
+    url("fonts/Fineday-StyleOne.ttf") format("truetype");
+  /*  url("fonts/Fineday-StyleOne.svg#Fineday-StyleOne") format("svg"); */
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Harlow Solid";
+  src: local("Harlow Solid"), local("HarlowSolid"), local("Harlow"),
+    url(./fonts/HarlowSolid.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Love Hewits";
+  src: local("Love Hewits"), local("LoveHewitsDemo"), local("Love Hewits Demo"),
+    url(./fonts/LoveHewitsDemo.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Marketing Script";
+  src: local("Marketing Script"), local("MarketingScript"),
+    url(./fonts/MarketingScript.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Old English Text MT";
+  src: local("Old english text mt"), local("Old english text"),
+    url(./fonts/Old_english_text_mt.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Originality Script";
+  src: local("OriginalityScript"), local("Originality Script"),
+    url(./fonts/OriginalityScript.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pacifico";
+  src: local("Pacifico"), local("Pacifico Regular"),
+    url(./fonts/Pacifico_Regular.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Scriptina";
+  src: local("Scriptina"), url(./fonts/Scriptina.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sofia";
+  src: local("SofiaRegular"), local("Sofia Regular"),
+    url(./fonts/SofiaRegular.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

@@ -81,37 +81,37 @@ export const STORE_SERIES = {
 export const FONTS = {
   Shiny: {
     FONT1: "Hello Honey",
-    FONT2: "Alex Brush",
-    FONT3: "Black Jack",
-    FONT4: "Dynalight",
+    FONT2: "Alex Brush", //OK
+    FONT3: "Blackjack", //OK
+    FONT4: "Dynalight", //OK
     FONT5: "",
-    FONT6: "Originality Script",
+    FONT6: "Originality Script", //OK
     FONT7: "",
     FONT8: "",
-    FONT9: "Auteur Script",
+    FONT9: "Auteur Script", //OK
     FONT10: "",
-    FONT11: "Fineday",
-    FONT12: "Above the Beyond Sc.",
+    FONT11: "Fineday", //OK
+    FONT12: "Above the Beyond Script", //OK
     FONT13: "Supa Mega Fantastic",
     FONT14: "Notera",
     FONT15: "Great Day",
     FONT16: "Old English Text",
   },
   Silveristic: {
-    FONT1: "Alex Brush",
-    FONT2: "Brush Script MT", //works
-    FONT3: "Commercial Script MT",
+    FONT1: "Alex Brush", //OK
+    FONT2: "Brush Script MT", //OK
+    FONT3: "Commercial Script MT", //OK
     FONT4: "Elaine Hanks Bold",
-    FONT5: "Fabfelt Script Bold",
-    FONT6: "Harlow Solid", //works
-    FONT7: "Sofia",
-    FONT8: "Old English Text MT", //works
+    FONT5: "Fabfelt Script Bold", //OK
+    FONT6: "Harlow Solid", //OK
+    FONT7: "Sofia", //OK
+    FONT8: "Old English Text MT", //OK
     FONT9: "Harmonie Script",
-    FONT10: "Love Hewits",
+    FONT10: "Love Hewits", //OK
   },
   SILVERBYSWAN: {
-    FONT1: "Marketing Script",
-    FONT2: "Scriptina",
-    FONT3: "Pasifico",
+    FONT1: "Marketing Script", //OK
+    FONT2: "Scriptina", //OK
+    FONT3: "Pasifico", //OK
   },
 };
