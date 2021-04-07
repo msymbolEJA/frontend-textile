@@ -20,6 +20,8 @@ import {
   TextField,
   CircularProgress,
 } from "@material-ui/core";
+import FormData from "form-data";
+import printJS from "print-js";
 import { AppContext } from "../../../context/Context";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomButtonGroup from "./CustomButtonGroup";
@@ -282,14 +284,37 @@ function AllOrdersTable() {
       });
   };
 
+  const printPdf = function (url) {
+    var iframe = document.createElement("iframe");
+    document.body.appendChild(iframe);
+
+    iframe.style.display = "none";
+    iframe.onload = function () {
+      setTimeout(function () {
+        iframe.focus();
+        iframe.contentWindow.print();
+      }, 1);
+    };
+
+    iframe.src = url;
+  };
+
   const changeOrderStatus = (id, status) => {
     putData(`${BASE_URL_MAPPING}${id}/`, { status })
       .then((response) => {
+        const pdfUrl = `${BASE_URL.substring(0, BASE_URL.length - 1)}${
+          response.data[1]
+        }`;
+        console.log("pfdUrl", pdfUrl);
+        if (Array.isArray(response.data)) {
+          printJS(pdfUrl);
+        }
         getData(url);
         setRefreshTable(!refreshTable);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error", error);
+        console.log(error.response);
       });
   };
 
@@ -420,11 +445,14 @@ function AllOrdersTable() {
 
   const handleLabelUpload = (e) => {
     e.stopPropagation();
-    let file = e.target.files[0];
+    let fs = e.target.files[0];
     setIsUploadingFile(true);
-    console.log("IsUploadingFile", isUploadingFile);
+
+    var data = new FormData();
+    data.append("file", fs);
+
     let path = `${BASE_URL}etsy/UploadShipment/`;
-    postData(path, file)
+    postData(path, data)
       .then((res) => {
         console.log(res);
         toastSuccessNotify("Success uploading file");

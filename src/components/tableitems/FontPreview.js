@@ -31,11 +31,6 @@ const FontPreview = ({ id, font, text }) => {
     ctx.strokeStyle = "black";
     ctx.stroke();
 
-    /*     const oneCm = getDPI() / 2.54;
-    canvas.width = 8.56 * oneCm;
-    canvas.height = 8.56 * oneCm;
-    canvas.style.width = `${8.56 * oneCm}px`;
-    canvas.style.height = `${8.56 * oneCm}px`; */
     let timer1 = setTimeout(() => {
       ctx.font = `80px "${fontStyle}"`;
       ctx.strokeStyle = "black";
@@ -43,7 +38,7 @@ const FontPreview = ({ id, font, text }) => {
       ctx.fillStyle = "white";
       ctx.fillText(text, canvas.width / 2, canvas.height / 2 + 45);
 
-      const data = canvas.toDataURL(); // extract the image data
+      const data = canvas.toDataURL();
 
       // inject the image data into a link, creating a downloadable file
       const link = document.getElementById(`link${id}`);
@@ -52,7 +47,7 @@ const FontPreview = ({ id, font, text }) => {
         "data:application/octet-stream;charset=utf-16le;" + data
       );
       link.setAttribute("download", "image.png");
-    }, 500);
+    }, 1500);
     return () => {
       clearTimeout(timer1);
     };
