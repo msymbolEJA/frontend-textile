@@ -80,7 +80,11 @@ const EditableTableCell = ({ row, name, onChange }) => {
     >
       {name === "qty" && content.includes("FONT") ? (
         <>
-          <FontPreview font={content} text={row["personalization"]} />
+          <FontPreview
+            id={row.id}
+            font={content}
+            text={row["personalization"]}
+          />
         </>
       ) : null}
       <ContentEditable
