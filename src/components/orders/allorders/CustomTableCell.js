@@ -44,16 +44,6 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
           ) : (
             moment.utc(row[name]).local().format("MM-DD-YY HH:mm")
           )
-        ) : name === "note" ? (
-          row[name]
-            ?.replace(
-              "**REPEAT: MANUFACTURING ERROR**",
-              "**TEKRAR: ÜRETİM HATASI**"
-            )
-            ?.replace("**REPEAT: DISCOLORATION**", "**TEKRAR: RENK ATMA**")
-            ?.replace("**REPEAT: BREAK OFF**", "")
-            ?.replace("**REPEAT: LOST IN MAIL**", "")
-            ?.replace("**REPEAT: SECOND**", "")
         ) : name === "status" ? (
           formatMessage({
             id: row[name] === "awaiting" ? "approved" : row[name],
@@ -63,7 +53,14 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
                 : row[name].replace("_", " "),
           })
         ) : row[name] ? (
-          row[name]?.replace("_", " ")
+          row[name]
+            .replace("_", " ")
+            .replace("REPEAT", "TEKRAR")
+            .replace("MANUFACTURING ERROR", "ÜRETİM HATASI")
+            .replace("DISCOLORATION", "RENK ATMA")
+            .replace(": BREAK OFF", "")
+            .replace(": LOST IN MAIL", "")
+            .replace(": SECOND", "")
         ) : (
           "-"
         )}
