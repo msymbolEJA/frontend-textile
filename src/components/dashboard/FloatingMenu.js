@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
       padding: "10px",
       width: "250px",
       color: "#fff",
-      height: "220px",
+      height: "250px",
       backgroundColor: "rgba(39, 174, 96, 1)",
       "& span": {
         left: 0,
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
       padding: "10px",
       width: "250px",
       color: "#fff",
-      height: "205px",
+      height: "250px",
       backgroundColor: "rgba(255, 37, 15, 1)",
       "& span": {
         left: 0,
@@ -106,7 +106,9 @@ const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
     <React.Fragment>
       <ul className={classes.ulStyle}>
         <li>
-          <div className={healthCheck ? classes.aStyle : classes.aErrorStyle}>
+          <div
+            className={healthCheck.check ? classes.aStyle : classes.aErrorStyle}
+          >
             <span className={classes.spanStyle}>
               <FormattedMessage
                 id={"currentTimeZone"}
@@ -133,7 +135,7 @@ const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
               <br />
               <div>
                 HealthCheck:
-                {healthCheck ? (
+                {healthCheck.check ? (
                   <CheckCircleIcon
                     style={{
                       marginLeft: "10px",
@@ -154,7 +156,7 @@ const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
             </span>
             <InfoIcon
               className={
-                healthCheck ? classes.iconStyle : classes.iconErrorStyle
+                healthCheck.check ? classes.iconStyle : classes.iconErrorStyle
               }
             />
           </div>
