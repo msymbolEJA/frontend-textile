@@ -199,16 +199,12 @@ function AllOrdersTable() {
         const l = localStorage.getItem(
           `${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
         );
-        console.log(
-          `${selectedTag}-${filters.limit}-${filters.offset}-last_updated:`,
-          response.data.last_updated === l
-        );
         if (response.data.last_updated !== l) {
+          getListFunc();
           localStorage.setItem(
             `${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
             response.data.last_updated
           );
-          getListFunc();
         }
       })
       .catch((error) => {
@@ -216,10 +212,11 @@ function AllOrdersTable() {
       })
       .finally(() => {});
   };
+
   useEffect(() => {
     getLastUpdateDate();
     if (filters?.status === "awaiting") getAllPdfFunc();
-    //  if (filters.status === "ready") getOrdersInProgress();
+    if (filters.status === "ready") getOrdersInProgress();
     const tmp =
       JSON.parse(
         localStorage.getItem(
@@ -391,6 +388,11 @@ function AllOrdersTable() {
   };
 
   useEffect(() => {
+    if (barcodeInput) checkOrderIfInProgress(barcodeInput);
+    // eslint-disable-next-line
+  }, [barcodeInput]);
+
+  useEffect(() => {
     setDialogOpen(dialogId ? true : false);
   }, [dialogId]);
 
@@ -406,11 +408,6 @@ function AllOrdersTable() {
   const handleBarcodeInputKeyDown = (e) => {
     if (e.keyCode === 13) setBarcodeInput(barcodeInputRef.current.value);
   };
-
-  useEffect(() => {
-    if (barcodeInput) checkOrderIfInProgress(barcodeInput);
-    // eslint-disable-next-line
-  }, [barcodeInput]);
 
   const handleRowClick = useCallback(
     (id) => {
