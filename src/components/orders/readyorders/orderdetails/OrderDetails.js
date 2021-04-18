@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
   table2: {
     maxWidth: 950,
     margin: "auto",
+    border: "1px solid black",
   },
   selectTableCell: {
     width: 60,
@@ -350,7 +351,6 @@ const OrderDetails = ({ match }) => {
           >
             Print
           </Button>
-          <hr />
         </>
       ) : null}
 
@@ -368,57 +368,61 @@ const OrderDetails = ({ match }) => {
               defaultMessage="Open Printed Pdf"
             />
           </a>
-          <hr />
         </>
-      ) : null}
-
-      {logs?.length === 0 ? null : (
-        <TableContainer component={Paper}>
-          <Table className={classes.table2} aria-label="simple table">
-            <TableHead>
-              <TableRow
-                style={{ backgroundColor: "black", borderRadius: "0.5rem" }}
-              >
-                <TableCell align="center" style={{ color: "white" }}>
-                  <FormattedMessage id="date" defaultMessage="Date" />
-                </TableCell>
-                <TableCell align="center" style={{ color: "white" }}>
-                  <FormattedMessage id="user" defaultMessage="User" />
-                </TableCell>
-                <TableCell align="center" style={{ color: "white" }}>
-                  <FormattedMessage id="action" defaultMessage="Action" />
-                </TableCell>
-                <TableCell align="center" style={{ color: "white" }}>
-                  <FormattedMessage id="logData" defaultMessage="Log Data" />
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {logs.length > 0 &&
-                logs.reverse().map((log, i) => (
-                  <TableRow key={i} className={classes.tableRow}>
-                    <TableCell component="th" scope="row" align="center">
-                      {moment
-                        .utc(log.change_date)
-                        .local()
-                        .format("MM-DD-YY HH:mm")}
-                    </TableCell>
-                    <TableCell align="center">{log.user}</TableCell>
-                    <TableCell align="center">
-                      {formatMessage({
-                        id: log.type,
-                        defaultMessage: log.type?.replace("_", " "),
-                      })}
-                    </TableCell>
-                    <TableCell align="center">
-                      {formMesFunc(log.data)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+      ) : (
+        <p>
+          <FormattedMessage id="noPdfFiles" />
+        </p>
       )}
+
+      <TableContainer component={Paper}>
+        <Table className={classes.table2} aria-label="simple table">
+          <TableHead>
+            <TableRow
+              style={{ backgroundColor: "black", borderRadius: "0.5rem" }}
+            >
+              <TableCell align="center" style={{ color: "white" }}>
+                <FormattedMessage id="date" defaultMessage="Date" />
+              </TableCell>
+              <TableCell align="center" style={{ color: "white" }}>
+                <FormattedMessage id="user" defaultMessage="User" />
+              </TableCell>
+              <TableCell align="center" style={{ color: "white" }}>
+                <FormattedMessage id="action" defaultMessage="Action" />
+              </TableCell>
+              <TableCell align="center" style={{ color: "white" }}>
+                <FormattedMessage id="logData" defaultMessage="Log Data" />
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {logs.length > 0 ? (
+              logs.reverse().map((log, i) => (
+                <TableRow key={i} className={classes.tableRow}>
+                  <TableCell component="th" scope="row" align="center">
+                    {moment
+                      .utc(log.change_date)
+                      .local()
+                      .format("MM-DD-YY HH:mm")}
+                  </TableCell>
+                  <TableCell align="center">{log.user}</TableCell>
+                  <TableCell align="center">
+                    {formatMessage({
+                      id: log.type,
+                      defaultMessage: log.type?.replace("_", " "),
+                    })}
+                  </TableCell>
+                  <TableCell align="center">{formMesFunc(log.data)}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <td colspan="4">
+                <FormattedMessage id="noLogs" />
+              </td>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
