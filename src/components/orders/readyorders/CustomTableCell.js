@@ -44,6 +44,15 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
               ? "APPROVED"
               : row[name].replace("_", " "),
         })
+      ) : name === "explanation" ? (
+        row[name]
+          .replace("_", " ")
+          .replace("REPEAT", "TEKRAR")
+          .replace("MANUFACTURING ERROR", "ÜRETİM HATASI")
+          .replace("DISCOLORATION", "RENK ATMA")
+          .replace(": BREAK OFF", "")
+          .replace(": LOST IN MAIL", "")
+          .replace(": SECOND", "")
       ) : (
         row[name]
       )}
