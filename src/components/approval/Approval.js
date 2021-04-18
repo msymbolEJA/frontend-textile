@@ -225,7 +225,12 @@ function App({ history }) {
     filters.limit,
     filters.offset,
     count,
+    selectedTag,
   ]);
+
+  useEffect(() => {
+    if (filters?.status) setSelectedTag(filters?.status);
+  }, [filters?.status]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = order === "asc";
@@ -1086,8 +1091,10 @@ function App({ history }) {
               <TablePagination
                 rowsPerPageOptions={[25, 50, 100, 250, 500, 2500]}
                 colSpan={22}
-                count={localStorage.getItem(
-                  `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                count={Number(
+                  localStorage.getItem(
+                    `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  ) ?? 0
                 )}
                 rowsPerPage={Number(filters.limit)}
                 page={page}

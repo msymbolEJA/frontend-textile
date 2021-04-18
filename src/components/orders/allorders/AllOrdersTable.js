@@ -191,7 +191,7 @@ function AllOrdersTable() {
         })
         .finally(() => setloading(false));
     }
-  }, [filters, searchWord]);
+  }, [filters, searchWord, selectedTag]);
 
   const getLastUpdateDate = () => {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
@@ -248,7 +248,12 @@ function AllOrdersTable() {
     refreshTable,
     countryFilter,
     count,
+    selectedTag,
   ]);
+
+  useEffect(() => {
+    if (filters?.status) setSelectedTag(filters?.status);
+  }, [filters?.status]);
 
   const handleChangePage = (event, newPage) => {
     let currentUrlParams = new URLSearchParams(window.location.search);
