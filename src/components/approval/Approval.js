@@ -509,6 +509,7 @@ function App({ history }) {
             open={Boolean(repeatAnchorEl)}
             onClose={handleRepeatMenuClose}
           >
+            <hr />
             <StyledMenuItem>
               <ListItemText
                 primary="Wrong manufacturing"
