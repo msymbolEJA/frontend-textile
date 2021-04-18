@@ -478,7 +478,6 @@ function App({ history }) {
   }, []);
 
   const handleRepeatMenuConfirm = useCallback(() => {
-    console.log("repeatMenuData", repeatMenuData);
     if (repeatMenuData.rowId) {
       handleRowChange(repeatMenuData.rowId, repeatMenuData);
     }
@@ -490,6 +489,7 @@ function App({ history }) {
       const data = {
         rowId: row.id,
         is_repeat: true,
+        approved: true,
         status: "awaiting",
         explanation: "**REPEAT: " + reason + "** " + row?.explanation,
       };
