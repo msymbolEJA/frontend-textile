@@ -133,5 +133,7 @@
   "lastScannedOrder": "Son okutulan ürünler:",
   "SKU": "SKU",
   "ok": "TAMAM",
-  "uploadLabel": "Etiket yükle"
+  "uploadLabel": "Etiket yükle",
+  "noLogs": "Bu sipariş için log kaydı yoktur.",
+  "noPdfFiles": "Bu sipariş için pdf dosyası yoktur"
 }

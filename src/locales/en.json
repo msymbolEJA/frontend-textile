@@ -105,5 +105,7 @@
   "statusNotInProgress": "Status is not IN_PROGRESS",
   "lastScannedOrder": "Last scanned orders:",
   "ok": "OK",
-  "uploadLabel": "Upload Label"
+  "uploadLabel": "Upload Label",
+  "noLogs": "There are no logs for this order",
+  "noPdfFiles": "There are no pdf files for this order"
 }
