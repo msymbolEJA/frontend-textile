@@ -47,7 +47,7 @@ const FontPreview = ({ id, font, text }) => {
         "data:application/octet-stream;charset=utf-16le;" + data
       );
       link.setAttribute("download", "image.png");
-    }, 1500);
+    }, 2500);
     return () => {
       clearTimeout(timer1);
     };
