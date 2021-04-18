@@ -135,5 +135,6 @@
   "ok": "TAMAM",
   "uploadLabel": "Etiket yükle",
   "noLogs": "Bu sipariş için log kaydı yoktur.",
-  "noPdfFiles": "Bu sipariş için pdf dosyası yoktur"
+  "noPdfFiles": "Bu sipariş için pdf dosyası yoktur",
+  "updating": "Güncelleniyor..."
 }

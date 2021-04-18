@@ -108,7 +108,6 @@ const useStyles = makeStyles((theme) => ({
 
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
-  const [filteredRows, setFilteredRows] = useState(rows);
   const [ordersInProgress, setOrdersInProgress] = useState([]);
   const [currentBarcodeList, setCurrentBarcodeList] = useState([]);
   const [countryFilter, setCountryFilter] = useState("all");
@@ -130,7 +129,7 @@ function AllOrdersTable() {
   const history = useHistory();
   const [allPdf, setAllPdf] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
-  const [loading, setloading] = useState(true);
+  const [loading, setloading] = useState(false);
   const [searchWord, setSearchWord] = useState("");
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogId, setDialogId] = useState(false);
@@ -170,24 +169,74 @@ function AllOrdersTable() {
         }`
       )
         .then((response) => {
-          // setRows(response.data);
-          setRows(
-            response?.data?.results?.length ? response?.data?.results : []
+          const t = response?.data?.results?.length
+            ? response?.data?.results
+            : [];
+          localStorage.setItem(
+            `${selectedTag}-${filters.limit}-${filters.offset}`,
+            JSON.stringify(t)
           );
-
-          setCount(response?.data?.count || 0);
+          localStorage.setItem(
+            `${selectedTag}-${filters.limit}-${filters.offset}-count`,
+            response?.data?.count || 0
+          );
+          setRows(t);
         })
         .catch((error) => {
+          localStorage.setItem(
+            `${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+            null
+          );
           console.log("error", error);
         })
         .finally(() => setloading(false));
     }
   }, [filters, searchWord]);
 
+  const getLastUpdateDate = () => {
+    getData(`${BASE_URL}etsy/get_mapping_update_date/`)
+      .then((response) => {
+        const l = localStorage.getItem(
+          `${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
+        );
+        console.log(
+          `${selectedTag}-${filters.limit}-${filters.offset}-last_updated:`,
+          response.data.last_updated === l
+        );
+        if (response.data.last_updated !== l) {
+          localStorage.setItem(
+            `${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+            response.data.last_updated
+          );
+          getListFunc();
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      })
+      .finally(() => {});
+  };
   useEffect(() => {
-    getListFunc();
-    getAllPdfFunc();
-    if (filters.status === "ready") getOrdersInProgress();
+    getLastUpdateDate();
+    if (filters?.status === "awaiting") getAllPdfFunc();
+    //  if (filters.status === "ready") getOrdersInProgress();
+    const tmp =
+      JSON.parse(
+        localStorage.getItem(
+          `${selectedTag}-${filters.limit}-${filters.offset}`
+        )
+      ) ?? [];
+    if (!tmp.length) getListFunc();
+    else {
+      let resultFilteredByCountry = null;
+      if (countryFilter !== "all")
+        resultFilteredByCountry = tmp.filter((item) =>
+          countryFilter === "usa"
+            ? item.country_id === "209"
+            : item.country_id !== "209"
+        );
+      setRows(resultFilteredByCountry ?? tmp);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.ordering,
@@ -197,6 +246,8 @@ function AllOrdersTable() {
     filters.limit,
     filters.offset,
     refreshTable,
+    countryFilter,
+    count,
   ]);
 
   const handleChangePage = (event, newPage) => {
@@ -366,18 +417,6 @@ function AllOrdersTable() {
   );
 
   useEffect(() => {
-    const resultFilteredByCountry =
-      countryFilter === "all"
-        ? rows
-        : rows.filter((item) =>
-            countryFilter === "usa"
-              ? item.country_id === "209"
-              : item.country_id !== "209"
-          );
-    setFilteredRows(resultFilteredByCountry);
-  }, [countryFilter, rows]);
-
-  useEffect(() => {
     if (searchWord) {
       globalSearchFunc(searchWord);
     }
@@ -387,8 +426,8 @@ function AllOrdersTable() {
   const globalSearchFunc = useCallback(
     (searchWord) => {
       globalSearch(
-        `${BASE_URL_MAPPING}?search=${searchWord}&limit=${2500}&offset=${
-          page * 2500
+        `${BASE_URL_MAPPING}?search=${searchWord}&limit=${25}&offset=${
+          page * 25
         }`
       )
         .then((response) => {
@@ -396,7 +435,7 @@ function AllOrdersTable() {
           setCount(response?.data?.count || 0);
           //setList(response.data.results);
           let newUrl = "";
-          newUrl += `limit=${2500}&offset=${page * 2500}`;
+          newUrl += `limit=${25}&offset=${page * 25}`;
           history.push(`/all-orders?&${searchWord}&${newUrl}`);
         })
         .catch((error) => {
@@ -548,9 +587,9 @@ function AllOrdersTable() {
               ) : null}
             </TableRow>
           </TableHead>
-          {filteredRows?.length ? (
+          {rows?.length ? (
             <TableBody>
-              {filteredRows.map((row) => (
+              {rows.map((row) => (
                 <StyledTableRow
                   className={classes.rowStyle}
                   key={row.id}
@@ -638,11 +677,19 @@ function AllOrdersTable() {
                 />
                 :
               </td>
-              <td>{count || 0}</td>
+              <td>
+                {localStorage.getItem(
+                  `${selectedTag}-${filters.limit}-${filters.offset}-count`
+                ) || 0}
+              </td>
               <TablePagination
                 rowsPerPageOptions={[25, 50, 100, 250, 500, 2500]}
                 colSpan={22}
-                count={count}
+                count={Number(
+                  localStorage.getItem(
+                    `${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  ) || 0
+                )}
                 rowsPerPage={Number(filters.limit)}
                 page={page}
                 SelectProps={{
@@ -665,7 +712,7 @@ function AllOrdersTable() {
     <div>
       <Paper className={classes.root}>
         <CustomButtonGroup
-          selectedTag={selectedTag}
+          selectedTag={filters?.status}
           handleTagChange={handleTagChange}
           tagsData={tagsData}
           nonAdminTagsData={nonAdminTagsData}
@@ -787,7 +834,7 @@ function AllOrdersTable() {
             }}
           >
             {loading ? (
-              <FormattedMessage id="loading" defaultMessage="Loading..." />
+              <FormattedMessage id="updating" />
             ) : (
               <>
                 <FormattedMessage id="total" defaultMessage="Total" />{" "}
@@ -798,9 +845,20 @@ function AllOrdersTable() {
                   }
                 />{" "}
                 :{" "}
-                {filteredRows.length === count
-                  ? count
-                  : `${filteredRows.length}/${count}`}
+                {rows.length ===
+                Number(
+                  localStorage.getItem(
+                    `${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  )
+                )
+                  ? localStorage.getItem(
+                      `${selectedTag}-${filters.limit}-${filters.offset}-count`
+                    ) ?? 0
+                  : `${rows.length}/${
+                      localStorage.getItem(
+                        `${selectedTag}-${filters.limit}-${filters.offset}-count`
+                      ) ?? 0
+                    }`}
               </>
             )}
           </div>

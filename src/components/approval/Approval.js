@@ -129,10 +129,9 @@ function App({ history }) {
   const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
   const [repeatAnchorEl, setRepeatAnchorEl] = useState();
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
-  const [rowsPerPage, setRowsPerPage] = useState(2500);
   const [searchProg, setSearchProg] = useState(false);
   const [searchWord, setSearchWord] = useState("");
-  const [loading, setloading] = useState(true);
+  const [loading, setloading] = useState(false);
   const [repeatMenuData, setRepeatMenuData] = useState({});
 
   const getListFunc = useCallback(() => {
@@ -143,18 +142,29 @@ function App({ history }) {
           filters?.status ? `status=${filters?.status}` : ""
         }&is_repeat=${filters?.is_repeat}&is_followup=${
           filters?.is_followup
-        }&ordering=${filters?.ordering || "-id"}&limit=${rowsPerPage}&offset=${
-          filters?.offset
-        }`
+        }&ordering=${filters?.ordering || "-id"}&limit=${
+          filters?.limit
+        }&offset=${filters?.offset}`
       )
         .then((response) => {
-          // setRows(response.data);
-          setRows(response.data.results);
-
-          // setCount(response.data.length);
-          setCount(response.data.count);
+          const t = response?.data?.results?.length
+            ? response?.data?.results
+            : [];
+          localStorage.setItem(
+            `${selectedTag}-${filters.limit}-${filters.offset}`,
+            JSON.stringify(t)
+          );
+          localStorage.setItem(
+            `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
+            response?.data?.count || 0
+          );
+          setRows(t);
         })
         .catch((error) => {
+          localStorage.setItem(
+            `mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+            null
+          );
           console.log("error", error);
         })
         .finally(() => setloading(false));
@@ -162,15 +172,50 @@ function App({ history }) {
   }, [
     filters?.is_followup,
     filters?.is_repeat,
+    filters?.limit,
     filters?.offset,
     filters?.ordering,
     filters?.status,
-    rowsPerPage,
     searchProg,
+    selectedTag,
   ]);
 
+  const getLastUpdateDate = () => {
+    getData(`${BASE_URL}etsy/get_mapping_update_date/`)
+      .then((response) => {
+        const l = localStorage.getItem(
+          `mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
+        );
+        console.log(
+          `mapping-${selectedTag}-last_updated:`,
+          response.data.last_updated === l
+        );
+        if (response.data.last_updated !== l) {
+          localStorage.setItem(
+            `mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+            response.data.last_updated
+          );
+          getListFunc();
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      })
+      .finally(() => {});
+  };
+
   useEffect(() => {
-    getListFunc();
+    getLastUpdateDate();
+    const tmp =
+      JSON.parse(
+        localStorage.getItem(
+          `${selectedTag}-${filters.limit}-${filters.offset}`
+        )
+      ) ?? [];
+    if (!tmp.length) getListFunc();
+    else {
+      setRows(tmp);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.ordering,
@@ -179,6 +224,7 @@ function App({ history }) {
     filters.is_repeat,
     filters.limit,
     filters.offset,
+    count,
   ]);
 
   const handleRequestSort = (event, property) => {
@@ -208,7 +254,6 @@ function App({ history }) {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
     let rpp = +event.target.value;
     setPage(0);
     let currentUrlParams = new URLSearchParams(window.location.search);
@@ -348,25 +393,19 @@ function App({ history }) {
     let newUrl = "";
     switch (statu) {
       case "all_orders":
-        newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+        newUrl += `limit=${25}&offset=${0}`;
         break;
-      /*        case "pending":
-          newUrl += `status=pending`;
-          break; */
       case "repeat":
-        newUrl += `is_repeat=true&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_repeat=true&limit=${2500}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "followUp":
-        newUrl += `is_followup=true&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_followup=true&limit=${2500}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        break;
+      case "shipped":
+        newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       default:
-        newUrl += `status=${statu}&limit=${rowsPerPage}&offset=${
-          page * rowsPerPage
-        }`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `status=${statu}&limit=${2500}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
     }
     history.push(`/approval?&${newUrl}`);
@@ -418,13 +457,11 @@ function App({ history }) {
       globalSearchFunc(searchWord);
     }
     // eslint-disable-next-line
-  }, [rowsPerPage, page, searchWord]);
+  }, [page, searchWord]);
 
   const globalSearchFunc = (searchWord) => {
     globalSearch(
-      `${BASE_URL_MAPPING}?search=${searchWord}&limit=${rowsPerPage}&offset=${
-        page * rowsPerPage
-      }`
+      `${BASE_URL_MAPPING}?search=${searchWord}&limit=${25}&offset=${page * 25}`
     )
       .then((response) => {
         //console.log(response.data.count);
@@ -432,7 +469,7 @@ function App({ history }) {
         setCount(response?.data?.count || 0);
         //setList(response.data.results);
         let newUrl = "";
-        newUrl += `limit=${rowsPerPage}&offset=${page * rowsPerPage}`;
+        newUrl += `limit=${25}&offset=${page * 25}`;
         history.push(`/approval?&${searchWord}&${newUrl}`);
       })
       .catch((error) => {
@@ -603,7 +640,7 @@ function App({ history }) {
         }}
       >
         {loading ? (
-          <FormattedMessage id="loading" defaultMessage="Loading..." />
+          <FormattedMessage id="updating" />
         ) : (
           <>
             <FormattedMessage id="total" defaultMessage="Total" />{" "}
@@ -613,7 +650,21 @@ function App({ history }) {
                 filters?.status?.toUpperCase() || "Result".toUpperCase()
               }
             />{" "}
-            : {count}
+            :{" "}
+            {rows.length ===
+            Number(
+              localStorage.getItem(
+                `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+              )
+            )
+              ? localStorage.getItem(
+                  `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                ) ?? 0
+              : `${rows.length}/${
+                  localStorage.getItem(
+                    `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  ) ?? 0
+                }`}
           </>
         )}
       </div>
@@ -1027,12 +1078,18 @@ function App({ history }) {
                 />
                 :
               </td>
-              <td>{count || 0}</td>
+              <td>
+                {localStorage.getItem(
+                  `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                ) || 0}
+              </td>
               <TablePagination
                 rowsPerPageOptions={[25, 50, 100, 250, 500, 2500]}
                 colSpan={22}
-                count={count}
-                rowsPerPage={rowsPerPage}
+                count={localStorage.getItem(
+                  `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                )}
+                rowsPerPage={Number(filters.limit)}
                 page={page}
                 SelectProps={{
                   inputProps: { "aria-label": "rows per page" },
