@@ -136,5 +136,7 @@
   "uploadLabel": "Etiket yükle",
   "noLogs": "Bu sipariş için log kaydı yoktur.",
   "noPdfFiles": "Bu sipariş için pdf dosyası yoktur",
-  "updating": "Güncelleniyor..."
+  "updating": "Güncelleniyor...",
+  "totalScanned": "Toplam Okutulan",
+  "saveScanned": "Okutulanları kaydet"
 }

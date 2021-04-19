@@ -43,6 +43,7 @@ import ViewImageFile from "./ViewImageFile";
 import {
   toastErrorNotify,
   toastSuccessNotify,
+  toastWarnNotify,
 } from "../../otheritems/ToastNotify";
 import { getQueryParams } from "../../../helper/getQueryParams";
 import CustomDialog from "./CustomDialog";
@@ -108,8 +109,10 @@ const useStyles = makeStyles((theme) => ({
 
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
-  const [ordersInProgress, setOrdersInProgress] = useState([]);
-  const [currentBarcodeList, setCurrentBarcodeList] = useState([]);
+  const [currentBarcodeList, setCurrentBarcodeList] = useState(
+    JSON.parse(localStorage.getItem(`barcode_list`) || "[]")
+  );
+
   const [countryFilter, setCountryFilter] = useState("all");
   const { user } = useContext(AppContext);
   const filters = getQueryParams();
@@ -139,17 +142,32 @@ function AllOrdersTable() {
   const userRole = user.role || localUser;
 
   const getOrdersInProgress = useCallback(() => {
-    setloading(true);
-    getData(`${BASE_URL}etsy/orders/?status=in_progress&limit=2500&offset=0`)
+    getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
-        setOrdersInProgress(
-          response?.data?.results?.length ? response?.data?.results : []
-        );
+        const l = localStorage.getItem(`order_list_in_progress-last_updated`);
+        if (response.data.last_updated !== l) {
+          getData(
+            `${BASE_URL}etsy/orders/?status=in_progress&limit=2500&offset=0`
+          )
+            .then((response) => {
+              const o = response?.data?.results?.length
+                ? response?.data?.results
+                : [];
+              localStorage.setItem(`order_list_in_progress`, JSON.stringify(o));
+              localStorage.setItem(
+                `order_list_in_progress-last_updated`,
+                response.data.last_updated
+              );
+            })
+            .catch((error) => {
+              console.log("error", error);
+            });
+        }
       })
       .catch((error) => {
         console.log("error", error);
       })
-      .finally(() => setloading(false));
+      .finally(() => {});
   }, []);
 
   const getListFunc = useCallback(() => {
@@ -172,15 +190,22 @@ function AllOrdersTable() {
           const t = response?.data?.results?.length
             ? response?.data?.results
             : [];
+
           localStorage.setItem(
             `${selectedTag}-${filters.limit}-${filters.offset}`,
             JSON.stringify(t)
           );
+
           localStorage.setItem(
             `${selectedTag}-${filters.limit}-${filters.offset}-count`,
             response?.data?.count || 0
           );
-          setRows(t);
+
+          let ft =
+            filters?.status === "in_progress"
+              ? t.filter((item) => !currentBarcodeList.includes(item.id))
+              : t;
+          setRows(ft);
         })
         .catch((error) => {
           localStorage.setItem(
@@ -191,7 +216,7 @@ function AllOrdersTable() {
         })
         .finally(() => setloading(false));
     }
-  }, [filters, searchWord, selectedTag]);
+  }, [currentBarcodeList, filters, searchWord, selectedTag]);
 
   const getLastUpdateDate = () => {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
@@ -232,7 +257,14 @@ function AllOrdersTable() {
             ? item.country_id === "209"
             : item.country_id !== "209"
         );
-      setRows(resultFilteredByCountry ?? tmp);
+
+      let ft =
+        filters?.status === "in_progress"
+          ? tmp.filter(
+              (item) => !currentBarcodeList.includes(item.id.toString())
+            )
+          : tmp;
+      setRows(resultFilteredByCountry ?? ft);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -373,13 +405,22 @@ function AllOrdersTable() {
 
   const checkOrderIfInProgress = async (id) => {
     let isInProgress = false;
+    const ordersInProgressLS = JSON.parse(
+      localStorage.getItem(`in_progress-2500-0`)
+    );
     isInProgress =
-      ordersInProgress.filter((item) => item.id.toString() === id)?.length || 0;
+      (ordersInProgressLS.filter((item) => item.id.toString() === id)?.length &&
+        !currentBarcodeList.includes(id)) ||
+      false;
     if (selectedTag === "shipped") {
       changeOrderStatus(id, "shipped");
     } else if (isInProgress) {
+      localStorage.setItem(
+        `barcode_list`,
+        JSON.stringify([...currentBarcodeList, id])
+      );
       setCurrentBarcodeList([...currentBarcodeList, id]);
-      changeOrderStatus(id, "ready");
+      // changeOrderStatus(id, "ready");
     } else {
       setDialogId(id);
     }
@@ -391,6 +432,33 @@ function AllOrdersTable() {
     if (barcodeInput) checkOrderIfInProgress(barcodeInput);
     // eslint-disable-next-line
   }, [barcodeInput]);
+
+  const handleClearBarcodeList = () => {
+    localStorage.setItem(`barcode_list`, "");
+    setCurrentBarcodeList([]);
+  };
+
+  const removeItemfromBarcodeList = (id) => {
+    const fb = currentBarcodeList.filter((i) => i !== id.toString());
+    localStorage.setItem(`barcode_list`, JSON.stringify(fb));
+    setCurrentBarcodeList(fb);
+  };
+
+  const handleSaveScanned = () => {
+    postData(`${BASE_URL}etsy/approved_all_ready/`, { ids: currentBarcodeList })
+      .then((res) => {
+        console.log('res', res?.data)
+        toastSuccessNotify("Saved!");
+        localStorage.setItem(`barcode_list`, []);
+        setCurrentBarcodeList([]);
+      })
+      .catch(({ response }) => {
+        console.log("response", response);
+      })
+      .finally(() => {
+        getLastUpdateDate();
+      });
+  };
 
   useEffect(() => {
     setDialogOpen(dialogId ? true : false);
@@ -752,36 +820,61 @@ function AllOrdersTable() {
           style={{ display: filters?.status === "ready" ? "block" : "none" }}
         >
           <hr />
+          <div
+            style={{
+              display: "flex",
+              color: "#001A33",
+              marginBottom: 16,
+              fontSize: "2rem",
+              marginLeft: 16,
+            }}
+          >
+            <FormattedMessage id="totalScanned" />:{" "}
+            {currentBarcodeList?.length || 0}
+          </div>
           <div style={{ display: "flex", textAlign: "left" }}>
             <div style={{ display: "inline-block", marginLeft: 16 }}>
               <p style={{ margin: 0 }}>
                 <FormattedMessage id="lastScannedOrder" />
               </p>
-              <Button color="primary" onClick={() => setCurrentBarcodeList([])}>
+              <Button color="primary" onClick={handleClearBarcodeList}>
                 <FormattedMessage id="clear" />
               </Button>
             </div>
             <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
-              {currentBarcodeList.map((item) => (
-                <p
-                  key={item}
-                  style={{
-                    border: "1px blue solid",
-                    borderRadius: 4,
-                    color: "blue",
-                    margin: "0 5px",
-                    padding: "0 5px",
-                    fontWeight: "bold",
-                    height: "23px",
-                  }}
-                >
-                  {item}
-                </p>
-              ))}
+              {currentBarcodeList?.length
+                ? currentBarcodeList.map((item) => (
+                    <p
+                      key={item}
+                      style={{
+                        border: "1px blue solid",
+                        borderRadius: 4,
+                        color: "blue",
+                        margin: "0 5px",
+                        padding: "0 5px",
+                        fontWeight: "bold",
+                        height: "23px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => removeItemfromBarcodeList(item)}
+                    >
+                      {item}
+                    </p>
+                  ))
+                : null}
             </div>
           </div>
-          <hr />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={handleSaveScanned}
+          >
+            <FormattedMessage id="saveScanned" />
+          </Button>
         </div>
+        <hr />
 
         <div
           style={{

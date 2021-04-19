@@ -108,5 +108,7 @@
   "uploadLabel": "Upload Label",
   "noLogs": "There are no logs for this order",
   "noPdfFiles": "There are no pdf files for this order",
-  "updating": "Updating"
+  "updating": "Updating",
+  "totalScanned": "Total scanned",
+  "saveScanned": "Save scanned orders"
 }
