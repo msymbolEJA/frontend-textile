@@ -95,7 +95,7 @@
   "referenceNumber": "Referans Numarası",
   "carrier": "Kargo Firması",
   "content": "İçerik",
-  "shipmentDate": "Gönderim Tarihi",
+  "shipmentDate": "Kayıt Tarihi",
   "trackingNumber": "Takip Numarası",
   "date": "Tarih",
   "totalRecord": "Toplam Kayıt",
