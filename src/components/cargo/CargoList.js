@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -15,6 +15,8 @@ import { AppContext } from "../../context/Context";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { FormattedMessage } from "react-intl";
+import EditableTableCell from "./EditableTableCell";
+import { putData } from "../../helper/PostData";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -48,7 +50,7 @@ const useStyles = makeStyles({
   root: {
     margin: "1rem",
     minWidth: "500px",
-    width: "95%",
+    width: "98%",
     minHeight: "250px",
   },
   header: {
@@ -66,7 +68,7 @@ export default function CustomizedTables() {
   const [getSupplier, setGetSupplier] = useState("");
   const { isAdmin } = useContext(AppContext);
 
-  useEffect(() => {
+  const getListFunc = () => {
     getData(`${BASE_URL}etsy/cargo_list/${getSupplier}`).then((response) => {
       let dataObj = response.data;
       const formattedData = dataObj
@@ -80,29 +82,17 @@ export default function CustomizedTables() {
 
       setCargoList(formattedData);
     });
+  };
+
+  useEffect(() => {
+    getListFunc();
   }, [getSupplier]);
 
   const tnFunc = (tn, carrier) => {
     if (carrier.toUpperCase().includes("DHL")) {
-      return (
-        <a
-          href={`https://www.dhl.com/en/express/tracking.html?AWB=${tn}&brand=DHL`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {tn}
-        </a>
-      );
+      return `https://www.dhl.com/en/express/tracking.html?AWB=${tn}&brand=DHL`;
     } else if (carrier.toUpperCase().includes("UPS")) {
-      return (
-        <a
-          href={`https://www.ups.com/track?tracknum=${tn}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {tn}
-        </a>
-      );
+      return `https://www.ups.com/track?tracknum=${tn}`;
     } else {
       return tn;
     }
@@ -118,6 +108,26 @@ export default function CustomizedTables() {
     } else {
       setGetSupplier("");
     }
+  };
+
+  const handleRowChange = useCallback(
+    (id, data) => {
+      if (!data) return;
+      putData(`${BASE_URL}etsy/shipments/${id}/`, data)
+        .then((response) => {
+          // console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => getListFunc());
+    },
+    [getListFunc]
+  );
+
+  const onChange = (e, id, name) => {
+    // console.log(id, name);
+    handleRowChange(id, { [name]: e.target.innerText });
   };
 
   return (
@@ -215,9 +225,14 @@ export default function CustomizedTables() {
                     <StyledTableCell align="center" component="th" scope="row">
                       {row?.refNumber}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      {row.carrier.toUpperCase()}
-                    </StyledTableCell>
+                    <EditableTableCell
+                      align="center"
+                      {...{
+                        row,
+                        name: "carrier",
+                        onChange,
+                      }}
+                    />
                     <StyledTableCell align="center">
                       {row.content.map((key, i) => (
                         <span
@@ -249,14 +264,21 @@ export default function CustomizedTables() {
                         .local()
                         .format("MM-DD-YY HH:mm")}
                     </StyledTableCell>
-                    <StyledTableCell
+                    <EditableTableCell
                       align="center"
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
-                    >
-                      {tnFunc(row.tracking_number, row.carrier)}
-                    </StyledTableCell>
+                      {...{
+                        row,
+                        name: "tracking_number",
+                        onChange,
+                        trackingNumber: tnFunc(
+                          row.tracking_number,
+                          row.carrier
+                        ),
+                      }}
+                    />
                   </StyledTableRow>
                 );
               })
