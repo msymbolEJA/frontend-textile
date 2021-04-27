@@ -94,7 +94,7 @@ export default function SummaryTable({
   if (title === "orders") {
     console.log(data && data[2]?.cell2);
     const inProgessNumber = data ? data[2]?.cell2 : "";
-    const tabTitle = STORE_NAME + " | " + inProgessNumber;
+    const tabTitle = inProgessNumber + " | " + STORE_NAME;
     document.title = tabTitle;
   }
 

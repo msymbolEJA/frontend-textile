@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import SummaryTable from "./SummaryTable";
@@ -56,7 +56,7 @@ const Dashboard = () => {
 
   const userRole = user.role || localUser;
 
-  useEffect(() => {
+  const getListFunc = () => {
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
       const newResult = [];
       //console.log("response-Health_Check", response.data[4]);
@@ -92,7 +92,20 @@ const Dashboard = () => {
       });
       setOrderSummary(newResult2.length ? newResult2 : "noOrders");
     });
+  };
+
+  useEffect(() => {
+    getListFunc();
   }, [userRole]);
+
+  // setTimeout(getListFunc(), 300000);
+
+  setInterval(
+    useCallback(() => {
+      getListFunc();
+    }, [getListFunc]),
+    30000
+  );
 
   useEffect(() => {
     getData(`${BASE_URL}etsy/due_dates/`)
