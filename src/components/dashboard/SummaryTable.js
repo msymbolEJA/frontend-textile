@@ -14,6 +14,8 @@ import {
 } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
+const STORE_NAME = process.env.REACT_APP_STORE_NAME;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -89,6 +91,12 @@ export default function SummaryTable({
   // if (title === "orders") {
   //   console.log("healthCheck", healthCheck);
   // }
+  if (title === "orders") {
+    console.log(data && data[2]?.cell2);
+    const inProgessNumber = data ? data[2]?.cell2 : "";
+    const tabTitle = STORE_NAME + " | " + inProgessNumber;
+    document.title = tabTitle;
+  }
 
   return (
     <Grid item xs={12} md={6} className={classes.root}>
