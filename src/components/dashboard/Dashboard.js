@@ -104,7 +104,7 @@ const Dashboard = () => {
     useCallback(() => {
       getListFunc();
     }, [getListFunc]),
-    30000
+    300000
   );
 
   useEffect(() => {
