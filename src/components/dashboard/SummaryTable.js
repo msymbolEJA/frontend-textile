@@ -16,8 +16,6 @@ import {
 } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
-const STORE_NAME = process.env.REACT_APP_STORE_NAME;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -91,24 +89,6 @@ export default function SummaryTable({
   const handleClick = () => {
     history.push(next);
   };
-
-  // if (title === "orders") {
-  //   console.log("healthCheck", healthCheck);
-  // }
-
-  if (title === "orders") {
-    let localRole = localStorage.getItem("localRole");
-    const userRole = user.role || localRole;
-    const index =
-      userRole === "admin" ||
-      userRole === "shop_manager" ||
-      userRole === "shop_packer"
-        ? 0
-        : 1;
-    const inProgessNumber = data ? data[index]?.cell2 : "";
-    const tabTitle = inProgessNumber + " | " + STORE_NAME;
-    document.title = tabTitle;
-  }
 
   return (
     <Grid item xs={12} md={6} className={classes.root}>

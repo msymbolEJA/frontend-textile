@@ -96,16 +96,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getListFunc();
-  }, [userRole]);
-
-  // setTimeout(getListFunc(), 300000);
-
-  setInterval(
-    useCallback(() => {
-      getListFunc();
-    }, [getListFunc]),
-    300000
-  );
+  }, []);
 
   useEffect(() => {
     getData(`${BASE_URL}etsy/due_dates/`)
