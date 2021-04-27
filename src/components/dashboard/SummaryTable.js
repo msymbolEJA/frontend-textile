@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+import { AppContext } from "../../context/Context";
+
 import {
   Paper,
   Grid,
@@ -73,6 +75,8 @@ export default function SummaryTable({
   lastDateOfOrder,
   healthCheck,
 }) {
+  const { user } = useContext(AppContext);
+
   let total =
     (data !== "noOrders" &&
       data?.length > 0 &&
@@ -91,9 +95,17 @@ export default function SummaryTable({
   // if (title === "orders") {
   //   console.log("healthCheck", healthCheck);
   // }
+
   if (title === "orders") {
-    console.log(data && data[2]?.cell2);
-    const inProgessNumber = data ? data[2]?.cell2 : "";
+    let localRole = localStorage.getItem("localRole");
+    const userRole = user.role || localRole;
+    const index =
+      userRole === "admin" ||
+      userRole === "shop_manager" ||
+      userRole === "shop_packer"
+        ? 0
+        : 1;
+    const inProgessNumber = data ? data[index]?.cell2 : "";
     const tabTitle = inProgessNumber + " | " + STORE_NAME;
     document.title = tabTitle;
   }

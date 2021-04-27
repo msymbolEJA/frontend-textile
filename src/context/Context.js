@@ -3,16 +3,11 @@ import React, { useState, createContext } from "react";
 export const AppContext = createContext();
 
 export const ContextProvider = (props) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(localStorage.getItem("localUser"));
   const [auth, setAuth] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
 
-  const localUser = localStorage.getItem("localUser");
-  //console.log(user.role);
-  // console.log("localUser", localUser);
-  // console.log("user.role", user.role);
-
-  const userRole = user.role || localUser;
+  const userRole = user.role || localStorage.getItem("localRole");
 
   const isAdmin =
     userRole === "admin" ||
