@@ -91,7 +91,6 @@
   "referenceNumber": "Reference Number",
   "carrier": "Carrier",
   "content": "Content",
-  "shipmentDate": "Shipment Date",
   "trackingNumber": "Tracking Number",
   "in_transit": "IN TRANSIT",
   "in_progress": "IN PROGRESS",

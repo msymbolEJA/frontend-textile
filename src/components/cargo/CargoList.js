@@ -188,10 +188,7 @@ export default function CustomizedTables() {
               <FormattedMessage id="count" defaultMessage="Count" />
             </StyledTableCell>
             <StyledTableCell align="center">
-              <FormattedMessage
-                id="shipmentDate"
-                defaultMessage="Shipment Date"
-              />
+              <FormattedMessage id="shipmentDate" defaultMessage="Log Date" />
             </StyledTableCell>
             <StyledTableCell align="center">
               <FormattedMessage
