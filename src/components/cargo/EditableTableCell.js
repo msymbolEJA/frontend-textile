@@ -68,8 +68,6 @@ const EditableTableCell = ({ row, name, onChange, trackingNumber }) => {
       className={classes.tableCell}
       onClick={(e) => {
         e.stopPropagation();
-        console.log("editabletablecell");
-        console.log(row);
       }}
     >
       <ContentEditable
