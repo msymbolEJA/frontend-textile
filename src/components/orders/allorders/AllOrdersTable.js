@@ -139,7 +139,7 @@ function AllOrdersTable() {
 
   const localUser = localStorage.getItem("localUser");
 
-  const userRole = user.role || localUser;
+  const userRole = user?.role || localUser;
 
   const getOrdersInProgress = useCallback(() => {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
@@ -447,7 +447,7 @@ function AllOrdersTable() {
   const handleSaveScanned = () => {
     postData(`${BASE_URL}etsy/approved_all_ready/`, { ids: currentBarcodeList })
       .then((res) => {
-        console.log('res', res?.data)
+        console.log("res", res?.data);
         toastSuccessNotify("Saved!");
         localStorage.setItem(`barcode_list`, []);
         setCurrentBarcodeList([]);

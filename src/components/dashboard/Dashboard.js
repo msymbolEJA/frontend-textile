@@ -54,7 +54,7 @@ const Dashboard = () => {
 
   let localUser = localStorage.getItem("localUser");
 
-  const userRole = user.role || localUser;
+  const userRole = user?.role || localUser;
 
   const getListFunc = () => {
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {

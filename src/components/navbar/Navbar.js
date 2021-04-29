@@ -77,7 +77,7 @@ export default function MenuAppBar() {
   const open = Boolean(anchorEl);
   const history = useHistory();
 
-  //console.log(user.role);
+  //console.log(user?.role);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -110,7 +110,7 @@ export default function MenuAppBar() {
   const localRole = localStorage.getItem("localRole");
   const localUser = localStorage.getItem("localUser");
 
-  const userRole = user.role || localUser;
+  const userRole = user?.role || localUser;
 
   const handleLangChange = (e) => {
     setLang(e.target.value);

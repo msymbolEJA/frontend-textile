@@ -95,7 +95,7 @@ const OrderDetails = ({ match }) => {
   const { formatMessage } = useIntl();
   const localUser = localStorage.getItem("localUser");
 
-  const userRole = user.role || localUser;
+  const userRole = user?.role || localUser;
 
   const getPdf = () => {
     let data = match.params.id;
