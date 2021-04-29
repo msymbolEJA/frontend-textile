@@ -7,7 +7,7 @@ export const ContextProvider = (props) => {
   const [auth, setAuth] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
 
-  const userRole = user.role || localStorage.getItem("localRole");
+  const userRole = user?.role || localStorage.getItem("localRole");
 
   const isAdmin =
     userRole === "admin" ||
