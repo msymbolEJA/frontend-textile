@@ -223,7 +223,7 @@ export default function MenuAppBar() {
                   {user?.role?.toUpperCase() || localRole?.toUpperCase()}
                 </div>
                 <div className={classes.userName}>
-                  {localUser || user.user || user.username}
+                  {localUser || user?.user || user?.username}
                 </div>
               </div>
               <IconButton
