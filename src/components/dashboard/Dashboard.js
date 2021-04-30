@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React, { useContext, useState, useEffect, useCallback } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import SummaryTable from "./SummaryTable";
@@ -52,9 +52,9 @@ const Dashboard = () => {
   const [lastDateOfOrder, setlastDateOfOrder] = useState();
   const [healthCheck, setHealthCheck] = useState(false);
 
-  let localUser = localStorage.getItem("localUser");
+  let localRole = localStorage.getItem("localRole");
 
-  const userRole = user?.role || localUser;
+  const userRole = user?.role || localRole;
 
   const getListFunc = () => {
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
@@ -96,6 +96,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getListFunc();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -133,9 +134,9 @@ const Dashboard = () => {
   // console.log("localUser", localUser);
   // console.log(localUser === "admin");
   const newStatu =
-    localUser === "admin" ||
-    localUser === "shop_manager" ||
-    localUser === "shop_packer"
+    localRole === "admin" ||
+    localRole === "shop_manager" ||
+    localRole === "shop_packer"
       ? "pending"
       : "awaiting";
   // console.log(localUser);
