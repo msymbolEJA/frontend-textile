@@ -137,9 +137,10 @@ function AllOrdersTable() {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogId, setDialogId] = useState(false);
 
-  const localUser = localStorage.getItem("localUser");
+  //const localUser = localStorage.getItem("localUser");
+  const localRole = localStorage.getItem("localRole");
 
-  const userRole = user?.role || localUser;
+  const userRole = user?.role || localRole;
 
   const getOrdersInProgress = useCallback(() => {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)

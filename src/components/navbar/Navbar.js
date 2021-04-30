@@ -110,7 +110,7 @@ export default function MenuAppBar() {
   const localRole = localStorage.getItem("localRole");
   const localUser = localStorage.getItem("localUser");
 
-  const userRole = user?.role || localUser;
+  const userRole = user?.role || localRole;
 
   const handleLangChange = (e) => {
     setLang(e.target.value);
@@ -119,9 +119,9 @@ export default function MenuAppBar() {
   // console.log("localUser", localUser);
   // console.log(localUser === "admin");
   const newStatu =
-    localUser === "admin" ||
-    localUser === "shop_manager" ||
-    localUser === "shop_packer"
+    localRole === "admin" ||
+    localRole === "shop_manager" ||
+    localRole === "shop_packer"
       ? "pending"
       : "awaiting";
   // console.log(localUser);
