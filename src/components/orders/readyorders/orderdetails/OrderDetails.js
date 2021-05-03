@@ -132,7 +132,7 @@ const OrderDetails = ({ match }) => {
       })
       .then(() => {
         getData(urlLogs).then((res) => {
-          setLogs(res.data);
+          setLogs(res.data.results);
         });
       })
       .catch((err) => {
