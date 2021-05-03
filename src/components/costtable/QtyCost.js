@@ -38,6 +38,7 @@ const useStyles = makeStyles({
   root: {
     width: 500,
     margin: "1rem",
+    height: "fit-content",
   },
   container: {},
 });
