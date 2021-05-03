@@ -43,7 +43,6 @@ import ViewImageFile from "./ViewImageFile";
 import {
   toastErrorNotify,
   toastSuccessNotify,
-  toastWarnNotify,
 } from "../../otheritems/ToastNotify";
 import { getQueryParams } from "../../../helper/getQueryParams";
 import CustomDialog from "./CustomDialog";
