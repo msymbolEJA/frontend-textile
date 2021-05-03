@@ -58,6 +58,12 @@ const CustomButtonGroup = ({
     searchHandler(1, myInputRef.current.childNodes[0].value);
   };
 
+  let localRole = localStorage.getItem("localRole");
+
+  if (localRole === "workshop_designer") {
+    return null;
+  }
+
   return (
     <div className={classes.btnGroup}>
       {statusTags.map((tag) => (

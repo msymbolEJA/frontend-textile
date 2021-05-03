@@ -138,8 +138,11 @@ const Dashboard = () => {
     localRole === "shop_manager" ||
     localRole === "shop_packer"
       ? "pending"
+      : localRole === "workshop_designer"
+      ? "in_progress"
       : "awaiting";
-  // console.log(localUser);
+  // console.log({ localRole });
+  // console.log({ newStatu });
 
   return (
     <div className={classes.root}>

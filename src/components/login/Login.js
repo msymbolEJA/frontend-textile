@@ -115,6 +115,7 @@ export default function Login() {
       setLinProgress(true);
       postAuthData(`${BASE_URL}account/login/`, values)
         .then((response) => {
+          // console.log({ response });
           setUser(response?.data);
           const token = response?.data?.access;
           if (token) {
@@ -125,7 +126,13 @@ export default function Login() {
             localStorage.setItem("localId", response?.data?.id);
             console.log("Logged in succesfully!");
             setAuth(true);
-            history.push("/");
+            if (response?.data?.role === "workshop_designer") {
+              history.push(
+                "/all-orders?&status=in_progress&limit=2500&offset=0"
+              );
+            } else {
+              history.push("/");
+            }
           }
         })
         .catch(({ response }) => {

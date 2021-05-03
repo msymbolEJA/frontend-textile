@@ -89,8 +89,15 @@ export default function MenuAppBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  let localRole = localStorage.getItem("localRole");
+
   const handleMainPage = () => {
-    history.push("/");
+    if (localRole === "workshop_designer") {
+      return null;
+    } else {
+      history.push("/");
+    }
     setAnchorEl(null);
   };
   // const handleSettingsPage = () => {
@@ -107,7 +114,6 @@ export default function MenuAppBar() {
     localStorage.removeItem("localId");
   };
 
-  const localRole = localStorage.getItem("localRole");
   const localUser = localStorage.getItem("localUser");
 
   const userRole = user?.role || localRole;
@@ -118,13 +124,16 @@ export default function MenuAppBar() {
 
   // console.log("localUser", localUser);
   // console.log(localUser === "admin");
+
   const newStatu =
     localRole === "admin" ||
     localRole === "shop_manager" ||
     localRole === "shop_packer"
       ? "pending"
+      : localRole === "workshop_designer"
+      ? "in_progress"
       : "awaiting";
-  // console.log(localUser);
+  // console.log("Navbar newStatu", newStatu);
 
   const handleClick = (e) => {
     // const newStatu = getFirstStatu();
@@ -184,16 +193,21 @@ export default function MenuAppBar() {
                   </Button>
                 </>
               ) : null}
-              <Button
-                color="primary"
-                variant="outlined"
-                id="cargo-list"
-                className={classes.button}
-                startIcon={<LocalShippingIcon />}
-                onClick={(e) => handleClick(e)}
-              >
-                <FormattedMessage id="cargoList" defaultMessage="Cargo List" />
-              </Button>
+              {localRole === "workshop_designer" ? null : (
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  id="cargo-list"
+                  className={classes.button}
+                  startIcon={<LocalShippingIcon />}
+                  onClick={(e) => handleClick(e)}
+                >
+                  <FormattedMessage
+                    id="cargoList"
+                    defaultMessage="Cargo List"
+                  />
+                </Button>
+              )}
             </div>
           </div>
           <div style={{ marginRight: "2rem" }}>
