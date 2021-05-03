@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: "#474747",
     fontWeight: "545",
+    fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
   },
   rightTop: {
     display: "flex",
@@ -293,6 +294,12 @@ export default function MenuAppBar() {
                       <FormattedMessage
                         id="stockList"
                         defaultMessage="Stock List"
+                      />
+                    </MenuItem>
+                    <MenuItem id="cost-table" onClick={(e) => handleClick(e)}>
+                      <FormattedMessage
+                        id="costTable"
+                        defaultMessage="Cost Table"
                       />
                     </MenuItem>
                   </div>

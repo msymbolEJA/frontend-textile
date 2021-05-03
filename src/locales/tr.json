@@ -138,5 +138,6 @@
   "noPdfFiles": "Bu sipariş için pdf dosyası yoktur",
   "updating": "Güncelleniyor...",
   "totalScanned": "Toplam Okutulan",
-  "saveScanned": "Okutulanları kaydet"
+  "saveScanned": "Okutulanları kaydet",
+  "costTable" : "Maliyet Tablosu"
 }
