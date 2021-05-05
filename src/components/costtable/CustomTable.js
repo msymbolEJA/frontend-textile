@@ -45,12 +45,9 @@ export default function StickyHeadTable({ title, tableId }) {
 
   const getListFunc = () => {
     getData(`${BASE_URL}etsy/${tableId}/`).then((response) => {
-      console.log(response.data.results);
       setData(response.data.results);
     });
   };
-
-  console.log(data === null);
 
   useEffect(() => {
     getListFunc();

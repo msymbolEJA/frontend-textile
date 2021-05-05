@@ -53,8 +53,6 @@ const CustomTableBody = ({ row, getListFunc, tableId }) => {
       cost: inputEl.current.lastHtml,
       desc: row?.desc,
     };
-    console.log("HandleBlur");
-    console.log(content);
     putData(`${BASE_URL}etsy/${tableId}/${row?.code}/`, data)
       .then((response) => {})
       .catch((error) => {
