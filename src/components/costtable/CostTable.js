@@ -1,6 +1,5 @@
 import React from "react";
-import QtyCost from "./QtyCost";
-import TypeCost from "./TypeCost";
+import CustomTable from "./CustomTable";
 
 const CostTable = () => {
   return (
@@ -9,8 +8,8 @@ const CostTable = () => {
       <div
         style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
       >
-        <QtyCost />
-        <TypeCost />
+        <CustomTable title="Quantity Cost Table" tableId="qtyCost" />
+        <CustomTable title="Type Cost Table" tableId="typCost" />
       </div>
     </div>
   );

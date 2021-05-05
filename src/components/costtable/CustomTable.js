@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -8,6 +8,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { getData } from "../../helper/PostData";
+import CustomTableBody from "./CustomTableBody.js";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -40,23 +41,31 @@ const useStyles = makeStyles({
     margin: "1rem",
     height: "fit-content",
   },
-  container: {},
+  editable: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
-export default function StickyHeadTable() {
+export default function StickyHeadTable({ title, tableId }) {
   const classes = useStyles();
   const [data, setData] = useState();
 
-  useEffect(() => {
-    getData(`${BASE_URL}etsy/typCost/`).then((response) => {
+  const getListFunc = () => {
+    getData(`${BASE_URL}etsy/${tableId}/`).then((response) => {
       console.log(response.data.results);
       setData(response.data.results);
     });
+  };
+
+  useEffect(() => {
+    getListFunc();
   }, []);
 
   return (
     <Paper className={classes.root}>
-      <h2>Type Cost</h2>
+      <h2>{title}</h2>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -68,11 +77,12 @@ export default function StickyHeadTable() {
           </TableHead>
           <TableBody>
             {data?.map((row, index) => (
-              <StyledTableRow hover tabIndex={-1} key={index}>
-                <TableCell align="center">{row?.code}</TableCell>
-                <TableCell align="center">{row?.cost}</TableCell>
-                <TableCell align="center">{row?.desc}</TableCell>
-              </StyledTableRow>
+              <CustomTableBody
+                row={row}
+                key={index}
+                getListFunc={getListFunc}
+                tableId={tableId}
+              />
             ))}
           </TableBody>
         </Table>
