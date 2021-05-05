@@ -10,6 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import { getData } from "../../helper/PostData";
 import CustomTableBody from "./CustomTableBody.js";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -42,6 +43,7 @@ const useStyles = makeStyles({
 export default function StickyHeadTable({ title, tableId }) {
   const classes = useStyles();
   const [data, setData] = useState(null);
+  const { formatMessage } = useIntl();
 
   const getListFunc = () => {
     getData(`${BASE_URL}etsy/${tableId}/`).then((response) => {
@@ -56,14 +58,28 @@ export default function StickyHeadTable({ title, tableId }) {
 
   return (
     <Paper className={classes.root}>
-      <h2>{title}</h2>
+      <h2>
+        {formatMessage({
+          id: tableId === "qtyCost" ? "qtyCostTable" : "typeCostTable",
+          defaultMessage: title,
+        })}
+      </h2>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <StyledTableCell align="center">Code</StyledTableCell>
-              <StyledTableCell align="center">Cost</StyledTableCell>
-              <StyledTableCell align="center">Description</StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="code" defaultMessage="Code" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="cost" defaultMessage="Cost" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage
+                  id="description"
+                  defaultMessage="Description"
+                />
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>

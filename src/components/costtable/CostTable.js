@@ -1,10 +1,13 @@
 import React from "react";
 import CustomTable from "./CustomTable";
+import { FormattedMessage } from "react-intl";
 
 const CostTable = () => {
   return (
     <div>
-      <h1>Cost Table</h1>
+      <h1>
+        <FormattedMessage id="costTable" defaultMessage="Cost Table" />
+      </h1>
       <div
         style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
       >

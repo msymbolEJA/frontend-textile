@@ -139,5 +139,9 @@
   "updating": "Güncelleniyor...",
   "totalScanned": "Toplam Okutulan",
   "saveScanned": "Okutulanları kaydet",
-  "costTable" : "Maliyet Tablosu"
+  "costTable" : "Maliyet Tablosu",
+  "code": "Kodu",
+  "cost":"Maliyet",
+  "typeCostTable" : "Tip Maliyet Tablosu",
+  "qtyCostTable" : "Miktar Maliyet Tablosu"
 }
