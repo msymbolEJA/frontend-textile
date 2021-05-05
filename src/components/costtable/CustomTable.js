@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -9,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { getData } from "../../helper/PostData";
 import CustomTableBody from "./CustomTableBody.js";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -22,19 +23,6 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    "&:hover": {
-      cursor: "pointer",
-      //boxShadow: "1px 2px",
-      backgroundColor: "#add8e6",
-    },
-  },
-}))(TableRow);
-
 const useStyles = makeStyles({
   root: {
     width: 500,
@@ -46,11 +34,14 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
   },
+  container: {
+    minHeight: "150px",
+  },
 });
 
 export default function StickyHeadTable({ title, tableId }) {
   const classes = useStyles();
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
 
   const getListFunc = () => {
     getData(`${BASE_URL}etsy/${tableId}/`).then((response) => {
@@ -59,8 +50,11 @@ export default function StickyHeadTable({ title, tableId }) {
     });
   };
 
+  console.log(data === null);
+
   useEffect(() => {
     getListFunc();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -76,14 +70,22 @@ export default function StickyHeadTable({ title, tableId }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.map((row, index) => (
-              <CustomTableBody
-                row={row}
-                key={index}
-                getListFunc={getListFunc}
-                tableId={tableId}
-              />
-            ))}
+            {data === null ? (
+              <tr>
+                <td colSpan="7" style={{ display: "table-cell" }}>
+                  <CircularProgress style={{ marginTop: "1rem" }} />
+                </td>
+              </tr>
+            ) : (
+              data?.map((row, index) => (
+                <CustomTableBody
+                  row={row}
+                  key={index}
+                  getListFunc={getListFunc}
+                  tableId={tableId}
+                />
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
