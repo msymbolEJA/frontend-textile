@@ -15,6 +15,7 @@ import {
 import { getData } from "../../helper/PostData";
 import { sortingArrayAdmin, sortingArrayUser } from "../../helper/Constants";
 import FloatingMenu from "./FloatingMenu";
+import CostGetter from "./CostGetter";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -27,11 +28,6 @@ const useStyles = makeStyles((theme) => ({
   boxes: {
     flexGrow: 1,
     position: "relative",
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.primary,
   },
   icon: {
     fontSize: 50,
@@ -207,6 +203,7 @@ const Dashboard = () => {
               data={shipmentDueDates}
             />
           ) : null}
+          <CostGetter />
         </Grid>
       </div>
     </div>
