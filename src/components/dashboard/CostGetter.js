@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import { getData } from "../../helper/PostData";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
+import Button from "@material-ui/core/Button";
 import moment from "moment";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -48,9 +49,12 @@ const CostGetter = () => {
     });
   };
 
-  const test = () => {
-    endDateRef.current.value = "2020-10-10";
-  };
+  useEffect(() => {
+    endDateRef.current.value = moment().format("YYYY-MM-DD");
+    beginnerDateRef.current.value = moment()
+      .subtract(1, "months")
+      .format("YYYY-MM-DD");
+  }, []);
 
   return (
     <Paper className={classes.paper} style={{}}>
@@ -64,8 +68,9 @@ const CostGetter = () => {
       <input ref={beginnerDateRef} type="date" id="birthday" name="birthday" />
       <label htmlFor="endDate">End Date:</label>
       <input ref={endDateRef} type="date" id="birthday" name="birthday" />
-      <button onClick={getDate}>date</button>
-      <button onClick={test}>test</button>
+      <Button variant="contained" color="primary" onClick={getDate}>
+        Calculate
+      </Button>
     </Paper>
   );
 };
