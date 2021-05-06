@@ -77,6 +77,13 @@ const EditableTableCell = ({ row, name, onChange }) => {
       align="center"
       className={expTableCell}
       //  onClick={(e) => handleRowClick(row.id, name)}
+      style={{
+        backgroundColor:
+          name === "supplier" &&
+          (row[name] === " " || row[name] === "" || row[name] === null)
+            ? "#FF9494"
+            : null,
+      }}
     >
       {name === "qty" && content.includes("FONT") ? (
         <>
