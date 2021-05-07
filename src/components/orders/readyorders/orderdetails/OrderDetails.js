@@ -416,9 +416,11 @@ const OrderDetails = ({ match }) => {
                 </TableRow>
               ))
             ) : (
-              <td colSpan="4">
-                <FormattedMessage id="noLogs" />
-              </td>
+              <tr>
+                <td colSpan="4">
+                  <FormattedMessage id="noLogs" />
+                </td>
+              </tr>
             )}
           </TableBody>
         </Table>
