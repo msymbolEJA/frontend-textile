@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import { getData } from "../../helper/PostData";
@@ -20,13 +20,14 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-evenly",
     alignItems: "center",
-    height: 300,
+    height: 400,
   },
   titleStyle: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    minHeight: "6rem",
+    minHeight: "4.5rem",
+    borderBottom: "1px solid black",
   },
 }));
 
@@ -34,18 +35,29 @@ const CostGetter = () => {
   const classes = useStyles();
   const beginnerDateRef = useRef(null);
   const endDateRef = useRef(null);
+  const [calcCost, setCalcCost] = useState({
+    totalCost: null,
+    isLoading: false,
+  });
 
   const getDate = () => {
-    console.log("B", beginnerDateRef.current.value);
-    console.log("E", endDateRef.current.value);
+    // console.log("B", beginnerDateRef.current.value);
+    // console.log("E", endDateRef.current.value);
     getCost();
   };
 
   const getCost = () => {
+    setCalcCost({ ...calcCost, isLoading: true });
     getData(
-      `${BASE_URL}etsy/qtyCostTable/?order_date__iexact=&order_date__lte=${endDateRef.current.value}+00%3A00&order_date__gte=${beginnerDateRef.current.value}+00%3A00`
+      `${BASE_URL}etsy/cost/?order_date__iexact=&order_date__lte=${endDateRef.current.value}+00%3A00&order_date__gte=${beginnerDateRef.current.value}+00%3A00&limit=100000000000&offset=0`
     ).then((response) => {
-      console.log(response);
+      // console.log(response.data.results);
+
+      let res = response.data.results.reduce(function (a, b) {
+        return { cost: Number(a.cost) + Number(b.cost) }; // returns object with property x
+      });
+
+      setCalcCost({ ...calcCost, totalCost: res.cost, isLoading: false });
     });
   };
 
@@ -59,7 +71,7 @@ const CostGetter = () => {
   return (
     <Paper className={classes.paper} style={{}}>
       <div className={classes.titleStyle}>
-        <BorderColorIcon />
+        <BorderColorIcon style={{ color: "#3F51B5", fontSize: "2rem" }} />
         <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>
           Cost Calculator
         </h3>
@@ -71,6 +83,13 @@ const CostGetter = () => {
       <Button variant="contained" color="primary" onClick={getDate}>
         Calculate
       </Button>
+      <div style={{ height: "1.5rem" }}>
+        {calcCost.isLoading ? (
+          <h3>Calculating...</h3>
+        ) : (
+          <h3>{calcCost.totalCost && "Total Cost : $" + calcCost.totalCost}</h3>
+        )}
+      </div>
     </Paper>
   );
 };
