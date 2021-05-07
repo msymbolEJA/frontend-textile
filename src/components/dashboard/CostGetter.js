@@ -10,12 +10,12 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
     textAlign: "center",
     color: theme.palette.text.primary,
     marginTop: 39,
     marginLeft: 8,
-    width: 284,
+    width: 254,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly",
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    minHeight: "4.5rem",
+    minHeight: "5rem",
     borderBottom: "1px solid black",
   },
 }));
