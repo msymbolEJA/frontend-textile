@@ -86,6 +86,7 @@ export default function CustomizedTables() {
 
   useEffect(() => {
     getListFunc();
+    // eslint-disable-next-line
   }, [getSupplier]);
 
   const tnFunc = (tn, carrier) => {

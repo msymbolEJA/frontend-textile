@@ -369,20 +369,20 @@ function AllOrdersTable() {
       });
   };
 
-  const printPdf = function (url) {
-    var iframe = document.createElement("iframe");
-    document.body.appendChild(iframe);
+  // const printPdf = function (url) {
+  //   var iframe = document.createElement("iframe");
+  //   document.body.appendChild(iframe);
 
-    iframe.style.display = "none";
-    iframe.onload = function () {
-      setTimeout(function () {
-        iframe.focus();
-        iframe.contentWindow.print();
-      }, 1);
-    };
+  //   iframe.style.display = "none";
+  //   iframe.onload = function () {
+  //     setTimeout(function () {
+  //       iframe.focus();
+  //       iframe.contentWindow.print();
+  //     }, 1);
+  //   };
 
-    iframe.src = url;
-  };
+  //   iframe.src = url;
+  // };
 
   const changeOrderStatus = (id, status) => {
     putData(`${BASE_URL_MAPPING}${id}/`, { status })

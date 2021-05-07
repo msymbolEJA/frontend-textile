@@ -73,7 +73,7 @@ export default function SummaryTable({
   lastDateOfOrder,
   healthCheck,
 }) {
-  const { user } = useContext(AppContext);
+  // const { user } = useContext(AppContext);
 
   let total =
     (data !== "noOrders" &&
