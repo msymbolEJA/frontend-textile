@@ -64,6 +64,7 @@ const CustomTableBody = ({ row, getListFunc, tableId }) => {
   return (
     <StyledTableRow hover tabIndex={-1}>
       <TableCell align="center">{row?.code}</TableCell>
+      <TableCell align="center">{row?.desc}</TableCell>
       <TableCell align="center">
         <ContentEditable
           className={classes.editable}
@@ -74,7 +75,6 @@ const CustomTableBody = ({ row, getListFunc, tableId }) => {
           ref={inputEl}
         />
       </TableCell>
-      <TableCell align="center">{row?.desc}</TableCell>
     </StyledTableRow>
   );
 };

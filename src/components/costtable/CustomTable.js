@@ -72,13 +72,13 @@ export default function StickyHeadTable({ title, tableId }) {
                 <FormattedMessage id="code" defaultMessage="Code" />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage id="cost" defaultMessage="Cost" />
-              </StyledTableCell>
-              <StyledTableCell align="center">
                 <FormattedMessage
                   id="description"
                   defaultMessage="Description"
                 />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="cost" defaultMessage="Cost" />
               </StyledTableCell>
             </TableRow>
           </TableHead>
