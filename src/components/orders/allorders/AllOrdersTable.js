@@ -106,10 +106,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
+
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
   const [currentBarcodeList, setCurrentBarcodeList] = useState(
-    JSON.parse(localStorage.getItem(`barcode_list`) || "[]")
+    JSON.parse(
+      localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]"
+    )
   );
 
   const [countryFilter, setCountryFilter] = useState("all");
@@ -136,7 +140,6 @@ function AllOrdersTable() {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [dialogId, setDialogId] = useState(false);
 
-  //const localUser = localStorage.getItem("localUser");
   const localRole = localStorage.getItem("localRole");
 
   const userRole = user?.role || localRole;
@@ -144,7 +147,9 @@ function AllOrdersTable() {
   const getOrdersInProgress = useCallback(() => {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
-        const l = localStorage.getItem(`order_list_in_progress-last_updated`);
+        const l = localStorage.getItem(
+          `${localStoragePrefix}-in_progress-2500-0-last_updated`
+        );
         if (response.data.last_updated !== l) {
           getData(
             `${BASE_URL}etsy/orders/?status=in_progress&limit=2500&offset=0`
@@ -153,10 +158,17 @@ function AllOrdersTable() {
               const o = response?.data?.results?.length
                 ? response?.data?.results
                 : [];
-              localStorage.setItem(`order_list_in_progress`, JSON.stringify(o));
               localStorage.setItem(
-                `order_list_in_progress-last_updated`,
+                `${localStoragePrefix}-Belky-in_progress-2500-0`,
+                JSON.stringify(o)
+              );
+              localStorage.setItem(
+                `${localStoragePrefix}-in_progress-2500-0-last_updated`,
                 response.data.last_updated
+              );
+              localStorage.setItem(
+                `${localStoragePrefix}-in_progress-2500-0-count`,
+                response?.data?.results?.length
               );
             })
             .catch((error) => {
@@ -192,12 +204,12 @@ function AllOrdersTable() {
             : [];
 
           localStorage.setItem(
-            `${selectedTag}-${filters.limit}-${filters.offset}`,
+            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`,
             JSON.stringify(t)
           );
 
           localStorage.setItem(
-            `${selectedTag}-${filters.limit}-${filters.offset}-count`,
+            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
             response?.data?.count || 0
           );
 
@@ -209,7 +221,7 @@ function AllOrdersTable() {
         })
         .catch((error) => {
           localStorage.setItem(
-            `${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
             null
           );
           console.log("error", error);
@@ -222,12 +234,12 @@ function AllOrdersTable() {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
         const l = localStorage.getItem(
-          `${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
+          `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
         );
         if (response.data.last_updated !== l) {
           getListFunc();
           localStorage.setItem(
-            `${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
             response.data.last_updated
           );
         }
@@ -245,7 +257,7 @@ function AllOrdersTable() {
     const tmp =
       JSON.parse(
         localStorage.getItem(
-          `${selectedTag}-${filters.limit}-${filters.offset}`
+          `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`
         )
       ) ?? [];
     if (!tmp.length) getListFunc();
@@ -387,9 +399,7 @@ function AllOrdersTable() {
   const changeOrderStatus = (id, status) => {
     putData(`${BASE_URL_MAPPING}${id}/`, { status })
       .then((response) => {
-        const pdfUrl = `${BASE_URL.substring(0, BASE_URL.length - 1)}${
-          response.data[1]
-        }`;
+        const pdfUrl = `${BASE_URL}${response.data[1]}`;
         console.log("pfdUrl", pdfUrl);
         if (Array.isArray(response.data)) {
           printJS(pdfUrl);
@@ -406,17 +416,19 @@ function AllOrdersTable() {
   const checkOrderIfInProgress = async (id) => {
     let isInProgress = false;
     const ordersInProgressLS = JSON.parse(
-      localStorage.getItem(`in_progress-2500-0`)
+      localStorage.getItem(`${localStoragePrefix}-in_progress-2500-0`)
     );
     isInProgress =
-      (ordersInProgressLS.filter((item) => item.id.toString() === id)?.length &&
+      (ordersInProgressLS?.length > 0 &&
+        ordersInProgressLS.filter((item) => item.id.toString() === id)
+          ?.length &&
         !currentBarcodeList.includes(id)) ||
       false;
     if (selectedTag === "shipped") {
       changeOrderStatus(id, "shipped");
     } else if (isInProgress) {
       localStorage.setItem(
-        `barcode_list`,
+        `${localStoragePrefix}-barcode_list`,
         JSON.stringify([...currentBarcodeList, id])
       );
       setCurrentBarcodeList([...currentBarcodeList, id]);
@@ -434,22 +446,37 @@ function AllOrdersTable() {
   }, [barcodeInput]);
 
   const handleClearBarcodeList = () => {
-    localStorage.setItem(`barcode_list`, "");
+    localStorage.setItem(`${localStoragePrefix}-barcode_list`, "");
     setCurrentBarcodeList([]);
   };
 
   const removeItemfromBarcodeList = (id) => {
     const fb = currentBarcodeList.filter((i) => i !== id.toString());
-    localStorage.setItem(`barcode_list`, JSON.stringify(fb));
+    localStorage.setItem(
+      `${localStoragePrefix}-barcode_list`,
+      JSON.stringify(fb)
+    );
     setCurrentBarcodeList(fb);
   };
 
   const handleSaveScanned = () => {
     postData(`${BASE_URL}etsy/approved_all_ready/`, { ids: currentBarcodeList })
       .then((res) => {
-        console.log("res", res?.data);
         toastSuccessNotify("Saved!");
-        localStorage.setItem(`barcode_list`, []);
+        /*         localStorage.removeItem(`${localStoragePrefix}-in_progress-2500-0`);
+        localStorage.removeItem(
+          `${localStoragePrefix}-in_progress-2500-0-last_updated`
+        );
+        localStorage.removeItem(
+          `${localStoragePrefix}-in_progress-2500-0-count`
+        ); */
+        localStorage.setItem(`${localStoragePrefix}-barcode_list`, []);
+        localStorage.removeItem(
+          `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`
+        );
+        localStorage.removeItem(
+          `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
+        );
         setCurrentBarcodeList([]);
       })
       .catch(({ response }) => {
@@ -749,7 +776,7 @@ function AllOrdersTable() {
               </td>
               <td>
                 {localStorage.getItem(
-                  `${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
                 ) || 0}
               </td>
               <TablePagination
@@ -757,7 +784,7 @@ function AllOrdersTable() {
                 colSpan={22}
                 count={Number(
                   localStorage.getItem(
-                    `${selectedTag}-${filters.limit}-${filters.offset}-count`
+                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
                   ) || 0
                 )}
                 rowsPerPage={Number(filters.limit)}
@@ -943,15 +970,15 @@ function AllOrdersTable() {
                 {rows.length ===
                 Number(
                   localStorage.getItem(
-                    `${selectedTag}-${filters.limit}-${filters.offset}-count`
+                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
                   )
                 )
                   ? localStorage.getItem(
-                      `${selectedTag}-${filters.limit}-${filters.offset}-count`
+                      `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
                     ) ?? 0
                   : `${rows.length}/${
                       localStorage.getItem(
-                        `${selectedTag}-${filters.limit}-${filters.offset}-count`
+                        `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
                       ) ?? 0
                     }`}
               </>

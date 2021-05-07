@@ -116,6 +116,8 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
+const localstoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
+
 function App({ history }) {
   const [rows, setRows] = useState([]);
   const classes = useStyles();
@@ -151,18 +153,18 @@ function App({ history }) {
             ? response?.data?.results
             : [];
           localStorage.setItem(
-            `${selectedTag}-${filters.limit}-${filters.offset}`,
+            `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}`,
             JSON.stringify(t)
           );
           localStorage.setItem(
-            `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
+            `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
             response?.data?.count || 0
           );
           setRows(t);
         })
         .catch((error) => {
           localStorage.setItem(
-            `mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+            `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
             null
           );
           console.log("error", error);
@@ -184,15 +186,11 @@ function App({ history }) {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
         const l = localStorage.getItem(
-          `mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
-        );
-        console.log(
-          `mapping-${selectedTag}-last_updated:`,
-          response.data.last_updated === l
+          `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
         );
         if (response.data.last_updated !== l) {
           localStorage.setItem(
-            `mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+            `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
             response.data.last_updated
           );
           getListFunc();
@@ -209,7 +207,7 @@ function App({ history }) {
     const tmp =
       JSON.parse(
         localStorage.getItem(
-          `${selectedTag}-${filters.limit}-${filters.offset}`
+          `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}`
         )
       ) ?? [];
     if (!tmp.length) getListFunc();
@@ -659,15 +657,15 @@ function App({ history }) {
             {rows.length ===
             Number(
               localStorage.getItem(
-                `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
               )
             )
               ? localStorage.getItem(
-                  `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
                 ) ?? 0
               : `${rows.length}/${
                   localStorage.getItem(
-                    `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                    `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
                   ) ?? 0
                 }`}
           </>
@@ -1085,7 +1083,7 @@ function App({ history }) {
               </td>
               <td>
                 {localStorage.getItem(
-                  `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
                 ) || 0}
               </td>
               <TablePagination
@@ -1093,7 +1091,7 @@ function App({ history }) {
                 colSpan={22}
                 count={Number(
                   localStorage.getItem(
-                    `mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                    `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
                   ) ?? 0
                 )}
                 rowsPerPage={Number(filters.limit)}
