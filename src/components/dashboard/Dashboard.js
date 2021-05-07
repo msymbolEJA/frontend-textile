@@ -185,25 +185,27 @@ const Dashboard = () => {
           {userRole === "admin" ||
           userRole === "shop_manager" ||
           userRole === "shop_packer" ? (
-            <SummaryTable
-              title="behindOverallSchedule"
-              total={0}
-              next="/shipment-due-dates"
-              icon={
-                <CardGiftcardIcon className={classes.icon} color="primary" />
-              }
-              header1={formatMessage({
-                id: "shipmentDueDate",
-                defaultMessage: "SHIPMENT DUE DATE",
-              }).toUpperCase()}
-              header2={formatMessage({
-                id: "quantity",
-                defaultMessage: "QUANTITY",
-              }).toUpperCase()}
-              data={shipmentDueDates}
-            />
+            <>
+              <SummaryTable
+                title="behindOverallSchedule"
+                total={0}
+                next="/shipment-due-dates"
+                icon={
+                  <CardGiftcardIcon className={classes.icon} color="primary" />
+                }
+                header1={formatMessage({
+                  id: "shipmentDueDate",
+                  defaultMessage: "SHIPMENT DUE DATE",
+                }).toUpperCase()}
+                header2={formatMessage({
+                  id: "quantity",
+                  defaultMessage: "QUANTITY",
+                }).toUpperCase()}
+                data={shipmentDueDates}
+              />
+              <CostGetter />
+            </>
           ) : null}
-          <CostGetter />
         </Grid>
       </div>
     </div>
