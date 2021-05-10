@@ -799,7 +799,12 @@ function App({ history }) {
                   disabled={!selected?.length}
                 >
                   <FormattedMessage id="approve" defaultMessage="Approve" /> (
-                  {selected?.length})
+                  {
+                    selected.filter(function (el) {
+                      return el != null;
+                    })?.length
+                  }
+                  )
                 </Button>
                 <br />
                 <Checkbox
