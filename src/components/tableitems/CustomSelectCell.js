@@ -22,6 +22,10 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         className={classes.opt}
         id={name}
         value={row[name]}
+        // disabled={false}
+        disabled={
+          !(!!row.supplier && !!row.type && !!row.color && !!row.length)
+        }
         name={name}
         onChange={(e) => onSelectChange(e, row)}
         onClick={(e) => e.stopPropagation()}

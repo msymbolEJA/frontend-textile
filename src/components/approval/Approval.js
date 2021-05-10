@@ -430,16 +430,21 @@ function App({ history }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows?.map((n) => n?.id);
+      const newSelecteds = rows?.map((row) => {
+        if (!(!!row.supplier && !!row.type && !!row.color && !!row.length))
+          return null;
+        return row?.id;
+      });
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleCheckBoxClick = (event, id) => {
+  const handleCheckBoxClick = (event, id, row) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
+    if (!(!!row.supplier && !!row.type && !!row.color && !!row.length)) return;
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
@@ -1017,7 +1022,7 @@ function App({ history }) {
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleCheckBoxClick(e, row.id);
+                        handleCheckBoxClick(e, row.id, row);
                       }}
                       onBlur={(e) => {
                         e.stopPropagation();
@@ -1028,6 +1033,14 @@ function App({ history }) {
                     >
                       <Checkbox
                         checked={isItemSelected}
+                        disabled={
+                          !(
+                            !!row.supplier &&
+                            !!row.type &&
+                            !!row.color &&
+                            !!row.length
+                          )
+                        }
                         color="primary"
                         inputProps={{ "aria-labelledby": labelId }}
                       />
