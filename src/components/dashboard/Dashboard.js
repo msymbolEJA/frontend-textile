@@ -182,9 +182,7 @@ const Dashboard = () => {
             }).toUpperCase()}
             data={workshopDueDates}
           />
-          {userRole === "admin" ||
-          userRole === "shop_manager" ||
-          userRole === "shop_packer" ? (
+          {userRole === "admin" ? (
             <>
               <SummaryTable
                 title="behindOverallSchedule"
