@@ -11,8 +11,8 @@ const CostTable = () => {
       <div
         style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
       >
-        <CustomTable title="Quantity Cost Table" tableId="qtyCost" />
         <CustomTable title="Type Cost Table" tableId="typCost" />
+        <CustomTable title="Quantity Cost Table" tableId="qtyCost" />
       </div>
     </div>
   );
