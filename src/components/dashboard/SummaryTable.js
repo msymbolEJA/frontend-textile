@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
-import { AppContext } from "../../context/Context";
 
 import {
   Paper,
@@ -92,7 +91,10 @@ export default function SummaryTable({
 
   return (
     <Grid item xs={12} md={6} className={classes.root}>
-      <Paper className={classes.paper}>
+      <Paper
+        className={classes.paper}
+        onClick={title === "orders" ? null : handleClick}
+      >
         <div className={classes.titleStyle} onClick={(e) => handleClick(e)}>
           {icon}
           <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>
