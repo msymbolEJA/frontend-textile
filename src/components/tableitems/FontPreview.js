@@ -55,7 +55,7 @@ const FontPreview = ({ id, font, text }) => {
 
   return (
     <>
-      <a href="" id={`link${id}`}>
+      <a href="/#" id={`link${id}`}>
         <canvas
           ref={canvasRef}
           width={600}
