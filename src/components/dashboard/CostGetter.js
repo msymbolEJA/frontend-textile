@@ -77,9 +77,9 @@ const CostGetter = () => {
         </h3>
       </div>
       <label htmlFor="beginnerDate">Beginner Date:</label>
-      <input ref={beginnerDateRef} type="date" id="birthday" name="birthday" />
+      <input ref={beginnerDateRef} type="date" />
       <label htmlFor="endDate">End Date:</label>
-      <input ref={endDateRef} type="date" id="birthday" name="birthday" />
+      <input ref={endDateRef} type="date" />
       <Button variant="contained" color="primary" onClick={getDate}>
         Calculate
       </Button>
