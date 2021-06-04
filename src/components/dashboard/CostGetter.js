@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-evenly",
     alignItems: "center",
-    height: 400,
+    height: 500,
   },
   titleStyle: {
     display: "flex",
@@ -35,6 +35,7 @@ const CostGetter = () => {
   const classes = useStyles();
   const beginnerDateRef = useRef(null);
   const endDateRef = useRef(null);
+  const [quantity, setQuantity] = useState(0);
   const [calcCost, setCalcCost] = useState({
     totalCost: null,
     isLoading: false,
@@ -51,7 +52,8 @@ const CostGetter = () => {
     getData(
       `${BASE_URL}etsy/cost/?order_date__iexact=&order_date__lte=${endDateRef.current.value}+00%3A00&order_date__gte=${beginnerDateRef.current.value}+00%3A00&limit=100000000000&offset=0`
     ).then((response) => {
-      // console.log(response.data.results);
+      // console.log(response.data.count);
+      setQuantity(response.data.count);
 
       let res = response.data.results.reduce(function (a, b) {
         return { cost: Number(a.cost) + Number(b.cost) }; // returns object with property x
@@ -72,9 +74,7 @@ const CostGetter = () => {
     <Paper className={classes.paper} style={{}}>
       <div className={classes.titleStyle}>
         <BorderColorIcon style={{ color: "#3F51B5", fontSize: "2rem" }} />
-        <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>
-          Cost Calculator
-        </h3>
+        <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>Calculator</h3>
       </div>
       <label htmlFor="beginnerDate">Beginner Date:</label>
       <input ref={beginnerDateRef} type="date" />
@@ -83,11 +83,16 @@ const CostGetter = () => {
       <Button variant="contained" color="primary" onClick={getDate}>
         Calculate
       </Button>
-      <div style={{ height: "1.5rem" }}>
+      <div style={{ height: "5rem" }}>
         {calcCost.isLoading ? (
           <h3>Calculating...</h3>
         ) : (
-          <h3>{calcCost.totalCost && "Total Cost : $" + calcCost.totalCost}</h3>
+          <>
+            <h3>
+              {calcCost.totalCost && "Total Cost : $" + calcCost.totalCost}
+            </h3>
+            <h3>{calcCost.totalCost && "Quantity : " + quantity}</h3>
+          </>
         )}
       </div>
     </Paper>
