@@ -726,11 +726,27 @@ function App({ history }) {
               {NON_SKU ? (
                 <>
                   <SortableTableCell
+                    property="variation_1_name"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="info1 Name"
+                    setOrderBy={setOrderBy}
+                  />
+                  <SortableTableCell
                     property="variation_1_value"
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="info1"
+                    colName="info1 Value"
+                    setOrderBy={setOrderBy}
+                  />
+                  <SortableTableCell
+                    property="variation_2_name"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="info2 Name"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -738,7 +754,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="info2"
+                    colName="info2 Value"
                     setOrderBy={setOrderBy}
                   />
                 </>
@@ -993,7 +1009,21 @@ function App({ history }) {
                         <EditableTableCell
                           {...{
                             row,
+                            name: "variation_1_name",
+                            onChange,
+                          }}
+                        />
+                        <EditableTableCell
+                          {...{
+                            row,
                             name: "variation_1_value",
+                            onChange,
+                          }}
+                        />
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "variation_2_name",
                             onChange,
                           }}
                         />

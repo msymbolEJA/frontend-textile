@@ -36,6 +36,13 @@ const SortableTableCell = ({
   let customStyle;
   if (property === "explanation") {
     customStyle = { padding: 0, textAlign: "center", minWidth: "200px" };
+  } else if (
+    property === "variation_1_name" ||
+    property === "variation_2_name" ||
+    property === "variation_1_value" ||
+    property === "variation_2_value"
+  ) {
+    customStyle = { padding: 0, textAlign: "center", minWidth: "150px" };
   } else if (property === "id") {
     customStyle = { padding: 0, textAlign: "center", maxWidth: "30px" };
   } else {

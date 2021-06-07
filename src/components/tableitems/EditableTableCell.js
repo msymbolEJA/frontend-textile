@@ -72,6 +72,14 @@ const EditableTableCell = ({ row, name, onChange }) => {
   } else {
     expTableCell = classes.tableCell;
   }
+
+  const isDanger =
+    name === "supplier" ||
+    name === "variation_1_name" ||
+    name === "variation_2_name" ||
+    name === "variation_1_value" ||
+    name === "variation_2_value";
+
   return (
     <TableCell
       align="center"
@@ -79,7 +87,7 @@ const EditableTableCell = ({ row, name, onChange }) => {
       //  onClick={(e) => handleRowClick(row.id, name)}
       style={{
         backgroundColor:
-          name === "supplier" &&
+          isDanger &&
           (row[name] === " " || row[name] === "" || row[name] === null)
             ? "#FF9494"
             : null,

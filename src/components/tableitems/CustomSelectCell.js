@@ -27,7 +27,12 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         // disabled={false}
         disabled={
           NON_SKU
-            ? false
+            ? !(
+                !!row?.variation_1_value &&
+                !!row?.variation_2_value &&
+                !!row?.variation_1_name &&
+                !!row?.variation_2_name
+              )
             : !(!!row.supplier && !!row.type && !!row.color && !!row.length)
         }
         name={name}
