@@ -80,7 +80,7 @@ export const STORE_SERIES = {
   SILVERBYSWAN: "Papyon Serisi",
   LALYN: "Ankara Serisi",
   LILLIAN: "Manisa Serisi",
-  LINENIA: "???? Serisi",
+  LINENIA: "Linen Serisi",
 };
 
 export const FONTS = {
