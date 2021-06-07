@@ -57,6 +57,8 @@
   "buyer": "Buyer",
   "supplier": "Supplier",
   "type": "Type",
+  "info1": "Info1",
+  "info2": "Info2",
   "length": "Length",
   "color": "Color",
   "size": "Size",

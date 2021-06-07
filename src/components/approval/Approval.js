@@ -41,6 +41,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
+const NON_SKU = process.env.REACT_APP_NON_SKU;
+const PAG_ROW_NUMBER = process.env.REACT_APP_PAG_ROW_NUMBER;
 
 const StyledMenu = withStyles({
   paper: {
@@ -399,16 +401,16 @@ function App({ history }) {
         newUrl += `limit=${25}&offset=${0}`;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_repeat=true&limit=${PAG_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "followUp":
-        newUrl += `is_followup=true&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_followup=true&limit=${PAG_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       default:
-        newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `status=${statu}&limit=${PAG_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
     }
     history.push(`/approval?&${newUrl}`);
@@ -542,6 +544,8 @@ function App({ history }) {
     },
     []
   );
+
+  console.log("NON_SKU", NON_SKU);
 
   const repeatMenu = useCallback(
     (row) => {
@@ -719,62 +723,85 @@ function App({ history }) {
                 colName="supplier"
                 setOrderBy={setOrderBy}
               />
-              <SortableTableCell
-                property="type"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="type"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
-                property="length"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="length"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
-                property="color"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="color"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
-                property="qty"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="quantity"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
-                property="size"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="size"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
-                property="start"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="start"
-                setOrderBy={setOrderBy}
-              />
-              <SortableTableCell
-                property="space"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="space"
-                setOrderBy={setOrderBy}
-              />
+              {NON_SKU ? (
+                <>
+                  <SortableTableCell
+                    property="type"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="info1"
+                    setOrderBy={setOrderBy}
+                  />
+                  <SortableTableCell
+                    property="length"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="info2"
+                    setOrderBy={setOrderBy}
+                  />
+                </>
+              ) : (
+                <>
+                  <SortableTableCell
+                    property="type"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="type"
+                    setOrderBy={setOrderBy}
+                  />
+                  <SortableTableCell
+                    property="length"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="length"
+                    setOrderBy={setOrderBy}
+                  />
+                  <SortableTableCell
+                    property="color"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="color"
+                    setOrderBy={setOrderBy}
+                  />
+                  <SortableTableCell
+                    property="qty"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="quantity"
+                    setOrderBy={setOrderBy}
+                  />
+                  <SortableTableCell
+                    property="size"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="size"
+                    setOrderBy={setOrderBy}
+                  />
+                  <SortableTableCell
+                    property="start"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="start"
+                    setOrderBy={setOrderBy}
+                  />
+                  <SortableTableCell
+                    property="space"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="space"
+                    setOrderBy={setOrderBy}
+                  />
+                </>
+              )}
               <SortableTableCell
                 property="explanation"
                 handleRequestSort={handleRequestSort}

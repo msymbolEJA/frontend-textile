@@ -23,6 +23,7 @@ import {
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const STORE_NAME = process.env.REACT_APP_STORE_NAME;
+const PAG_ROW_NUMBER = process.env.REACT_APP_PAG_ROW_NUMBER;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -139,7 +140,9 @@ export default function MenuAppBar() {
   const handleClick = (e) => {
     // const newStatu = getFirstStatu();
     // console.log("newStatu", newStatu);
-    history.push(`/${e.currentTarget.id}?status=${newStatu}&limit=25&offset=0`);
+    history.push(
+      `/${e.currentTarget.id}?status=${newStatu}&limit=${PAG_ROW_NUMBER}&offset=0`
+    );
     setAnchorEl(null);
   };
 
@@ -184,7 +187,7 @@ export default function MenuAppBar() {
                     startIcon={<ThumbUpIcon />}
                     onClick={() =>
                       history.push(
-                        `/approval?&status=pending&limit=2500&offset=0`
+                        `/approval?&status=pending&limit=25&offset=0`
                       )
                     }
                   >

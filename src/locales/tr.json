@@ -143,5 +143,7 @@
   "code": "Kodu",
   "cost":"Maliyet",
   "typeCostTable" : "Tip Maliyet Tablosu",
-  "qtyCostTable" : "Miktar Maliyet Tablosu"
+  "qtyCostTable" : "Miktar Maliyet Tablosu",
+  "info1": "Bilgi1",
+  "info2": "Bilgi2"
 }
