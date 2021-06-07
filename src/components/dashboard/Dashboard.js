@@ -151,7 +151,7 @@ const Dashboard = () => {
           <SummaryTable
             title="orders"
             total={0}
-            next={`/all-orders?&status=${newStatu}&limit=2500&offset=0`}
+            next={`/all-orders?&status=${newStatu}&limit=25&offset=0`}
             icon={<ListAltIcon className={classes.icon} color="primary" />}
             header1={formatMessage({
               id: "status",

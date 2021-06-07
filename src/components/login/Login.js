@@ -127,9 +127,7 @@ export default function Login() {
             console.log("Logged in succesfully!");
             setAuth(true);
             if (response?.data?.role === "workshop_designer") {
-              history.push(
-                "/all-orders?&status=in_progress&limit=2500&offset=0"
-              );
+              history.push("/all-orders?&status=in_progress&limit=25&offset=0");
             } else {
               history.push("/");
             }

@@ -139,9 +139,7 @@ export default function MenuAppBar() {
   const handleClick = (e) => {
     // const newStatu = getFirstStatu();
     // console.log("newStatu", newStatu);
-    history.push(
-      `/${e.currentTarget.id}?status=${newStatu}&limit=2500&offset=0`
-    );
+    history.push(`/${e.currentTarget.id}?status=${newStatu}&limit=25&offset=0`);
     setAnchorEl(null);
   };
 
