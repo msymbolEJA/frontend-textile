@@ -187,7 +187,7 @@ export default function MenuAppBar() {
                     startIcon={<ThumbUpIcon />}
                     onClick={() =>
                       history.push(
-                        `/approval?&status=pending&limit=25&offset=0`
+                        `/approval?&status=pending&limit=${PAG_ROW_NUMBER}&offset=0`
                       )
                     }
                   >
