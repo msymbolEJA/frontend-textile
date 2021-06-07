@@ -726,7 +726,7 @@ function App({ history }) {
               {NON_SKU ? (
                 <>
                   <SortableTableCell
-                    property="type"
+                    property="variation_1_value"
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
@@ -734,7 +734,7 @@ function App({ history }) {
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
-                    property="length"
+                    property="variation_2_value"
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
@@ -988,55 +988,76 @@ function App({ history }) {
                         onChange,
                       }}
                     />
-                    <EditableTableCell
-                      {...{
-                        row,
-                        name: "type",
-                        onChange,
-                      }}
-                    />
-                    <EditableTableCell
-                      {...{
-                        row,
-                        name: "length",
-                        onChange,
-                      }}
-                    />
-                    <EditableTableCell
-                      {...{
-                        row,
-                        name: "color",
-                        onChange,
-                      }}
-                    />
-                    <EditableTableCell
-                      {...{
-                        row,
-                        name: "qty",
-                        onChange,
-                      }}
-                    />
-                    <EditableTableCell
-                      {...{
-                        row,
-                        name: "size",
-                        onChange,
-                      }}
-                    />
-                    <EditableTableCell
-                      {...{
-                        row,
-                        name: "start",
-                        onChange,
-                      }}
-                    />
-                    <EditableTableCell
-                      {...{
-                        row,
-                        name: "space",
-                        onChange,
-                      }}
-                    />
+                    {NON_SKU ? (
+                      <>
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "variation_1_value",
+                            onChange,
+                          }}
+                        />
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "variation_2_value",
+                            onChange,
+                          }}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "type",
+                            onChange,
+                          }}
+                        />
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "length",
+                            onChange,
+                          }}
+                        />
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "color",
+                            onChange,
+                          }}
+                        />
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "qty",
+                            onChange,
+                          }}
+                        />
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "size",
+                            onChange,
+                          }}
+                        />
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "start",
+                            onChange,
+                          }}
+                        />
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "space",
+                            onChange,
+                          }}
+                        />
+                      </>
+                    )}
                     <EditableTableCell
                       {...{
                         row,

@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { statusData } from "../../helper/Constants";
 import { useIntl } from "react-intl";
 
+const NON_SKU = process.env.REACT_APP_NON_SKU;
+
 const useStyles = makeStyles((theme) => ({
   opt: {
     fontSize: "0.9rem",
@@ -24,7 +26,9 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         value={row[name]}
         // disabled={false}
         disabled={
-          !(!!row.supplier && !!row.type && !!row.color && !!row.length)
+          NON_SKU
+            ? false
+            : !(!!row.supplier && !!row.type && !!row.color && !!row.length)
         }
         name={name}
         onChange={(e) => onSelectChange(e, row)}
