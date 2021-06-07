@@ -145,5 +145,9 @@
   "typeCostTable" : "Tip Maliyet Tablosu",
   "qtyCostTable" : "Miktar Maliyet Tablosu",
   "info1": "Bilgi1",
-  "info2": "Bilgi2"
+  "info2": "Bilgi2",
+  "info1 Name": "Bilgi1 İsim",
+  "info1 Value": "Bilgi1 Değer",
+  "info2 Name": "Bilgi2 İsim",
+  "info2 Value": "Bilgi2 Değer"
 }

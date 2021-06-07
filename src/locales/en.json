@@ -57,8 +57,6 @@
   "buyer": "Buyer",
   "supplier": "Supplier",
   "type": "Type",
-  "info1": "Info1",
-  "info2": "Info2",
   "length": "Length",
   "color": "Color",
   "size": "Size",
@@ -111,5 +109,11 @@
   "noPdfFiles": "There are no pdf files for this order",
   "updating": "Updating",
   "totalScanned": "Total scanned",
-  "saveScanned": "Save scanned orders"
+  "saveScanned": "Save scanned orders",
+  "info1": "Bilgi1",
+  "info2": "Bilgi2",
+  "info1 Name": "Info1 Name",
+  "info1 Value": "Info1 Value",
+  "info2 Name": "Info2 Name",
+  "info2 Value": "Info2 Value"
 }
