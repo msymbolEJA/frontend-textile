@@ -44,12 +44,13 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     flexDirection: "column",
   },
+  allOrdersTableCell: {},
 }));
 
 /* <TextareaAutosize aria-label="empty textarea" placeholder="Empty" />
  */
 
-const EditableTableCell = ({ row, name, onChange }) => {
+const EditableTableCell = ({ row, name, onChange, from }) => {
   const classes = useStyles();
   const [content, setContent] = useState(row[name] || "");
 
@@ -67,7 +68,9 @@ const EditableTableCell = ({ row, name, onChange }) => {
 
   let expTableCell;
 
-  if (name === "explanation") {
+  if (from === "all-orders") {
+    expTableCell = classes.allOrdersTableCell;
+  } else if (name === "explanation") {
     expTableCell = classes.explanationTableCell;
   } else {
     expTableCell = classes.tableCell;
@@ -84,7 +87,7 @@ const EditableTableCell = ({ row, name, onChange }) => {
     <TableCell
       align="center"
       className={expTableCell}
-      //  onClick={(e) => handleRowClick(row.id, name)}
+      onClick={(e) => e.stopPropagation()}
       style={{
         backgroundColor:
           isDanger &&

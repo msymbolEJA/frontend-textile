@@ -46,6 +46,7 @@ import {
 } from "../../otheritems/ToastNotify";
 import { getQueryParams } from "../../../helper/getQueryParams";
 import CustomDialog from "./CustomDialog";
+import EditableTableCell from "../../tableitems/EditableTableCell";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
@@ -514,6 +515,34 @@ function AllOrdersTable() {
     [history]
   );
 
+  const handleRowChange = useCallback(
+    (id, data) => {
+      if (!data) return;
+      if (
+        rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
+        Object.values(data)[0]
+      )
+        return;
+      putData(`${BASE_URL_MAPPING}${id}/`, data)
+        .then((response) => {})
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => getListFunc());
+    },
+    [getListFunc, rows]
+  );
+
+  const onChange = (e, id, name) => {
+    if (!rows.length || !name || !e?.target?.innerText) return;
+    if (
+      rows?.filter((item) => item.id === name)?.[0]?.[name] ===
+      e.target.innerText
+    )
+      return;
+    handleRowChange(id, { [name]: e.target.innerText });
+  };
+
   useEffect(() => {
     if (searchWord) {
       globalSearchFunc(searchWord);
@@ -728,7 +757,15 @@ function AllOrdersTable() {
                   <CustomTableCell {...{ row, name: "size" }} />
                   <CustomTableCell {...{ row, name: "start" }} />
                   <CustomTableCell {...{ row, name: "space" }} />
-                  <CustomTableCell {...{ row, name: "explanation" }} />
+                  <EditableTableCell
+                    onClick={(e) => e.stopPropagation()}
+                    {...{
+                      row,
+                      name: "explanation",
+                      onChange,
+                      from: "all-orders",
+                    }}
+                  />
                   <td style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}>
                     {row?.image ? (
                       <ViewImageFile {...{ row, name: "image" }} />
