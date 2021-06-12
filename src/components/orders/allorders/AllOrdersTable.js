@@ -907,7 +907,8 @@ function AllOrdersTable() {
         <div
           style={{
             display:
-              process.env.REACT_APP_STORE_NAME === "Hilal Serisi"
+              process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
+              process.env.REACT_APP_STORE_NAME === "Linen Serisi"
                 ? "flex"
                 : "none",
             color: "#001A33",
