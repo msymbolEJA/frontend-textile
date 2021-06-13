@@ -446,7 +446,21 @@ function App({ history }) {
   const handleCheckBoxClick = (event, id, row) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-    if (!(!!row.supplier && !!row.type && !!row.color && !!row.length)) return;
+    if (NON_SKU) {
+      if (
+        !(
+          !!row?.variation_1_value &&
+          !!row?.variation_2_value &&
+          !!row?.variation_1_name &&
+          !!row?.variation_2_name
+        )
+      )
+        return;
+    } else {
+      if (!(!!row.supplier && !!row.type && !!row.color && !!row.length))
+        return;
+    }
+
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
@@ -1135,12 +1149,19 @@ function App({ history }) {
                       <Checkbox
                         checked={isItemSelected}
                         disabled={
-                          !(
-                            !!row.supplier &&
-                            !!row.type &&
-                            !!row.color &&
-                            !!row.length
-                          )
+                          NON_SKU
+                            ? !(
+                                !!row?.variation_1_value &&
+                                !!row?.variation_2_value &&
+                                !!row?.variation_1_name &&
+                                !!row?.variation_2_name
+                              )
+                            : !(
+                                !!row.supplier &&
+                                !!row.type &&
+                                !!row.color &&
+                                !!row.length
+                              )
                         }
                         color="primary"
                         inputProps={{ "aria-labelledby": labelId }}
