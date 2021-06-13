@@ -41,6 +41,8 @@ const ConstantTableCell = ({ row, name, name2, name3 }) => {
           .utc(row?.creation_tsz || row.created_date)
           .local()
           .format("MM-DD-YY HH:mm")
+      ) : name === "sku" ? (
+        row[name].substring("Linen_Dress_".length)
       ) : (
         row[name]?.replace(/&quot;/g, '"')?.replace(/&#39;/g, "'")
       )}
