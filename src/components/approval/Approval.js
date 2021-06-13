@@ -723,6 +723,16 @@ function App({ history }) {
                 colName="supplier"
                 setOrderBy={setOrderBy}
               />
+              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+                <SortableTableCell
+                  property="sku"
+                  handleRequestSort={handleRequestSort}
+                  order={order}
+                  orderBy={orderBy}
+                  colName="type"
+                  setOrderBy={setOrderBy}
+                />
+              ) : null}
               {NON_SKU ? (
                 <>
                   <SortableTableCell
@@ -1004,6 +1014,14 @@ function App({ history }) {
                         onChange,
                       }}
                     />
+                    {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+                      <ConstantTableCell
+                        {...{
+                          row,
+                          name: "sku",
+                        }}
+                      />
+                    ) : null}
                     {NON_SKU ? (
                       <>
                         <EditableTableCell
