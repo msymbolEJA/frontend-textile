@@ -52,6 +52,8 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
                 ? "APPROVED"
                 : row[name].replace("_", " "),
           })
+        ) : name === "sku" ? (
+          row[name].substring("Linen_Dress_".length)
         ) : row[name] ? (
           row[name]
             .replace("_", " ")

@@ -662,6 +662,11 @@ function AllOrdersTable() {
                   defaultMessage="Approval Date"
                 />
               </StyledTableCell>
+              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+                <StyledTableCell align="center">
+                  <FormattedMessage id="type" defaultMessage="Type" />
+                </StyledTableCell>
+              ) : null}
               {userRole === "admin" ||
               userRole === "shop_manager" ||
               userRole === "shop_packer" ? (
@@ -741,6 +746,9 @@ function AllOrdersTable() {
                   />
                   <CustomTableCell {...{ row, name: "creation_tsz" }} />
                   <CustomTableCell {...{ row, name: "ready_date" }} />
+                  {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+                    <CustomTableCell {...{ row, name: "sku" }} />
+                  ) : null}
                   {userRole === "admin" ||
                   userRole === "shop_manager" ||
                   userRole === "shop_packer" ? (
