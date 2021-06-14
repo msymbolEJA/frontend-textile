@@ -51,6 +51,7 @@ import EditableTableCell from "../../tableitems/EditableTableCell";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 const PAG_ROW_NUMBER = process.env.REACT_APP_PAG_ROW_NUMBER;
+const NON_SKU = process.env.REACT_APP_NON_SKU;
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -662,11 +663,6 @@ function AllOrdersTable() {
                   defaultMessage="Approval Date"
                 />
               </StyledTableCell>
-              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
-                <StyledTableCell align="center">
-                  <FormattedMessage id="type" defaultMessage="Type" />
-                </StyledTableCell>
-              ) : null}
               {userRole === "admin" ||
               userRole === "shop_manager" ||
               userRole === "shop_packer" ? (
@@ -682,6 +678,27 @@ function AllOrdersTable() {
               <StyledTableCell align="center">
                 <FormattedMessage id="status" defaultMessage="Status" />
               </StyledTableCell>
+              {
+                NON_SKU ? 
+              <>
+                <StyledTableCell align="center">
+                  <FormattedMessage id="type" defaultMessage="Type" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                <FormattedMessage id="info1 Name" defaultMessage="info1 Name" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                <FormattedMessage id="info1 Value" defaultMessage="info1 Value" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                <FormattedMessage id="info2 Name" defaultMessage="info2 Name" />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                <FormattedMessage id="info1 Value" defaultMessage="info1 Value" />
+                </StyledTableCell>
+              </>
+                :
+                <>
               <StyledTableCell align="center">
                 <FormattedMessage id="type" defaultMessage="Type" />
               </StyledTableCell>
@@ -703,6 +720,8 @@ function AllOrdersTable() {
               <StyledTableCell align="center">
                 <FormattedMessage id="space" defaultMessage="Space" />
               </StyledTableCell>
+              </>
+              }
               <StyledTableCell align="center">
                 <FormattedMessage
                   id="explanation"
@@ -746,9 +765,6 @@ function AllOrdersTable() {
                   />
                   <CustomTableCell {...{ row, name: "creation_tsz" }} />
                   <CustomTableCell {...{ row, name: "ready_date" }} />
-                  {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
-                    <CustomTableCell {...{ row, name: "sku" }} />
-                  ) : null}
                   {userRole === "admin" ||
                   userRole === "shop_manager" ||
                   userRole === "shop_packer" ? (
@@ -758,13 +774,26 @@ function AllOrdersTable() {
                     </>
                   ) : null}
                   <CustomTableCell {...{ row, name: "status" }} />
-                  <CustomTableCell {...{ row, name: "type" }} />
-                  <CustomTableCell {...{ row, name: "length" }} />
-                  <CustomTableCell {...{ row, name: "color" }} />
-                  <CustomTableCell {...{ row, name: "qty" }} />
-                  <CustomTableCell {...{ row, name: "size" }} />
-                  <CustomTableCell {...{ row, name: "start" }} />
-                  <CustomTableCell {...{ row, name: "space" }} />
+                  {
+                    NON_SKU ? 
+                    <>
+                    <CustomTableCell {...{ row, name: "sku" }} />
+                    <CustomTableCell {...{ row, name: "variation_1_name" }} />
+                    <CustomTableCell {...{ row, name: "variation_1_value" }} />
+                    <CustomTableCell {...{ row, name: "variation_2_name" }} />
+                    <CustomTableCell {...{ row, name: "variation_2_value" }} />
+                    </>
+                    :
+                    <>
+                    <CustomTableCell {...{ row, name: "type" }} />
+                    <CustomTableCell {...{ row, name: "length" }} />
+                    <CustomTableCell {...{ row, name: "color" }} />
+                    <CustomTableCell {...{ row, name: "qty" }} />
+                    <CustomTableCell {...{ row, name: "size" }} />
+                    <CustomTableCell {...{ row, name: "start" }} />
+                    <CustomTableCell {...{ row, name: "space" }} />
+                    </>
+                  }
                   <EditableTableCell
                     onClick={(e) => e.stopPropagation()}
                     {...{

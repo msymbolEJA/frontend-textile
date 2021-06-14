@@ -63,6 +63,7 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
             .replace(": BREAK OFF", "")
             .replace(": LOST IN MAIL", "")
             .replace(": SECOND", "")
+            .replace("&#039;", "'")
         ) : (
           "-"
         )}
