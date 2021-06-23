@@ -71,6 +71,7 @@ export const STORE_BASE_URLS = {
   NEW_SHINY: "http://149.28.251.24:8080/",
   NEW_LALYN: "http://31.169.92.203:8080/",
   LINENIA: "http://155.138.255.69:8080/",
+  CHLOE: "http://149.28.100.118:8080/",
 };
 
 export const STORE_SERIES = {
@@ -81,6 +82,7 @@ export const STORE_SERIES = {
   LALYN: "Ankara Serisi",
   LILLIAN: "Manisa Serisi",
   LINENIA: "Linen Serisi",
+  CHLOE: "Anamur Serisi",
 };
 
 export const FONTS = {
