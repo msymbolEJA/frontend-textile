@@ -6,6 +6,10 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormattedMessage, useIntl } from "react-intl";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +41,14 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     width: "15rem",
+  },
+  formControl: {
+    minWidth: 120,
+    marginTop: 10,
+    "& .MuiOutlinedInput-input": {
+      padding: "12px 14px",
+      textAlign: "left",
+    },
   },
 }));
 
@@ -81,22 +93,31 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
               autoFocus
               value={info.customer}
             />
-            <TextField
+            <FormControl
               variant="outlined"
-              margin="dense"
-              required
               fullWidth
-              name="supplier"
-              label={formatMessage({
-                id: "supplier",
-                defaultMessage: "Supplier",
-              })}
-              type="text"
-              id="supplier"
-              autoComplete="supplier"
-              onChange={handleChange}
-              value={info.supplier}
-            />
+              className={classes.formControl}
+            >
+              <InputLabel id="demo-simple-select-outlined-label">
+                {formatMessage({
+                  id: "supplier",
+                  defaultMessage: "Supplier",
+                })}
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                required
+                fullWidth
+                value={info.supplier}
+                onChange={handleChange}
+                name="supplier"
+                label="Supplier"
+              >
+                <MenuItem value={"asya"}>Asya</MenuItem>
+                <MenuItem value={"beyazit"}>Beyazit</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               variant="outlined"
               margin="dense"

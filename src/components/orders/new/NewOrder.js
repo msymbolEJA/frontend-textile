@@ -8,7 +8,7 @@ function NewOrder() {
   const [list, setList] = useState("");
   const [info, setInfo] = useState({
     customer: "",
-    supplier: "",
+    supplier: "asya",
     type: "",
     length: "",
     color: "",
