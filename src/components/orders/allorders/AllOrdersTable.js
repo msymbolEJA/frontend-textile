@@ -1043,7 +1043,7 @@ function AllOrdersTable() {
               <FormattedMessage id="int" defaultMessage="International" />
             </Button>
           </div>
-          {selectedTag === "in_progress" && (
+          {selectedTag === "in_progress" && NON_SKU && (
             <div
               style={{
                 marginRight: "10px",
