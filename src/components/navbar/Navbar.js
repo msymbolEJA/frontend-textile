@@ -279,6 +279,12 @@ export default function MenuAppBar() {
                         Admin Panel
                       </a>
                     </MenuItem>
+                    <MenuItem id="cost-table" onClick={(e) => handleClick(e)}>
+                      <FormattedMessage
+                        id="costTable"
+                        defaultMessage="Cost Table"
+                      />
+                    </MenuItem>
                   </div>
                 )}
                 {(userRole === "admin" ||
@@ -295,12 +301,6 @@ export default function MenuAppBar() {
                       <FormattedMessage
                         id="stockList"
                         defaultMessage="Stock List"
-                      />
-                    </MenuItem>
-                    <MenuItem id="cost-table" onClick={(e) => handleClick(e)}>
-                      <FormattedMessage
-                        id="costTable"
-                        defaultMessage="Cost Table"
                       />
                     </MenuItem>
                   </div>
