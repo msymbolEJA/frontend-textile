@@ -149,5 +149,6 @@
   "info1 Name": "Bilgi1 İsim",
   "info1 Value": "Bilgi1 Değer",
   "info2 Name": "Bilgi2 İsim",
-  "info2 Value": "Bilgi2 Değer"
+  "info2 Value": "Bilgi2 Değer",
+  "saveGoogleSheet" : "Google Sheet'e Aktar"
 }

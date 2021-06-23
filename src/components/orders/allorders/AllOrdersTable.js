@@ -634,6 +634,17 @@ function AllOrdersTable() {
       });
   };
 
+  const handleGoogleSheet = () => {
+    // console.log("handleGoogleSheet");
+    getData("http://155.138.255.69:8080/etsy/google_sheet_workshop/")
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const AllTable = React.memo(
     () => (
       <TableContainer className={classes.container}>
@@ -678,50 +689,61 @@ function AllOrdersTable() {
               <StyledTableCell align="center">
                 <FormattedMessage id="status" defaultMessage="Status" />
               </StyledTableCell>
-              {
-                NON_SKU ? 
-              <>
-                <StyledTableCell align="center">
-                  <FormattedMessage id="type" defaultMessage="Type" />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                <FormattedMessage id="info1 Name" defaultMessage="info1 Name" />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                <FormattedMessage id="info1 Value" defaultMessage="info1 Value" />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                <FormattedMessage id="info2 Name" defaultMessage="info2 Name" />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                <FormattedMessage id="info1 Value" defaultMessage="info1 Value" />
-                </StyledTableCell>
-              </>
-                :
+              {NON_SKU ? (
                 <>
-              <StyledTableCell align="center">
-                <FormattedMessage id="type" defaultMessage="Type" />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <FormattedMessage id="length" defaultMessage="Length" />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <FormattedMessage id="color" defaultMessage="Color" />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <FormattedMessage id="quantity" defaultMessage="Quantity" />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <FormattedMessage id="size" defaultMessage="Size" />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <FormattedMessage id="start" defaultMessage="Start" />
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <FormattedMessage id="space" defaultMessage="Space" />
-              </StyledTableCell>
-              </>
-              }
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="type" defaultMessage="Type" />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage
+                      id="info1 Name"
+                      defaultMessage="info1 Name"
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage
+                      id="info1 Value"
+                      defaultMessage="info1 Value"
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage
+                      id="info2 Name"
+                      defaultMessage="info2 Name"
+                    />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage
+                      id="info1 Value"
+                      defaultMessage="info1 Value"
+                    />
+                  </StyledTableCell>
+                </>
+              ) : (
+                <>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="type" defaultMessage="Type" />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="length" defaultMessage="Length" />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="color" defaultMessage="Color" />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="quantity" defaultMessage="Quantity" />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="size" defaultMessage="Size" />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="start" defaultMessage="Start" />
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="space" defaultMessage="Space" />
+                  </StyledTableCell>
+                </>
+              )}
               <StyledTableCell align="center">
                 <FormattedMessage
                   id="explanation"
@@ -774,26 +796,29 @@ function AllOrdersTable() {
                     </>
                   ) : null}
                   <CustomTableCell {...{ row, name: "status" }} />
-                  {
-                    NON_SKU ? 
+                  {NON_SKU ? (
                     <>
-                    <CustomTableCell {...{ row, name: "sku" }} />
-                    <CustomTableCell {...{ row, name: "variation_1_name" }} />
-                    <CustomTableCell {...{ row, name: "variation_1_value" }} />
-                    <CustomTableCell {...{ row, name: "variation_2_name" }} />
-                    <CustomTableCell {...{ row, name: "variation_2_value" }} />
+                      <CustomTableCell {...{ row, name: "sku" }} />
+                      <CustomTableCell {...{ row, name: "variation_1_name" }} />
+                      <CustomTableCell
+                        {...{ row, name: "variation_1_value" }}
+                      />
+                      <CustomTableCell {...{ row, name: "variation_2_name" }} />
+                      <CustomTableCell
+                        {...{ row, name: "variation_2_value" }}
+                      />
                     </>
-                    :
+                  ) : (
                     <>
-                    <CustomTableCell {...{ row, name: "type" }} />
-                    <CustomTableCell {...{ row, name: "length" }} />
-                    <CustomTableCell {...{ row, name: "color" }} />
-                    <CustomTableCell {...{ row, name: "qty" }} />
-                    <CustomTableCell {...{ row, name: "size" }} />
-                    <CustomTableCell {...{ row, name: "start" }} />
-                    <CustomTableCell {...{ row, name: "space" }} />
+                      <CustomTableCell {...{ row, name: "type" }} />
+                      <CustomTableCell {...{ row, name: "length" }} />
+                      <CustomTableCell {...{ row, name: "color" }} />
+                      <CustomTableCell {...{ row, name: "qty" }} />
+                      <CustomTableCell {...{ row, name: "size" }} />
+                      <CustomTableCell {...{ row, name: "start" }} />
+                      <CustomTableCell {...{ row, name: "space" }} />
                     </>
-                  }
+                  )}
                   <EditableTableCell
                     onClick={(e) => e.stopPropagation()}
                     {...{
@@ -989,32 +1014,64 @@ function AllOrdersTable() {
             marginBottom: 16,
             marginLeft: 16,
             fontSize: "2rem",
+            justifyContent: "space-between",
           }}
         >
-          <Button
-            variant="contained"
-            color={countryFilter === "all" ? "primary" : "default"}
-            className={classes.countryFilter}
-            onClick={() => setCountryFilter("all")}
-          >
-            <FormattedMessage id="all" defaultMessage="All" />
-          </Button>
-          <Button
-            variant="contained"
-            color={countryFilter === "usa" ? "primary" : "default"}
-            className={classes.countryFilter}
-            onClick={() => setCountryFilter("usa")}
-          >
-            <FormattedMessage id="usa" defaultMessage="USA" />
-          </Button>
-          <Button
-            variant="contained"
-            color={countryFilter === "int" ? "primary" : "default"}
-            className={classes.countryFilter}
-            onClick={() => setCountryFilter("int")}
-          >
-            <FormattedMessage id="int" defaultMessage="International" />
-          </Button>
+          <div>
+            <Button
+              variant="contained"
+              color={countryFilter === "all" ? "primary" : "default"}
+              className={classes.countryFilter}
+              onClick={() => setCountryFilter("all")}
+            >
+              <FormattedMessage id="all" defaultMessage="All" />
+            </Button>
+            <Button
+              variant="contained"
+              color={countryFilter === "usa" ? "primary" : "default"}
+              className={classes.countryFilter}
+              onClick={() => setCountryFilter("usa")}
+            >
+              <FormattedMessage id="usa" defaultMessage="USA" />
+            </Button>
+            <Button
+              variant="contained"
+              color={countryFilter === "int" ? "primary" : "default"}
+              className={classes.countryFilter}
+              onClick={() => setCountryFilter("int")}
+            >
+              <FormattedMessage id="int" defaultMessage="International" />
+            </Button>
+          </div>
+          {selectedTag === "in_progress" && (
+            <div
+              style={{
+                marginRight: "10px",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="default"
+                className={classes.countryFilter}
+                onClick={() => handleGoogleSheet()}
+              >
+                <FormattedMessage
+                  id="saveGoogleSheet"
+                  defaultMessage="Save Google Sheet"
+                />
+              </Button>
+              <a
+                style={{ fontSize: "1rem", marginTop: "10px" }}
+                href="https://docs.google.com/spreadsheets/d/1AWqfQPgSqrzR1C1cV4Q6XJGVx3-4-VnoDBIVJknSPEM/edit#gid=0"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Visit Google Sheet
+              </a>
+            </div>
+          )}
         </div>
         <div
           style={{
