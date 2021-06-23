@@ -1043,35 +1043,36 @@ function AllOrdersTable() {
               <FormattedMessage id="int" defaultMessage="International" />
             </Button>
           </div>
-          {selectedTag === "in_progress" && NON_SKU && (
-            <div
-              style={{
-                marginRight: "10px",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Button
-                variant="contained"
-                color="default"
-                className={classes.countryFilter}
-                onClick={() => handleGoogleSheet()}
+          {selectedTag === "in_progress" &&
+            process.env.REACT_APP_STORE_NAME === "Linen Serisi" && (
+              <div
+                style={{
+                  marginRight: "10px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
               >
-                <FormattedMessage
-                  id="saveGoogleSheet"
-                  defaultMessage="Save Google Sheet"
-                />
-              </Button>
-              <a
-                style={{ fontSize: "1rem", marginTop: "10px" }}
-                href="https://docs.google.com/spreadsheets/d/1AWqfQPgSqrzR1C1cV4Q6XJGVx3-4-VnoDBIVJknSPEM/edit#gid=0"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Visit Google Sheet
-              </a>
-            </div>
-          )}
+                <Button
+                  variant="contained"
+                  color="default"
+                  className={classes.countryFilter}
+                  onClick={() => handleGoogleSheet()}
+                >
+                  <FormattedMessage
+                    id="saveGoogleSheet"
+                    defaultMessage="Save Google Sheet"
+                  />
+                </Button>
+                <a
+                  style={{ fontSize: "1rem", marginTop: "10px" }}
+                  href="https://docs.google.com/spreadsheets/d/1AWqfQPgSqrzR1C1cV4Q6XJGVx3-4-VnoDBIVJknSPEM/edit#gid=0"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Visit Google Sheet
+                </a>
+              </div>
+            )}
         </div>
         <div
           style={{
