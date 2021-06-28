@@ -100,11 +100,13 @@ const CustomButtonGroup = ({
           className={classes.btn}
           id="all_orders"
           checked={selectedTag?.indexOf("all_orders") > -1}
-          onClick={(e) => handleTagChange(e)}
+          onClick={(e) => {
+            handleTagChange(e);
+          }}
           variant="contained"
           style={{
-            backgroundColor: selectedTag === "all_orders" ? "#3F51B5" : null,
-            color: selectedTag === "all_orders" ? "white" : null,
+            backgroundColor: selectedTag === undefined ? "#3F51B5" : null,
+            color: selectedTag === undefined ? "white" : null,
           }}
         >
           All Orders
