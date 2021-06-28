@@ -696,26 +696,14 @@ function AllOrdersTable() {
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <FormattedMessage
-                      id="info1 Name"
-                      defaultMessage="info1 Name"
-                    />
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <FormattedMessage
                       id="info1 Value"
                       defaultMessage="info1 Value"
                     />
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <FormattedMessage
-                      id="info2 Name"
-                      defaultMessage="info2 Name"
-                    />
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <FormattedMessage
-                      id="info1 Value"
-                      defaultMessage="info1 Value"
+                      id="info2 Value"
+                      defaultMessage="info2 Value"
                     />
                   </StyledTableCell>
                 </>
@@ -799,11 +787,9 @@ function AllOrdersTable() {
                   {NON_SKU ? (
                     <>
                       <CustomTableCell {...{ row, name: "sku" }} />
-                      <CustomTableCell {...{ row, name: "variation_1_name" }} />
                       <CustomTableCell
                         {...{ row, name: "variation_1_value" }}
                       />
-                      <CustomTableCell {...{ row, name: "variation_2_name" }} />
                       <CustomTableCell
                         {...{ row, name: "variation_2_value" }}
                       />

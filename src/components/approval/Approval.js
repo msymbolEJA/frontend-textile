@@ -559,7 +559,7 @@ function App({ history }) {
     []
   );
 
-  console.log("NON_SKU", NON_SKU);
+  // console.log("NON_SKU", NON_SKU);
 
   const repeatMenu = useCallback(
     (row) => {
