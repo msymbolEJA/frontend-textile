@@ -11,6 +11,8 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 
+const STORE_NAME = process.env.REACT_APP_STORE_NAME;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -114,8 +116,14 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
                 name="supplier"
                 label="Supplier"
               >
-                <MenuItem value={"asya"}>Asya</MenuItem>
-                <MenuItem value={"beyazit"}>Beyazit</MenuItem>
+                {STORE_NAME === "Linen Serisi" ? (
+                  <MenuItem value={"umraniye"}>Umraniye</MenuItem>
+                ) : (
+                  <>
+                    <MenuItem value={"asya"}>Asya</MenuItem>
+                    <MenuItem value={"beyazit"}>Beyazit</MenuItem>
+                  </>
+                )}
               </Select>
             </FormControl>
             <TextField

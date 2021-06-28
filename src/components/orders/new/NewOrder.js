@@ -2,13 +2,15 @@ import { useState } from "react";
 import Table from "./Table";
 import Form from "./Form";
 import { postFormData } from "../../../helper/PostData";
+
+const STORE_NAME = process.env.REACT_APP_STORE_NAME;
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 function NewOrder() {
   const [list, setList] = useState("");
   const [info, setInfo] = useState({
     customer: "",
-    supplier: "asya",
+    supplier: STORE_NAME === "Linen Serisi" ? "umraniye" : "asya",
     type: "",
     length: "",
     color: "",
