@@ -10,6 +10,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import SearchIcon from "@material-ui/icons/Search";
 
+const NON_SKU = process.env.REACT_APP_NON_SKU;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -93,6 +95,21 @@ const CustomButtonGroup = ({
           />
         </Button>
       ))}
+      {NON_SKU && (
+        <Button
+          className={classes.btn}
+          id="all_orders"
+          checked={selectedTag?.indexOf("all_orders") > -1}
+          onClick={(e) => handleTagChange(e)}
+          variant="contained"
+          style={{
+            backgroundColor: selectedTag === "all_orders" ? "#3F51B5" : null,
+            color: selectedTag === "all_orders" ? "white" : null,
+          }}
+        >
+          All Orders
+        </Button>
+      )}
 
       <FormControl className={classes.textField} variant="outlined">
         <InputLabel
