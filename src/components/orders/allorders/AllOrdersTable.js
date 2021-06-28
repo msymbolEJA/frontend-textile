@@ -695,16 +695,10 @@ function AllOrdersTable() {
                     <FormattedMessage id="type" defaultMessage="Type" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage
-                      id="info1 Value"
-                      defaultMessage="info1 Value"
-                    />
+                    <FormattedMessage id="size" defaultMessage="Size" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage
-                      id="info2 Value"
-                      defaultMessage="info2 Value"
-                    />
+                    <FormattedMessage id="color" defaultMessage="Color" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <FormattedMessage
