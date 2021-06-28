@@ -702,8 +702,8 @@ function AllOrdersTable() {
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <FormattedMessage
-                      id="explanation mod"
-                      defaultMessage="Explanation Mod"
+                      id="explanationMod"
+                      defaultMessage="Org-Explanation"
                     />
                   </StyledTableCell>
                 </>

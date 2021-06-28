@@ -116,5 +116,6 @@
   "info1 Value": "Info1 Value",
   "info2 Name": "Info2 Name",
   "info2 Value": "Info2 Value",
-  "saveGoogleSheet" : "Save Google Sheet"
+  "saveGoogleSheet": "Save Google Sheet",
+  "explanationMod": "Org-Explanation"
 }
