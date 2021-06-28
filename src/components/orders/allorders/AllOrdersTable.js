@@ -734,6 +734,12 @@ function AllOrdersTable() {
               )}
               <StyledTableCell align="center">
                 <FormattedMessage
+                  id="explanation mod"
+                  defaultMessage="Explanation Mod"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage
                   id="explanation"
                   defaultMessage="Explanation"
                 />
@@ -805,6 +811,7 @@ function AllOrdersTable() {
                       <CustomTableCell {...{ row, name: "space" }} />
                     </>
                   )}
+                  <CustomTableCell {...{ row, name: "explanation_mod" }} />
                   <EditableTableCell
                     onClick={(e) => e.stopPropagation()}
                     {...{
