@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
-const PAG_ROW_NUMBER = process.env.REACT_APP_PAG_ROW_NUMBER;
+const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -139,7 +139,7 @@ export default function SummaryTable({
                       onClick={() =>
                         title === "orders"
                           ? history.push(
-                              `/all-orders?&status=${item.cell1.toLowerCase()}&limit=${PAG_ROW_NUMBER}&offset=0`
+                              `/all-orders?&status=${item.cell1.toLowerCase()}&limit=${PAGE_ROW_NUMBER}&offset=0`
                             )
                           : null
                       }

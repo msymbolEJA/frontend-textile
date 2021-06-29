@@ -46,7 +46,7 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
           )
         ) : name === "variation_1_value" ? (
           row[name]
-            .replace(" US women&#039;s letter", "")
+            .replace("US women&#039;s letter", "")
             .replace("US women's letter", "")
         ) : name === "status" ? (
           formatMessage({

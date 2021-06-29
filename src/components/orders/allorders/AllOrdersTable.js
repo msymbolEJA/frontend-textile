@@ -50,7 +50,7 @@ import EditableTableCell from "../../tableitems/EditableTableCell";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
-const PAG_ROW_NUMBER = process.env.REACT_APP_PAG_ROW_NUMBER;
+const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER;
 const NON_SKU = process.env.REACT_APP_NON_SKU;
 
 const StyledTableCell = withStyles((theme) => ({
@@ -151,26 +151,26 @@ function AllOrdersTable() {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
         const l = localStorage.getItem(
-          `${localStoragePrefix}-in_progress-2500-0-last_updated`
+          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-last_updated`
         );
         if (response.data.last_updated !== l) {
           getData(
-            `${BASE_URL}etsy/orders/?status=in_progress&limit=${PAG_ROW_NUMBER}&offset=0`
+            `${BASE_URL}etsy/orders/?status=in_progress&limit=${PAGE_ROW_NUMBER}&offset=0`
           )
             .then((response) => {
               const o = response?.data?.results?.length
                 ? response?.data?.results
                 : [];
               localStorage.setItem(
-                `${localStoragePrefix}-Belky-in_progress-2500-0`,
+                `${localStoragePrefix}-Belky-in_progress-${PAGE_ROW_NUMBER}-0`,
                 JSON.stringify(o)
               );
               localStorage.setItem(
-                `${localStoragePrefix}-in_progress-2500-0-last_updated`,
+                `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-last_updated`,
                 response.data.last_updated
               );
               localStorage.setItem(
-                `${localStoragePrefix}-in_progress-2500-0-count`,
+                `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-count`,
                 response?.data?.results?.length
               );
             })
@@ -327,16 +327,16 @@ function AllOrdersTable() {
         newUrl += `limit=${25}&offset=${0}`;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&limit=${PAG_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_repeat=true&limit=${PAGE_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "followUp":
-        newUrl += `is_followup=true&limit=${PAG_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_followup=true&limit=${PAGE_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       default:
-        newUrl += `status=${statu}&limit=${PAG_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
     }
     history.push(`/all-orders?&${newUrl}`);
@@ -419,7 +419,9 @@ function AllOrdersTable() {
   const checkOrderIfInProgress = async (id) => {
     let isInProgress = false;
     const ordersInProgressLS = JSON.parse(
-      localStorage.getItem(`${localStoragePrefix}-in_progress-2500-0`)
+      localStorage.getItem(
+        `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0`
+      )
     );
     isInProgress =
       (ordersInProgressLS?.length > 0 &&
@@ -466,12 +468,12 @@ function AllOrdersTable() {
     postData(`${BASE_URL}etsy/approved_all_ready/`, { ids: currentBarcodeList })
       .then((res) => {
         toastSuccessNotify("Saved!");
-        /*         localStorage.removeItem(`${localStoragePrefix}-in_progress-2500-0`);
+        /*         localStorage.removeItem(`${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0`);
         localStorage.removeItem(
-          `${localStoragePrefix}-in_progress-2500-0-last_updated`
+          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-last_updated`
         );
         localStorage.removeItem(
-          `${localStoragePrefix}-in_progress-2500-0-count`
+          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-count`
         ); */
         localStorage.setItem(`${localStoragePrefix}-barcode_list`, []);
         localStorage.removeItem(

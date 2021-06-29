@@ -18,7 +18,7 @@ import FloatingMenu from "./FloatingMenu";
 import CostGetter from "./CostGetter";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const PAG_ROW_NUMBER = process.env.REACT_APP_PAG_ROW_NUMBER;
+const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -152,7 +152,7 @@ const Dashboard = () => {
           <SummaryTable
             title="orders"
             total={0}
-            next={`/all-orders?&status=${newStatu}&limit=${PAG_ROW_NUMBER}&offset=0`}
+            next={`/all-orders?&status=${newStatu}&limit=${PAGE_ROW_NUMBER}&offset=0`}
             icon={<ListAltIcon className={classes.icon} color="primary" />}
             header1={formatMessage({
               id: "status",
