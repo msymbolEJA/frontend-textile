@@ -173,7 +173,7 @@ export default function MenuAppBar() {
                 startIcon={<ViewListIcon />}
                 onClick={handleClick}
               >
-                <FormattedMessage id="allOrders" defaultMessage="All Orders" />
+                <FormattedMessage id="orders" defaultMessage="Orders" />
               </Button>
               {userRole === "admin" ||
               userRole === "shop_manager" ||
@@ -191,7 +191,7 @@ export default function MenuAppBar() {
                       )
                     }
                   >
-                    <FormattedMessage id="approval" defaultMessage="Approval" />
+                    <FormattedMessage id="admin" defaultMessage="Admin" />
                   </Button>
                 </>
               ) : null}

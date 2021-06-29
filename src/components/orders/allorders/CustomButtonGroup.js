@@ -109,7 +109,7 @@ const CustomButtonGroup = ({
             color: selectedTag === undefined ? "white" : null,
           }}
         >
-          All Orders
+          <FormattedMessage id={"allorders"} defaultMessage={"All Orders"} />
         </Button>
       )}
 
