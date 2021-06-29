@@ -336,6 +336,9 @@ const OrderDetails = ({ match }) => {
               )}
             </TableBody>
           </Table>
+          <div style={{ marginTop: "2rem" }}>
+            Address: {rows[0]?.formatted_address || null}{" "}
+          </div>
         </TableContainer>
       </Paper>
       {rows[0]?.status === "ready" ? (
