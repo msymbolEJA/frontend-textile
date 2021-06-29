@@ -45,7 +45,9 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
             moment.utc(row[name]).local().format("MM-DD-YY HH:mm")
           )
         ) : name === "variation_1_value" ? (
-          row[name].replace(" US women&#039;s letter", "")
+          row[name]
+            .replace(" US women&#039;s letter", "")
+            .replace("US women's letter", "")
         ) : name === "status" ? (
           formatMessage({
             id: row[name] === "awaiting" ? "approved" : row[name],
