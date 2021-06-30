@@ -53,9 +53,15 @@ const useStyles = makeStyles(() => ({
 const EditableTableCell = ({ row, name, onChange, from }) => {
   const classes = useStyles();
   const [content, setContent] = useState(
-    row[name]
-      ?.replace("US women&#039;s letter", "")
-      ?.replace("US women's letter", "") || ""
+    name === "variation_1_value"
+      ? row[name]
+          ?.replace(" US women&#039;s letter", "")
+          ?.replace(" US women's letter", "") === "2X"
+        ? "2XL"
+        : row[name]
+            ?.replace(" US women&#039;s letter", "")
+            ?.replace(" US women's letter", "")
+      : row[name]
   );
 
   const handleContentChange = useCallback((e) => {
