@@ -433,7 +433,7 @@ function App({ history }) {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = rows?.map((row) => {
-        if (!(!!row.supplier && !!row.type && !!row.color && !!row.length))
+        if (!!row.supplier && !!row.type && !!row.color && !!row.length)
           return null;
         return row?.id;
       });
