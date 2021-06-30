@@ -337,7 +337,9 @@ const OrderDetails = ({ match }) => {
             </TableBody>
           </Table>
           <div style={{ marginTop: "2rem" }}>
-            Address: {rows[0]?.formatted_address || null}{" "}
+            {rows[0]?.country_id !== "209" ? (
+              <p>Address: {rows[0]?.formatted_address} </p>
+            ) : null}
           </div>
         </TableContainer>
       </Paper>
