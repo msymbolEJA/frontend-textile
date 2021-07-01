@@ -433,8 +433,29 @@ function App({ history }) {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = rows?.map((row) => {
-        if (!!row.supplier && !!row.type && !!row.color && !!row.length)
-          return null;
+        if (NON_SKU) {
+          if (
+            !(
+              !!row?.variation_1_value?.replace(/\s/g, "") &&
+              !!row?.variation_2_value?.replace(/\s/g, "") &&
+              !!row?.variation_1_name?.replace(/\s/g, "") &&
+              !!row?.variation_2_name?.replace(/\s/g, "")
+            )
+          ) {
+            return null;
+          }
+        } else {
+          if (
+            !(
+              !!row.supplier?.replace(/\s/g, "") &&
+              !!row.type?.replace(/\s/g, "") &&
+              !!row.color?.replace(/\s/g, "") &&
+              !!row.length?.replace(/\s/g, "")
+            )
+          ) {
+            return null;
+          }
+        }
         return row?.id;
       });
       setSelected(newSelecteds);
