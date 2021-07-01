@@ -62,6 +62,8 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
             ?.replace(" US women&#039;s letter", "")
             ?.replace(" US women's letter", "")
       : row[name]
+      ? row[name]
+      : ""
   );
 
   const handleContentChange = useCallback((e) => {
