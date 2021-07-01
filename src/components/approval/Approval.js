@@ -470,15 +470,22 @@ function App({ history }) {
     if (NON_SKU) {
       if (
         !(
-          !!row?.variation_1_value &&
-          !!row?.variation_2_value &&
-          !!row?.variation_1_name &&
-          !!row?.variation_2_name
+          !!row?.variation_1_value?.replace(/\s/g, "") &&
+          !!row?.variation_2_value?.replace(/\s/g, "") &&
+          !!row?.variation_1_name?.replace(/\s/g, "") &&
+          !!row?.variation_2_name?.replace(/\s/g, "")
         )
       )
         return;
     } else {
-      if (!(!!row.supplier && !!row.type && !!row.color && !!row.length))
+      if (
+        !(
+          !!row.supplier?.replace(/\s/g, "") &&
+          !!row.type?.replace(/\s/g, "") &&
+          !!row.color?.replace(/\s/g, "") &&
+          !!row.length?.replace(/\s/g, "")
+        )
+      )
         return;
     }
 
@@ -1142,16 +1149,16 @@ function App({ history }) {
                         disabled={
                           NON_SKU
                             ? !(
-                                !!row?.variation_1_value &&
-                                !!row?.variation_2_value &&
-                                !!row?.variation_1_name &&
-                                !!row?.variation_2_name
+                                !!row?.variation_1_value?.replace(/\s/g, "") &&
+                                !!row?.variation_2_value?.replace(/\s/g, "") &&
+                                !!row?.variation_1_name?.replace(/\s/g, "") &&
+                                !!row?.variation_2_name?.replace(/\s/g, "")
                               )
                             : !(
-                                !!row.supplier &&
-                                !!row.type &&
-                                !!row.color &&
-                                !!row.length
+                                !!row.supplier?.replace(/\s/g, "") &&
+                                !!row.type?.replace(/\s/g, "") &&
+                                !!row.color?.replace(/\s/g, "") &&
+                                !!row.length?.replace(/\s/g, "")
                               )
                         }
                         color="primary"
