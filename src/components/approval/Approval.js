@@ -483,7 +483,12 @@ function App({ history }) {
           !!row.supplier?.replace(/\s/g, "") &&
           !!row.type?.replace(/\s/g, "") &&
           !!row.color?.replace(/\s/g, "") &&
-          !!row.length?.replace(/\s/g, "")
+          !!row.length?.replace(/\s/g, "") &&
+          !(
+            row["type"]?.toLowerCase()?.includes("kolye") &&
+            row["type"]?.toLowerCase()?.includes("imza") &&
+            !row["image"]
+          )
         )
       )
         return;
@@ -1158,7 +1163,16 @@ function App({ history }) {
                                 !!row.supplier?.replace(/\s/g, "") &&
                                 !!row.type?.replace(/\s/g, "") &&
                                 !!row.color?.replace(/\s/g, "") &&
-                                !!row.length?.replace(/\s/g, "")
+                                !!row.length?.replace(/\s/g, "") &&
+                                !(
+                                  row["type"]
+                                    ?.toLowerCase()
+                                    ?.includes("kolye") &&
+                                  row["type"]
+                                    ?.toLowerCase()
+                                    ?.includes("imza") &&
+                                  !row["image"]
+                                )
                               )
                         }
                         color="primary"
