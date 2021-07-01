@@ -119,7 +119,7 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
       ) : null}
       <ContentEditable
         className={classes.editable}
-        html={content} // innerHTML of the editable div
+        html={content || ""} // innerHTML of the editable div
         disabled={false} // use true to disable edition
         onChange={handleContentChange} // handle innerHTML change
         onBlur={handleBlur} // handle innerHTML change
