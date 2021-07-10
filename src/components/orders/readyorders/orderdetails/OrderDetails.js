@@ -337,7 +337,8 @@ const OrderDetails = ({ match }) => {
             </TableBody>
           </Table>
           <div style={{ marginTop: "2rem" }}>
-            {rows[0]?.country_id !== "209" ? (
+            {/* // SILVERISTIC daha sonra eklenecek. Adresleri sadece ASYA görecek. */}
+            {process.env.REACT_APP_STORE_NAME === "Linen Serisi" && rows[0]?.country_id !== "209" ? (
               <>
                 <p>
                   Address: <b>{rows[0]?.formatted_address} </b>
