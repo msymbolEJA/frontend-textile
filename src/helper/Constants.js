@@ -122,3 +122,8 @@ export const FONTS = {
     FONT3: "Pasifico", //OK
   },
 };
+
+export const bestSellerColumns = [
+  { id: 1, name: "Type", objKey: "type" },
+  { id: 2, name: "Order Count", objKey: "order_count" },
+];
