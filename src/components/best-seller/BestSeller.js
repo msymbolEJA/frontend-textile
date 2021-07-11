@@ -42,13 +42,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid black",
   },
   btn: {
-    backgroundColor: "#007BFF",
-    color: "white",
-    textTransform: "none",
-    marginTop: "20px",
-    "&:hover": {
-      backgroundColor: "#0069D9",
-    },
+    width: "75px",
   },
   inputs: {
     display: "flex",
@@ -66,7 +60,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
   thead: {
-    backgroundColor: "#6495ED",
+    backgroundColor: "black",
+  },
+  tableCellHeader: {
+    color: "white",
   },
   darkTableRow: {
     backgroundColor: "#F2F2F2",
@@ -144,7 +141,12 @@ const DateGetter = () => {
             </label>
             <input ref={endDateRef} type="date" />
           </div>
-          <Button variant="contained" className={classes.btn} onClick={getDate}>
+          <Button
+            variant="contained"
+            className={classes.btn}
+            color="primary"
+            onClick={getDate}
+          >
             Get
           </Button>
         </Paper>
