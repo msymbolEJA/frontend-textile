@@ -285,6 +285,12 @@ export default function MenuAppBar() {
                         defaultMessage="Cost Table"
                       />
                     </MenuItem>
+                    <MenuItem id="best-seller" onClick={(e) => handleClick(e)}>
+                      <FormattedMessage
+                        id="best-seller"
+                        defaultMessage="Best Seller"
+                      />
+                    </MenuItem>
                   </div>
                 )}
                 {(userRole === "admin" ||
