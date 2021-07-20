@@ -101,6 +101,7 @@ const StockList = () => {
         console.log(res.data);
 
         function groupBy(objectArray, property) {
+          if (!objectArray.length) return () => {};
           return objectArray.reduce(function (acc, obj) {
             let key = obj[property].toUpperCase();
             if (!acc[key]) {

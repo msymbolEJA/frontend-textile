@@ -45,6 +45,7 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
             moment.utc(row[name]).local().format("MM-DD-YY HH:mm")
           )
         ) : name === "variation_1_value" ? (
+          row[name] &&
           row[name]
             .replace("US women&#039;s letter", "")
             .replace("US women's letter", "")
@@ -57,7 +58,7 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
                 : row[name].replace("_", " "),
           })
         ) : name === "sku" ? (
-          row[name].substring("Linen_Dress_".length)
+          row[name] && row[name].substring("Linen_Dress_".length)
         ) : row[name] ? (
           row[name]
             .replace("_", " ")
