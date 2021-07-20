@@ -106,25 +106,34 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
                   defaultMessage: "Supplier",
                 })}
               </InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                required
-                fullWidth
-                value={info.supplier}
-                onChange={handleChange}
-                name="supplier"
-                label="Supplier"
-              >
-                {STORE_NAME === "Linen Serisi" ? (
+              {STORE_NAME === "Linen Serisi" ? (
+                <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  required
+                  fullWidth
+                  value={info.supplier}
+                  onChange={handleChange}
+                  name="supplier"
+                  label="Supplier"
+                >
                   <MenuItem value={"umraniye"}>Umraniye</MenuItem>
-                ) : (
-                  <>
-                    <MenuItem value={"asya"}>Asya</MenuItem>
-                    <MenuItem value={"beyazit"}>Beyazit</MenuItem>
-                  </>
-                )}
-              </Select>
+                </Select>
+              ) : (
+                <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  required
+                  fullWidth
+                  value={info.supplier}
+                  onChange={handleChange}
+                  name="supplier"
+                  label="Supplier"
+                >
+                  <MenuItem value={"asya"}>Asya</MenuItem>
+                  <MenuItem value={"beyazit"}>Beyazit</MenuItem>
+                </Select>
+              )}
             </FormControl>
             <TextField
               variant="outlined"
