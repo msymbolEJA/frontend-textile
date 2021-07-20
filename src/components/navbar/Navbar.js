@@ -287,8 +287,8 @@ export default function MenuAppBar() {
                     </MenuItem>
                     <MenuItem id="best-seller" onClick={(e) => handleClick(e)}>
                       <FormattedMessage
-                        id="best-seller"
-                        defaultMessage="Best Seller"
+                        id="topSeller"
+                        defaultMessage="Top Seller"
                       />
                     </MenuItem>
                   </div>
