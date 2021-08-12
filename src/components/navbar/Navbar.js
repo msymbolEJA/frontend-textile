@@ -20,6 +20,7 @@ import {
   ViewList as ViewListIcon,
   LocalShipping as LocalShippingIcon,
 } from "@material-ui/icons";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const STORE_NAME = process.env.REACT_APP_STORE_NAME;
@@ -68,6 +69,17 @@ const useStyles = makeStyles((theme) => ({
       borderColor: "white",
     },
   },
+  button2: {
+    backgroundColor: "white",
+    margin: "0.1rem",
+    width: 50,
+    fontSize: 8,
+    padding: 0,
+    "&:hover": {
+      color: "white",
+      borderColor: "white",
+    },
+  },
 }));
 
 export default function MenuAppBar() {
@@ -78,6 +90,7 @@ export default function MenuAppBar() {
   //console.log("user", user);
   const open = Boolean(anchorEl);
   const history = useHistory();
+  const mobileView = useMediaQuery('(max-width:600px)');
 
   //console.log(user?.role);
 
@@ -159,9 +172,10 @@ export default function MenuAppBar() {
             onClick={handleMainPage}
           >
             <StoreIcon />
-            <Typography variant="h6" className={classes.rightTitle}>
-              {STORE_NAME}
-            </Typography>
+            {mobileView ? null :
+              <Typography variant={"h6"} className={classes.rightTitle}>
+                {STORE_NAME}
+              </Typography>}
           </IconButton>
           <div className={classes.title}>
             <div style={{ flexDirection: "row" }}>
@@ -169,8 +183,8 @@ export default function MenuAppBar() {
                 color="primary"
                 variant="outlined"
                 id="all-orders"
-                className={classes.button}
-                startIcon={<ViewListIcon />}
+                className={mobileView ? classes.button2 : classes.button}
+                startIcon={mobileView ? null : <ViewListIcon />}
                 onClick={handleClick}
               >
                 <FormattedMessage id="orders" defaultMessage="Orders" />
@@ -183,8 +197,8 @@ export default function MenuAppBar() {
                     color="primary"
                     variant="outlined"
                     id="approval"
-                    className={classes.button}
-                    startIcon={<ThumbUpIcon />}
+                    className={mobileView ? classes.button2 : classes.button}
+                    startIcon={mobileView ? null : <ThumbUpIcon />}
                     onClick={() =>
                       history.push(
                         `/approval?&status=pending&limit=${PAGE_ROW_NUMBER}&offset=0`
@@ -200,8 +214,8 @@ export default function MenuAppBar() {
                   color="primary"
                   variant="outlined"
                   id="cargo-list"
-                  className={classes.button}
-                  startIcon={<LocalShippingIcon />}
+                  className={mobileView ? classes.button2 : classes.button}
+                  startIcon={mobileView ? null : <LocalShippingIcon />}
                   onClick={(e) => handleClick(e)}
                 >
                   <FormattedMessage
@@ -212,36 +226,38 @@ export default function MenuAppBar() {
               )}
             </div>
           </div>
-          <div style={{ marginRight: "2rem" }}>
-            <FormControl className={classes.formControl}>
-              <NativeSelect
-                value={lang}
-                onChange={handleLangChange}
-                className={classes.whiteColor}
-                inputProps={{
-                  name: "age",
-                  id: "age-native-label-placeholder",
-                }}
-              >
-                <option value="en" style={{ color: "black" }}>
-                  🇺🇸
-                </option>
-                <option value="tr" style={{ color: "black" }}>
-                  🇹🇷
-                </option>
-              </NativeSelect>
-            </FormControl>
-          </div>
+          {mobileView ? null :
+            <div style={{ marginRight: "2rem" }}>
+              <FormControl className={classes.formControl}>
+                <NativeSelect
+                  value={lang}
+                  onChange={handleLangChange}
+                  className={classes.whiteColor}
+                  inputProps={{
+                    name: "age",
+                    id: "age-native-label-placeholder",
+                  }}
+                >
+                  <option value="en" style={{ color: "black" }}>
+                    🇺🇸
+                  </option>
+                  <option value="tr" style={{ color: "black" }}>
+                    🇹🇷
+                  </option>
+                </NativeSelect>
+              </FormControl>
+            </div>}
           {auth && (
             <div className={classes.rightTop}>
-              <div className={classes.userInfo}>
-                <div className={classes.userRole}>
-                  {user?.role?.toUpperCase() || localRole?.toUpperCase()}
-                </div>
-                <div className={classes.userName}>
-                  {localUser || user?.user || user?.username}
-                </div>
-              </div>
+              {mobileView ? null :
+                <div className={classes.userInfo}>
+                  <div className={classes.userRole}>
+                    {user?.role?.toUpperCase() || localRole?.toUpperCase()}
+                  </div>
+                  <div className={classes.userName}>
+                    {localUser || user?.user || user?.username}
+                  </div>
+                </div>}
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
