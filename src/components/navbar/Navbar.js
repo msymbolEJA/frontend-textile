@@ -129,12 +129,12 @@ export default function MenuAppBar() {
 
   const newStatu =
     localRole === "admin" ||
-    localRole === "shop_manager" ||
-    localRole === "shop_packer"
+      localRole === "shop_manager" ||
+      localRole === "shop_packer"
       ? "pending"
       : localRole === "workshop_designer"
-      ? "in_progress"
-      : "awaiting";
+        ? "in_progress"
+        : "awaiting";
   // console.log("Navbar newStatu", newStatu);
 
   const handleClick = (e) => {
@@ -176,8 +176,8 @@ export default function MenuAppBar() {
                 <FormattedMessage id="orders" defaultMessage="Orders" />
               </Button>
               {userRole === "admin" ||
-              userRole === "shop_manager" ||
-              userRole === "shop_packer" ? (
+                userRole === "shop_manager" ||
+                userRole === "shop_packer" ? (
                 <>
                   <Button
                     color="primary"
@@ -285,32 +285,33 @@ export default function MenuAppBar() {
                         defaultMessage="Cost Table"
                       />
                     </MenuItem>
-                    <MenuItem id="best-seller" onClick={(e) => handleClick(e)}>
-                      <FormattedMessage
-                        id="topSeller"
-                        defaultMessage="Top Seller"
-                      />
-                    </MenuItem>
+
                   </div>
                 )}
+                <MenuItem id="best-seller" onClick={(e) => handleClick(e)}>
+                  <FormattedMessage
+                    id="topSeller"
+                    defaultMessage="Top Seller"
+                  />
+                </MenuItem>
                 {(userRole === "admin" ||
                   userRole === "shop_manager" ||
                   userRole === "shop_packer") && (
-                  <div>
-                    <MenuItem id="search" onClick={(e) => handleClick(e)}>
-                      <FormattedMessage id="search" defaultMessage="Search" />
-                    </MenuItem>
-                    <MenuItem id="new-order" onClick={(e) => handleClick(e)}>
-                      <FormattedMessage id="new" defaultMessage="New" />
-                    </MenuItem>
-                    <MenuItem id="stock-list" onClick={(e) => handleClick(e)}>
-                      <FormattedMessage
-                        id="stockList"
-                        defaultMessage="Stock List"
-                      />
-                    </MenuItem>
-                  </div>
-                )}
+                    <div>
+                      <MenuItem id="search" onClick={(e) => handleClick(e)}>
+                        <FormattedMessage id="search" defaultMessage="Search" />
+                      </MenuItem>
+                      <MenuItem id="new-order" onClick={(e) => handleClick(e)}>
+                        <FormattedMessage id="new" defaultMessage="New" />
+                      </MenuItem>
+                      <MenuItem id="stock-list" onClick={(e) => handleClick(e)}>
+                        <FormattedMessage
+                          id="stockList"
+                          defaultMessage="Stock List"
+                        />
+                      </MenuItem>
+                    </div>
+                  )}
                 <MenuItem onClick={handleAccountPage}>
                   <FormattedMessage id="account" defaultMessage="Account" />
                 </MenuItem>

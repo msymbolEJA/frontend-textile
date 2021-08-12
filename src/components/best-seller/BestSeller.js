@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { FormattedMessage } from "react-intl";
+
 import Paper from "@material-ui/core/Paper";
 import { getData } from "../../helper/PostData";
 import Button from "@material-ui/core/Button";
@@ -106,7 +108,7 @@ const DateGetter = () => {
   const getCost = () => {
     setBestSeller({ ...bestSeller, isLoading: true });
     getData(
-      `${BASE_URL}etsy/order_number_list/?creation_tsz__iexact=&creations_tsz__lte=${endDateRef.current.value}+00%3A00%3A00&creation_tsz__gte=${beginnerDateRef.current.value}+00%3A00%3A00`
+      `${BASE_URL}etsy/order_number_list/?creation_tsz__iexact=&creation_tsz__lte=${endDateRef.current.value}+00%3A00%3A00&creation_tsz__gte=${beginnerDateRef.current.value}+00%3A00%3A00`
     ).then((response) => {
       console.log(response.data.results);
       setBestSeller({ isLoading: false, bestRows: response.data.results });
@@ -120,18 +122,18 @@ const DateGetter = () => {
       .format("YYYY-MM-DD");
   }, []);
 
-  useEffect(() => {
-    console.log(bestSeller);
-  }, [bestSeller]);
-
   return (
     <div>
-      <h2 className={classes.header}>Best Seller</h2>
+      <h2 className={classes.header}>
+        <FormattedMessage
+          id="topSeller"
+          defaultMessage="Top Seller"
+        /></h2>
       <div className={classes.top}>
         <Paper className={classes.paper}>
           <div className={classes.inputs}>
             <label htmlFor="beginnerDate" className={classes.label}>
-              Beginner Date:
+              Start Date:
             </label>
             <input ref={beginnerDateRef} type="date" />
           </div>

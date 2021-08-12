@@ -76,7 +76,7 @@ const CostGetter = () => {
         <BorderColorIcon style={{ color: "#3F51B5", fontSize: "2rem" }} />
         <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>Calculator</h3>
       </div>
-      <label htmlFor="beginnerDate">Beginner Date:</label>
+      <label htmlFor="beginnerDate">Start Date:</label>
       <input ref={beginnerDateRef} type="date" />
       <label htmlFor="endDate">End Date:</label>
       <input ref={endDateRef} type="date" />
