@@ -20,7 +20,7 @@ import {
   ViewList as ViewListIcon,
   LocalShipping as LocalShippingIcon,
 } from "@material-ui/icons";
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const STORE_NAME = process.env.REACT_APP_STORE_NAME;
@@ -69,6 +69,17 @@ const useStyles = makeStyles((theme) => ({
       borderColor: "white",
     },
   },
+  activeButton: {
+    backgroundColor: "black",
+    color: "white",
+    margin: "0.1rem",
+    width: "11.5rem",
+    borderColor: "white",
+    "&:hover": {
+      color: "white",
+      borderColor: "white",
+    },
+  },
   button2: {
     backgroundColor: "white",
     margin: "0.1rem",
@@ -90,7 +101,7 @@ export default function MenuAppBar() {
   //console.log("user", user);
   const open = Boolean(anchorEl);
   const history = useHistory();
-  const mobileView = useMediaQuery('(max-width:600px)');
+  const mobileView = useMediaQuery("(max-width:600px)");
 
   //console.log(user?.role);
 
@@ -142,12 +153,12 @@ export default function MenuAppBar() {
 
   const newStatu =
     localRole === "admin" ||
-      localRole === "shop_manager" ||
-      localRole === "shop_packer"
+    localRole === "shop_manager" ||
+    localRole === "shop_packer"
       ? "pending"
       : localRole === "workshop_designer"
-        ? "in_progress"
-        : "awaiting";
+      ? "in_progress"
+      : "awaiting";
   // console.log("Navbar newStatu", newStatu);
 
   const handleClick = (e) => {
@@ -172,10 +183,11 @@ export default function MenuAppBar() {
             onClick={handleMainPage}
           >
             <StoreIcon />
-            {mobileView ? null :
+            {mobileView ? null : (
               <Typography variant={"h6"} className={classes.rightTitle}>
                 {STORE_NAME}
-              </Typography>}
+              </Typography>
+            )}
           </IconButton>
           <div className={classes.title}>
             <div style={{ flexDirection: "row" }}>
@@ -183,21 +195,33 @@ export default function MenuAppBar() {
                 color="primary"
                 variant="outlined"
                 id="all-orders"
-                className={mobileView ? classes.button2 : classes.button}
+                className={
+                  mobileView
+                    ? classes.button2
+                    : window.location.pathname.includes("orders")
+                    ? classes.activeButton
+                    : classes.button
+                }
                 startIcon={mobileView ? null : <ViewListIcon />}
                 onClick={handleClick}
               >
                 <FormattedMessage id="orders" defaultMessage="Orders" />
               </Button>
               {userRole === "admin" ||
-                userRole === "shop_manager" ||
-                userRole === "shop_packer" ? (
+              userRole === "shop_manager" ||
+              userRole === "shop_packer" ? (
                 <>
                   <Button
                     color="primary"
                     variant="outlined"
                     id="approval"
-                    className={mobileView ? classes.button2 : classes.button}
+                    className={
+                      mobileView
+                        ? classes.button2
+                        : window.location.pathname.includes("approval")
+                        ? classes.activeButton
+                        : classes.button
+                    }
                     startIcon={mobileView ? null : <ThumbUpIcon />}
                     onClick={() =>
                       history.push(
@@ -214,7 +238,13 @@ export default function MenuAppBar() {
                   color="primary"
                   variant="outlined"
                   id="cargo-list"
-                  className={mobileView ? classes.button2 : classes.button}
+                  className={
+                    mobileView
+                      ? classes.button2
+                      : window.location.pathname.includes("cargo")
+                      ? classes.activeButton
+                      : classes.button
+                  }
                   startIcon={mobileView ? null : <LocalShippingIcon />}
                   onClick={(e) => handleClick(e)}
                 >
@@ -226,7 +256,7 @@ export default function MenuAppBar() {
               )}
             </div>
           </div>
-          {mobileView ? null :
+          {mobileView ? null : (
             <div style={{ marginRight: "2rem" }}>
               <FormControl className={classes.formControl}>
                 <NativeSelect
@@ -246,10 +276,11 @@ export default function MenuAppBar() {
                   </option>
                 </NativeSelect>
               </FormControl>
-            </div>}
+            </div>
+          )}
           {auth && (
             <div className={classes.rightTop}>
-              {mobileView ? null :
+              {mobileView ? null : (
                 <div className={classes.userInfo}>
                   <div className={classes.userRole}>
                     {user?.role?.toUpperCase() || localRole?.toUpperCase()}
@@ -257,7 +288,8 @@ export default function MenuAppBar() {
                   <div className={classes.userName}>
                     {localUser || user?.user || user?.username}
                   </div>
-                </div>}
+                </div>
+              )}
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
@@ -301,7 +333,6 @@ export default function MenuAppBar() {
                         defaultMessage="Cost Table"
                       />
                     </MenuItem>
-
                   </div>
                 )}
                 <MenuItem id="best-seller" onClick={(e) => handleClick(e)}>
@@ -313,21 +344,21 @@ export default function MenuAppBar() {
                 {(userRole === "admin" ||
                   userRole === "shop_manager" ||
                   userRole === "shop_packer") && (
-                    <div>
-                      <MenuItem id="search" onClick={(e) => handleClick(e)}>
-                        <FormattedMessage id="search" defaultMessage="Search" />
-                      </MenuItem>
-                      <MenuItem id="new-order" onClick={(e) => handleClick(e)}>
-                        <FormattedMessage id="new" defaultMessage="New" />
-                      </MenuItem>
-                      <MenuItem id="stock-list" onClick={(e) => handleClick(e)}>
-                        <FormattedMessage
-                          id="stockList"
-                          defaultMessage="Stock List"
-                        />
-                      </MenuItem>
-                    </div>
-                  )}
+                  <div>
+                    <MenuItem id="search" onClick={(e) => handleClick(e)}>
+                      <FormattedMessage id="search" defaultMessage="Search" />
+                    </MenuItem>
+                    <MenuItem id="new-order" onClick={(e) => handleClick(e)}>
+                      <FormattedMessage id="new" defaultMessage="New" />
+                    </MenuItem>
+                    <MenuItem id="stock-list" onClick={(e) => handleClick(e)}>
+                      <FormattedMessage
+                        id="stockList"
+                        defaultMessage="Stock List"
+                      />
+                    </MenuItem>
+                  </div>
+                )}
                 <MenuItem onClick={handleAccountPage}>
                   <FormattedMessage id="account" defaultMessage="Account" />
                 </MenuItem>
