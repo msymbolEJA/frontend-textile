@@ -19,6 +19,8 @@ import {
   ThumbUp as ThumbUpIcon,
   ViewList as ViewListIcon,
   LocalShipping as LocalShippingIcon,
+  ShoppingBasket as ShoppingBasketIcon,
+  Storefront as StorefrontIcon,
 } from "@material-ui/icons";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
@@ -32,10 +34,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 50,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(0),
   },
   rightTitle: {
-    marginLeft: "1rem",
+    // marginLeft: "1rem",
   },
   title: {
     flexGrow: 1,
@@ -91,13 +93,25 @@ const useStyles = makeStyles((theme) => ({
       borderColor: "white",
     },
   },
+  activeShopButton: {
+    color: "#3F51B5",
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: "50%",
+  },
+  nonActiveShopButton: {
+    backgroundColor: "#3F51B5",
+    color: "white",
+    padding: 5,
+    cursor: "pointer",
+  },
 }));
 
 export default function MenuAppBar() {
   const classes = useStyles(); // eslint-disable-next-line
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
-  const { user, lang, setLang } = useContext(AppContext);
+  const { user, lang, setLang, setStore, store } = useContext(AppContext);
   //console.log("user", user);
   const open = Boolean(anchorEl);
   const history = useHistory();
@@ -182,13 +196,35 @@ export default function MenuAppBar() {
             aria-label="menu"
             onClick={handleMainPage}
           >
-            <StoreIcon />
-            {mobileView ? null : (
+            {/* <StoreIcon /> */}
+            {mobileView ? (
+              <StoreIcon />
+            ) : (
               <Typography variant={"h6"} className={classes.rightTitle}>
                 {STORE_NAME}
               </Typography>
             )}
           </IconButton>
+          <StorefrontIcon
+            onClick={() => {
+              setStore("shop1");
+            }}
+            className={
+              store === "shop1"
+                ? classes.activeShopButton
+                : classes.nonActiveShopButton
+            }
+          />
+          <ShoppingBasketIcon
+            onClick={() => {
+              setStore("shop2");
+            }}
+            className={
+              store === "shop2"
+                ? classes.activeShopButton
+                : classes.nonActiveShopButton
+            }
+          />
           <div className={classes.title}>
             <div style={{ flexDirection: "row" }}>
               <Button

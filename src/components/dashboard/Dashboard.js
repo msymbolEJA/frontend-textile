@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-  const { user } = useContext(AppContext);
+  const { user, store } = useContext(AppContext);
   const { formatMessage } = useIntl();
   const [orderSummary, setOrderSummary] = useState();
   const [workshopDueDates, setWorkshopDueDates] = useState();
@@ -54,7 +54,13 @@ const Dashboard = () => {
   const userRole = user?.role || localRole;
 
   const getListFunc = () => {
-    getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
+    getData(
+      `${BASE_URL}${
+        store === "shop1"
+          ? "etsy/summary_order/"
+          : "shopify/shopify_summary_order/"
+      }`
+    ).then((response) => {
       const newResult = [];
       //console.log("response-Health_Check", response.data[4]);
       setlastDateOfOrder(response.data[3]);
@@ -94,7 +100,7 @@ const Dashboard = () => {
   useEffect(() => {
     getListFunc();
     // eslint-disable-next-line
-  }, []);
+  }, [store]);
 
   useEffect(() => {
     getData(`${BASE_URL}etsy/due_dates/`)
