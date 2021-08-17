@@ -116,7 +116,7 @@ const CustomButtonGroup = ({
       <FormControl className={classes.textField} variant="outlined">
         <InputLabel
           htmlFor="outlined-adornment-password"
-          style={{ marginTop: "-0.1rem" }}
+          style={{ marginTop: "-0.1rem", userSelect: "none", "-webkit-user-select": "none"}}
         >
           {formatMessage({
             id: "search",
