@@ -86,7 +86,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     margin: "0.1rem",
     width: 50,
-    fontSize: 8,
+    fontSize: 9,
+    fontWeight: "bold",
     padding: 0,
     "&:hover": {
       color: "white",
@@ -115,7 +116,7 @@ export default function MenuAppBar() {
   //console.log("user", user);
   const open = Boolean(anchorEl);
   const history = useHistory();
-  const mobileView = useMediaQuery("(max-width:600px)");
+  const mobileView = useMediaQuery("(max-width:1024px)");
 
   //console.log(user?.role);
 
