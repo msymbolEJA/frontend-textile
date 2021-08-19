@@ -133,46 +133,41 @@ function App({ history }) {
   const [selectedTag, setSelectedTag] = useState(filters?.status || "pending");
   const [repeatAnchorEl, setRepeatAnchorEl] = useState();
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
-  const [searchProg, setSearchProg] = useState(false);
-  const [searchWord, setSearchWord] = useState("");
   const [loading, setloading] = useState(false);
   const [repeatMenuData, setRepeatMenuData] = useState({});
-
   const getListFunc = useCallback(() => {
     setloading(true);
-    if (!searchProg) {
-      getData(
-        `${BASE_URL_MAPPING}?${
-          filters?.status ? `status=${filters?.status}` : ""
-        }&is_repeat=${filters?.is_repeat}&is_followup=${
-          filters?.is_followup
-        }&ordering=${filters?.ordering || "-id"}&limit=${
-          filters?.limit
-        }&offset=${filters?.offset}`
-      )
-        .then((response) => {
-          const t = response?.data?.results?.length
-            ? response?.data?.results
-            : [];
-          localStorage.setItem(
-            `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}`,
-            JSON.stringify(t)
-          );
-          localStorage.setItem(
-            `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
-            response?.data?.count || 0
-          );
-          setRows(t);
-        })
-        .catch((error) => {
-          localStorage.setItem(
-            `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
-            null
-          );
-          console.log("error", error);
-        })
-        .finally(() => setloading(false));
-    }
+    getData(
+      `${BASE_URL_MAPPING}?${
+        filters?.status ? `status=${filters?.status}` : ""
+      }&is_repeat=${filters?.is_repeat}&is_followup=${
+        filters?.is_followup
+      }&ordering=${filters?.ordering || "-id"}&limit=${filters?.limit}&offset=${
+        filters?.offset
+      }`
+    )
+      .then((response) => {
+        const t = response?.data?.results?.length
+          ? response?.data?.results
+          : [];
+        localStorage.setItem(
+          `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}`,
+          JSON.stringify(t)
+        );
+        localStorage.setItem(
+          `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
+          response?.data?.count || 0
+        );
+        setRows(t);
+      })
+      .catch((error) => {
+        localStorage.setItem(
+          `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+          null
+        );
+        console.log("error", error);
+      })
+      .finally(() => setloading(false));
   }, [
     filters?.is_followup,
     filters?.is_repeat,
@@ -180,7 +175,6 @@ function App({ history }) {
     filters?.offset,
     filters?.ordering,
     filters?.status,
-    searchProg,
     selectedTag,
   ]);
 
@@ -195,7 +189,7 @@ function App({ history }) {
             `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
             response.data.last_updated
           );
-          getListFunc();
+          if (!filters?.search) getListFunc();
         }
       })
       .catch((error) => {
@@ -205,6 +199,7 @@ function App({ history }) {
   };
 
   useEffect(() => {
+    if (filters?.search) return;
     getLastUpdateDate();
     const tmp =
       JSON.parse(
@@ -224,6 +219,7 @@ function App({ history }) {
     filters.is_repeat,
     filters.limit,
     filters.offset,
+    filters.search,
     count,
     selectedTag,
   ]);
@@ -242,7 +238,7 @@ function App({ history }) {
   };
 
   const onChange = (e, id, name) => {
-    if (!rows.length || !name || !e?.target?.innerText) return;
+    if (!rows.length || !name) return;
     if (
       rows?.filter((item) => item.id === name)?.[0]?.[name] ===
       e.target.innerText
@@ -268,7 +264,7 @@ function App({ history }) {
 
   const handleRowChange = useCallback(
     (id, data) => {
-      if (!data) return;
+      if (!Object.keys(data)[0]) return;
       if (
         rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
         Object.values(data)[0]
@@ -279,9 +275,15 @@ function App({ history }) {
         .catch((error) => {
           console.log(error);
         })
-        .finally(() => getListFunc());
+        .finally(() => {
+          if (filters?.search) {
+            history.push(
+              `/approval?search=${filters?.search}&limit=${25}&offset=${0}`
+            );
+          } else getListFunc();
+        });
     },
-    [getListFunc, rows]
+    [filters?.search, getListFunc, rows]
   );
 
   const onSelectChange = (e, row) => {
@@ -379,7 +381,11 @@ function App({ history }) {
     postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
       .then((res) => {
         toastWarnNotify("Selected 'PENDING' orders are approved");
-        getListFunc();
+        if (filters?.search) {
+          history.push(
+            `/approval?search=${filters?.search}&limit=${25}&offset=${0}`
+          );
+        } else getListFunc();
         setSelected([]);
       })
       .catch(({ response }) => {
@@ -388,10 +394,8 @@ function App({ history }) {
   };
 
   const handleTagChange = (e) => {
-    setSearchProg(false);
     if (e.currentTarget.id === filters?.status) return;
     setRows([]);
-    //document.getElementById("globalSearch").value = "";
     const statu = e.currentTarget.id;
     setSelected([]);
     setSelectedTag(statu);
@@ -510,49 +514,26 @@ function App({ history }) {
   };
 
   useEffect(() => {
-    if (searchWord) {
-      globalSearchFunc(searchWord);
+    if (filters?.search) {
+      globalSearch(
+        `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
+          page * 25
+        }`
+      )
+        .then((response) => {
+          setRows(response.data.results);
+          setCount(response?.data?.count || 0);
+        })
+        .catch((error) => {
+          console.log(error);
+          setRows([]);
+        });
     }
-    // eslint-disable-next-line
-  }, [page, searchWord]);
+  }, [filters?.search]);
 
-  const globalSearchFunc = (searchWord) => {
-    globalSearch(
-      `${BASE_URL_MAPPING}?search=${searchWord}&limit=${25}&offset=${page * 25}`
-    )
-      .then((response) => {
-        //console.log(response.data.count);
-        setRows(response.data.results);
-        setCount(response?.data?.count || 0);
-        //setList(response.data.results);
-        let newUrl = "";
-        newUrl += `limit=${25}&offset=${page * 25}`;
-        history.push(`/approval?&${searchWord}&${newUrl}`);
-      })
-      .catch((error) => {
-        console.log(error);
-        setRows([]);
-      });
-  };
-
-  const searchHandler = (e, second) => {
-    if (e.keyCode === 13 && !(e.target.value === "")) {
-      setRows([]);
-      setSearchProg(!(e.target.value === ""));
-
-      setSearchWord(e.target.value);
-      setPage(0);
-      // searchWord = ;
-      if (searchWord) {
-        globalSearchFunc(searchWord);
-      }
-    } else if (e === 1 && !(second === "")) {
-      setSearchWord(second);
-      setPage(0);
-      // searchWord = ;
-      if (second) {
-        globalSearchFunc(second);
-      }
+  const searchHandler = (value, keyCode) => {
+    if (keyCode === 13 && value) {
+      history.push(`/approval?search=${value}&limit=${25}&offset=${0}`);
     }
   };
 

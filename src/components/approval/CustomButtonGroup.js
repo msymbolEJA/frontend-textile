@@ -42,11 +42,6 @@ const CustomButtonGroup = ({
   const { formatMessage } = useIntl();
   const myInputRef = useRef(null);
 
-  const searcMyhHandler = (e) => {
-    //console.log(myInputRef.current.childNodes[0].value);
-    searchHandler(1, myInputRef.current.childNodes[0].value);
-  };
-
   return (
     <div>
       <div className={classes.btnGroup}>
@@ -93,9 +88,8 @@ const CustomButtonGroup = ({
             id="outlined-adornment-password"
             type="text"
             defaultValue=""
-            // ref={myInputRef}
+            onKeyDown={(e) => searchHandler(myInputRef.current.childNodes[0].value, e.keyCode)}
             ref={myInputRef}
-            onKeyDown={(e) => searchHandler(e)}
             style={{
               marginTop: "0.25rem",
               marginRight: "0.3rem",
@@ -105,8 +99,7 @@ const CustomButtonGroup = ({
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={(e) => searcMyhHandler(e)}
+                  onClick={() => searchHandler(myInputRef.current.childNodes[0].value, 13)}
                   edge="end"
                 >
                   <SearchIcon />
