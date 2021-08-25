@@ -1027,10 +1027,11 @@ function App({ history }) {
                       }}
                     />
                     {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
-                      <ConstantTableCell
+                      <EditableTableCell
                         {...{
                           row,
                           name: "sku",
+                          onChange,
                         }}
                       />
                     ) : null}

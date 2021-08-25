@@ -62,7 +62,7 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
             ?.replace(" US women&#039;s letter", "")
             ?.replace(" US women's letter", "")
       : row[name]
-      ? row[name]
+      ? row[name]?.replace("Linen_Dress_", "")
       : ""
   );
 
