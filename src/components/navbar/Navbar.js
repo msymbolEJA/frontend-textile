@@ -372,12 +372,19 @@ export default function MenuAppBar() {
                     </MenuItem>
                   </div>
                 )}
-                <MenuItem id="best-seller" onClick={(e) => handleClick(e)}>
-                  <FormattedMessage
-                    id="topSeller"
-                    defaultMessage="Top Seller"
-                  />
-                </MenuItem>
+
+                {userRole === "admin" ||
+                userRole === "shop_manager" ||
+                userRole === "shop_packer" ||
+                localUser === "Kalanima" ? (
+                  <MenuItem id="best-seller" onClick={(e) => handleClick(e)}>
+                    <FormattedMessage
+                      id="topSeller"
+                      defaultMessage="Top Seller"
+                    />
+                  </MenuItem>
+                ) : null}
+
                 {(userRole === "admin" ||
                   userRole === "shop_manager" ||
                   userRole === "shop_packer") && (
