@@ -691,7 +691,7 @@ function AllOrdersTable() {
               <StyledTableCell align="center">
                 <FormattedMessage id="status" defaultMessage="Status" />
               </StyledTableCell>
-              {NON_SKU ? (
+              {NON_SKU === "true" ? (
                 <>
                   <StyledTableCell align="center">
                     <FormattedMessage id="type" defaultMessage="Type" />
@@ -786,7 +786,7 @@ function AllOrdersTable() {
                     </>
                   ) : null}
                   <CustomTableCell {...{ row, name: "status" }} />
-                  {NON_SKU ? (
+                  {NON_SKU === "true" ? (
                     <>
                       <CustomTableCell {...{ row, name: "sku" }} />
                       <CustomTableCell
