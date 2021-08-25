@@ -155,7 +155,7 @@ function AllOrdersTable() {
         );
         if (response.data.last_updated !== l) {
           getData(
-            `${BASE_URL}etsy/orders/?status=in_progress&limit=${PAGE_ROW_NUMBER}&offset=0`
+            `${BASE_URL}etsy/orders/?status=in_progress&limit=${PAGE_ROW_NUMBER || 0}&offset=0`
           )
             .then((response) => {
               const o = response?.data?.results?.length
@@ -197,7 +197,7 @@ function AllOrdersTable() {
           filters?.status ? `status=${filters?.status}` : ""
         }&is_repeat=${filters?.is_repeat}&is_followup=${
           filters?.is_followup
-        }&ordering=${filters?.ordering}&limit=${filters?.limit}&offset=${
+        }&ordering=${filters?.ordering}&limit=${filters?.limit || 0}&offset=${
           filters?.offset
         }`
       )
@@ -327,16 +327,16 @@ function AllOrdersTable() {
         newUrl += `limit=${25}&offset=${0}`;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&limit=${PAGE_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_repeat=true&limit=${PAGE_ROW_NUMBER || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "followUp":
-        newUrl += `is_followup=true&limit=${PAGE_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_followup=true&limit=${PAGE_ROW_NUMBER || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       default:
-        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
     }
     history.push(`/all-orders?&${newUrl}`);

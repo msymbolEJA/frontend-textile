@@ -41,8 +41,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
-const NON_SKU = process.env.REACT_APP_NON_SKU;
-const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER;
+const NON_SKU = process.env.REACT_APP_NON_SKU || false;
+const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 0;
 
 const StyledMenu = withStyles({
   paper: {
@@ -142,9 +142,9 @@ function App({ history }) {
         filters?.status ? `status=${filters?.status}` : ""
       }&is_repeat=${filters?.is_repeat}&is_followup=${
         filters?.is_followup
-      }&ordering=${filters?.ordering || "-id"}&limit=${filters?.limit}&offset=${
-        filters?.offset
-      }`
+      }&ordering=${filters?.ordering || "-id"}&limit=${
+        filters?.limit || 0
+      }&offset=${filters?.offset}`
     )
       .then((response) => {
         const t = response?.data?.results?.length
@@ -405,16 +405,16 @@ function App({ history }) {
         newUrl += `limit=${25}&offset=${0}`;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&limit=${PAGE_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_repeat=true&limit=${PAGE_ROW_NUMBER || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "followUp":
-        newUrl += `is_followup=true&limit=${PAGE_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_followup=true&limit=${PAGE_ROW_NUMBER || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       default:
-        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER  || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
     }
     history.push(`/approval?&${newUrl}`);

@@ -122,9 +122,9 @@ const StockList = () => {
   // eslint-disable-next-line
   const getListFunc = () => {
     getData(
-      `${BELKY_STOCK_BASE_URL}?store=${store}&limit=${rowsPerPage}&offset=${
-        page * rowsPerPage
-      }`
+      `${BELKY_STOCK_BASE_URL}?store=${store}&limit=${
+        rowsPerPage || 0
+      }&offset=${page * rowsPerPage}`
     )
       .then((res) => {
         setListCount(res.data.count);

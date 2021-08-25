@@ -40,7 +40,7 @@ const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
           </>
         ) : name === "creation_tsz" || name === "ready_date" ? (
           moment(row[name]).format("MM-DD-YY HH:mm") === "Invalid date" ? (
-            row[name]
+            row[name] || "-"
           ) : (
             moment.utc(row[name]).local().format("MM-DD-YY HH:mm")
           )

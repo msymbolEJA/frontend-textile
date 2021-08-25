@@ -129,7 +129,7 @@ export default function Login() {
             setAuth(true);
             if (response?.data?.role === "workshop_designer") {
               history.push(
-                `/all-orders?&status=in_progress&limit=${PAGE_ROW_NUMBER}&offset=0`
+                `/all-orders?&status=in_progress&limit=${PAGE_ROW_NUMBER || 0}&offset=0`
               );
             } else {
               history.push("/");

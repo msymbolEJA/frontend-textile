@@ -77,7 +77,7 @@ function ReadyOrders() {
 
   //--------------- Get Orders
   useEffect(() => {
-    const myUrl = `${BASE_URL}etsy/orders/?limit=${rowsPerPage}&offset=${
+    const myUrl = `${BASE_URL}etsy/orders/?limit=${rowsPerPage || 0}&offset=${
       page * rowsPerPage
     }`;
     axios

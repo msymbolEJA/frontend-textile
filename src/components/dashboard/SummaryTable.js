@@ -139,7 +139,7 @@ export default function SummaryTable({
                       onClick={() =>
                         title === "orders"
                           ? history.push(
-                              `/all-orders?&status=${item.cell1.toLowerCase()}&limit=${PAGE_ROW_NUMBER}&offset=0`
+                              `/all-orders?&status=${item.cell1.toLowerCase()}&limit=${PAGE_ROW_NUMBER || 0}&offset=0`
                             )
                           : null
                       }

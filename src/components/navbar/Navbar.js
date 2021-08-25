@@ -180,7 +180,7 @@ export default function MenuAppBar() {
     // const newStatu = getFirstStatu();
     // console.log("newStatu", newStatu);
     history.push(
-      `/${e.currentTarget.id}?status=${newStatu}&limit=${PAGE_ROW_NUMBER}&offset=0`
+      `/${e.currentTarget.id}?status=${newStatu}&limit=${PAGE_ROW_NUMBER || 0}&offset=0`
     );
     setAnchorEl(null);
   };
@@ -262,7 +262,7 @@ export default function MenuAppBar() {
                     startIcon={mobileView ? null : <ThumbUpIcon />}
                     onClick={() =>
                       history.push(
-                        `/approval?&status=pending&limit=${PAGE_ROW_NUMBER}&offset=0`
+                        `/approval?&status=pending&limit=${PAGE_ROW_NUMBER || 0}&offset=0`
                       )
                     }
                   >
