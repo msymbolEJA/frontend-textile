@@ -106,6 +106,20 @@ const useStyles = makeStyles((theme) => ({
     padding: 5,
     cursor: "pointer",
   },
+  mobileNonActiveShopButton: {
+    backgroundColor: "#3F51B5",
+    color: "white",
+    padding: 5,
+    cursor: "pointer",
+    fontSize: "1rem",
+  },
+  mobileActiveButton: {
+    color: "#3F51B5",
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: "50%",
+    fontSize: "1rem",
+  },
 }));
 
 export default function MenuAppBar() {
@@ -180,7 +194,9 @@ export default function MenuAppBar() {
     // const newStatu = getFirstStatu();
     // console.log("newStatu", newStatu);
     history.push(
-      `/${e.currentTarget.id}?status=${newStatu}&limit=${PAGE_ROW_NUMBER || 0}&offset=0`
+      `/${e.currentTarget.id}?status=${newStatu}&limit=${
+        PAGE_ROW_NUMBER || 0
+      }&offset=0`
     );
     setAnchorEl(null);
   };
@@ -212,7 +228,11 @@ export default function MenuAppBar() {
             }}
             className={
               store === "shop1"
-                ? classes.activeShopButton
+                ? mobileView
+                  ? classes.mobileActiveButton
+                  : classes.activeShopButton
+                : mobileView
+                ? classes.mobileNonActiveShopButton
                 : classes.nonActiveShopButton
             }
           />
@@ -222,7 +242,11 @@ export default function MenuAppBar() {
             }}
             className={
               store === "shop2"
-                ? classes.activeShopButton
+                ? mobileView
+                  ? classes.mobileActiveButton
+                  : classes.activeShopButton
+                : mobileView
+                ? classes.mobileNonActiveShopButton
                 : classes.nonActiveShopButton
             }
           />
@@ -262,7 +286,9 @@ export default function MenuAppBar() {
                     startIcon={mobileView ? null : <ThumbUpIcon />}
                     onClick={() =>
                       history.push(
-                        `/approval?&status=pending&limit=${PAGE_ROW_NUMBER || 0}&offset=0`
+                        `/approval?&status=pending&limit=${
+                          PAGE_ROW_NUMBER || 0
+                        }&offset=0`
                       )
                     }
                   >
