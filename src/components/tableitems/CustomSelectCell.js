@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { statusData } from "../../helper/Constants";
 import { useIntl } from "react-intl";
 
-const NON_SKU = process.env.REACT_APP_NON_SKU;
+const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
 const useStyles = makeStyles((theme) => ({
   opt: {

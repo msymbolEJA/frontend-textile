@@ -41,7 +41,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
-const NON_SKU = process.env.REACT_APP_NON_SKU || false;
+const NON_SKU = process.env.REACT_APP_NON_SKU === "true" || false;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 0;
 
 const StyledMenu = withStyles({
@@ -414,7 +414,7 @@ function App({ history }) {
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       default:
-        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER  || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
     }
     history.push(`/approval?&${newUrl}`);

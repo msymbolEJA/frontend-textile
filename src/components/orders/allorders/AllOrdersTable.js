@@ -51,7 +51,7 @@ import EditableTableCell from "../../tableitems/EditableTableCell";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER;
-const NON_SKU = process.env.REACT_APP_NON_SKU;
+const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -155,7 +155,9 @@ function AllOrdersTable() {
         );
         if (response.data.last_updated !== l) {
           getData(
-            `${BASE_URL}etsy/orders/?status=in_progress&limit=${PAGE_ROW_NUMBER || 0}&offset=0`
+            `${BASE_URL}etsy/orders/?status=in_progress&limit=${
+              PAGE_ROW_NUMBER || 0
+            }&offset=0`
           )
             .then((response) => {
               const o = response?.data?.results?.length
