@@ -61,10 +61,19 @@ const Dashboard = () => {
           : "shopify/shopify_summary_order/"
       }`
     ).then((response) => {
+      const isSilveristicOrBelky =
+        process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic" ||
+        process.env.REACT_APP_STORE_NAME_ORJ === "Belky";
+
       const newResult = [];
-      //console.log("response-Health_Check", response.data[4]);
-      setlastDateOfOrder(response.data[3]);
-      setHealthCheck(response.data[4]);
+      if (isSilveristicOrBelky) {
+        setlastDateOfOrder(response.data[1]);
+        setHealthCheck(response.data[2]);
+      } else {
+        setlastDateOfOrder(response.data[3]);
+        setHealthCheck(response.data[4]);
+      }
+
       response.data[0].forEach((item) => {
         newResult.push({
           cell1: item.status
@@ -74,14 +83,17 @@ const Dashboard = () => {
           cell2: item.status_count,
         });
       });
-      response.data[1].forEach((item) => {
-        if (item.is_repeat)
-          newResult.push({ cell1: "REPEAT", cell2: item.status_count });
-      });
-      response.data[2].forEach((item) => {
-        if (item.is_followup)
-          newResult.push({ cell1: "FOLLOW UP", cell2: item.status_count });
-      });
+      if (!isSilveristicOrBelky) {
+        response.data[1].forEach((item) => {
+          if (item.is_repeat)
+            newResult.push({ cell1: "REPEAT", cell2: item.status_count });
+        });
+        response.data[2].forEach((item) => {
+          if (item.is_followup)
+            newResult.push({ cell1: "FOLLOW UP", cell2: item.status_count });
+        });
+      }
+
       const currentSortingArray =
         userRole === "admin" ||
         userRole === "shop_manager" ||
@@ -158,7 +170,9 @@ const Dashboard = () => {
           <SummaryTable
             title="orders"
             total={0}
-            next={`/all-orders?&status=${newStatu}&limit=${PAGE_ROW_NUMBER || 0}&offset=0`}
+            next={`/all-orders?&status=${newStatu}&limit=${
+              PAGE_ROW_NUMBER || 0
+            }&offset=0`}
             icon={<ListAltIcon className={classes.icon} color="primary" />}
             header1={formatMessage({
               id: "status",
