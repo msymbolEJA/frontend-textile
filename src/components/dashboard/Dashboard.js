@@ -115,7 +115,11 @@ const Dashboard = () => {
   }, [store]);
 
   useEffect(() => {
-    getData(`${BASE_URL}etsy/due_dates/`)
+    getData(
+      `${BASE_URL}${
+        store === "shop1" ? "etsy/due_dates/" : "shopify/due_dates/"
+      }`
+    )
       .then((response) => {
         const newResult = [];
         const obj = response.data;
@@ -128,10 +132,16 @@ const Dashboard = () => {
       .catch((err) => {
         setWorkshopDueDates("noOrders");
       });
-  }, []);
+  }, [store]);
 
   useEffect(() => {
-    getData(`${BASE_URL}etsy/shipment_due_dates/`)
+    getData(
+      `${BASE_URL}${
+        store === "shop1"
+          ? "etsy/shipment_due_dates/"
+          : "shopify/shipment_due_dates/"
+      }`
+    )
       .then((response) => {
         const newResult = [];
         const obj = response.data;
@@ -144,7 +154,7 @@ const Dashboard = () => {
       .catch((err) => {
         setShipmentDueDates("noOrders");
       });
-  }, []);
+  }, [store]);
 
   // console.log("localUser", localUser);
   // console.log(localUser === "admin");
