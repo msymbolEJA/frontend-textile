@@ -120,7 +120,7 @@ function AllOrdersTable() {
   );
 
   const [countryFilter, setCountryFilter] = useState("all");
-  const { user } = useContext(AppContext);
+  const { user, store } = useContext(AppContext);
   const filters = getQueryParams();
   const barcodeInputRef = useRef();
   const uploadLabelRef = useRef();
@@ -195,7 +195,7 @@ function AllOrdersTable() {
       } else filters.ordering = "-id";
 
       getData(
-        `${BASE_URL}etsy/orders/?${
+        `${BASE_URL}${store === "shop1" ? "etsy/orders/" : "shopify/orders/"}?${
           filters?.status ? `status=${filters?.status}` : ""
         }&is_repeat=${filters?.is_repeat}&is_followup=${
           filters?.is_followup
@@ -233,10 +233,16 @@ function AllOrdersTable() {
         })
         .finally(() => setloading(false));
     }
-  }, [currentBarcodeList, filters, searchWord, selectedTag]);
+  }, [currentBarcodeList, filters, searchWord, selectedTag, store]);
 
   const getLastUpdateDate = () => {
-    getData(`${BASE_URL}etsy/get_mapping_update_date/`)
+    getData(
+      `${BASE_URL}${
+        store === "shop1"
+          ? "etsy/get_mapping_update_date/"
+          : "shopify/get_mapping_update_date/"
+      }`
+    )
       .then((response) => {
         const l = localStorage.getItem(
           `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
@@ -295,6 +301,7 @@ function AllOrdersTable() {
     countryFilter,
     count,
     selectedTag,
+    store,
   ]);
 
   useEffect(() => {
