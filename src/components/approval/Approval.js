@@ -440,10 +440,13 @@ function App({ history }) {
         if (NON_SKU) {
           if (
             !(
-              !!row?.variation_1_value?.replace(/\s/g, "") &&
-              !!row?.variation_2_value?.replace(/\s/g, "") &&
-              !!row?.variation_1_name?.replace(/\s/g, "") &&
-              !!row?.variation_2_name?.replace(/\s/g, "")
+              (
+                !!row?.variation_1_value?.replace(/\s/g, "") &&
+                !!row?.variation_2_value?.replace(/\s/g, "")
+              )
+              // &&
+              // !!row?.variation_1_name?.replace(/\s/g, "") &&
+              // !!row?.variation_2_name?.replace(/\s/g, "")
             )
           ) {
             return null;
@@ -474,10 +477,13 @@ function App({ history }) {
     if (NON_SKU) {
       if (
         !(
-          !!row?.variation_1_value?.replace(/\s/g, "") &&
-          !!row?.variation_2_value?.replace(/\s/g, "") &&
-          !!row?.variation_1_name?.replace(/\s/g, "") &&
-          !!row?.variation_2_name?.replace(/\s/g, "")
+          (
+            !!row?.variation_1_value?.replace(/\s/g, "") &&
+            !!row?.variation_2_value?.replace(/\s/g, "")
+          )
+          // &&
+          // !!row?.variation_1_name?.replace(/\s/g, "") &&
+          // !!row?.variation_2_name?.replace(/\s/g, "")
         )
       )
         return;
@@ -1136,10 +1142,16 @@ function App({ history }) {
                         disabled={
                           NON_SKU
                             ? !(
-                                !!row?.variation_1_value?.replace(/\s/g, "") &&
-                                !!row?.variation_2_value?.replace(/\s/g, "") &&
-                                !!row?.variation_1_name?.replace(/\s/g, "") &&
-                                !!row?.variation_2_name?.replace(/\s/g, "")
+                                (
+                                  !!row?.variation_1_value?.replace(
+                                    /\s/g,
+                                    ""
+                                  ) &&
+                                  !!row?.variation_2_value?.replace(/\s/g, "")
+                                )
+                                // &&
+                                // !!row?.variation_1_name?.replace(/\s/g, "") &&
+                                // !!row?.variation_2_name?.replace(/\s/g, "")
                               )
                             : !(
                                 !!row.supplier?.replace(/\s/g, "") &&
