@@ -222,7 +222,10 @@ export default function MenuAppBar() {
               </Typography>
             )}
           </IconButton>
-          <StorefrontIcon
+          {/*********************************/}
+          {/* SHOPIFY - ETSY TRANSFER */}
+          {/*********************************/}
+          {/* <StorefrontIcon
             onClick={() => {
               setStore("shop1");
             }}
@@ -249,7 +252,7 @@ export default function MenuAppBar() {
                 ? classes.mobileNonActiveShopButton
                 : classes.nonActiveShopButton
             }
-          />
+          /> */}
           <div className={classes.title}>
             <div style={{ flexDirection: "row" }}>
               <Button
