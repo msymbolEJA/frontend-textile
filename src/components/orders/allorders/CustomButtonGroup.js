@@ -10,7 +10,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import SearchIcon from "@material-ui/icons/Search";
 
-const NON_SKU = process.env.REACT_APP_NON_SKU=== "true" ;
+const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -116,7 +116,12 @@ const CustomButtonGroup = ({
       <FormControl className={classes.textField} variant="outlined">
         <InputLabel
           htmlFor="outlined-adornment-password"
-          style={{ marginTop: "-0.1rem", userSelect: "none", WebkitUserSelect: "none", "-webkit-user-select": "none"}}
+          style={{
+            marginTop: "-0.1rem",
+            userSelect: "none",
+            WebkitUserSelect: "none",
+            "-webkit-user-select": "none",
+          }}
         >
           {formatMessage({
             id: "search",

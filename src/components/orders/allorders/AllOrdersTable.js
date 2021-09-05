@@ -47,6 +47,7 @@ import {
 import { getQueryParams } from "../../../helper/getQueryParams";
 import CustomDialog from "./CustomDialog";
 import EditableTableCell from "../../tableitems/EditableTableCell";
+import ShopifyColumns, { ShopifyColumnValues } from "./ShopifyColumns";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
@@ -155,9 +156,13 @@ function AllOrdersTable() {
         );
         if (response.data.last_updated !== l) {
           getData(
-            `${BASE_URL}etsy/orders/?status=in_progress&limit=${
-              PAGE_ROW_NUMBER || 0
-            }&offset=0`
+            store === "shop1"
+              ? `${BASE_URL}etsy/orders/?status=in_progress&limit=${
+                  PAGE_ROW_NUMBER || 0
+                }&offset=0`
+              : `${BASE_URL}shopify/orders/?status=in_progress&limit=${
+                  PAGE_ROW_NUMBER || 0
+                }&offset=0`
           )
             .then((response) => {
               const o = response?.data?.results?.length
@@ -353,7 +358,9 @@ function AllOrdersTable() {
   };
 
   const getAllPdfFunc = () => {
-    getAllPdf(`${BASE_URL}etsy/all_pdf/`)
+    getAllPdf(
+      `${BASE_URL}${store === "shop1" ? "etsy/all_pdf/" : "shopify/all_pdf/"}`
+    )
       .then((response) => {
         setAllPdf(response.data.a);
       })
@@ -535,7 +542,12 @@ function AllOrdersTable() {
         Object.values(data)[0]
       )
         return;
-      putData(`${BASE_URL_MAPPING}${id}/`, data)
+      putData(
+        `${BASE_URL}${
+          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+        }${id}/`,
+        data
+      )
         .then((response) => {})
         .catch((error) => {
           console.log(error);
@@ -700,7 +712,11 @@ function AllOrdersTable() {
               <StyledTableCell align="center">
                 <FormattedMessage id="status" defaultMessage="Status" />
               </StyledTableCell>
-              {NON_SKU === "true" ? (
+              {store != "shop1" ? (
+                <>
+                  <ShopifyColumns />
+                </>
+              ) : NON_SKU === "true" ? (
                 <>
                   <StyledTableCell align="center">
                     <FormattedMessage id="type" defaultMessage="Type" />
@@ -795,7 +811,11 @@ function AllOrdersTable() {
                     </>
                   ) : null}
                   <CustomTableCell {...{ row, name: "status" }} />
-                  {NON_SKU === "true" ? (
+                  {store != "shop1" ? (
+                    <>
+                      <ShopifyColumnValues row={row} name={"sku"} />
+                    </>
+                  ) : NON_SKU === "true" ? (
                     <>
                       <CustomTableCell {...{ row, name: "sku" }} />
                       <CustomTableCell
