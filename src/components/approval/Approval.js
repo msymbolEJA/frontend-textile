@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { ToastContainer } from "react-toastify";
 import {
@@ -38,9 +38,11 @@ import Menu from "@material-ui/core/Menu";
 import ListItemText from "@material-ui/core/ListItemText";
 import { FormattedMessage } from "react-intl";
 import MenuItem from "@material-ui/core/MenuItem";
+import { AppContext } from "../../context/Context";
+import ShopifyColumns, { ShopifyColumnsValues } from "./ShopifyColumns";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
+// const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true" || false;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 0;
 
@@ -127,6 +129,7 @@ function App({ history }) {
   const [count, setCount] = useState(0);
   const [orderBy, setOrderBy] = useState("created_date");
   const [order, setOrder] = useState("asc");
+  const { store } = useContext(AppContext);
   const [selectedRowId, setSelectedRowId] = useState();
   const [selected, setSelected] = useState([]);
   const filters = getQueryParams();
@@ -135,10 +138,11 @@ function App({ history }) {
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
   const [loading, setloading] = useState(false);
   const [repeatMenuData, setRepeatMenuData] = useState({});
+
   const getListFunc = useCallback(() => {
     setloading(true);
     getData(
-      `${BASE_URL_MAPPING}?${
+      `${BASE_URL}${store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"}?${
         filters?.status ? `status=${filters?.status}` : ""
       }&is_repeat=${filters?.is_repeat}&is_followup=${
         filters?.is_followup
@@ -176,10 +180,19 @@ function App({ history }) {
     filters?.ordering,
     filters?.status,
     selectedTag,
+    store,
   ]);
 
+  // console.log("store", store);
+
   const getLastUpdateDate = () => {
-    getData(`${BASE_URL}etsy/get_mapping_update_date/`)
+    getData(
+      `${BASE_URL}${
+        store === "shop1"
+          ? "etsy/get_mapping_update_date/"
+          : "shopify/get_mapping_update_date/"
+      }`
+    )
       .then((response) => {
         const l = localStorage.getItem(
           `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
@@ -222,6 +235,7 @@ function App({ history }) {
     filters.search,
     count,
     selectedTag,
+    store,
   ]);
 
   useEffect(() => {
@@ -270,7 +284,12 @@ function App({ history }) {
         Object.values(data)[0]
       )
         return;
-      putData(`${BASE_URL_MAPPING}${id}/`, data)
+      putData(
+        `${BASE_URL}${
+          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+        }${id}/`,
+        data
+      )
         .then((response) => {})
         .catch((error) => {
           console.log(error);
@@ -319,7 +338,10 @@ function App({ history }) {
   const uploadFile = (e, id, imgFile) => {
     e.stopPropagation();
     try {
-      let path = `${BASE_URL_MAPPING}${id}/`;
+      // let path = `${BASE_URL_MAPPING}${id}/`;
+      let path = `${BASE_URL}${
+        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+      }${id}/`;
       putImage(path, imgFile, "image.png")
         .then((res) => {
           console.log(res);
@@ -378,7 +400,13 @@ function App({ history }) {
   }, []);
 
   const handleApproveSelected = () => {
-    postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
+    // postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
+    postData(
+      `${BASE_URL}${
+        store === "shop1" ? "etsy/approved_all/" : "shopify/approved_all/"
+      }`,
+      { ids: selected }
+    )
       .then((res) => {
         toastWarnNotify("Selected 'PENDING' orders are approved");
         if (filters?.search) {
@@ -522,9 +550,10 @@ function App({ history }) {
   useEffect(() => {
     if (filters?.search) {
       globalSearch(
-        `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
-          page * 25
-        }`
+        // `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
+        `${BASE_URL}${
+          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+        }?search=${filters?.search}&limit=${25}&offset=${page * 25}`
       )
         .then((response) => {
           setRows(response.data.results);
@@ -767,7 +796,16 @@ function App({ history }) {
                   setOrderBy={setOrderBy}
                 />
               ) : null}
-              {NON_SKU ? (
+              {store === "shop2" ? (
+                <ShopifyColumns
+                  setOrderBy={setOrderBy}
+                  handleRequestSort={handleRequestSort}
+                  order={order}
+                  orderBy={orderBy}
+                  colName1="Country Id"
+                  property1="country_id"
+                />
+              ) : NON_SKU ? (
                 <>
                   <SortableTableCell
                     property="variation_1_value"
@@ -1041,7 +1079,13 @@ function App({ history }) {
                         }}
                       />
                     ) : null}
-                    {NON_SKU ? (
+                    {store === "shop2" ? (
+                      <ShopifyColumnsValues
+                        row={row}
+                        onChange={onChange}
+                        name1="country_id"
+                      />
+                    ) : NON_SKU ? (
                       <>
                         <EditableTableCell
                           {...{
