@@ -21,16 +21,16 @@ const ShopifyColumnHeaders = () => {
         <FormattedMessage id="countryId" defaultMessage="Country Id" />
       </StyledTableCell>
       <StyledTableCell align="center">
-        <FormattedMessage id="MapData1" defaultMessage="MapData1" />
+        <FormattedMessage id="variation1" defaultMessage="Variation1" />
       </StyledTableCell>
       <StyledTableCell align="center">
-        <FormattedMessage id="MapData2" defaultMessage="MapData2" />
+        <FormattedMessage id="variation2" defaultMessage="Variation2" />
       </StyledTableCell>
       <StyledTableCell align="center">
-        <FormattedMessage id="MapData2" defaultMessage="MapData2" />
+        <FormattedMessage id="variation3" defaultMessage="Variation3" />
       </StyledTableCell>
       <StyledTableCell align="center">
-        <FormattedMessage id="MapData2" defaultMessage="MapData2" />
+        <FormattedMessage id="variation4" defaultMessage="Variation4" />
       </StyledTableCell>
       <StyledTableCell align="center">
         <FormattedMessage id="title" defaultMessage="Title" />
@@ -55,7 +55,7 @@ export const ShopifyColumnValues = ({ row = [{ mapping_data: [] }], name }) => {
   console.log("CN", columnsNumber);
 
   for (let index = 0; index < columnsNumber; index++) {
-    row.push({ name: "", value: "" });
+    row?.mapping_data?.push({ name: "", value: "-" });
   }
 
   return (

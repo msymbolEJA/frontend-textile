@@ -156,5 +156,10 @@
   "explanationMod": "Orj-Açıklama",
   "allorders": "Hepsi",
   "topSeller": "Çok satanlar",
-  "title": "Başlık"
+  "title": "Başlık",
+  "countryId": "Ülke Kodu",
+  "variation1": "Varyasyon1",
+  "variation2": "Varyasyon2",
+  "variation3": "Varyasyon3",
+  "variation4": "Varyasyon4"
 }
