@@ -51,7 +51,7 @@ import ShopifyColumns, { ShopifyColumnValues } from "./ShopifyColumns";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
-const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER;
+const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -152,16 +152,18 @@ function AllOrdersTable() {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
         const l = localStorage.getItem(
-          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-last_updated`
+          `${localStoragePrefix}-in_progress-${
+            PAGE_ROW_NUMBER || 25
+          }-0-last_updated`
         );
         if (response.data.last_updated !== l) {
           getData(
             store === "shop1"
               ? `${BASE_URL}etsy/orders/?status=in_progress&limit=${
-                  PAGE_ROW_NUMBER || 0
+                  PAGE_ROW_NUMBER || 25
                 }&offset=0`
               : `${BASE_URL}shopify/orders/?status=in_progress&limit=${
-                  PAGE_ROW_NUMBER || 0
+                  PAGE_ROW_NUMBER || 25
                 }&offset=0`
           )
             .then((response) => {
@@ -169,15 +171,21 @@ function AllOrdersTable() {
                 ? response?.data?.results
                 : [];
               localStorage.setItem(
-                `${localStoragePrefix}-Belky-in_progress-${PAGE_ROW_NUMBER}-0`,
+                `${localStoragePrefix}-Belky-in_progress-${
+                  PAGE_ROW_NUMBER || 25
+                }-0`,
                 JSON.stringify(o)
               );
               localStorage.setItem(
-                `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-last_updated`,
+                `${localStoragePrefix}-in_progress-${
+                  PAGE_ROW_NUMBER || 25
+                }-0-last_updated`,
                 response.data.last_updated
               );
               localStorage.setItem(
-                `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-count`,
+                `${localStoragePrefix}-in_progress-${
+                  PAGE_ROW_NUMBER || 25
+                }-0-count`,
                 response?.data?.results?.length
               );
             })
@@ -341,16 +349,16 @@ function AllOrdersTable() {
         newUrl += `limit=${25}&offset=${0}`;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&limit=${PAGE_ROW_NUMBER || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_repeat=true&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "followUp":
-        newUrl += `is_followup=true&limit=${PAGE_ROW_NUMBER || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_followup=true&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       default:
-        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER || 0}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
     }
     history.push(`/all-orders?&${newUrl}`);
@@ -436,7 +444,7 @@ function AllOrdersTable() {
     let isInProgress = false;
     const ordersInProgressLS = JSON.parse(
       localStorage.getItem(
-        `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0`
+        `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 25}-0`
       )
     );
     isInProgress =

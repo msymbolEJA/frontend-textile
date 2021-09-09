@@ -26,7 +26,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const STORE_NAME = process.env.REACT_APP_STORE_NAME;
-const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER;
+const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -195,7 +195,7 @@ export default function MenuAppBar() {
     // console.log("newStatu", newStatu);
     history.push(
       `/${e.currentTarget.id}?status=${newStatu}&limit=${
-        PAGE_ROW_NUMBER || 0
+        PAGE_ROW_NUMBER || 25
       }&offset=0`
     );
     setAnchorEl(null);
@@ -290,7 +290,7 @@ export default function MenuAppBar() {
                     onClick={() =>
                       history.push(
                         `/approval?&status=pending&limit=${
-                          PAGE_ROW_NUMBER || 0
+                          PAGE_ROW_NUMBER || 25
                         }&offset=0`
                       )
                     }
