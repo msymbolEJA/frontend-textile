@@ -72,8 +72,6 @@ const useStyles = makeStyles((theme) => ({
 function ResultTable({ list }) {
   const classes = useStyles();
 
-  //console.log("list", list)
-
   return (
     <Paper className={classes.root}>
       <Typography className={classes.header}>
@@ -145,7 +143,7 @@ function ResultTable({ list }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {list?.map((row) => (
+            {list?.results?.map((row) => (
               <StyledTableRow key={row.id}>
                 <CustomTableCell {...{ row, name: "id" }} />
                 <CustomTableCell {...{ row, name: "status" }} />
@@ -167,7 +165,7 @@ function ResultTable({ list }) {
           </TableBody>
         </Table>
       </TableContainer>
-      {list?.length === 0 ? (
+      {list?.results?.length === 0 ? (
         <div colSpan="2" className={classes.bottomSection}>
           <h1 className={classes.warn}>Nothing Found</h1>
         </div>

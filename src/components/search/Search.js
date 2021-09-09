@@ -38,13 +38,13 @@ const Search = () => {
         setFillError("Global search keywords should be min 3 letters.");
       }
     } else {
-      let queryString = "/?";
+      let queryString = "?";
       Object.keys(info).forEach((key) => {
         if (info[key]) {
           queryString = `${queryString}${key}=${info[key]}&`;
         }
       });
-      if (queryString === "/?") {
+      if (queryString === "?") {
         setFillError("Please fill any field!");
       } else {
         setFillError();
