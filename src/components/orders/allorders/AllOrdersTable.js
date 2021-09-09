@@ -119,7 +119,11 @@ function AllOrdersTable() {
       localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]"
     )
   );
-
+  const [currentSiblingList, setCurrentSiblingList] = useState(
+    JSON.parse(
+      localStorage.getItem(`${localStoragePrefix}-sibling_list`) || "[]"
+    )
+  );
   const [countryFilter, setCountryFilter] = useState("all");
   const { user, store } = useContext(AppContext);
   const filters = getQueryParams();
@@ -440,7 +444,48 @@ function AllOrdersTable() {
       });
   };
 
-  const checkOrderIfInProgress = async (id) => {
+  const getSiblings = async (id) => {
+    const ordersInProgressLS = JSON.parse(
+      localStorage.getItem(
+        `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 25}-0`
+      )
+    );
+    const currentOrder =
+      ordersInProgressLS?.length > 0
+        ? ordersInProgressLS.filter((item) => item.id.toString() === id)?.[0]
+        : null;
+    let currentReceiptId = currentOrder?.receipt_id;
+    if (currentOrder?.item_index === "1/1") return null;
+    let siblings = [];
+
+    await globalSearch(`${BASE_URL_MAPPING}?search=${currentReceiptId}`).then(
+      (response) => {
+        if (response?.data?.results?.length)
+          siblings = response?.data?.results
+            .map((item) => item.id)
+            .filter((item) => item.toString() !== id.toString());
+        localStorage.setItem(
+          `${localStoragePrefix}-sibling_list`,
+          JSON.stringify([
+            ...currentSiblingList,
+            {
+              id,
+              siblings,
+            },
+          ])
+        );
+        setCurrentSiblingList([
+          ...currentSiblingList,
+          {
+            id,
+            siblings,
+          },
+        ]);
+      }
+    );
+  };
+
+  const checkOrderIfInProgress = (id) => {
     let isInProgress = false;
     const ordersInProgressLS = JSON.parse(
       localStorage.getItem(
@@ -456,6 +501,7 @@ function AllOrdersTable() {
     if (selectedTag === "shipped") {
       changeOrderStatus(id, "shipped");
     } else if (isInProgress) {
+      getSiblings(id);
       localStorage.setItem(
         `${localStoragePrefix}-barcode_list`,
         JSON.stringify([...currentBarcodeList, id])
@@ -500,6 +546,7 @@ function AllOrdersTable() {
           `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-count`
         ); */
         localStorage.setItem(`${localStoragePrefix}-barcode_list`, []);
+        localStorage.setItem(`${localStoragePrefix}-sibling_list`, []);
         localStorage.removeItem(
           `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`
         );
@@ -507,6 +554,7 @@ function AllOrdersTable() {
           `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
         );
         setCurrentBarcodeList([]);
+        setCurrentSiblingList([]);
       })
       .catch(({ response }) => {
         console.log("response", response);
@@ -996,7 +1044,7 @@ function AllOrdersTable() {
             </div>
             <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
               {currentBarcodeList?.length
-                ? currentBarcodeList.map((item) => (
+                ? currentBarcodeList?.map((item) => (
                     <p
                       key={item}
                       style={{
@@ -1012,6 +1060,21 @@ function AllOrdersTable() {
                       onClick={() => removeItemfromBarcodeList(item)}
                     >
                       {item}
+                      {currentSiblingList
+                        .filter((cs) => cs?.id?.toString() === item?.toString())
+                        .map((s) =>
+                          s.siblings.map((m, index) => (
+                            <span
+                              style={{
+                                color: "black",
+                                fontStyle: "italic",
+                                fontSize: "0.8rem",
+                              }}
+                            >
+                              {`-${m}`}
+                            </span>
+                          ))
+                        )}
                     </p>
                   ))
                 : null}
