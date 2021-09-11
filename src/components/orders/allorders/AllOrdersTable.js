@@ -822,6 +822,12 @@ function AllOrdersTable() {
                 />
               </StyledTableCell>
               <StyledTableCell align="center">
+                <FormattedMessage
+                  id="giftMessage"
+                  defaultMessage="Gift Message"
+                />
+              </StyledTableCell>
+              <StyledTableCell align="center">
                 <FormattedMessage id="image" defaultMessage="Image" />
               </StyledTableCell>
               {selectedTag === "ready" ? (
@@ -902,6 +908,7 @@ function AllOrdersTable() {
                       from: "all-orders",
                     }}
                   />
+                  <CustomTableCell {...{ row, name: "gift_message" }} />
                   <td style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}>
                     {row?.image ? (
                       <ViewImageFile {...{ row, name: "image" }} />
