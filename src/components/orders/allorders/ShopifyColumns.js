@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
 export const ShopifyColumnValues = ({ row = [{ mapping_data: [] }], name }) => {
   const classes = useStyles();
   const columnsNumber = 4 - row?.mapping_data?.length;
-  console.log("CN", columnsNumber);
 
   for (let index = 0; index < columnsNumber; index++) {
     row?.mapping_data?.push({ name: "", value: "-" });
@@ -61,10 +60,9 @@ export const ShopifyColumnValues = ({ row = [{ mapping_data: [] }], name }) => {
   return (
     <>
       <CustomTableCell {...{ row, name: "country_id" }} />
-      {/* <CustomTableCell {...{ row, name: name }} />
-      <CustomTableCell {...{ row, name: name }} /> */}
-      {row.mapping_data?.map((each) => (
+      {row.mapping_data?.map((each, index) => (
         <TableCell
+          key={index}
           //   style={{ maxWidth: "200px" }}
           align="center"
           className={classes.tableCell}

@@ -43,16 +43,11 @@ const ShopifyColumnsHeaders = ({
 export default ShopifyColumnsHeaders;
 
 export const ShopifyColumnsValues = ({ row, onChange, name1 }) => {
-  // console.log("ROWW", row?.mapping_data);
   const columnsNumber = 4 - row?.mapping_data?.length || 0;
   const dummyArray = new Array(columnsNumber).fill({
     name: "-",
     value: "-",
   });
-
-  // for (let index = 0; index < columnsNumber; index++) {
-  //   row?.push({ name: "", value: "-" });
-  // }
 
   return (
     <>
@@ -63,10 +58,10 @@ export const ShopifyColumnsValues = ({ row, onChange, name1 }) => {
           onChange,
         }}
       />
-      {row?.mapping_data?.map((each) => {
-        // console.log(each);
+      {row?.mapping_data?.map((each, index) => {
         return (
           <ConstantTableCell
+            key={index}
             {...{
               row: row,
               mappingData: each,
@@ -74,8 +69,9 @@ export const ShopifyColumnsValues = ({ row, onChange, name1 }) => {
           />
         );
       })}
-      {dummyArray?.map?.((each) => (
+      {dummyArray?.map?.((each, index) => (
         <ConstantTableCell
+          key={index}
           {...{
             row: row,
             mappingData: each,
@@ -104,20 +100,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ConstantTableCell = ({ row, mappingData = { name: "", value: "-" } }) => {
-  //console.log("row", row);
   const classes = useStyles();
-  // console.log(row[name]);
-  // const columnsNumber = 4 - row?.length;
-  // console.log("CN", columnsNumber);
-  const columnsNumber = 4 - row?.mapping_data?.length;
-  // console.log("ColumnsNumber", columnsNumber);
-
-  // for (let index = 0; index < columnsNumber; index++) {
-  //   row?.push({ name: "", value: "-" });
-  // }
-
-  // console.log("ROW", row);
-  console.log("mappingData", mappingData);
 
   return (
     <TableCell
