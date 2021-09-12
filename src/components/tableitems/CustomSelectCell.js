@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { statusData } from "../../helper/Constants";
 import { useIntl } from "react-intl";
+import { AppContext } from "../../context/Context";
 
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 const OrderStatus = ({ row, name, onSelectChange }) => {
   const classes = useStyles();
+  const { store } = useContext(AppContext);
   const { formatMessage } = useIntl();
 
   return (
@@ -26,7 +28,9 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         value={row[name]}
         // disabled={false}
         disabled={
-          NON_SKU
+          store === "shop2"
+            ? false
+            : NON_SKU
             ? !(
                 (!!row?.variation_1_value && !!row?.variation_2_value)
                 // &&

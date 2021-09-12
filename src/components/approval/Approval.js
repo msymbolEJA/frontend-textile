@@ -465,7 +465,10 @@ function App({ history }) {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = rows?.map((row) => {
-        if (NON_SKU) {
+        if (store === "shop2") {
+          // Check shopify for approve all button - dont exist control now
+          return row?.id;
+        } else if (NON_SKU) {
           if (
             !(
               (
@@ -502,7 +505,9 @@ function App({ history }) {
   const handleCheckBoxClick = (event, id, row) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-    if (NON_SKU) {
+    if (store === "shop2") {
+      // Shopify check for specific product - dont exist now
+    } else if (NON_SKU) {
       if (
         !(
           (
@@ -1184,7 +1189,7 @@ function App({ history }) {
                       <Checkbox
                         checked={isItemSelected}
                         disabled={
-                          store === "shop1"
+                          store === "shop2"
                             ? false
                             : NON_SKU
                             ? !(
