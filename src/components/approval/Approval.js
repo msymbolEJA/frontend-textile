@@ -1184,7 +1184,9 @@ function App({ history }) {
                       <Checkbox
                         checked={isItemSelected}
                         disabled={
-                          NON_SKU
+                          store === "shop1"
+                            ? false
+                            : NON_SKU
                             ? !(
                                 (
                                   !!row?.variation_1_value?.replace(
