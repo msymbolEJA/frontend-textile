@@ -121,7 +121,11 @@ const OrderDetails = ({ match }) => {
   };
 
   useEffect(() => {
-    fetch(`${BASE_URL}media/pdf/${match.params.id}.pdf`)
+    fetch(
+      `${BASE_URL}${store === "shop1" ? "media/pdf/" : "media/pdf/shopify/"}${
+        match.params.id
+      }.pdf`
+    )
       .then((res) => {
         if (res.status !== 404) {
           setIsPdfExist(true);
@@ -388,7 +392,9 @@ const OrderDetails = ({ match }) => {
       ) && isPdfExist ? (
         <>
           <a
-            href={`${BASE_URL}media/pdf/${match.params.id}.pdf`}
+            href={`${BASE_URL}${
+              store === "shop1" ? "media/pdf/" : "media/pdf/shopify/"
+            }${match.params.id}.pdf`}
             target="_blank"
             rel="noreferrer"
           >

@@ -385,10 +385,21 @@ function AllOrdersTable() {
     const data = "";
     let urlPrint;
     if (countryFilter === "usa") {
-      urlPrint = `${BASE_URL}etsy/print_all/?type=us`;
+      urlPrint = `${BASE_URL}${
+        store === "shop1"
+          ? "etsy/print_all/?type=us"
+          : "shopify/print_all/?type=us"
+      }`;
     } else if (countryFilter === "int") {
-      urlPrint = `${BASE_URL}etsy/print_all/?type=int`;
-    } else urlPrint = `${BASE_URL}etsy/print_all/`;
+      urlPrint = `${BASE_URL}${
+        store === "shop1"
+          ? "etsy/print_all/?type=int"
+          : "shopify/print_all/?type=int"
+      }`;
+    } else
+      urlPrint = `${BASE_URL}${
+        store === "shop1" ? "etsy/print_all/" : "shopify/print_all/"
+      }`;
 
     getData(urlPrint, data)
       .then((data) => {
@@ -1263,7 +1274,11 @@ function AllOrdersTable() {
               allPdf?.map((pdf, index) => (
                 <div key={`${index}${pdf}`}>
                   <a
-                    href={`${BASE_URL}media/pdf/bulk/${pdf}`}
+                    href={`${BASE_URL}${
+                      store === "shop1"
+                        ? "media/pdf/bulk/"
+                        : "media/pdf/shopify/bulk"
+                    }${pdf}`}
                     target="_blank"
                     rel="noreferrer"
                   >

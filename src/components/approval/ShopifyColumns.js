@@ -114,9 +114,11 @@ const ConstantTableCell = ({ row, mappingData = { name: "", value: "-" } }) => {
         e.stopPropagation();
       }}
     >
-      {mappingData?.name}
+      <span style={{ fontSize: "0.75rem" }}>{mappingData?.name}</span>
       <br />
-      <b>{mappingData?.value}</b>
+      <b style={{ fontSize: "1.25rem", borderTop: "1px dotted" }}>
+        {mappingData?.value}
+      </b>
     </TableCell>
   );
 };

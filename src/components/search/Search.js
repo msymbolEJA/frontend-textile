@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Form from "./Form";
 import ResultTable from "./resulttable/ResultTable";
 import { queryData, globalSearch } from "../../helper/PostData";
-const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
+import { AppContext } from "../../context/Context";
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Search = () => {
   const [list, setList] = useState();
@@ -18,6 +20,7 @@ const Search = () => {
   });
   const [globalSearchKey, setGlobalSearchKey] = useState("");
   const [fillError, setFillError] = useState();
+  const { store } = useContext(AppContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
