@@ -167,6 +167,8 @@ export default function MenuAppBar() {
     localStorage.removeItem("localEmail");
     localStorage.removeItem("localRole");
     localStorage.removeItem("localId");
+    localStorage.removeItem("store");
+    setStore("shop1");
   };
 
   const localUser = localStorage.getItem("localUser");
@@ -228,6 +230,7 @@ export default function MenuAppBar() {
           <StorefrontIcon
             onClick={() => {
               setStore("shop1");
+              localStorage.setItem("store", "shop1");
             }}
             className={
               store === "shop1"
@@ -242,6 +245,7 @@ export default function MenuAppBar() {
           <ShoppingBasketIcon
             onClick={() => {
               setStore("shop2");
+              localStorage.setItem("store", "shop2");
             }}
             className={
               store === "shop2"

@@ -125,11 +125,14 @@ export default function Login() {
             localStorage.setItem("localEmail", response?.data?.email);
             localStorage.setItem("localRole", response?.data?.role);
             localStorage.setItem("localId", response?.data?.id);
+            localStorage.setItem("store", "shop1");
             console.log("Logged in succesfully!");
             setAuth(true);
             if (response?.data?.role === "workshop_designer") {
               history.push(
-                `/all-orders?&status=in_progress&limit=${PAGE_ROW_NUMBER || 25}&offset=0`
+                `/all-orders?&status=in_progress&limit=${
+                  PAGE_ROW_NUMBER || 25
+                }&offset=0`
               );
             } else {
               history.push("/");
