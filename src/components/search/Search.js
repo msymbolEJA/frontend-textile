@@ -23,7 +23,12 @@ const Search = () => {
     e.preventDefault();
     if (globalSearchKey) {
       if (globalSearchKey.length > 2) {
-        globalSearch(`${BASE_URL_MAPPING}?search=${globalSearchKey}`)
+        // globalSearch(`${BASE_URL_MAPPING}?search=${globalSearchKey}`)
+        globalSearch(
+          `${BASE_URL}${
+            store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+          }?search=${globalSearchKey}`
+        )
           .then((response) => {
             //console.log(response.data);
             setList(response.data);
@@ -49,7 +54,10 @@ const Search = () => {
       } else {
         setFillError();
         queryString = queryString.slice(0, -1);
-        let path = `${BASE_URL_MAPPING}${queryString}`;
+        // let path = `${BASE_URL_MAPPING}${queryString}`;
+        let path = `${BASE_URL}${
+          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+        }${queryString}`;
         queryData(path)
           .then((response) => {
             setList(response.data);

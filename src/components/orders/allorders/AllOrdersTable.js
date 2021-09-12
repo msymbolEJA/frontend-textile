@@ -50,7 +50,7 @@ import EditableTableCell from "../../tableitems/EditableTableCell";
 import ShopifyColumns, { ShopifyColumnValues } from "./ShopifyColumns";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
+// const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
@@ -428,7 +428,12 @@ function AllOrdersTable() {
   // };
 
   const changeOrderStatus = (id, status) => {
-    putData(`${BASE_URL_MAPPING}${id}/`, { status })
+    putData(
+      `${BASE_URL}${
+        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+      }${id}/`,
+      { status }
+    )
       .then((response) => {
         const pdfUrl = `${BASE_URL}${response.data[1]}`;
         console.log("pfdUrl", pdfUrl);
@@ -458,31 +463,33 @@ function AllOrdersTable() {
     if (currentOrder?.item_index === "1/1") return null;
     let siblings = [];
 
-    await globalSearch(`${BASE_URL_MAPPING}?search=${currentReceiptId}`).then(
-      (response) => {
-        if (response?.data?.results?.length)
-          siblings = response?.data?.results
-            .map((item) => item.id)
-            .filter((item) => item.toString() !== id.toString());
-        localStorage.setItem(
-          `${localStoragePrefix}-sibling_list`,
-          JSON.stringify([
-            ...currentSiblingList,
-            {
-              id,
-              siblings,
-            },
-          ])
-        );
-        setCurrentSiblingList([
+    await globalSearch(
+      `${BASE_URL}${
+        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+      }?search=${currentReceiptId}`
+    ).then((response) => {
+      if (response?.data?.results?.length)
+        siblings = response?.data?.results
+          .map((item) => item.id)
+          .filter((item) => item.toString() !== id.toString());
+      localStorage.setItem(
+        `${localStoragePrefix}-sibling_list`,
+        JSON.stringify([
           ...currentSiblingList,
           {
             id,
             siblings,
           },
-        ]);
-      }
-    );
+        ])
+      );
+      setCurrentSiblingList([
+        ...currentSiblingList,
+        {
+          id,
+          siblings,
+        },
+      ]);
+    });
   };
 
   const checkOrderIfInProgress = (id) => {
@@ -633,9 +640,10 @@ function AllOrdersTable() {
   const globalSearchFunc = useCallback(
     (searchWord) => {
       globalSearch(
-        `${BASE_URL_MAPPING}?search=${searchWord}&limit=${25}&offset=${
-          page * 25
-        }`
+        // `${BASE_URL_MAPPING}?search=${searchWord}&limit=${25}&offset=${
+        `${BASE_URL}${
+          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+        }?search=${searchWord}&limit=${25}&offset=${page * 25}`
       )
         .then((response) => {
           setRows(response.data.results);
@@ -768,7 +776,7 @@ function AllOrdersTable() {
               <StyledTableCell align="center">
                 <FormattedMessage id="status" defaultMessage="Status" />
               </StyledTableCell>
-              {store != "shop1" ? (
+              {store !== "shop1" ? (
                 <>
                   <ShopifyColumns />
                 </>
@@ -873,7 +881,7 @@ function AllOrdersTable() {
                     </>
                   ) : null}
                   <CustomTableCell {...{ row, name: "status" }} />
-                  {store != "shop1" ? (
+                  {store !== "shop1" ? (
                     <>
                       <ShopifyColumnValues row={row} name={"sku"} />
                     </>

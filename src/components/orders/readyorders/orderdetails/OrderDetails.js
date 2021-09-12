@@ -17,7 +17,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { AppContext } from "../../../../context/Context";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
+// const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -147,7 +147,7 @@ const OrderDetails = ({ match }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [match.params.id, refresh]);
+  }, [match.params.id, refresh, store]);
 
   const handleSendToStock = () => {
     const newData = {
@@ -165,7 +165,13 @@ const OrderDetails = ({ match }) => {
   };
 
   const handleStockChange = (id, data) => {
-    putData(`${BASE_URL_MAPPING}${id}/`, data)
+    // putData(`${BASE_URL_MAPPING}${id}/`, data)
+    putData(
+      `${BASE_URL}${
+        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+      }${id}/`,
+      data
+    )
       .then((response) => {})
       .catch((error) => {
         console.log(error);
