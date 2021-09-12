@@ -6,7 +6,7 @@ import CustomTableCell from "./CustomTableCell";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: "#001a33",
+    backgroundColor: "black",
     color: theme.palette.common.white,
   },
   body: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ShopifyColumnValues = ({ row = [{ mapping_data: [] }], name }) => {
+export const ShopifyColumnValues = ({ row = [{ mapping_data: [] }] }) => {
   const classes = useStyles();
   const columnsNumber = 4 - row?.mapping_data?.length;
 

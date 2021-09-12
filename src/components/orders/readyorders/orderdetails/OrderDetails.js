@@ -15,6 +15,9 @@ import OrderDetailsCargoPage from "./OrderDetailsCargoPage";
 import moment from "moment";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AppContext } from "../../../../context/Context";
+import ShopifyColumnHeaders, {
+  ShopifyColumnValues,
+} from "../../allorders/ShopifyColumns";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 // const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
@@ -286,24 +289,33 @@ const OrderDetails = ({ match }) => {
                     </StyledTableCell>
                   </>
                 ) : null}
-                <StyledTableCell align="center">
-                  <FormattedMessage id="type" defaultMessage="Type" />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <FormattedMessage id="length" defaultMessage="Length" />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <FormattedMessage id="color" defaultMessage="Color" />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <FormattedMessage id="quantity" defaultMessage="Quantity" />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <FormattedMessage id="size" defaultMessage="Size" />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <FormattedMessage id="start" defaultMessage="Start" />
-                </StyledTableCell>
+                {store === "shop2" ? (
+                  <ShopifyColumnHeaders />
+                ) : (
+                  <>
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="type" defaultMessage="Type" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="length" defaultMessage="Length" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="color" defaultMessage="Color" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <FormattedMessage
+                        id="quantity"
+                        defaultMessage="Quantity"
+                      />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="size" defaultMessage="Size" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="start" defaultMessage="Start" />
+                    </StyledTableCell>
+                  </>
+                )}
                 <StyledTableCell align="center">
                   <FormattedMessage
                     id="explanation"
@@ -333,12 +345,18 @@ const OrderDetails = ({ match }) => {
                         <CustomTableCell {...{ row, name: "supplier" }} />
                       </>
                     ) : null}
-                    <CustomTableCell {...{ row, name: "type" }} />
-                    <CustomTableCell {...{ row, name: "length" }} />
-                    <CustomTableCell {...{ row, name: "color" }} />
-                    <CustomTableCell {...{ row, name: "qty" }} />
-                    <CustomTableCell {...{ row, name: "size" }} />
-                    <CustomTableCell {...{ row, name: "start" }} />
+                    {store === "shop2" ? (
+                      <ShopifyColumnValues row={row} />
+                    ) : (
+                      <>
+                        <CustomTableCell {...{ row, name: "type" }} />
+                        <CustomTableCell {...{ row, name: "length" }} />
+                        <CustomTableCell {...{ row, name: "color" }} />
+                        <CustomTableCell {...{ row, name: "qty" }} />
+                        <CustomTableCell {...{ row, name: "size" }} />
+                        <CustomTableCell {...{ row, name: "start" }} />
+                      </>
+                    )}
                     <CustomTableCell {...{ row, name: "explanation" }} />
                     <CustomTableCell {...{ row, name: "note" }} />
                   </StyledTableRow>

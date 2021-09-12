@@ -56,7 +56,7 @@ const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: "#001a33",
+    backgroundColor: "black",
     color: theme.palette.common.white,
   },
   body: {
