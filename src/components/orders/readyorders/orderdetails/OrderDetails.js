@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
 
 const OrderDetails = ({ match }) => {
   const [rows, setRows] = useState([]);
-  const { user } = useContext(AppContext);
+  const { user, store } = useContext(AppContext);
 
   const [logs, setLogs] = useState([]);
   const [isPdfExist, setIsPdfExist] = useState(false);
@@ -99,7 +99,12 @@ const OrderDetails = ({ match }) => {
 
   const getPdf = () => {
     let data = match.params.id;
-    getOnePdf(`${BASE_URL}etsy/print_one/`, data)
+    getOnePdf(
+      `${BASE_URL}${
+        store === "shop1" ? "etsy/print_one/" : "shopify/print_one/"
+      }`,
+      data
+    )
       .then((res) => {
         //console.log(res.data.url);
         const link = document.createElement("a");
@@ -124,8 +129,12 @@ const OrderDetails = ({ match }) => {
       })
       .catch((err) => console.log("err", err));
 
-    let url = `${BASE_URL}etsy/orders/${match.params.id}/`;
-    let urlLogs = `${BASE_URL}etsy/dateLogs/${match.params.id}/`;
+    let url = `${BASE_URL}${
+      store === "shop1" ? "etsy/orders/" : "shopify/orders/"
+    }${match.params.id}/`;
+    let urlLogs = `${BASE_URL}${
+      store === "shop1" ? "etsy/dateLogs/" : "shopify/dateLogs/"
+    }${match.params.id}/`;
     getData(url)
       .then((res) => {
         setRows([res.data]);
@@ -338,7 +347,8 @@ const OrderDetails = ({ match }) => {
           </Table>
           <div style={{ marginTop: "2rem" }}>
             {/* // SILVERISTIC daha sonra eklenecek. Adresleri sadece ASYA görecek. */}
-            {process.env.REACT_APP_STORE_NAME === "Linen Serisi" && rows[0]?.country_id !== "209" ? (
+            {process.env.REACT_APP_STORE_NAME === "Linen Serisi" &&
+            rows[0]?.country_id !== "209" ? (
               <>
                 <p>
                   Address: <b>{rows[0]?.formatted_address} </b>

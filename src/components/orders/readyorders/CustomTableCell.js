@@ -42,7 +42,7 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
           defaultMessage:
             row[name]?.replace("_", " ") === "awaiting"
               ? "APPROVED"
-              : row[name].replace("_", " "),
+              : row[name]?.replace("_", " "),
         })
       ) : name === "explanation" ? (
         row[name]
