@@ -152,7 +152,7 @@ function AllOrdersTable() {
 
   const userRole = user?.role || localRole;
 
-  const getOrdersInProgress = useCallback(() => {
+  const getOrdersInProgress = useCallback((bypass) => {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
         const l = localStorage.getItem(
@@ -160,7 +160,7 @@ function AllOrdersTable() {
             PAGE_ROW_NUMBER || 25
           }-0-last_updated`
         );
-        if (response.data.last_updated !== l) {
+        if (response.data.last_updated !== l || bypass) {
           getData(
             store === "shop1"
               ? `${BASE_URL}etsy/orders/?status=in_progress&limit=${
@@ -578,7 +578,7 @@ function AllOrdersTable() {
         console.log("response", response);
       })
       .finally(() => {
-        getLastUpdateDate();
+        getOrdersInProgress(true);
       });
   };
 
