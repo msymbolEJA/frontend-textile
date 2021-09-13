@@ -791,7 +791,7 @@ function AllOrdersTable() {
                 <>
                   <ShopifyColumns />
                 </>
-              ) : NON_SKU === "true" ? (
+              ) : NON_SKU ? (
                 <>
                   <StyledTableCell align="center">
                     <FormattedMessage id="type" defaultMessage="Type" />
@@ -896,7 +896,7 @@ function AllOrdersTable() {
                     <>
                       <ShopifyColumnValues row={row} name={"sku"} />
                     </>
-                  ) : NON_SKU === "true" ? (
+                  ) : NON_SKU ? (
                     <>
                       <CustomTableCell {...{ row, name: "sku" }} />
                       <CustomTableCell
