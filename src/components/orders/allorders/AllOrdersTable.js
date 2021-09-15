@@ -477,7 +477,7 @@ function AllOrdersTable() {
     await globalSearch(
       `${BASE_URL}${
         store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-      }?search=${currentReceiptId}`
+      }?receipt_id=${currentReceiptId}`
     ).then((response) => {
       if (response?.data?.results?.length)
         siblings = response?.data?.results
