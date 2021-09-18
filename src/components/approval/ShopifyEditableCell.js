@@ -49,12 +49,12 @@ const useStyles = makeStyles(() => ({
 /* <TextareaAutosize aria-label="empty textarea" placeholder="Empty" />
  */
 
-const ShopifyEditableCell = ({ row, name, onChange, from }) => {
+const ShopifyEditableCell = ({ data, onChange, row }) => {
   const classes = useStyles();
-  const [content, setContent] = useState(row?.value);
-  //   row[name]
+  const [content, setContent] = useState(data?.value);
+  //   console.log("ROW", row?.mapping_data);
 
-  //   console.log("row", row);
+  //   console.log("data", data);
 
   const handleContentChange = useCallback((e) => {
     setContent(e.target.value);
@@ -63,33 +63,17 @@ const ShopifyEditableCell = ({ row, name, onChange, from }) => {
 
   const handleBlur = useCallback(
     (e) => {
-      //   onChange(e, row.id, name);
+      //   onChange(e, data.id, name);
+      console.log(data?.name, content);
     },
     // eslint-disable-next-line
-    [onChange, row]
+    [onChange, data]
   );
-
-  let expTableCell;
-
-  if (from === "all-orders") {
-    expTableCell = classes.allOrdersTableCell;
-  } else if (name === "explanation") {
-    expTableCell = classes.explanationTableCell;
-  } else {
-    expTableCell = classes.tableCell;
-  }
-
-  const isDanger =
-    name === "supplier" ||
-    name === "variation_1_name" ||
-    name === "variation_2_name" ||
-    name === "variation_1_value" ||
-    name === "variation_2_value";
 
   return (
     <TableCell
       align="center"
-      className={expTableCell}
+      className={classes.tableCell}
       onClick={(e) => e.stopPropagation()}
       style={{}}
     >
@@ -104,18 +88,22 @@ const ShopifyEditableCell = ({ row, name, onChange, from }) => {
             alignItems: "center",
           }}
         >
-          {row?.name
+          {data?.name
             ?.replace("(See the font list in the description)", "")
             ?.replace("Enter the name or the word here", "Name/Word")
             ?.replace("(Height will be adjusted accordingly)", "")
             ?.replace("UPLOAD THE HANDWRITING IMAGE HERE:", "Image")}
         </div>
-        {row?.value.includes("http") ? (
+        {data?.value.includes("http") ? (
           <>
-            <a href={row?.value} target="_blank" rel="noreferrer">
+            <a href={data?.value} target="_blank" rel="noreferrer">
               View
             </a>
-            <img src={row?.value} style={{ width: "100%", height: "auto" }} />
+            <img
+              src={data?.value}
+              style={{ width: "100%", height: "auto" }}
+              alt="handwriting"
+            />
           </>
         ) : (
           <ContentEditable

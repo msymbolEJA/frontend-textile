@@ -60,7 +60,7 @@ export const ShopifyColumnsValues = ({ row, onChange, name1 }) => {
         }}
       />
       {row?.mapping_data?.map((each, index) => {
-        return <ShopifyEditableCell key={index} {...{ row: each }} />;
+        return <ShopifyEditableCell key={index} {...{ data: each, row }} />;
       })}
       {/* {row?.mapping_data?.map((each, index) => {
         return (
