@@ -5,6 +5,7 @@ import TableCellHeader from "./TableCellHeader";
 
 import { makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
+import ShopifyEditableCell from "./ShopifyEditableCell";
 
 const ShopifyColumnsHeaders = ({
   setOrderBy,
@@ -59,6 +60,9 @@ export const ShopifyColumnsValues = ({ row, onChange, name1 }) => {
         }}
       />
       {row?.mapping_data?.map((each, index) => {
+        return <ShopifyEditableCell key={index} {...{ row: each }} />;
+      })}
+      {/* {row?.mapping_data?.map((each, index) => {
         return (
           <ConstantTableCell
             key={index}
@@ -68,7 +72,7 @@ export const ShopifyColumnsValues = ({ row, onChange, name1 }) => {
             }}
           />
         );
-      })}
+      })} */}
       {dummyArray?.map?.((each, index) => (
         <ConstantTableCell
           key={index}
