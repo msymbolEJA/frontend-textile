@@ -202,6 +202,32 @@ function AllOrdersTable() {
       .finally(() => {});
   }, []);
 
+  const getLastUpdateDate = () => {
+    getData(
+      `${BASE_URL}${
+        store === "shop1"
+          ? "etsy/get_mapping_update_date/"
+          : "shopify/get_mapping_update_date/"
+      }`
+    )
+      .then((response) => {
+        const l = localStorage.getItem(
+          `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
+        );
+        if (response.data.last_updated !== l) {
+          getListFunc();
+          localStorage.setItem(
+            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+            response.data.last_updated
+          );
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      })
+      .finally(() => {});
+  };
+
   const getListFunc = useCallback(() => {
     setloading(true);
     if (!searchWord) {
@@ -253,32 +279,6 @@ function AllOrdersTable() {
         });
     }
   }, [currentBarcodeList, filters, searchWord, selectedTag, store]);
-
-  const getLastUpdateDate = () => {
-    getData(
-      `${BASE_URL}${
-        store === "shop1"
-          ? "etsy/get_mapping_update_date/"
-          : "shopify/get_mapping_update_date/"
-      }`
-    )
-      .then((response) => {
-        const l = localStorage.getItem(
-          `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
-        );
-        if (response.data.last_updated !== l) {
-          getListFunc();
-          localStorage.setItem(
-            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
-            response.data.last_updated
-          );
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      })
-      .finally(() => {});
-  };
 
   useEffect(() => {
     getLastUpdateDate();
