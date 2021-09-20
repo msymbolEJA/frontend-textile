@@ -37,6 +37,7 @@ const CustomButtonGroup = ({
   handleTagChange,
   tagsData,
   searchHandler,
+  loading,
 }) => {
   const classes = useStyles();
   const { formatMessage } = useIntl();
@@ -51,6 +52,7 @@ const CustomButtonGroup = ({
             id={tag}
             key={tag}
             checked={selectedTag.indexOf(tag) > -1}
+            disabled={loading}
             onClick={(e) => handleTagChange(e)}
             variant="contained"
             style={{
@@ -88,7 +90,9 @@ const CustomButtonGroup = ({
             id="outlined-adornment-password"
             type="text"
             defaultValue=""
-            onKeyDown={(e) => searchHandler(myInputRef.current.childNodes[0].value, e.keyCode)}
+            onKeyDown={(e) =>
+              searchHandler(myInputRef.current.childNodes[0].value, e.keyCode)
+            }
             ref={myInputRef}
             style={{
               marginTop: "0.25rem",
@@ -99,7 +103,9 @@ const CustomButtonGroup = ({
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
-                  onClick={() => searchHandler(myInputRef.current.childNodes[0].value, 13)}
+                  onClick={() =>
+                    searchHandler(myInputRef.current.childNodes[0].value, 13)
+                  }
                   edge="end"
                 >
                   <SearchIcon />
@@ -112,6 +118,7 @@ const CustomButtonGroup = ({
 
         <Button
           className={classes.btn}
+          disabled={loading}
           id="all_orders"
           key="all_orders"
           onClick={(e) => handleTagChange(e)}
@@ -125,6 +132,7 @@ const CustomButtonGroup = ({
         </Button>
         <Button
           className={classes.btn}
+          disabled={loading}
           id="repeat"
           key="repeat"
           onClick={(e) => handleTagChange(e)}
@@ -138,6 +146,7 @@ const CustomButtonGroup = ({
         </Button>
         <Button
           className={classes.btn}
+          disabled={loading}
           id="followUp"
           key="followUp"
           onClick={(e) => handleTagChange(e)}

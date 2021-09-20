@@ -709,6 +709,7 @@ function App({ history }) {
         handleTagChange={handleTagChange}
         tagsData={tagsData}
         searchHandler={searchHandler}
+        loading={loading}
       />
       <div
         style={{
