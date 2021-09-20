@@ -47,6 +47,7 @@ const CustomButtonGroup = ({
   tagsData,
   nonAdminTagsData,
   searchHandler,
+  loading,
 }) => {
   const classes = useStyles();
   const { formatMessage } = useIntl();
@@ -71,6 +72,7 @@ const CustomButtonGroup = ({
       {statusTags.map((tag) => (
         <Button
           className={classes.btn}
+          disabled={loading}
           id={tag}
           key={tag}
           checked={selectedTag?.indexOf(tag) > -1}
@@ -98,6 +100,7 @@ const CustomButtonGroup = ({
       {NON_SKU && (
         <Button
           className={classes.btn}
+          disabled={loading}
           id="all_orders"
           checked={selectedTag?.indexOf("all_orders") > -1}
           onClick={(e) => {

@@ -1009,6 +1009,7 @@ function AllOrdersTable() {
           tagsData={tagsData}
           nonAdminTagsData={nonAdminTagsData}
           searchHandler={searchHandler}
+          loading={loading}
         />
         {selectedTag === "ready" || selectedTag === "shipped" ? (
           <div className={classes.barcodeBox}>
