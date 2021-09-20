@@ -201,13 +201,7 @@ export default function CustomizedTables() {
         </TableHead>
 
         <TableBody>
-          {cargoList === undefined ? (
-            <tr>
-              <td colSpan="7" style={{ display: "table-cell" }}>
-                <CircularProgress style={{ marginTop: "1rem" }} />
-              </td>
-            </tr>
-          ) : cargoList?.length === 0 ? (
+          {cargoList === undefined ? null : cargoList?.length === 0 ? (
             <tr>
               <td colSpan="7">No Item!</td>
             </tr>

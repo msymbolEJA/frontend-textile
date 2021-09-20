@@ -959,15 +959,7 @@ function AllOrdersTable() {
                 </StyledTableRow>
               ))}
             </TableBody>
-          ) : !loading ? null : (
-            <tbody>
-              <tr>
-                <td colSpan="15" style={{ display: "table-cell" }}>
-                  <CircularProgress style={{ marginTop: "1rem" }} />
-                </td>
-              </tr>
-            </tbody>
-          )}
+          ) : null}
           <TableFooter>
             <TableRow>
               <td>

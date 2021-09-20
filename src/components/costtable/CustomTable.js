@@ -83,22 +83,16 @@ export default function StickyHeadTable({ title, tableId }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data === null ? (
-              <tr>
-                <td colSpan="7" style={{ display: "table-cell" }}>
-                  <CircularProgress style={{ marginTop: "1rem" }} />
-                </td>
-              </tr>
-            ) : (
-              data?.map((row, index) => (
-                <CustomTableBody
-                  row={row}
-                  key={index}
-                  getListFunc={getListFunc}
-                  tableId={tableId}
-                />
-              ))
-            )}
+            {data === null
+              ? null
+              : data?.map((row, index) => (
+                  <CustomTableBody
+                    row={row}
+                    key={index}
+                    getListFunc={getListFunc}
+                    tableId={tableId}
+                  />
+                ))}
           </TableBody>
         </Table>
       </TableContainer>

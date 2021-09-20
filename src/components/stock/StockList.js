@@ -369,13 +369,7 @@ const StockList = () => {
           </TableHead>
 
           <TableBody>
-            {!isLoaded ? (
-              <tr>
-                <td colSpan="7" style={{ display: "table-cell" }}>
-                  <CircularProgress style={{ marginTop: "1rem" }} />
-                </td>
-              </tr>
-            ) : !stockListArr?.length ? (
+            {!isLoaded ? null : !stockListArr?.length ? (
               <tr>
                 <td colSpan="7">No Item!</td>
               </tr>
