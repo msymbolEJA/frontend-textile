@@ -175,9 +175,7 @@ function AllOrdersTable() {
                 ? response?.data?.results
                 : [];
               localStorage.setItem(
-                `${localStoragePrefix}-Belky-in_progress-${
-                  PAGE_ROW_NUMBER || 25
-                }-0`,
+                `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 25}-0`,
                 JSON.stringify(o)
               );
               localStorage.setItem(
@@ -248,7 +246,11 @@ function AllOrdersTable() {
           );
           console.log("error", error);
         })
-        .finally(() => setloading(false));
+        .finally(() => {
+          getLastUpdateDate();
+          getOrdersInProgress(true);
+          setloading(false);
+        });
     }
   }, [currentBarcodeList, filters, searchWord, selectedTag, store]);
 
@@ -578,6 +580,7 @@ function AllOrdersTable() {
         console.log("response", response);
       })
       .finally(() => {
+        getLastUpdateDate();
         getOrdersInProgress(true);
       });
   };
