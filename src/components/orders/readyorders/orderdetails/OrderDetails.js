@@ -89,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
 const OrderDetails = ({ match }) => {
   const [rows, setRows] = useState([]);
   const { user, store } = useContext(AppContext);
+  const localUser = localStorage.getItem("localUser");
 
   const [logs, setLogs] = useState([]);
   const [isPdfExist, setIsPdfExist] = useState(false);
@@ -323,6 +324,12 @@ const OrderDetails = ({ match }) => {
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">
+                  <FormattedMessage
+                    id="giftMessage"
+                    defaultMessage="Gift Message"
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   <FormattedMessage id="note" defaultMessage="Note" />
                 </StyledTableCell>
               </TableRow>
@@ -358,6 +365,7 @@ const OrderDetails = ({ match }) => {
                       </>
                     )}
                     <CustomTableCell {...{ row, name: "explanation" }} />
+                    <CustomTableCell {...{ row, name: "gift_message" }} />
                     <CustomTableCell {...{ row, name: "note" }} />
                   </StyledTableRow>
                 ))
@@ -374,9 +382,11 @@ const OrderDetails = ({ match }) => {
             </TableBody>
           </Table>
           <div style={{ marginTop: "2rem" }}>
-            {/* // SILVERISTIC daha sonra eklenecek. Adresleri sadece ASYA görecek. */}
             {process.env.REACT_APP_STORE_NAME === "Linen Serisi" &&
-            rows[0]?.country_id !== "209" ? (
+            rows[0]?.country_id !== "209" &&
+            (userRole === "admin" ||
+              userRole === "shop_manager" ||
+              localUser === "Kalanima") ? (
               <>
                 <p>
                   Address: <b>{rows[0]?.formatted_address} </b>
