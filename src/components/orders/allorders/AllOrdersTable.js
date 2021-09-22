@@ -152,7 +152,7 @@ function AllOrdersTable() {
 
   const userRole = user?.role || localRole;
 
-  const getOrdersInProgress = useCallback((bypass) => {
+  const getOrdersInProgress = (bypass) => {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
         const l = localStorage.getItem(
@@ -192,7 +192,7 @@ function AllOrdersTable() {
         console.log("error", error);
       })
       .finally(() => {});
-  }, []);
+  };
 
   const getLastUpdateDate = () => {
     getData(
@@ -220,7 +220,7 @@ function AllOrdersTable() {
       .finally(() => {});
   };
 
-  const getListFunc = useCallback(() => {
+  const getListFunc = () => {
     setloading(true);
     if (!searchWord) {
       if (filters?.status === "shipped" || filters?.status === "ready") {
@@ -266,45 +266,47 @@ function AllOrdersTable() {
         })
         .finally(() => {
           getLastUpdateDate();
-          getOrdersInProgress(true);
+          getOrdersInProgress();
           setloading(false);
         });
     }
-  }, [currentBarcodeList, filters, searchWord, selectedTag, store]);
+  };
 
   useEffect(() => {
     getLastUpdateDate();
     if (filters?.status === "awaiting") getAllPdfFunc();
-    if (filters.status === "ready") getOrdersInProgress();
+    if (filters?.status === "ready") getOrdersInProgress();
     const tmp =
       JSON.parse(
         localStorage.getItem(
           `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`
         )
       ) ?? [];
-    if (!tmp.length) getListFunc();
-    else {
-      let resultFilteredByCountry = null;
-      if (countryFilter !== "all")
-        resultFilteredByCountry = tmp.filter((item) =>
-          countryFilter === "usa"
-            ? item.country_id === "209"
-            : item.country_id !== "209"
-        );
+    if (!tmp?.length) {
+      getListFunc();
+    } else {
+      const resultFilteredByCountry =
+        countryFilter === "all"
+          ? tmp
+          : tmp.filter((item) =>
+              countryFilter === "usa"
+                ? item.country_id === "209"
+                : item.country_id !== "209"
+            );
 
-      let ft =
+      const ft =
         filters?.status === "in_progress"
-          ? tmp.filter(
+          ? resultFilteredByCountry.filter(
               (item) => !currentBarcodeList.includes(item.id.toString())
             )
-          : tmp;
-      setRows(resultFilteredByCountry ?? ft);
+          : resultFilteredByCountry;
+      setRows(ft);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.ordering,
     filters.is_followup,
-    filters.status,
+    selectedTag,
     filters.is_repeat,
     filters.limit,
     filters.offset,
@@ -585,49 +587,45 @@ function AllOrdersTable() {
     setDialogId(false);
   };
 
-  const handleScan = useCallback((data) => {
+  const handleScan = (data) => {
     setBarcodeInput(data);
     barcodeInputRef.current.value = data;
-  }, []);
+  };
 
   const handleBarcodeInputKeyDown = (e) => {
     if (e.keyCode === 13) setBarcodeInput(barcodeInputRef.current.value);
   };
 
-  const handleRowClick = useCallback(
-    (id) => {
-      history.push({
-        pathname: `/order-details/${id}`,
-      });
-    },
-    [history]
-  );
+  const handleRowClick = (id) => {
+    history.push({
+      pathname: `/order-details/${id}`,
+    });
+  };
 
-  const handleRowChange = useCallback(
-    (id, data) => {
-      if (!data) return;
-      if (
-        rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
-        Object.values(data)[0]
-      )
-        return;
-      putData(
-        `${BASE_URL}${
-          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-        }${id}/`,
-        data
-      )
-        .then((response) => {})
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => getListFunc());
-    },
-    [getListFunc, rows]
-  );
+  const handleRowChange = (id, data) => {
+    if (!data) return;
+    if (
+      rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
+      Object.values(data)[0]
+    )
+      return;
+    putData(
+      `${BASE_URL}${
+        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+      }${id}/`,
+      data
+    )
+      .then((response) => {})
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        getListFunc();
+      });
+  };
 
   const onChange = (e, id, name) => {
-    if (!rows.length || !name || !e?.target?.innerText) return;
+    if (!rows?.length || !name || !e?.target?.innerText) return;
     if (
       rows?.filter((item) => item.id === name)?.[0]?.[name] ===
       e.target.innerText
@@ -643,60 +641,52 @@ function AllOrdersTable() {
     // eslint-disable-next-line
   }, [page, searchWord]);
 
-  const globalSearchFunc = useCallback(
-    (searchWord) => {
-      globalSearch(
-        // `${BASE_URL_MAPPING}?search=${searchWord}&limit=${25}&offset=${
-        `${BASE_URL}${
-          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-        }?search=${searchWord}&limit=${25}&offset=${page * 25}`
-      )
-        .then((response) => {
-          setRows(response.data.results);
-          setCount(response?.data?.count || 0);
-          //setList(response.data.results);
-          let newUrl = "";
-          newUrl += `limit=${25}&offset=${page * 25}`;
-          history.push(`/all-orders?&${searchWord}&${newUrl}`);
-        })
-        .catch((error) => {
-          console.log(error);
-          setRows([]);
-        })
-        .finally(() => setloading(false));
-    },
-    // eslint-disable-next-line
-    [page, searchWord]
-  );
+  const globalSearchFunc = (searchWord) => {
+    globalSearch(
+      // `${BASE_URL_MAPPING}?search=${searchWord}&limit=${25}&offset=${
+      `${BASE_URL}${
+        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+      }?search=${searchWord}&limit=${25}&offset=${page * 25}`
+    )
+      .then((response) => {
+        setRows(response.data.results);
+        setCount(response?.data?.count || 0);
+        //setList(response.data.results);
+        let newUrl = "";
+        newUrl += `limit=${25}&offset=${page * 25}`;
+        history.push(`/all-orders?&${searchWord}&${newUrl}`);
+      })
+      .catch((error) => {
+        console.log(error);
+        setRows([]);
+      })
+      .finally(() => setloading(false));
+  };
 
-  const searchHandler = useCallback(
-    (e, second) => {
-      if (e.keyCode === 13 && !(e.target.value === "")) {
-        //setRows(null);
-        //setSearchProg(!(e.target.value === ""));
+  const searchHandler = (e, second) => {
+    if (e.keyCode === 13 && !(e.target.value === "")) {
+      //setRows(null);
+      //setSearchProg(!(e.target.value === ""));
 
-        setSearchWord(e.target.value);
-        setPage(0);
-        // searchWord = ;
-        if (e.target.value) {
-          globalSearchFunc(e.target.value);
-        }
-      } else if (e === 1 && !(second === "")) {
-        setSearchWord(second);
-        setPage(0);
-        // searchWord = ;
-        if (second) {
-          globalSearchFunc(second);
-        }
+      setSearchWord(e.target.value);
+      setPage(0);
+      // searchWord = ;
+      if (e.target.value) {
+        globalSearchFunc(e.target.value);
       }
-    },
-    // eslint-disable-next-line
-    [page]
-  );
+    } else if (e === 1 && !(second === "")) {
+      setSearchWord(second);
+      setPage(0);
+      // searchWord = ;
+      if (second) {
+        globalSearchFunc(second);
+      }
+    }
+  };
 
-  const handleError = useCallback((err) => {
+  const handleError = (err) => {
     console.error(err);
-  }, []);
+  };
 
   const removeFunc = (id) => {
     changeOrderStatus(id, "in_progress");
@@ -1204,7 +1194,7 @@ function AllOrdersTable() {
                   }
                 />{" "}
                 :{" "}
-                {rows.length ===
+                {rows?.length ===
                 Number(
                   localStorage.getItem(
                     `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
@@ -1221,7 +1211,7 @@ function AllOrdersTable() {
               </>
             )}
           </div>
-          {filters.status === "shipped" ? (
+          {selectedTag === "shipped" ? (
             <>
               <Button
                 color="secondary"
