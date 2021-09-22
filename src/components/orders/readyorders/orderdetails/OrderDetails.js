@@ -386,7 +386,8 @@ const OrderDetails = ({ match }) => {
             rows[0]?.country_id !== "209" &&
             (userRole === "admin" ||
               userRole === "shop_manager" ||
-              localUser === "Kalanima") ? (
+              localUser === "Kalanima" ||
+              localUser === "Umraniye") ? (
               <>
                 <p>
                   Address: <b>{rows[0]?.formatted_address} </b>
