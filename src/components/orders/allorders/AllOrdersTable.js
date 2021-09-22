@@ -157,17 +157,17 @@ function AllOrdersTable() {
       .then((response) => {
         const l = localStorage.getItem(
           `${localStoragePrefix}-in_progress-${
-            PAGE_ROW_NUMBER || 25
+            PAGE_ROW_NUMBER || 2500
           }-0-last_updated`
         );
         if (response.data.last_updated !== l || bypass) {
           getData(
             store === "shop1"
               ? `${BASE_URL}etsy/orders/?status=in_progress&limit=${
-                  PAGE_ROW_NUMBER || 25
+                  PAGE_ROW_NUMBER || 2500
                 }&offset=0`
               : `${BASE_URL}shopify/orders/?status=in_progress&limit=${
-                  PAGE_ROW_NUMBER || 25
+                  PAGE_ROW_NUMBER || 2500
                 }&offset=0`
           )
             .then((response) => {
@@ -175,18 +175,20 @@ function AllOrdersTable() {
                 ? response?.data?.results
                 : [];
               localStorage.setItem(
-                `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 25}-0`,
+                `${localStoragePrefix}-in_progress-${
+                  PAGE_ROW_NUMBER || 2500
+                }-0`,
                 JSON.stringify(o)
               );
               localStorage.setItem(
                 `${localStoragePrefix}-in_progress-${
-                  PAGE_ROW_NUMBER || 25
+                  PAGE_ROW_NUMBER || 2500
                 }-0-last_updated`,
                 response.data.last_updated
               );
               localStorage.setItem(
                 `${localStoragePrefix}-in_progress-${
-                  PAGE_ROW_NUMBER || 25
+                  PAGE_ROW_NUMBER || 2500
                 }-0-count`,
                 response?.data?.results?.length
               );
