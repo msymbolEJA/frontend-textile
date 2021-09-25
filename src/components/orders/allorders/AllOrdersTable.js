@@ -1207,9 +1207,15 @@ function AllOrdersTable() {
                       localStorage.getItem(
                         `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
                       ) ?? 0
-                    }`}{" ("}
-                <FormattedMessage id="totalScanned" />:{" "}
-                {currentBarcodeList?.length || 0}{")"}
+                    }`}
+                {selectedTag === "in_progress" && (
+                  <>
+                    {" ("}
+                    <FormattedMessage id="totalScanned" />:{" "}
+                    {currentBarcodeList?.length || 0}
+                    {")"}{" "}
+                  </>
+                )}
               </>
             )}
           </div>
