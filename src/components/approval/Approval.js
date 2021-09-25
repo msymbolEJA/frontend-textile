@@ -732,13 +732,16 @@ function App({ history }) {
           <FormattedMessage id="updating" />
         ) : (
           <>
-            <FormattedMessage id="total" defaultMessage="Total" />{" "}
-            <FormattedMessage
-              id={filters?.status || "result"}
-              defaultMessage={
-                filters?.status?.toUpperCase() || "Result".toUpperCase()
-              }
-            />{" "}
+            {filters?.search ? (
+              <>
+                <FormattedMessage id="searchResult" />
+              </>
+            ) : (
+              <>
+                <FormattedMessage id="total" defaultMessage="Total" />{" "}
+                <FormattedMessage id={filters?.status || "result"} />
+              </>
+            )}{" "}
             :{" "}
             {rows.length ===
             Number(

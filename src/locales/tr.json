@@ -167,5 +167,7 @@
   "startDate": "Başlangıç Tarihi",
   "endDate": "Bitiş Tarihi",
   "getTypes": "Tipleri Getir",
-  "getColors": "Renkleri Getir"
+  "getColors": "Renkleri Getir",
+  "searchResult": "Arama Sonucu"
+
 }
