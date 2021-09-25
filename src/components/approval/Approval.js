@@ -20,6 +20,7 @@ import {
   Repeat as RepeatIcon,
   // ThumbUpAlt as ThumbUpAltIcon,
 } from "@material-ui/icons";
+import { statusData } from "../../helper/Constants";
 
 import { putData, getData, globalSearch } from "../../helper/PostData";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
@@ -307,6 +308,17 @@ function App({ history }) {
 
   const onSelectChange = (e, row) => {
     e.preventDefault();
+    const a = statusData.indexOf(row["status"]);
+    const b = statusData.indexOf(e.target.value);
+    if (b - a > 1) {
+      const resp = window?.confirm(
+        `Beklenmedik durum değişikliği tespit edildi. 
+      \n ${row["status"]} --> ${e.target.value}
+      \nDevam etmek isteğinize emin misiniz `
+      );
+      if (resp !== true) return;
+    }
+
     const value = e.target.value;
     const name = e.target.name;
     const { id } = row;
