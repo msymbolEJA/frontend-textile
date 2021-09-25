@@ -207,11 +207,11 @@ function AllOrdersTable() {
           `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
         );
         if (response.data.last_updated !== l) {
-          getListFunc();
           localStorage.setItem(
             `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
             response.data.last_updated
           );
+          if (!filters?.search) getListFunc();
         }
       })
       .catch((error) => {
@@ -273,6 +273,7 @@ function AllOrdersTable() {
   };
 
   useEffect(() => {
+    if (filters?.search) return;
     getLastUpdateDate();
     if (filters?.status === "awaiting") getAllPdfFunc();
     if (filters?.status === "ready") getOrdersInProgress();
@@ -306,7 +307,7 @@ function AllOrdersTable() {
   }, [
     filters.ordering,
     filters.is_followup,
-    selectedTag,
+    filters.search,
     filters.is_repeat,
     filters.limit,
     filters.offset,
@@ -318,7 +319,7 @@ function AllOrdersTable() {
   ]);
 
   useEffect(() => {
-    if (filters?.status) setSelectedTag(filters?.status);
+    setSelectedTag(filters?.status);
   }, [filters?.status]);
 
   const handleChangePage = (event, newPage) => {
@@ -620,7 +621,13 @@ function AllOrdersTable() {
         console.log(error);
       })
       .finally(() => {
-        getListFunc();
+        if (filters?.search) {
+          history.push(
+            `/all-orders?search=${filters?.search}&limit=${25}&offset=${0}`
+          );
+        } else getListFunc();
+        setloading(false);
+        setRefreshTable(!refreshTable);
       });
   };
 
@@ -635,52 +642,27 @@ function AllOrdersTable() {
   };
 
   useEffect(() => {
-    if (searchWord) {
-      globalSearchFunc(searchWord);
+    if (filters?.search) {
+      globalSearch(
+        // `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
+        `${BASE_URL}${
+          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+        }?search=${filters?.search}&limit=${25}&offset=${page * 25}`
+      )
+        .then((response) => {
+          setRows(response.data.results);
+          setCount(response?.data?.count || 0);
+        })
+        .catch((error) => {
+          console.log(error);
+          setRows([]);
+        });
     }
-    // eslint-disable-next-line
-  }, [page, searchWord]);
+  }, [filters?.search, refreshTable]);
 
-  const globalSearchFunc = (searchWord) => {
-    globalSearch(
-      // `${BASE_URL_MAPPING}?search=${searchWord}&limit=${25}&offset=${
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-      }?search=${searchWord}&limit=${25}&offset=${page * 25}`
-    )
-      .then((response) => {
-        setRows(response.data.results);
-        setCount(response?.data?.count || 0);
-        //setList(response.data.results);
-        let newUrl = "";
-        newUrl += `limit=${25}&offset=${page * 25}`;
-        history.push(`/all-orders?&${searchWord}&${newUrl}`);
-      })
-      .catch((error) => {
-        console.log(error);
-        setRows([]);
-      })
-      .finally(() => setloading(false));
-  };
-
-  const searchHandler = (e, second) => {
-    if (e.keyCode === 13 && !(e.target.value === "")) {
-      //setRows(null);
-      //setSearchProg(!(e.target.value === ""));
-
-      setSearchWord(e.target.value);
-      setPage(0);
-      // searchWord = ;
-      if (e.target.value) {
-        globalSearchFunc(e.target.value);
-      }
-    } else if (e === 1 && !(second === "")) {
-      setSearchWord(second);
-      setPage(0);
-      // searchWord = ;
-      if (second) {
-        globalSearchFunc(second);
-      }
+  const searchHandler = (value, keyCode) => {
+    if (keyCode === 13 && value) {
+      history.push(`/all-orders?search=${value}&limit=${25}&offset=${0}`);
     }
   };
 
@@ -1203,11 +1185,17 @@ function AllOrdersTable() {
                   ? localStorage.getItem(
                       `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
                     ) ?? 0
-                  : `${rows.length}/${
-                      localStorage.getItem(
-                        `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
-                      ) ?? 0
-                    }`}
+                  : `${rows.length} 
+                    ${
+                      selectedTag
+                        ? ` /${
+                            localStorage.getItem(
+                              `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                            ) ?? 0
+                          }`
+                        : ""
+                    }
+                      `}
                 {selectedTag === "in_progress" && (
                   <>
                     {" ("}

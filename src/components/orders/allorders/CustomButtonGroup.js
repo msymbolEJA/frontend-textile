@@ -57,10 +57,6 @@ const CustomButtonGroup = ({
 
   let statusTags = isAdmin ? tagsData : nonAdminTagsData;
 
-  const searcMyhHandler = (e) => {
-    searchHandler(1, myInputRef.current.childNodes[0].value);
-  };
-
   let localRole = localStorage.getItem("localRole");
 
   if (localRole === "workshop_designer") {
@@ -136,7 +132,9 @@ const CustomButtonGroup = ({
           type="text"
           defaultValue=""
           ref={myInputRef}
-          onKeyDown={(e) => searchHandler(e)}
+          onKeyDown={(e) =>
+            searchHandler(myInputRef.current.childNodes[0].value, e.keyCode)
+          }
           style={{
             marginTop: "0.3rem",
             marginLeft: "0.3rem",
@@ -147,7 +145,9 @@ const CustomButtonGroup = ({
             <InputAdornment position="end">
               <IconButton
                 aria-label="toggle password visibility"
-                onClick={(e) => searcMyhHandler(e)}
+                onClick={() =>
+                  searchHandler(myInputRef.current.childNodes[0].value, 13)
+                }
                 edge="end"
               >
                 <SearchIcon />
