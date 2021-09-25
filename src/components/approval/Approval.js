@@ -91,6 +91,10 @@ const useStyles = makeStyles((theme) => ({
     // height: "500px",
     marginTop: "1rem",
   },
+  disabled: {
+    marginTop: "1rem",
+    pointerEvents: "none",
+  },
   selectTableCell: {
     width: 60,
   },
@@ -277,34 +281,34 @@ function App({ history }) {
     history.push(history.location.pathname + "?" + currentUrlParams.toString());
   };
 
-  const handleRowChange = useCallback(
-    (id, data) => {
-      if (!Object.keys(data)[0]) return;
-      if (
-        rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
-        Object.values(data)[0]
-      )
-        return;
-      putData(
-        `${BASE_URL}${
-          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-        }${id}/`,
-        data
-      )
-        .then((response) => {})
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          if (filters?.search) {
-            history.push(
-              `/approval?search=${filters?.search}&limit=${25}&offset=${0}`
-            );
-          } else getListFunc();
-        });
-    },
-    [filters?.search, getListFunc, rows]
-  );
+  const handleRowChange = (id, data) => {
+    if (!Object.keys(data)[0]) return;
+
+    if (
+      rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
+      Object.values(data)[0]
+    )
+      return;
+    setloading(true);
+    putData(
+      `${BASE_URL}${
+        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+      }${id}/`,
+      data
+    )
+      .then((response) => {})
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        if (filters?.search) {
+          history.push(
+            `/approval?search=${filters?.search}&limit=${25}&offset=${0}`
+          );
+        } else getListFunc();
+        setloading(false);
+      });
+  };
 
   const onSelectChange = (e, row) => {
     e.preventDefault();
@@ -609,7 +613,7 @@ function App({ history }) {
       handleRowChange(repeatMenuData.rowId, repeatMenuData);
     }
     handleRepeatMenuClose();
-  }, [handleRowChange, repeatMenuData, handleRepeatMenuClose]);
+  }, [repeatMenuData, handleRepeatMenuClose]);
 
   const handleRepeatMenuItemClick = useCallback(
     (row, reason) => () => {
@@ -763,7 +767,7 @@ function App({ history }) {
       </div>
       <TableContainer className={classes.container}>
         <Table
-          className={classes.table}
+          className={loading ? classes.disabled : classes.table}
           stickyHeader
           aria-label="caption table"
         >
