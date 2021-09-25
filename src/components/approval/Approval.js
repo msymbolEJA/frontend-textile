@@ -143,8 +143,9 @@ function App({ history }) {
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
   const [loading, setloading] = useState(false);
   const [repeatMenuData, setRepeatMenuData] = useState({});
+  const [refreshTable, setRefreshTable] = useState(false);
 
-  const getListFunc = useCallback(() => {
+  const getListFunc = () => {
     setloading(true);
     getData(
       `${BASE_URL}${store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"}?${
@@ -177,16 +178,7 @@ function App({ history }) {
         console.log("error", error);
       })
       .finally(() => setloading(false));
-  }, [
-    filters?.is_followup,
-    filters?.is_repeat,
-    filters?.limit,
-    filters?.offset,
-    filters?.ordering,
-    filters?.status,
-    selectedTag,
-    store,
-  ]);
+  };
 
   // console.log("store", store);
 
@@ -244,7 +236,7 @@ function App({ history }) {
   ]);
 
   useEffect(() => {
-    if (filters?.status) setSelectedTag(filters?.status);
+    setSelectedTag(filters?.status);
   }, [filters?.status]);
 
   const handleRequestSort = (event, property) => {
@@ -307,13 +299,14 @@ function App({ history }) {
           );
         } else getListFunc();
         setloading(false);
+        setRefreshTable(!refreshTable);
       });
   };
 
   const onSelectChange = (e, row) => {
     e.preventDefault();
-    const a = statusData.indexOf(row["status"]);
-    const b = statusData.indexOf(e.target.value);
+    const a = statusData?.indexOf(row["status"]);
+    const b = statusData?.indexOf(e.target.value);
     if (b - a > 1) {
       const resp = window?.confirm(
         `Beklenmedik durum değişikliği tespit edildi. 
@@ -348,7 +341,6 @@ function App({ history }) {
       let data = { [name]: value };
       handleRowChange(id, data);
     }
-    getListFunc();
   };
 
   const uploadFile = (e, id, imgFile) => {
@@ -410,10 +402,10 @@ function App({ history }) {
     };
   };
 
-  const selectId = useCallback((event, id) => {
+  const selectId = (event, id) => {
     event.stopPropagation();
     setSelectedRowId(id);
-  }, []);
+  };
 
   const handleApproveSelected = () => {
     // postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
@@ -519,7 +511,7 @@ function App({ history }) {
   };
 
   const handleCheckBoxClick = (event, id, row) => {
-    const selectedIndex = selected.indexOf(id);
+    const selectedIndex = selected?.indexOf(id);
     let newSelected = [];
     if (store === "shop2") {
       // Shopify check for specific product - dont exist now
@@ -585,7 +577,7 @@ function App({ history }) {
           setRows([]);
         });
     }
-  }, [filters?.search]);
+  }, [filters?.search, refreshTable]);
 
   const searchHandler = (value, keyCode) => {
     if (keyCode === 13 && value) {
@@ -757,11 +749,17 @@ function App({ history }) {
               ? localStorage.getItem(
                   `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
                 ) ?? 0
-              : `${rows.length}/${
-                  localStorage.getItem(
-                    `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
-                  ) ?? 0
-                }`}
+              : `${rows.length} 
+              ${
+                selectedTag
+                  ? ` /${
+                      localStorage.getItem(
+                        `${localstoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                      ) ?? 0
+                    }`
+                  : ""
+              }
+                `}
           </>
         )}
       </div>
@@ -995,7 +993,7 @@ function App({ history }) {
           {rows.length ? (
             <TableBody>
               {rows?.map((row, index) => {
-                const isItemSelected = selected.indexOf(row.id) !== -1;
+                const isItemSelected = selected?.indexOf(row.id) !== -1;
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                   <StyledTableRow
