@@ -51,7 +51,7 @@ const CustomButtonGroup = ({
             className={classes.btn}
             id={tag}
             key={tag}
-            checked={selectedTag.indexOf(tag) > -1}
+            checked={selectedTag?.indexOf(tag) > -1}
             disabled={loading}
             onClick={(e) => handleTagChange(e)}
             variant="contained"
