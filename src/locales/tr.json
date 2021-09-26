@@ -161,5 +161,9 @@
   "variation1": "Varyasyon1",
   "variation2": "Varyasyon2",
   "variation3": "Varyasyon3",
-  "variation4": "Varyasyon4"
+  "variation4": "Varyasyon4",
+  "orderCount": "Sipariş Sayısı",
+  "colorCount": "Renk Sayısı",
+  "startDate": "Başlangıç Tarihi",
+  "endDate": "Bitiş Tarihi"
 }

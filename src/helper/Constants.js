@@ -124,6 +124,21 @@ export const FONTS = {
 };
 
 export const bestSellerColumns = [
-  { id: 1, name: "Type", objKey: "type" },
-  { id: 2, name: "Order Count", objKey: "order_count" },
+  { id: 1, name: "Type", objKey: "type", translate: "type" },
+  {
+    id: 2,
+    name: "Order Count",
+    objKey: "order_count",
+    translate: "orderCount",
+  },
+];
+
+export const colorNumberColumns = [
+  { id: 1, name: "Type", objKey: "color", translate: "type" },
+  {
+    id: 2,
+    name: "Color Count",
+    objKey: "color_count",
+    translate: "colorCount",
+  },
 ];
