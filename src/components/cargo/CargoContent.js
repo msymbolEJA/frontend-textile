@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { AppContext } from "../../context/Context";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -45,17 +46,20 @@ const useStyles = makeStyles({
 });
 
 export default function CustomizedTables({ match }) {
+  const { store } = useContext(AppContext);
   const classes = useStyles();
   const [cargoList, setCargoList] = useState([]);
 
   useEffect(() => {
     if (match?.params?.id)
-      getData(`${BASE_URL}etsy/shipment/?id=${match.params.id}`).then(
-        (response) => {
-          setCargoList(response.data);
-        }
-      );
-  }, [match?.params?.id]);
+      getData(
+        `${BASE_URL}${store === "shop1" ? "etsy" : "shopify"}/shipment/?id=${
+          match.params.id
+        }`
+      ).then((response) => {
+        setCargoList(response.data);
+      });
+  }, [match?.params?.id, store]);
 
   return (
     <TableContainer component={Paper} className={classes.root}>

@@ -66,10 +66,14 @@ export default function CustomizedTables() {
   const [cargoList, setCargoList] = useState();
   const history = useHistory();
   const [getSupplier, setGetSupplier] = useState("");
-  const { isAdmin } = useContext(AppContext);
+  const { isAdmin, store } = useContext(AppContext);
 
   const getListFunc = () => {
-    getData(`${BASE_URL}etsy/cargo_list/${getSupplier}`).then((response) => {
+    getData(
+      `${BASE_URL}${
+        store === "shop1" ? "etsy" : "shopify"
+      }/cargo_list/${getSupplier}`
+    ).then((response) => {
       let dataObj = response.data;
       const formattedData = dataObj
         ? Object.keys(dataObj).map((key) => {
@@ -87,7 +91,7 @@ export default function CustomizedTables() {
   useEffect(() => {
     getListFunc();
     // eslint-disable-next-line
-  }, [getSupplier]);
+  }, [getSupplier, store]);
 
   const tnFunc = (tn, carrier) => {
     if (carrier.toUpperCase().includes("DHL")) {
@@ -114,7 +118,10 @@ export default function CustomizedTables() {
   const handleRowChange = useCallback(
     (id, data) => {
       if (!data) return;
-      putData(`${BASE_URL}etsy/shipments/${id}/`, data)
+      putData(
+        `${BASE_URL}${store === "shop1" ? "etsy" : "shopify"}/shipments/${id}/`,
+        data
+      )
         .then((response) => {
           // console.log(response);
         })

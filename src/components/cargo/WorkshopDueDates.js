@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import { getData } from "../../helper/PostData";
 import { FormattedMessage } from "react-intl";
+import { AppContext } from "../../context/Context";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -55,12 +56,15 @@ const useStyles = makeStyles((theme) => ({
 export default function CustomizedTables() {
   const classes = useStyles();
   const [cargoList, setCargoList] = useState({});
+  const { store } = useContext(AppContext);
 
   useEffect(() => {
-    getData(`${BASE_URL}etsy/due_dates/`).then((response) => {
+    getData(
+      `${BASE_URL}${store === "shop1" ? "etsy" : "shopify"}/due_dates/`
+    ).then((response) => {
       setCargoList(response.data);
     });
-  }, []);
+  }, [store]);
 
   return (
     <Grid item xs={12} md={12} className={classes.root}>

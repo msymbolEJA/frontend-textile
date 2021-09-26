@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
+import { AppContext } from "../../context/Context";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormattedMessage } from "react-intl";
 import Paper from "@material-ui/core/Paper";
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "5px",
   },
   btn: {
-    width: "150px",
+    width: "175px",
     margin: "5px",
   },
   inputs: {
@@ -55,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DateGetter = () => {
+  const { store } = useContext(AppContext);
   const classes = useStyles();
   const beginnerDateRef = useRef(null);
   const endDateRef = useRef(null);
@@ -67,7 +69,13 @@ const DateGetter = () => {
   const getCost = () => {
     setBestSeller({ ...bestSeller, isLoading: true });
     getData(
-      `${BASE_URL}etsy/order_number_list/?creation_tsz__iexact=&creation_tsz__lte=${endDateRef.current.value}+00%3A00%3A00&creation_tsz__gte=${beginnerDateRef.current.value}+00%3A00%3A00`
+      `${BASE_URL}${
+        store === "shop1" ? "etsy" : "shopify"
+      }/order_number_list/?creation_tsz__iexact=&creation_tsz__lte=${
+        endDateRef.current.value
+      }+00%3A00%3A00&creation_tsz__gte=${
+        beginnerDateRef.current.value
+      }+00%3A00%3A00`
     ).then((response) => {
       setBestSeller({
         isLoading: false,
@@ -80,7 +88,13 @@ const DateGetter = () => {
   const getColors = () => {
     setBestSeller({ ...bestSeller, isLoading: true });
     getData(
-      `${BASE_URL}etsy/color_number_list//?creation_tsz__iexact=&creation_tsz__lte=${endDateRef.current.value}+00%3A00%3A00&creation_tsz__gte=${beginnerDateRef.current.value}+00%3A00%3A00`
+      `${BASE_URL}${
+        store === "shop1" ? "etsy" : "shopify"
+      }/color_number_list//?creation_tsz__iexact=&creation_tsz__lte=${
+        endDateRef.current.value
+      }+00%3A00%3A00&creation_tsz__gte=${
+        beginnerDateRef.current.value
+      }+00%3A00%3A00`
     ).then((response) => {
       setBestSeller({
         isLoading: false,
@@ -123,7 +137,7 @@ const DateGetter = () => {
               color="primary"
               onClick={getCost}
             >
-              Get Types
+              <FormattedMessage id="getTypes" defaultMessage="Get Types" />
             </Button>
             <Button
               variant="contained"
@@ -131,7 +145,7 @@ const DateGetter = () => {
               color="primary"
               onClick={getColors}
             >
-              Get Colors
+              <FormattedMessage id="getColors" defaultMessage="Get Colors" />
             </Button>
           </div>
         </Paper>

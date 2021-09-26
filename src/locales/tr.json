@@ -165,5 +165,7 @@
   "orderCount": "Sipariş Sayısı",
   "colorCount": "Renk Sayısı",
   "startDate": "Başlangıç Tarihi",
-  "endDate": "Bitiş Tarihi"
+  "endDate": "Bitiş Tarihi",
+  "getTypes": "Tipleri Getir",
+  "getColors": "Renkleri Getir"
 }
