@@ -1276,6 +1276,7 @@ function AllOrdersTable() {
           getListFunc={getListFunc}
           setRefreshTable={setRefreshTable}
           countryFilter={countryFilter}
+          ids={(rows && rows?.length && rows.map((item) => item.id)) || []}
         />
       ) : null}
       <CustomDialog

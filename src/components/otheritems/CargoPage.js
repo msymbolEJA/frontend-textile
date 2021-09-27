@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import { postFormData } from "../../helper/PostData";
+import { postData } from "../../helper/PostData";
 import {
   toastErrorNotify,
   toastSuccessNotify,
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CargoPage = ({ getListFunc, id, setRefreshTable, countryFilter }) => {
+const CargoPage = ({ getListFunc, ids, setRefreshTable, countryFilter }) => {
   const [cargoForm, setCargoForm] = useState({
     tracking_number: "",
     carrier: "",
@@ -61,12 +61,13 @@ const CargoPage = ({ getListFunc, id, setRefreshTable, countryFilter }) => {
   const { formatMessage } = useIntl();
   //console.log("CP Id", id);
 
-  let urlCargo;
+  let urlCargo = `${BASE_URL}etsy/cargo/`;
+  /*   let urlCargo;
   if (countryFilter === "usa") {
     urlCargo = `${BASE_URL}etsy/cargo/?type=us`;
   } else if (countryFilter === "int") {
     urlCargo = `${BASE_URL}etsy/cargo/?type=int`;
-  } else urlCargo = `${BASE_URL}etsy/cargo/`;
+  } else urlCargo = `${BASE_URL}etsy/cargo/`; */
 
   const cargoFormPost = (e) => {
     e.preventDefault();
@@ -81,7 +82,7 @@ const CargoPage = ({ getListFunc, id, setRefreshTable, countryFilter }) => {
     delete cargoForm.ref_number_f;
     delete cargoForm.date;
 
-    postFormData(urlCargo, cargoForm)
+    postData(urlCargo, cargoForm)
       .then((res) => {
         toastSuccessNotify(res.data.Success);
         setResult(res.data.Success);
@@ -102,6 +103,7 @@ const CargoPage = ({ getListFunc, id, setRefreshTable, countryFilter }) => {
       tracking_number: "",
       carrier: "",
       ref_number_f: "",
+      ids,
     });
     try {
       getListFunc();
@@ -111,7 +113,7 @@ const CargoPage = ({ getListFunc, id, setRefreshTable, countryFilter }) => {
   };
 
   const handleChange = (e) => {
-    setCargoForm({ ...cargoForm, [e.target.name]: e.target.value });
+    setCargoForm({ ...cargoForm, ids, [e.target.name]: e.target.value });
   };
 
   return (
