@@ -29,7 +29,9 @@ const Search = () => {
         // globalSearch(`${BASE_URL_MAPPING}?search=${globalSearchKey}`)
         globalSearch(
           `${BASE_URL}${
-            store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+            store === "shop1"
+              ? "etsy/mapping_search/"
+              : "shopify/mapping_search/"
           }?search=${globalSearchKey}`
         )
           .then((response) => {
@@ -59,7 +61,7 @@ const Search = () => {
         queryString = queryString.slice(0, -1);
         // let path = `${BASE_URL_MAPPING}${queryString}`;
         let path = `${BASE_URL}${
-          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
+          store === "shop1" ? "etsy/mapping_search/" : "shopify/mapping_search/"
         }${queryString}`;
         queryData(path)
           .then((response) => {
