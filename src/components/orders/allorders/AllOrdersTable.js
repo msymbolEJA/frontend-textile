@@ -19,6 +19,7 @@ import {
   TableContainer,
   TextField,
   CircularProgress,
+  Checkbox,
 } from "@material-ui/core";
 import FormData from "form-data";
 import printJS from "print-js";
@@ -124,6 +125,7 @@ function AllOrdersTable() {
       localStorage.getItem(`${localStoragePrefix}-sibling_list`) || "[]"
     )
   );
+  const [selected, setSelected] = useState([]);
   const [countryFilter, setCountryFilter] = useState("all");
   const { user, store } = useContext(AppContext);
   const filters = getQueryParams();
@@ -710,6 +712,26 @@ function AllOrdersTable() {
       });
   };
 
+  const handleCheckBoxClick = (id) => {
+    let tempArr;
+    if (selected.includes(id)) {
+      tempArr = selected.filter((item) => id?.toString() !== item?.toString());
+      setSelected(tempArr);
+    } else {
+      setSelected([...selected, id]);
+    }
+  };
+
+  const handleSelectAllClick = () => {
+    const tempArr = [];
+    if (!selected?.length) {
+      rows.forEach((row) => {
+        tempArr.push(row.id);
+      });
+    }
+    setSelected(tempArr);
+  };
+
   const AllTable = React.memo(
     () => (
       <TableContainer className={classes.container}>
@@ -721,6 +743,20 @@ function AllOrdersTable() {
         >
           <TableHead>
             <TableRow>
+              {filters?.status === "ready" ? (
+                <StyledTableCell align="center">
+                  <Checkbox
+                    indeterminate={
+                      selected?.length > 0 && selected?.length < rows?.length
+                    }
+                    checked={
+                      rows?.length > 0 && selected?.length === rows?.length
+                    }
+                    style={{ color: "white" }}
+                    onChange={handleSelectAllClick}
+                  />
+                </StyledTableCell>
+              ) : null}
               <StyledTableCell align="center">
                 <FormattedMessage id="receiptId" defaultMessage="Receipt Id" />{" "}
                 /
@@ -839,6 +875,23 @@ function AllOrdersTable() {
                         : null,
                   }}
                 >
+                  {filters?.status === "ready" ? (
+                    <td
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCheckBoxClick(row?.id);
+                      }}
+                      onBlur={(e) => {
+                        e.stopPropagation();
+                      }}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <Checkbox checked={selected.includes(row?.id)} />
+                    </td>
+                  ) : null}
+
                   <CustomTableCell
                     {...{
                       row,
@@ -961,7 +1014,7 @@ function AllOrdersTable() {
         </Table>
       </TableContainer>
     ),
-    []
+    [selected]
   );
 
   return (
@@ -1276,7 +1329,7 @@ function AllOrdersTable() {
           getListFunc={getListFunc}
           setRefreshTable={setRefreshTable}
           countryFilter={countryFilter}
-          ids={(rows && rows?.length && rows.map((item) => item.id)) || []}
+          ids={selected}
         />
       ) : null}
       <CustomDialog

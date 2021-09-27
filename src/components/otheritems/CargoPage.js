@@ -195,6 +195,7 @@ const CargoPage = ({ getListFunc, ids, setRefreshTable, countryFilter }) => {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={!ids.length}
           >
             <FormattedMessage
               id="areYouSureForPackage"
