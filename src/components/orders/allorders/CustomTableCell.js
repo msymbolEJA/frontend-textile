@@ -15,12 +15,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CustomTableCell = ({ row, name, name2, name3, name4 }) => {
+const CustomTableCell = ({ row, name, name2, name3, name4, ...rest }) => {
   const classes = useStyles();
   const { formatMessage } = useIntl();
 
   return (
-    <TableCell align="center" className={classes.tableCell}>
+    <TableCell align="center" className={classes.tableCell} {...rest}>
       {name2 ? (
         <>
           {row[name2]}

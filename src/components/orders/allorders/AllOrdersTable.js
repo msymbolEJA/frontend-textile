@@ -866,7 +866,7 @@ function AllOrdersTable() {
                   className={classes.rowStyle}
                   key={row.id}
                   id={row.id}
-                  onClick={() => handleRowClick(row.id)}
+                  // onClick={() => handleRowClick(row.id)}
                   style={{
                     backgroundColor:
                       row["type"]?.includes("14K") ||
@@ -947,7 +947,18 @@ function AllOrdersTable() {
                       from: "all-orders",
                     }}
                   />
-                  <CustomTableCell {...{ row, name: "gift_message" }} />
+                  <CustomTableCell
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                    onBlur={(e) => {
+                      e.stopPropagation();
+                    }}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                    }}
+                    {...{ row, name: "gift_message" }}
+                  />
                   <td style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}>
                     {row?.image ? (
                       <ViewImageFile {...{ row, name: "image" }} />
