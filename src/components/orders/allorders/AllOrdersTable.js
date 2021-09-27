@@ -115,6 +115,7 @@ const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
 
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
+  const [sortedRows, setSortedRows] = useState([]);
   const [currentBarcodeList, setCurrentBarcodeList] = useState(
     JSON.parse(
       localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]"
@@ -732,6 +733,16 @@ function AllOrdersTable() {
     setSelected(tempArr);
   };
 
+  const sortByGiftMessages = () => {
+    let tmp;
+    try {
+      tmp = rows.sort((a, b) => (a.gift_message < b.gift_message ? 1 : -1));
+    } catch (error) {
+    } finally {
+      setSortedRows(tmp);
+    }
+  };
+
   const AllTable = React.memo(
     () => (
       <TableContainer className={classes.container}>
@@ -843,7 +854,11 @@ function AllOrdersTable() {
                   defaultMessage="Explanation"
                 />
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell
+                align="center"
+                onClick={() => sortByGiftMessages()}
+                style={{ cursor: "pointer" }}
+              >
                 <FormattedMessage
                   id="giftMessage"
                   defaultMessage="Gift Message"
@@ -1025,7 +1040,7 @@ function AllOrdersTable() {
         </Table>
       </TableContainer>
     ),
-    [selected]
+    [selected, rows]
   );
 
   return (
