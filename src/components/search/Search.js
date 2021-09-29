@@ -6,7 +6,7 @@ import { AppContext } from "../../context/Context";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const Search = () => {
+const Search = ({ location }) => {
   const [list, setList] = useState();
   const [info, setInfo] = useState({
     id: "",
@@ -18,12 +18,14 @@ const Search = () => {
     receipt: "",
     tracking_code: "",
   });
-  const [globalSearchKey, setGlobalSearchKey] = useState("");
+  const [globalSearchKey, setGlobalSearchKey] = useState(
+    location?.state?.global || ""
+  );
   const [fillError, setFillError] = useState();
   const { store } = useContext(AppContext);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (globalSearchKey) {
       if (globalSearchKey.length > 2) {
         // globalSearch(`${BASE_URL_MAPPING}?search=${globalSearchKey}`)
@@ -36,16 +38,16 @@ const Search = () => {
         )
           .then((response) => {
             //console.log(response.data);
-            setList(response.data);
+            setList(response?.data?.results || []);
             setFillError();
           })
           .catch((error) => {
             console.log(error);
             setList([]);
-            setFillError("Something went wrong! Try again!");
+            setFillError("Hata. Tekrar deneyiniz");
           });
       } else {
-        setFillError("Global search keywords should be min 3 letters.");
+        setFillError("En az 3 karakter giriniz.");
       }
     } else {
       let queryString = "?";
@@ -65,7 +67,7 @@ const Search = () => {
         }${queryString}`;
         queryData(path)
           .then((response) => {
-            setList(response.data);
+            setList(response?.data?.results || []);
           })
           .catch((error) => {
             console.log(error);
@@ -104,7 +106,7 @@ const Search = () => {
         globalSearchKey={globalSearchKey}
         fillError={fillError}
       />
-      <ResultTable list={list} />
+      <ResultTable list={list} refreshSearch={handleSubmit} />
     </div>
   );
 };

@@ -1,5 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
+import { FormattedMessage, useIntl } from "react-intl";
+
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -11,10 +13,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import StoreIcon from "@material-ui/icons/Store";
 import Menu from "@material-ui/core/Menu";
 import { AppContext } from "../../context/Context";
-import { FormattedMessage } from "react-intl";
 import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Button from "@material-ui/core/Button";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
 import {
   ThumbUp as ThumbUpIcon,
   ViewList as ViewListIcon,
@@ -120,6 +125,23 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "50%",
     fontSize: "1rem",
   },
+  textField: {
+    width: 150,
+    height: 37,
+    backgroundColor: "white",
+    "& input": {
+      marginTop: "-2px",
+      fontSize: "11px",
+    },
+  },
+  textFieldMobil: {
+    width: 150,
+    height: 25,
+    backgroundColor: "white",
+    "& input": {
+      fontSize: "10px",
+    },
+  },
 }));
 
 export default function MenuAppBar() {
@@ -131,7 +153,8 @@ export default function MenuAppBar() {
   const open = Boolean(anchorEl);
   const history = useHistory();
   const mobileView = useMediaQuery("(max-width:1024px)");
-
+  const { formatMessage } = useIntl();
+  const myInputRef = useRef(null);
   //console.log(user?.role);
 
   const handleMenu = (event) => {
@@ -146,6 +169,17 @@ export default function MenuAppBar() {
   };
 
   let localRole = localStorage.getItem("localRole");
+
+  const searchHandler = (value, keyCode) => {
+    if (keyCode === 13 && value) {
+      history.push({
+        pathname: "/search",
+        state: {
+          global: value,
+        },
+      });
+    }
+  };
 
   const handleMainPage = () => {
     if (localRole === "workshop_designer") {
@@ -303,7 +337,7 @@ export default function MenuAppBar() {
                   </Button>
                 </>
               ) : null}
-              {localRole === "workshop_designer" ? null : (
+              {mobileView || localRole === "workshop_designer" ? null : (
                 <Button
                   color="primary"
                   variant="outlined"
@@ -324,6 +358,38 @@ export default function MenuAppBar() {
                   />
                 </Button>
               )}
+              {window?.location?.pathname !== "/search" ? (
+                <OutlinedInput
+                  type="text"
+                  defaultValue=""
+                  onKeyDown={(e) =>
+                    searchHandler(
+                      myInputRef.current.childNodes[0].value,
+                      e.keyCode
+                    )
+                  }
+                  ref={myInputRef}
+                  className={
+                    mobileView ? classes.textFieldMobil : classes.textField
+                  }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() =>
+                          searchHandler(
+                            myInputRef.current.childNodes[0].value,
+                            13
+                          )
+                        }
+                        edge="end"
+                      >
+                        <SearchIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  labelWidth={55}
+                />
+              ) : null}
             </div>
           </div>
           {mobileView ? null : (

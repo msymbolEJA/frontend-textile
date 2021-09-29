@@ -14,6 +14,9 @@ import {
   TableContainer,
   Checkbox,
   CircularProgress,
+  Menu,
+  MenuItem,
+  ListItemText,
 } from "@material-ui/core";
 import {
   Flag as FlagIcon,
@@ -35,10 +38,7 @@ import EditableTableCell from "../tableitems/EditableTableCell";
 import SortableTableCell from "./SortableTableCell";
 import CustomButtonGroup from "./CustomButtonGroup";
 import { tagsData, repeatReasons } from "../../helper/Constants";
-import Menu from "@material-ui/core/Menu";
-import ListItemText from "@material-ui/core/ListItemText";
 import { FormattedMessage } from "react-intl";
-import MenuItem from "@material-ui/core/MenuItem";
 import { AppContext } from "../../context/Context";
 import ShopifyColumns, { ShopifyColumnsValues } from "./ShopifyColumns";
 

@@ -111,52 +111,6 @@ const CustomButtonGroup = ({
           <FormattedMessage id={"allorders"} defaultMessage={"All Orders"} />
         </Button>
       )}
-
-      <FormControl className={classes.textField} variant="outlined">
-        <InputLabel
-          htmlFor="outlined-adornment-password"
-          style={{
-            marginTop: "-0.1rem",
-            userSelect: "none",
-            WebkitUserSelect: "none",
-            "-webkit-user-select": "none",
-          }}
-        >
-          {formatMessage({
-            id: "search",
-            defaultMessage: "Search",
-          })}
-        </InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-password"
-          type="text"
-          defaultValue=""
-          ref={myInputRef}
-          onKeyDown={(e) =>
-            searchHandler(myInputRef.current.childNodes[0].value, e.keyCode)
-          }
-          style={{
-            marginTop: "0.3rem",
-            marginLeft: "0.3rem",
-            width: 150,
-            height: 38,
-          }}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={() =>
-                  searchHandler(myInputRef.current.childNodes[0].value, 13)
-                }
-                edge="end"
-              >
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          }
-          labelWidth={55}
-        />
-      </FormControl>
     </div>
   );
 };

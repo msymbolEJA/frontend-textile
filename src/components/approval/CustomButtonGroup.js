@@ -76,46 +76,6 @@ const CustomButtonGroup = ({
         ))}
       </div>
       <div>
-        <FormControl className={classes.textField} variant="outlined">
-          <InputLabel
-            htmlFor="outlined-adornment-password"
-            style={{ marginTop: "-0.1rem" }}
-          >
-            {formatMessage({
-              id: "search",
-              defaultMessage: "Search",
-            })}
-          </InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type="text"
-            defaultValue=""
-            onKeyDown={(e) =>
-              searchHandler(myInputRef.current.childNodes[0].value, e.keyCode)
-            }
-            ref={myInputRef}
-            style={{
-              marginTop: "0.25rem",
-              marginRight: "0.3rem",
-              width: 150,
-              height: 38,
-            }}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() =>
-                    searchHandler(myInputRef.current.childNodes[0].value, 13)
-                  }
-                  edge="end"
-                >
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            }
-            labelWidth={55}
-          />
-        </FormControl>
-
         <Button
           className={classes.btn}
           disabled={loading}

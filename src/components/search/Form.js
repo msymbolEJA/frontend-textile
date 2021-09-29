@@ -4,6 +4,13 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormattedMessage, useIntl } from "react-intl";
+import {
+  Radio,
+  RadioGroup,
+  FormLabel,
+  FormControl,
+  FormControlLabel,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,7 +44,6 @@ export default function SearchForm({
   handleSubmit,
   handleChange,
   info,
-
   clearBtn,
   setGlobalSearchKey,
   globalSearchKey,
@@ -45,143 +51,173 @@ export default function SearchForm({
 }) {
   const classes = useStyles();
   const { formatMessage } = useIntl();
+  const [selectedValue, setSelectedValue] = React.useState("global");
+
+  const handleRadioChange = (event) => {
+    if (event.target.value === "detailed") setGlobalSearchKey("");
+    setSelectedValue(event.target.value);
+  };
 
   return (
     <div>
       <div>
+        <FormControl component="fieldset">
+          <FormLabel component="legend">Arama tipi</FormLabel>
+          <RadioGroup
+            row
+            name="controlled-radio-buttons-group"
+            value={selectedValue}
+            onChange={handleRadioChange}
+          >
+            <FormControlLabel
+              value="global"
+              control={<Radio />}
+              label="Genel"
+            />
+            <FormControlLabel
+              value="detailed"
+              control={<Radio />}
+              label="Detaylı"
+            />
+          </RadioGroup>
+        </FormControl>
         <form className={classes.root}>
-          <TextField
-            variant="outlined"
-            margin="dense"
-            id="id"
-            label={formatMessage({
-              id: "id",
-              defaultMessage: "Id",
-            })}
-            type="text"
-            name="id"
-            autoComplete="id"
-            autoFocus
-            onChange={handleChange}
-            value={info.id}
-          />
-          {/* TODO : Option */}
-          <TextField
-            className={classes.item}
-            variant="outlined"
-            margin="dense"
-            id="status"
-            label={formatMessage({
-              id: "status",
-              defaultMessage: "Status",
-            })}
-            type="text"
-            name="status"
-            autoComplete="status"
-            onChange={handleChange}
-            value={info.status}
-          />
-          <TextField
-            className={classes.item}
-            variant="outlined"
-            margin="dense"
-            id="buyer"
-            label={formatMessage({
-              id: "buyer",
-              defaultMessage: "Buyer",
-            })}
-            type="text"
-            name="buyer"
-            autoComplete="buyer"
-            onChange={handleChange}
-            value={info.buyer}
-          />
-          <TextField
-            className={classes.item}
-            variant="outlined"
-            margin="dense"
-            id="sku"
-            label={formatMessage({
-              id: "sku",
-              defaultMessage: "SKU",
-            })}
-            type="text"
-            name="sku"
-            autoComplete="sku"
-            onChange={handleChange}
-            value={info.sku}
-          />
-          <TextField
-            className={classes.item}
-            variant="outlined"
-            margin="dense"
-            name="supplier"
-            label={formatMessage({
-              id: "supplier",
-              defaultMessage: "Supplier",
-            })}
-            type="text"
-            id="supplier"
-            onChange={handleChange}
-            value={info.supplier}
-          />
-          <TextField
-            className={classes.item}
-            variant="outlined"
-            margin="dense"
-            name="explanation"
-            label={formatMessage({
-              id: "internalNote",
-              defaultMessage: "Internal Note",
-            })}
-            type="text"
-            id="explanation"
-            onChange={handleChange}
-            value={info.explanation}
-          />
-          <TextField
-            className={classes.item}
-            variant="outlined"
-            margin="dense"
-            name="receipt_id"
-            label={formatMessage({
-              id: "receiptId",
-              defaultMessage: "Receipt Id",
-            })}
-            type="nmuber"
-            id="receipt_id"
-            onChange={handleChange}
-            value={info.receipt_id}
-          />
-          <TextField
-            className={classes.item}
-            variant="outlined"
-            margin="dense"
-            name="tracking_code"
-            label={formatMessage({
-              id: "trackingCode",
-              defaultMessage: "Tracking Code",
-            })}
-            type="text"
-            id="tracking_code"
-            onChange={handleChange}
-            value={info.tracking_code}
-          />
-
-          <TextField
-            className={classes.item}
-            variant="outlined"
-            margin="dense"
-            name="globalSearch"
-            label={formatMessage({
-              id: "globalSearch",
-              defaultMessage: "Global Search",
-            })}
-            type="text"
-            id="globalSearch"
-            onChange={(e) => setGlobalSearchKey(e.target.value)}
-            value={globalSearchKey}
-          />
+          {selectedValue === "global" ? (
+            <TextField
+              className={classes.item}
+              variant="outlined"
+              margin="dense"
+              name="globalSearch"
+              label={formatMessage({
+                id: "globalSearch",
+                defaultMessage: "Global Search",
+              })}
+              type="text"
+              id="globalSearch"
+              onChange={(e) => setGlobalSearchKey(e.target.value)}
+              value={globalSearchKey}
+            />
+          ) : (
+            <>
+              <TextField
+                variant="outlined"
+                margin="dense"
+                id="id"
+                label={formatMessage({
+                  id: "id",
+                  defaultMessage: "Id",
+                })}
+                type="text"
+                name="id"
+                autoComplete="id"
+                autoFocus
+                onChange={handleChange}
+                value={info.id}
+              />
+              {/* TODO : Option */}
+              <TextField
+                className={classes.item}
+                variant="outlined"
+                margin="dense"
+                id="status"
+                label={formatMessage({
+                  id: "status",
+                  defaultMessage: "Status",
+                })}
+                type="text"
+                name="status"
+                autoComplete="status"
+                onChange={handleChange}
+                value={info.status}
+              />
+              <TextField
+                className={classes.item}
+                variant="outlined"
+                margin="dense"
+                id="buyer"
+                label={formatMessage({
+                  id: "buyer",
+                  defaultMessage: "Buyer",
+                })}
+                type="text"
+                name="buyer"
+                autoComplete="buyer"
+                onChange={handleChange}
+                value={info.buyer}
+              />
+              <TextField
+                className={classes.item}
+                variant="outlined"
+                margin="dense"
+                id="sku"
+                label={formatMessage({
+                  id: "sku",
+                  defaultMessage: "SKU",
+                })}
+                type="text"
+                name="sku"
+                autoComplete="sku"
+                onChange={handleChange}
+                value={info.sku}
+              />
+              <TextField
+                className={classes.item}
+                variant="outlined"
+                margin="dense"
+                name="supplier"
+                label={formatMessage({
+                  id: "supplier",
+                  defaultMessage: "Supplier",
+                })}
+                type="text"
+                id="supplier"
+                onChange={handleChange}
+                value={info.supplier}
+              />
+              <TextField
+                className={classes.item}
+                variant="outlined"
+                margin="dense"
+                name="explanation"
+                label={formatMessage({
+                  id: "internalNote",
+                  defaultMessage: "Internal Note",
+                })}
+                type="text"
+                id="explanation"
+                onChange={handleChange}
+                value={info.explanation}
+              />
+              <TextField
+                className={classes.item}
+                variant="outlined"
+                margin="dense"
+                name="receipt__receipt_id"
+                label={formatMessage({
+                  id: "receiptId",
+                  defaultMessage: "Receipt Id",
+                })}
+                type="nmuber"
+                id="receipt__receipt_id"
+                onChange={handleChange}
+                value={info.receipt_id}
+              />
+              <TextField
+                className={classes.item}
+                variant="outlined"
+                margin="dense"
+                name="tracking_code"
+                label={formatMessage({
+                  id: "trackingCode",
+                  defaultMessage: "Tracking Code",
+                })}
+                type="text"
+                id="tracking_code"
+                onChange={handleChange}
+                value={info.tracking_code}
+              />
+            </>
+          )}
           <Button
             type="submit"
             variant="contained"

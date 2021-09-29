@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
@@ -51,6 +51,22 @@ const useStyles = makeStyles(() => ({
  */
 
 const EditableTableCell = ({ row, name, onChange, from }) => {
+  useEffect(() => {
+    setContent(
+      name === "variation_1_value"
+        ? row[name]
+            ?.replace(" US women&#039;s letter", "")
+            ?.replace(" US women's letter", "") === "2X"
+          ? "2XL"
+          : row[name]
+              ?.replace(" US women&#039;s letter", "")
+              ?.replace(" US women's letter", "")
+        : row[name]
+        ? row[name]?.replace("Linen_Dress_", "")
+        : ""
+    );
+  }, [row]);
+
   const classes = useStyles();
   const [content, setContent] = useState(
     name === "variation_1_value"
@@ -66,17 +82,13 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
       : ""
   );
 
-  const handleContentChange = useCallback((e) => {
+  const handleContentChange = (e) => {
     setContent(e.target.value);
-  }, []);
+  };
 
-  const handleBlur = useCallback(
-    (e) => {
-      onChange(e, row.id, name);
-    },
-    // eslint-disable-next-line
-    [onChange, row]
-  );
+  const handleBlur = (e) => {
+    onChange(e, row.id, name);
+  };
 
   let expTableCell;
 
