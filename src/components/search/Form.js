@@ -192,13 +192,13 @@ export default function SearchForm({
                 className={classes.item}
                 variant="outlined"
                 margin="dense"
-                name="receipt__receipt_id"
+                name="receipt"
                 label={formatMessage({
                   id: "receiptId",
                   defaultMessage: "Receipt Id",
                 })}
                 type="nmuber"
-                id="receipt__receipt_id"
+                id="receipt"
                 onChange={handleChange}
                 value={info.receipt_id}
               />
