@@ -55,6 +55,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function add(accumulator, a) {
+  return accumulator + a;
+}
+
+const groupByKey = (list, key) =>
+  list.reduce(
+    (hash, obj) => ({
+      ...hash,
+      [obj[key]]: (hash[obj[key]] || []).concat(obj),
+    }),
+    {}
+  );
+
 const DateGetter = () => {
   const { store } = useContext(AppContext);
   const classes = useStyles();
@@ -71,38 +84,26 @@ const DateGetter = () => {
     getData(
       `${BASE_URL}${
         store === "shop1" ? "etsy" : "shopify"
-      }/order_number_list/?creation_tsz__iexact=&creation_tsz__lte=${
+      }/type-color_number_list/?creation_tsz__iexact=&creation_tsz__lte=${
         endDateRef.current.value
       }+00%3A00%3A00&creation_tsz__gte=${
         beginnerDateRef.current.value
       }+00%3A00%3A00`
     ).then((response) => {
+      const list = groupByKey(response.data.results, "type");
+      const totals = Object.keys(list).map((o) =>
+        list[o].map((c) => c.color_count).reduce(add, 0)
+      );
       setBestSeller({
         isLoading: false,
-        bestRows: response.data.results,
+        items: list,
+        typeColumn: Object.keys(list),
+        totals,
         type: "topSeller",
       });
     });
   };
 
-  const getColors = () => {
-    setBestSeller({ ...bestSeller, isLoading: true });
-    getData(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy" : "shopify"
-      }/color_number_list//?creation_tsz__iexact=&creation_tsz__lte=${
-        endDateRef.current.value
-      }+00%3A00%3A00&creation_tsz__gte=${
-        beginnerDateRef.current.value
-      }+00%3A00%3A00`
-    ).then((response) => {
-      setBestSeller({
-        isLoading: false,
-        bestRows: response.data.results,
-        type: "colorCount",
-      });
-    });
-  };
 
   useEffect(() => {
     endDateRef.current.value = moment().format("YYYY-MM-DD");
@@ -137,20 +138,12 @@ const DateGetter = () => {
               color="primary"
               onClick={getCost}
             >
-              <FormattedMessage id="getTypes" defaultMessage="Get Types" />
-            </Button>
-            <Button
-              variant="contained"
-              className={classes.btn}
-              color="primary"
-              onClick={getColors}
-            >
-              <FormattedMessage id="getColors" defaultMessage="Get Colors" />
+              <FormattedMessage id="getTypes" />
             </Button>
           </div>
         </Paper>
       </div>
-      {bestSeller.bestRows && <SellerTable bestSeller={bestSeller} />}
+      {<SellerTable bestSeller={bestSeller} />}
     </div>
   );
 };

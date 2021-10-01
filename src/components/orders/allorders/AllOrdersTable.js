@@ -846,6 +846,9 @@ function AllOrdersTable() {
                   <StyledTableCell align="center">
                     <FormattedMessage id="space" defaultMessage="Space" />
                   </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="goldGr" />
+                  </StyledTableCell>
                 </>
               )}
               <StyledTableCell align="center">
@@ -951,6 +954,15 @@ function AllOrdersTable() {
                       <CustomTableCell {...{ row, name: "size" }} />
                       <CustomTableCell {...{ row, name: "start" }} />
                       <CustomTableCell {...{ row, name: "space" }} />
+                      <EditableTableCell
+                        onClick={(e) => e.stopPropagation()}
+                        {...{
+                          row,
+                          name: "goldGr",
+                          onChange,
+                          from: "all-orders",
+                        }}
+                      />
                     </>
                   )}
                   <EditableTableCell

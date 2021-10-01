@@ -11,22 +11,26 @@ import { bestSellerColumns, colorNumberColumns } from "../../helper/Constants";
 
 const useStyles = makeStyles((theme) => ({
   tContainer: {
-    padding: 10,
+    padding: 1,
     width: "fit-content",
     minWidth: "500px",
     marginTop: 10,
   },
-  thead: {
-    backgroundColor: "black",
-  },
   tableCellHeader: {
     color: "white",
+    border: "1px white solid",
+    backgroundColor: "black",
+    padding: 13,
   },
   darkTableRow: {
     backgroundColor: "#F2F2F2",
   },
   tableCell: {
     fontFamily: "Courier New",
+    border: "1px solid gray",
+    borderBottom: "2px solid black",
+    borderTop: "2px solid black",
+    padding: 13,
   },
   tablePaper: {
     marginTop: "10px",
@@ -39,51 +43,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SellerTable = ({ bestSeller }) => {
+const SellerTable = ({ bestSeller: { typeColumn, items, totals } }) => {
   const classes = useStyles();
-  const tableColumnName =
-    bestSeller?.type === "topSeller" ? bestSellerColumns : colorNumberColumns;
 
   return (
     <div className={classes.bottom}>
       <div className={classes.tablePaper}>
         <TableContainer className={classes.tContainer}>
           <Table className={classes.table} aria-label="simple table">
-            <TableHead className={classes.thead}>
-              <TableRow>
-                {tableColumnName?.map((item, index) => (
-                  <TableCell
-                    className={classes.tableCellHeader}
-                    align="center"
-                    key={index}
-                  >
-                    {/* {item.name} */}
-                    {/* {item?.name2 ? `/ ${item?.name2}` : null} */}
-                    <FormattedMessage
-                      id={item?.translate}
-                      defaultMessage={item?.name}
-                    />
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
             <TableBody>
-              {bestSeller?.bestRows?.map((row, index) => (
-                <TableRow
-                  key={index}
-                  className={index % 2 === 1 ? classes.darkTableRow : null}
-                >
-                  {tableColumnName?.map((item, i) => (
-                    <TableCell
-                      key={i}
-                      className={classes.tableCell}
-                      align="center"
+              {typeColumn?.map((typeName, index) => {
+                return (
+                  typeName !== "null" && (
+                    <TableRow
+                      key={index}
+                      className={index % 2 === 1 ? classes.darkTableRow : null}
                     >
-                      {row[item?.objKey]}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
+                      <TableCell className={classes.tableCellHeader}>
+                        {typeName} ({totals[index]})
+                      </TableCell>
+                      {items[typeName]?.map((item, i) => (
+                        <>
+                          <TableCell key={i} className={classes.tableCell}>
+                            {item.color || "-"} ({item.color_count || 0} adet)
+                            <br />
+                            {item.goldGr_count || 0} gr Altın
+                          </TableCell>
+                        </>
+                      ))}
+                    </TableRow>
+                  )
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
