@@ -111,7 +111,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
+const localStoragePrefix =
+  process.env.REACT_APP_STORE_NAME_ORJ + "-" + localStorage.getItem("store");
 
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);

@@ -125,7 +125,8 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
+const localStoragePrefix =
+  process.env.REACT_APP_STORE_NAME_ORJ + "-" + localStorage.getItem("store");
 
 function App({ history }) {
   const [rows, setRows] = useState([]);
