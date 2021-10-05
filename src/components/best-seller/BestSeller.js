@@ -114,7 +114,7 @@ const DateGetter = () => {
   return (
     <div>
       <h2 className={classes.header}>
-        <FormattedMessage id="topSeller" defaultMessage="Top Seller" />
+        <FormattedMessage id="topSeller" />
       </h2>
       <div className={classes.top}>
         <Paper className={classes.paper}>
