@@ -85,7 +85,8 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "auto",
   },
   container: {
-    // maxHeight: "83vh",
+    maxHeight: "83vh",
+    overflowX: "initial",
   },
   table: {
     minWidth: 650,
@@ -746,7 +747,7 @@ function AllOrdersTable() {
 
   const AllTable = React.memo(
     () => (
-      <TableContainer className={classes.container}>
+      <TableContainer className={NON_SKU ? classes.container : ""}>
         <Table
           className={classes.table}
           stickyHeader

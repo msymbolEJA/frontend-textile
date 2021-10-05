@@ -85,7 +85,8 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "auto",
   },
   container: {
-    // maxHeight: "78vh",
+    maxHeight: "83vh",
+    overflowX: "initial",
   },
   table: {
     // height: "500px",
@@ -767,7 +768,7 @@ function App({ history }) {
           </>
         )}
       </div>
-      <TableContainer className={classes.container}>
+      <TableContainer className={NON_SKU ? classes.container : ""}>
         <Table
           className={loading ? classes.disabled : classes.table}
           stickyHeader
