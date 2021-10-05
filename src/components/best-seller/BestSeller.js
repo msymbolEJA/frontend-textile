@@ -104,7 +104,6 @@ const DateGetter = () => {
     });
   };
 
-
   useEffect(() => {
     endDateRef.current.value = moment().format("YYYY-MM-DD");
     beginnerDateRef.current.value = moment()
@@ -123,12 +122,14 @@ const DateGetter = () => {
             <label htmlFor="beginnerDate" className={classes.label}>
               <FormattedMessage id="startDate" defaultMessage="Start Date" />:
             </label>
+            <FormattedMessage id="(dahil)" />
             <input ref={beginnerDateRef} type="date" />
           </div>
           <div className={classes.inputs}>
             <label htmlFor="endDate" className={classes.label}>
               <FormattedMessage id="endDate" defaultMessage="End Date" />:
             </label>
+            <FormattedMessage id="(hariç)" />
             <input ref={endDateRef} type="date" />
           </div>
           <div className={classes.getBtnDiv}>
