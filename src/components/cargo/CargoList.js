@@ -59,6 +59,11 @@ const useStyles = makeStyles({
   btn: {
     margin: "0.3rem",
   },
+  spanHref: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
 });
 
 export default function CustomizedTables() {
@@ -232,7 +237,10 @@ export default function CustomizedTables() {
                         onChange,
                       }}
                     />
-                    <StyledTableCell align="center">
+                    <StyledTableCell
+                      align="center"
+                      className={classes.spanHref}
+                    >
                       {row.content.map((key, i) => (
                         <span
                           key={i}
@@ -249,8 +257,11 @@ export default function CustomizedTables() {
                           >
                             {key}
                           </a>
-                          {" - "}
-                          {(i + 1) % 10 === 0 ? <br /> : null}
+                          {row?.content?.length === i + 1 ? (
+                            ""
+                          ) : (
+                            <span>&nbsp; {"|"} &nbsp;</span>
+                          )}
                         </span>
                       ))}
                     </StyledTableCell>
