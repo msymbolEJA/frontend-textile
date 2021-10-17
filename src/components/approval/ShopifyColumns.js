@@ -43,7 +43,12 @@ const ShopifyColumnsHeaders = ({
 
 export default ShopifyColumnsHeaders;
 
-export const ShopifyColumnsValues = ({ row, onChange, name1 }) => {
+export const ShopifyColumnsValues = ({
+  row,
+  onChange,
+  name1,
+  handleRowChange,
+}) => {
   const columnsNumber = 4 - row?.mapping_data?.length || 0;
   const dummyArray = new Array(columnsNumber).fill({
     name: "-",
@@ -60,7 +65,12 @@ export const ShopifyColumnsValues = ({ row, onChange, name1 }) => {
         }}
       />
       {row?.mapping_data?.map((each, index) => {
-        return <ShopifyEditableCell key={index} {...{ data: each, row }} />;
+        return (
+          <ShopifyEditableCell
+            key={index}
+            {...{ data: each, row, onChange: handleRowChange }}
+          />
+        );
       })}
       {/* {row?.mapping_data?.map((each, index) => {
         return (

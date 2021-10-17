@@ -261,36 +261,40 @@ export default function MenuAppBar() {
           {/*********************************/}
           {/* SHOPIFY - ETSY TRANSFER */}
           {/*********************************/}
-          {/* <StorefrontIcon
-            onClick={() => {
-              setStore("shop1");
-              localStorage.setItem("store", "shop1");
-            }}
-            className={
-              store === "shop1"
-                ? mobileView
-                  ? classes.mobileActiveButton
-                  : classes.activeShopButton
-                : mobileView
-                ? classes.mobileNonActiveShopButton
-                : classes.nonActiveShopButton
-            }
-          />
-          <ShoppingBasketIcon
-            onClick={() => {
-              setStore("shop2");
-              localStorage.setItem("store", "shop2");
-            }}
-            className={
-              store === "shop2"
-                ? mobileView
-                  ? classes.mobileActiveButton
-                  : classes.activeShopButton
-                : mobileView
-                ? classes.mobileNonActiveShopButton
-                : classes.nonActiveShopButton
-            }
-          /> */}
+          {localStorage.getItem("localUser") === "Admintest" ? (
+            <>
+              <StorefrontIcon
+                onClick={() => {
+                  setStore("shop1");
+                  localStorage.setItem("store", "shop1");
+                }}
+                className={
+                  store === "shop1"
+                    ? mobileView
+                      ? classes.mobileActiveButton
+                      : classes.activeShopButton
+                    : mobileView
+                    ? classes.mobileNonActiveShopButton
+                    : classes.nonActiveShopButton
+                }
+              />
+              <ShoppingBasketIcon
+                onClick={() => {
+                  setStore("shop2");
+                  localStorage.setItem("store", "shop2");
+                }}
+                className={
+                  store === "shop2"
+                    ? mobileView
+                      ? classes.mobileActiveButton
+                      : classes.activeShopButton
+                    : mobileView
+                    ? classes.mobileNonActiveShopButton
+                    : classes.nonActiveShopButton
+                }
+              />
+            </>
+          ) : null}
           <div className={classes.title}>
             <div style={{ flexDirection: "row" }}>
               <Button

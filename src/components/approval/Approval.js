@@ -276,11 +276,11 @@ function App({ history }) {
   };
 
   const handleRowChange = (id, data) => {
-    if (!Object.keys(data)[0]) return;
-
+    if (!Object.keys(data)[0] && store === "shop1") return;
     if (
       rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
-      Object.values(data)[0]
+        Object.values(data)[0] &&
+      store === "shop1"
     )
       return;
     setloading(true);
@@ -1107,6 +1107,7 @@ function App({ history }) {
                     {store === "shop2" ? (
                       <ShopifyColumnsValues
                         row={row}
+                        handleRowChange={handleRowChange}
                         onChange={onChange}
                         name1="country_id"
                       />
