@@ -95,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ + "-";
 
 export default function Login() {
   const classes = useStyles();
@@ -120,7 +121,7 @@ export default function Login() {
           setUser(response?.data);
           const token = response?.data?.access;
           if (token) {
-            localStorage.setItem("x-auth-token", token);
+            localStorage.setItem(localStoragePrefix + "x-auth-token", token);
             localStorage.setItem("localUser", response?.data?.user);
             localStorage.setItem("localEmail", response?.data?.email);
             localStorage.setItem("localRole", response?.data?.role);

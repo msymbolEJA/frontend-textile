@@ -169,7 +169,7 @@ export default function MenuAppBar() {
   };
 
   let localRole = localStorage.getItem("localRole");
-
+  const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ + "-";
   const searchHandler = (value, keyCode) => {
     if (keyCode === 13 && value) {
       history.push({
@@ -196,7 +196,7 @@ export default function MenuAppBar() {
   const handleLogout = () => {
     history.push("/");
     setAnchorEl(null);
-    localStorage.removeItem("x-auth-token");
+    localStorage.removeItem(localStoragePrefix + "x-auth-token");
     localStorage.removeItem("localUser");
     localStorage.removeItem("localEmail");
     localStorage.removeItem("localRole");
