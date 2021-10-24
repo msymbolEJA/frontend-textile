@@ -53,6 +53,16 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
           ?.replace(": BREAK OFF", "")
           ?.replace(": LOST IN MAIL", "")
           ?.replace(": SECOND", "")
+          ?.replace("&#039;", "'")
+          ?.replace("&#39;", "'")
+          ?.replace("&lt;", "<")
+          ?.replace("&gt;", ">")
+      ) : row[name].length ? (
+        row[name]
+          ?.replace("&lt;", "<")
+          ?.replace("&gt;", ">")
+          .replace("&#039;", "'")
+          .replace("&#39;", "'")
       ) : (
         row[name]
       )}

@@ -30,7 +30,15 @@ const CustomTableCell = ({ row, name, name2, name3, name4, ...rest }) => {
       <div>
         {name === "id" ? (
           <>
-            <a href={`/order-details/${row.id}`}>{row[name]}</a>
+            <a href={`/order-details/${row.id}`}>
+              {row[name].length
+                ? row[name]
+                    .replace("&lt;", "<")
+                    .replace("&gt;", ">")
+                    .replace("&#039;", "'")
+                    .replace("&#39;", "'")
+                : row[name]}
+            </a>
             <br />
           </>
         ) : name === "creation_tsz" || name === "ready_date" ? (
@@ -64,6 +72,9 @@ const CustomTableCell = ({ row, name, name2, name3, name4, ...rest }) => {
             .replace(": LOST IN MAIL", "")
             .replace(": SECOND", "")
             .replace("&#039;", "'")
+            .replace("&#39;", "'")
+            .replace("&lt;", "<")
+            .replace("&gt;", ">")
         ) : (
           "-"
         )}
