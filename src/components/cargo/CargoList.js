@@ -249,13 +249,21 @@ export default function CustomizedTables() {
                           }}
                         >
                           <a
-                            href={`/order-details/${key}/`}
+                            href={`/order-details/${
+                              key.toString().split(",")[0]
+                            }/`}
                             key={i}
                             onClick={(e) => {
                               e.stopPropagation();
                             }}
+                            style={{
+                              color:
+                                key.toString().split(",")[1] === " 209"
+                                  ? "black"
+                                  : "red",
+                            }}
                           >
-                            {key}
+                            {key.toString().split(",")[0]}
                           </a>
                           {row?.content?.length === i + 1 ? (
                             ""
