@@ -57,7 +57,7 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
           ?.replace("&#39;", "'")
           ?.replace("&lt;", "<")
           ?.replace("&gt;", ">")
-      ) : row[name].length ? (
+      ) : row[name]?.length ? (
         row[name]
           ?.replace("&lt;", "<")
           ?.replace("&gt;", ">")

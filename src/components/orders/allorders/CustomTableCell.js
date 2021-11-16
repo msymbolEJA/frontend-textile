@@ -31,7 +31,7 @@ const CustomTableCell = ({ row, name, name2, name3, name4, ...rest }) => {
         {name === "id" ? (
           <>
             <a href={`/order-details/${row.id}`}>
-              {row[name].length
+              {row[name]?.length
                 ? row[name]
                     .replace("&lt;", "<")
                     .replace("&gt;", ">")
