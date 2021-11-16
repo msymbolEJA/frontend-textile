@@ -5,52 +5,49 @@ import TableCell from "@material-ui/core/TableCell";
 import ContentEditable from "react-contenteditable";
 import FontPreview from "./FontPreview";
 
-const useStyles = makeStyles(() => ({
-  tableCell: {
-    padding: 0,
-    width: "100px",
-
-    //minWidth: "100px",
-    maxWidth: "100px",
-    borderRight: "0.5px solid #E0E0E0",
-  },
-  input: {
-    width: "100px",
-    minHeight: "100px",
-    background: "transparent",
-    resize: "none",
-    border: "none",
-    wordWrap: "break-word",
-  },
-  explanationTableCell: {
-    padding: 0,
-    width: "100px",
-    // minHeight: "100px",
-    borderRight: "0.5px solid #E0E0E0",
-    maxWidth: "300px",
-  },
-  explanationInput: {
-    fontSize: "1rem",
-    maxHeight: "100%",
-    width: "100%",
-    minWidth: "190px",
-    maxWidth: "190px",
-    //wordWrap: "break-word"
-  },
-  editable: {
-    minHeight: "109px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-  },
-  allOrdersTableCell: {},
-}));
-
-/* <TextareaAutosize aria-label="empty textarea" placeholder="Empty" />
- */
-
 const EditableTableCell = ({ row, name, onChange, from }) => {
+  const useStyles = makeStyles(() => ({
+    tableCell: {
+      padding: 0,
+      width: "100px",
+      maxWidth: "100px",
+      borderRight: "0.5px solid #E0E0E0",
+    },
+    input: {
+      width: "100px",
+      minHeight: "100px",
+      background: "transparent",
+      resize: "none",
+      border: "none",
+      wordWrap: "break-word",
+    },
+    explanationTableCell: {
+      padding: 0,
+      width: "100px",
+      // minHeight: "100px",
+      borderRight: "0.5px solid #E0E0E0",
+      maxWidth: "300px",
+      color: "red",
+    },
+    explanationInput: {
+      fontSize: "1rem",
+      maxHeight: "100%",
+      width: "100%",
+      minWidth: "190px",
+      maxWidth: "190px",
+      color: "yellow",
+    },
+    editable: {
+      minHeight: "109px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "column",
+      wordBreak: "break-all",
+      minWidth: name === "explanation" ? "200px" : "auto",
+    },
+    allOrdersTableCell: {},
+  }));
   useEffect(() => {
     setContent(
       name === "variation_1_value"
