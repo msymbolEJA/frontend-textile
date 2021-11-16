@@ -27,7 +27,6 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
       // minHeight: "100px",
       borderRight: "0.5px solid #E0E0E0",
       maxWidth: "300px",
-      color: "red",
     },
     explanationInput: {
       fontSize: "1rem",
@@ -35,7 +34,6 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
       width: "100%",
       minWidth: "190px",
       maxWidth: "190px",
-      color: "yellow",
     },
     editable: {
       minHeight: "109px",
