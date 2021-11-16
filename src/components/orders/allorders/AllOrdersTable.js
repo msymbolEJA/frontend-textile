@@ -1323,47 +1323,47 @@ function AllOrdersTable() {
           ) : null}
         </div>
         <AllTable />
-        {printError ? <h1>{printError}</h1> : null}
-        {filters?.status === "awaiting" ? (
-          <>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.print}
-              onClick={printHandler}
-            >
-              <FormattedMessage id="print" defaultMessage="Print" />
-            </Button>
-            <h1>
-              <FormattedMessage id="labels" defaultMessage="Labels" />
-            </h1>
-            {allPdf ? (
-              allPdf?.map((pdf, index) => (
-                <div key={`${index}${pdf}`}>
-                  <a
-                    href={`${BASE_URL}${
-                      store === "shop1"
-                        ? "media/pdf/bulk/"
-                        : "media/pdf/shopify/bulk"
-                    }${pdf}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {pdf}
-                  </a>
-                </div>
-              ))
-            ) : (
-              <h2>
-                <FormattedMessage
-                  id="dontHaveAnyLabel"
-                  defaultMessage="Dont have any label!"
-                />
-              </h2>
-            )}
-          </>
-        ) : null}
       </Paper>
+      {printError ? <h1>{printError}</h1> : null}
+      {filters?.status === "awaiting" ? (
+        <>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.print}
+            onClick={printHandler}
+          >
+            <FormattedMessage id="print" defaultMessage="Print" />
+          </Button>
+          <h1>
+            <FormattedMessage id="labels" defaultMessage="Labels" />
+          </h1>
+          {allPdf ? (
+            allPdf?.map((pdf, index) => (
+              <div key={`${index}${pdf}`}>
+                <a
+                  href={`${BASE_URL}${
+                    store === "shop1"
+                      ? "media/pdf/bulk/"
+                      : "media/pdf/shopify/bulk"
+                  }${pdf}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {pdf}
+                </a>
+              </div>
+            ))
+          ) : (
+            <h2>
+              <FormattedMessage
+                id="dontHaveAnyLabel"
+                defaultMessage="Dont have any label!"
+              />
+            </h2>
+          )}
+        </>
+      ) : null}
       {filters?.status === "ready" ? (
         <CargoPage
           getListFunc={getListFunc}
