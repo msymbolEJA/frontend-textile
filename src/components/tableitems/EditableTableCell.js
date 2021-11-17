@@ -26,7 +26,7 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
       width: "100px",
       // minHeight: "100px",
       borderRight: "0.5px solid #E0E0E0",
-      maxWidth: "300px",
+      maxWidth: "200px",
     },
     explanationInput: {
       fontSize: "1rem",
@@ -64,7 +64,9 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
 
   const classes = useStyles();
   const [content, setContent] = useState(
-    name === "variation_1_value"
+    name === "explanation"
+      ? row[name]?.replaceAll(",", ", ")
+      : name === "variation_1_value"
       ? row[name]
           ?.replace(" US women&#039;s letter", "")
           ?.replace(" US women's letter", "") === "2X"
@@ -87,7 +89,7 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
 
   let expTableCell;
 
-  if (from === "all-orders") {
+  if (from === "all-orders" && name === "goldGr") {
     expTableCell = classes.allOrdersTableCell;
   } else if (name === "explanation") {
     expTableCell = classes.explanationTableCell;
