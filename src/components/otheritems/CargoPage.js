@@ -79,7 +79,7 @@ const CargoPage = ({ getListFunc, ids, setRefreshTable, countryFilter }) => {
         ?.replaceAll("-", "")
         ?.replaceAll(":", "")
         ?.replaceAll(".", "") +
-      `- ${cargoForm.ref_number_f} (${cargoForm.date})`;
+      ` (${cargoForm.date})**${cargoForm.ref_number_f}`;
     delete cargoForm.ref_number_f;
     delete cargoForm.date;
 
@@ -180,7 +180,6 @@ const CargoPage = ({ getListFunc, ids, setRefreshTable, countryFilter }) => {
             id="ref_number_f"
             label={formatMessage({
               id: "description",
-              defaultMessage: "Description",
             })}
             type="text"
             variant="outlined"
