@@ -19,6 +19,7 @@ import ShopifyColumnHeaders, {
   ShopifyColumnValues,
 } from "../../allorders/ShopifyColumns";
 
+const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 // const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 
@@ -292,6 +293,24 @@ const OrderDetails = ({ match }) => {
                 ) : null}
                 {store === "shop2" ? (
                   <ShopifyColumnHeaders />
+                ) : NON_SKU ? (
+                  <>
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="type" defaultMessage="Type" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="size" defaultMessage="Size" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="color" defaultMessage="Color" />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <FormattedMessage
+                        id="explanationMod"
+                        defaultMessage="Org-Explanation"
+                      />
+                    </StyledTableCell>
+                  </>
                 ) : (
                   <>
                     <StyledTableCell align="center">
@@ -354,6 +373,19 @@ const OrderDetails = ({ match }) => {
                     ) : null}
                     {store === "shop2" ? (
                       <ShopifyColumnValues row={row} />
+                    ) : NON_SKU ? (
+                      <>
+                        <CustomTableCell {...{ row, name: "sku" }} />
+                        <CustomTableCell
+                          {...{ row, name: "variation_1_value" }}
+                        />
+                        <CustomTableCell
+                          {...{ row, name: "variation_2_value" }}
+                        />
+                        <CustomTableCell
+                          {...{ row, name: "explanation_mod" }}
+                        />
+                      </>
                     ) : (
                       <>
                         <CustomTableCell {...{ row, name: "type" }} />
