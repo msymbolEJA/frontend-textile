@@ -120,5 +120,6 @@
   "explanationMod": "Org-Explanation",
   "topSeller": "Statistics",
   "searchResult": "Search Result",
-  "goldGr": "Gold Gram"
+  "goldGr": "Gold/Silver Gram",
+  "description": "Description"
 }

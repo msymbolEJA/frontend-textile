@@ -106,7 +106,7 @@
   "dontHaveAnyLabel": "Herhangi bir etiket yok!",
   "labels": "Etiketler",
   "createANewShipment": "Yeni Gönderi Oluştur",
-  "description": "Açıklama",
+  "description": "Açıklama/Parca No:",
   "areYouSureForPackage": "Paketlemek istediginize emin misiniz?",
   "noFile": "-",
   "orderDetails": "Sipariş Detayları",
@@ -169,5 +169,5 @@
   "getTypes": "Tipleri Getir",
   "getColors": "Renkleri Getir",
   "searchResult": "Arama Sonucu",
-  "goldGr": "Altın Gram"
+  "goldGr": "Altın/Gümüş Gram"
 }

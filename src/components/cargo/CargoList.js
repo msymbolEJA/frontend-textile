@@ -192,6 +192,9 @@ export default function CustomizedTables() {
               />
             </StyledTableCell>
             <StyledTableCell align="center">
+              <FormattedMessage id="description" />
+            </StyledTableCell>
+            <StyledTableCell align="center">
               <FormattedMessage id="carrier" defaultMessage="Carrier" />
             </StyledTableCell>
             <StyledTableCell align="center">
@@ -227,7 +230,10 @@ export default function CustomizedTables() {
                   >
                     <StyledTableCell align="center">{row.id}</StyledTableCell>
                     <StyledTableCell align="center" component="th" scope="row">
-                      {row?.refNumber}
+                      {row?.refNumber.split("**")[0]}
+                    </StyledTableCell>
+                    <StyledTableCell align="center" component="th" scope="row">
+                      {row?.refNumber.split("**")[1]}
                     </StyledTableCell>
                     <EditableTableCell
                       align="center"
