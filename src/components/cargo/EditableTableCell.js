@@ -6,11 +6,7 @@ import ContentEditable from "react-contenteditable";
 
 const useStyles = makeStyles(() => ({
   tableCell: {
-    padding: 0,
-    width: "100px",
-
-    //minWidth: "100px",
-    maxWidth: "100px",
+    padding: 3,
   },
   input: {
     width: "100px",
@@ -36,6 +32,7 @@ const useStyles = makeStyles(() => ({
   },
   editable: {
     minHeight: "50px",
+    minWidth: "100px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

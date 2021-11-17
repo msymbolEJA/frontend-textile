@@ -258,7 +258,10 @@ export default function CustomizedTables() {
                             }}
                             style={{
                               color:
-                                key.toString().split(",")[1] === " 209"
+                                !key ||
+                                key.toString().split(",")[1].includes("None") ||
+                                key.toString().split(",")[1] === " 209" ||
+                                key.toString().split(",")[1] === " US"
                                   ? "black"
                                   : "red",
                             }}
