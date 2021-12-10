@@ -116,7 +116,7 @@ export const FONTS = {
     FONT9: "Harmonie Script",
     FONT10: "Love Hewits", //OK
   },
-  SILVERBYSWAN: {
+  SilverBySwan: {
     FONT1: "Marketing Script", //OK
     FONT2: "Scriptina", //OK
     FONT3: "Pasifico", //OK

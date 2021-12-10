@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { FONTS } from "../../helper/Constants";
 
-const FontPreview = ({ id, font, text }) => {
+const FontPreview = ({ id, font = "", text }) => {
   const canvasRef = useRef();
   const fontStyle =
-    FONTS[process.env.REACT_APP_STORE_NAME_ORJ][font.replace(" ", "")];
+    FONTS?.[process.env.REACT_APP_STORE_NAME_ORJ]?.[font.replace(" ", "")];
 
   useEffect(() => {
     const canvas = canvasRef.current;
