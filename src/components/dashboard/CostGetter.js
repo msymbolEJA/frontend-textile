@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-evenly",
     alignItems: "center",
-    height: 500,
+    height: "fit-content",
   },
   titleStyle: {
     display: "flex",
@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     minHeight: "5rem",
     borderBottom: "1px solid black",
+  },
+  paddingStyle: {
+    margin: 10,
   },
 }));
 
@@ -39,6 +42,7 @@ const CostGetter = () => {
   const [calcCost, setCalcCost] = useState({
     totalCost: null,
     isLoading: false,
+    isRepeatNumber: 0,
   });
 
   const getDate = () => {
@@ -52,14 +56,24 @@ const CostGetter = () => {
     getData(
       `${BASE_URL}etsy/cost/?order_date__iexact=&order_date__lte=${endDateRef.current.value}+00%3A00&order_date__gte=${beginnerDateRef.current.value}+00%3A00&limit=100000000000&offset=0`
     ).then((response) => {
-      // console.log(response.data.count);
+      // console.log(response.data.results);
       setQuantity(response.data.count);
 
       let res = response.data.results.reduce(function (a, b) {
         return { cost: Number(a.cost) + Number(b.cost) }; // returns object with property x
       });
 
-      setCalcCost({ ...calcCost, totalCost: res.cost, isLoading: false });
+      let isRepeatRes = response.data.results.reduce(
+        (total, x) => (x.is_repeat === true ? total + 1 : total),
+        0
+      );
+
+      setCalcCost({
+        ...calcCost,
+        totalCost: res.cost,
+        isLoading: false,
+        isRepeatNumber: isRepeatRes,
+      });
     });
   };
 
@@ -71,19 +85,31 @@ const CostGetter = () => {
   }, []);
 
   return (
-    <Paper className={classes.paper} style={{}}>
+    <Paper className={classes.paper}>
       <div className={classes.titleStyle}>
         <BorderColorIcon style={{ color: "#3F51B5", fontSize: "2rem" }} />
         <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>Calculator</h3>
       </div>
-      <label htmlFor="beginnerDate">Start Date:</label>
-      <input ref={beginnerDateRef} type="date" />
-      <label htmlFor="endDate">End Date:</label>
-      <input ref={endDateRef} type="date" />
+      <div>
+        <label htmlFor="beginnerDate" className={classes.paddingStyle}>
+          Start Date:
+        </label>
+        <input
+          ref={beginnerDateRef}
+          type="date"
+          className={classes.paddingStyle}
+        />
+      </div>
+      <div>
+        <label htmlFor="endDate" className={classes.paddingStyle}>
+          End Date:
+        </label>
+        <input ref={endDateRef} type="date" className={classes.paddingStyle} />
+      </div>
       <Button variant="contained" color="primary" onClick={getDate}>
         Calculate
       </Button>
-      <div style={{ height: "5rem" }}>
+      <div>
         {calcCost.isLoading ? (
           <h3>Calculating...</h3>
         ) : (
@@ -92,6 +118,9 @@ const CostGetter = () => {
               {calcCost.totalCost && "Total Cost : $" + calcCost.totalCost}
             </h3>
             <h3>{calcCost.totalCost && "Quantity : " + quantity}</h3>
+            <h3>
+              {calcCost.totalCost && "Is Repeat : " + calcCost.isRepeatNumber}
+            </h3>
           </>
         )}
       </div>
