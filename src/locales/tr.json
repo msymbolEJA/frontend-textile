@@ -166,9 +166,11 @@
   "colorCount": "Renk Sayısı",
   "startDate": "Başlangıç Tarihi",
   "endDate": "Bitiş Tarihi",
-  "getTypes": "Tipleri Getir",
   "getColors": "Renkleri Getir",
   "searchResult": "Arama Sonucu",
   "goldGr": "Altın/Gümüş Gram",
-  "manualRefresh": "Manuel Güncelle"
+  "manualRefresh": "Manuel Güncelle",
+  "getTypes": "Tipleri Getir",
+  "exclude": "Hariç",
+  "include": "Dahil"
 }

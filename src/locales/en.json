@@ -122,5 +122,8 @@
   "searchResult": "Search Result",
   "goldGr": "Gold/Silver Gram",
   "description": "Description",
-  "manualRefresh": "Manual Refresh"
+  "manualRefresh": "Manual Refresh",
+  "exclude": "Exclude",
+  "include": "Include",
+  "getTypes": "Get Types"
 }

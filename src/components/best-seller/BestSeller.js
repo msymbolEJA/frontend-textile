@@ -122,14 +122,14 @@ const DateGetter = () => {
             <label htmlFor="beginnerDate" className={classes.label}>
               <FormattedMessage id="startDate" defaultMessage="Start Date" />:
             </label>
-            <FormattedMessage id="(dahil)" />
+            (<FormattedMessage id="include" defaultMessage="Include" />)
             <input ref={beginnerDateRef} type="date" />
           </div>
           <div className={classes.inputs}>
             <label htmlFor="endDate" className={classes.label}>
               <FormattedMessage id="endDate" defaultMessage="End Date" />:
             </label>
-            <FormattedMessage id="(hariç)" />
+            (<FormattedMessage id="exclude" defaultMessage="Exclude" />)
             <input ref={endDateRef} type="date" />
           </div>
           <div className={classes.getBtnDiv}>
@@ -139,7 +139,7 @@ const DateGetter = () => {
               color="primary"
               onClick={getCost}
             >
-              <FormattedMessage id="getTypes" />
+              <FormattedMessage id="getTypes" defaultMessage="Get Types" />
             </Button>
           </div>
         </Paper>

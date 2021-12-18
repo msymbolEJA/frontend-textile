@@ -1,6 +1,6 @@
 import React, { useContext, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -17,7 +17,6 @@ import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Button from "@material-ui/core/Button";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import {
@@ -153,15 +152,14 @@ export default function MenuAppBar() {
   const open = Boolean(anchorEl);
   const history = useHistory();
   const mobileView = useMediaQuery("(max-width:1024px)");
-  const { formatMessage } = useIntl();
   const myInputRef = useRef(null);
   //console.log(user?.role);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleAccountPage = () => {
-    history.push("/account");
+  const handleDirClick = (e) => {
+    history.push(`/${e.target.id}`);
     setAnchorEl(null);
   };
   const handleClose = () => {
@@ -467,7 +465,10 @@ export default function MenuAppBar() {
                         Admin Panel
                       </a>
                     </MenuItem>
-                    <MenuItem id="cost-table" onClick={(e) => handleClick(e)}>
+                    <MenuItem
+                      id="cost-table"
+                      onClick={(e) => handleDirClick(e)}
+                    >
                       <FormattedMessage
                         id="costTable"
                         defaultMessage="Cost Table"
@@ -480,7 +481,7 @@ export default function MenuAppBar() {
                 userRole === "shop_manager" ||
                 userRole === "shop_packer" ||
                 localUser === "Kalanima" ? (
-                  <MenuItem id="best-seller" onClick={(e) => handleClick(e)}>
+                  <MenuItem id="best-seller" onClick={(e) => handleDirClick(e)}>
                     <FormattedMessage
                       id="topSeller"
                       defaultMessage="Top Seller"
@@ -492,13 +493,16 @@ export default function MenuAppBar() {
                   userRole === "shop_manager" ||
                   userRole === "shop_packer") && (
                   <div>
-                    <MenuItem id="search" onClick={(e) => handleClick(e)}>
+                    <MenuItem id="search" onClick={(e) => handleDirClick(e)}>
                       <FormattedMessage id="search" defaultMessage="Search" />
                     </MenuItem>
-                    <MenuItem id="new-order" onClick={(e) => handleClick(e)}>
+                    <MenuItem id="new-order" onClick={(e) => handleDirClick(e)}>
                       <FormattedMessage id="new" defaultMessage="New" />
                     </MenuItem>
-                    <MenuItem id="stock-list" onClick={(e) => handleClick(e)}>
+                    <MenuItem
+                      id="stock-list"
+                      onClick={(e) => handleDirClick(e)}
+                    >
                       <FormattedMessage
                         id="stockList"
                         defaultMessage="Stock List"
@@ -506,7 +510,7 @@ export default function MenuAppBar() {
                     </MenuItem>
                   </div>
                 )}
-                <MenuItem onClick={handleAccountPage}>
+                <MenuItem id="account" onClick={handleDirClick}>
                   <FormattedMessage id="account" defaultMessage="Account" />
                 </MenuItem>
                 {/*         <MenuItem onClick={handleSettingsPage}>
