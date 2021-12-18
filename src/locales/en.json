@@ -121,5 +121,6 @@
   "topSeller": "Statistics",
   "searchResult": "Search Result",
   "goldGr": "Gold/Silver Gram",
-  "description": "Description"
+  "description": "Description",
+  "manualRefresh": "Manual Refresh"
 }

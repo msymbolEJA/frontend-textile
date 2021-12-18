@@ -169,5 +169,6 @@
   "getTypes": "Tipleri Getir",
   "getColors": "Renkleri Getir",
   "searchResult": "Arama Sonucu",
-  "goldGr": "Altın/Gümüş Gram"
+  "goldGr": "Altın/Gümüş Gram",
+  "manualRefresh": "Manuel Güncelle"
 }

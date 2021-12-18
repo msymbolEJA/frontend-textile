@@ -4,13 +4,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import SummaryTable from "./SummaryTable";
 import { AppContext } from "../../context/Context";
-import { useIntl } from "react-intl";
+import { useIntl, FormattedMessage } from "react-intl";
 // Icons
 import {
   ListAlt as ListAltIcon,
   LocalShipping as LocalShippingIcon,
   CardGiftcard as CardGiftcardIcon,
 } from "@material-ui/icons";
+import Button from "@material-ui/core/Button";
 
 import { getData } from "../../helper/PostData";
 import { sortingArrayAdmin, sortingArrayUser } from "../../helper/Constants";
@@ -34,8 +35,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 50,
   },
   button: {
-    margin: "0.3rem",
-    width: "10.5rem",
+    marginTop: "1rem",
   },
 }));
 
@@ -169,6 +169,20 @@ const Dashboard = () => {
   // console.log({ localRole });
   // console.log({ newStatu });
 
+  const manualRefresh = () => {
+    let arr = []; // Array to hold the keys includes last_updated
+    // Iterate over localStorage and insert the keys that meet the condition into arr
+    for (let i = 0; i < localStorage.length; i++) {
+      if (localStorage.key(i).includes("last_updated")) {
+        arr.push(localStorage.key(i));
+      }
+    }
+    // Iterate over arr and remove the items by key
+    for (let i = 0; i < arr.length; i++) {
+      localStorage.removeItem(arr[i]);
+    }
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.boxes}>
@@ -176,6 +190,17 @@ const Dashboard = () => {
           lastDateOfOrder={lastDateOfOrder}
           healthCheck={healthCheck}
         />
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={manualRefresh}
+        >
+          <FormattedMessage
+            id="manualRefresh"
+            defaultMessage="Manual Refresh"
+          />
+        </Button>
         <Grid container spacing={2} style={{ justifyContent: "center" }}>
           <SummaryTable
             title="orders"

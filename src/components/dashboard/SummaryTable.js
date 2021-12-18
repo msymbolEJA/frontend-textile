@@ -20,7 +20,7 @@ const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: 30,
+    marginTop: 15,
     maxWidth: "300px",
   },
   table: {
@@ -139,7 +139,9 @@ export default function SummaryTable({
                       onClick={() =>
                         title === "orders"
                           ? history.push(
-                              `/all-orders?&status=${item.cell1.toLowerCase()}&limit=${PAGE_ROW_NUMBER || 25}&offset=0`
+                              `/all-orders?&status=${item.cell1.toLowerCase()}&limit=${
+                                PAGE_ROW_NUMBER || 25
+                              }&offset=0`
                             )
                           : null
                       }
