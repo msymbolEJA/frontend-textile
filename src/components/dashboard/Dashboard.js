@@ -16,7 +16,7 @@ import Button from "@material-ui/core/Button";
 import { getData } from "../../helper/PostData";
 import { sortingArrayAdmin, sortingArrayUser } from "../../helper/Constants";
 import FloatingMenu from "./FloatingMenu";
-import CostGetter from "./CostGetter";
+// import CostGetter from "./CostGetter";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
@@ -259,11 +259,11 @@ const Dashboard = () => {
               data={shipmentDueDates}
             />
           ) : null}
-          {userRole === "admin" ? (
+          {/* {userRole === "admin" ? (
             <>
               <CostGetter />
             </>
-          ) : null}
+          ) : null} */}
         </Grid>
       </div>
     </div>

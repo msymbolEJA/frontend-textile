@@ -7,6 +7,7 @@ import { getData } from "../../helper/PostData";
 import Button from "@material-ui/core/Button";
 import moment from "moment";
 import SellerTable from "./SellerTable";
+import CostGetter from "./CostGetter";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -71,15 +72,44 @@ const groupByKey = (list, key) =>
 const DateGetter = () => {
   const { store } = useContext(AppContext);
   const classes = useStyles();
-  const beginnerDateRef = useRef(null);
-  const endDateRef = useRef(null);
+  const beginnerDateRef = useRef();
+  const endDateRef = useRef();
   const [bestSeller, setBestSeller] = useState({
     bestRows: null,
     isLoading: false,
     type: null,
   });
+  const [quantity, setQuantity] = useState(0);
+  const [calcCost, setCalcCost] = useState({
+    totalCost: null,
+    isLoading: false,
+    isRepeatNumber: 0,
+  });
 
   const getCost = () => {
+    setCalcCost({ ...calcCost, isLoading: true });
+    getData(
+      `${BASE_URL}etsy/cost/?order_date__iexact=&order_date__lte=${endDateRef.current.value}+00%3A00&order_date__gte=${beginnerDateRef.current.value}+00%3A00&limit=100000000000&offset=0`
+    ).then((response) => {
+      // console.log(response.data.results);
+      setQuantity(response.data.count);
+
+      let res = response.data.results.reduce(function (a, b) {
+        return { cost: Number(a.cost) + Number(b.cost) }; // returns object with property x
+      });
+
+      let isRepeatRes = response.data.results.reduce(
+        (total, x) => (x.is_repeat === true ? total + 1 : total),
+        0
+      );
+
+      setCalcCost({
+        ...calcCost,
+        totalCost: res.cost,
+        isLoading: false,
+        isRepeatNumber: isRepeatRes,
+      });
+    });
     setBestSeller({ ...bestSeller, isLoading: true });
     getData(
       `${BASE_URL}${
@@ -116,35 +146,45 @@ const DateGetter = () => {
       <h2 className={classes.header}>
         <FormattedMessage id="topSeller" />
       </h2>
-      <div className={classes.top}>
-        <Paper className={classes.paper}>
-          <div className={classes.inputs}>
-            <label htmlFor="beginnerDate" className={classes.label}>
-              <FormattedMessage id="startDate" defaultMessage="Start Date" />:
-            </label>
-            (<FormattedMessage id="include" defaultMessage="Include" />)
-            <input ref={beginnerDateRef} type="date" />
-          </div>
-          <div className={classes.inputs}>
-            <label htmlFor="endDate" className={classes.label}>
-              <FormattedMessage id="endDate" defaultMessage="End Date" />:
-            </label>
-            (<FormattedMessage id="exclude" defaultMessage="Exclude" />)
-            <input ref={endDateRef} type="date" />
-          </div>
-          <div className={classes.getBtnDiv}>
-            <Button
-              variant="contained"
-              className={classes.btn}
-              color="primary"
-              onClick={getCost}
-            >
-              <FormattedMessage id="getTypes" defaultMessage="Get Types" />
-            </Button>
-          </div>
-        </Paper>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className={classes.top}>
+          <Paper className={classes.paper}>
+            <div className={classes.inputs}>
+              <label htmlFor="beginnerDate" className={classes.label}>
+                <FormattedMessage id="startDate" defaultMessage="Start Date" />:
+              </label>
+              (<FormattedMessage id="include" defaultMessage="Include" />)
+              <input ref={beginnerDateRef} type="date" />
+            </div>
+            <div className={classes.inputs}>
+              <label htmlFor="endDate" className={classes.label}>
+                <FormattedMessage id="endDate" defaultMessage="End Date" />:
+              </label>
+              (<FormattedMessage id="exclude" defaultMessage="Exclude" />)
+              <input ref={endDateRef} type="date" />
+            </div>
+            <div className={classes.getBtnDiv}>
+              <Button
+                variant="contained"
+                className={classes.btn}
+                color="primary"
+                onClick={getCost}
+              >
+                <FormattedMessage id="getTypes" defaultMessage="Get Types" />
+              </Button>
+            </div>
+          </Paper>
+        </div>
+        {quantity ? (
+          <CostGetter
+            endDateRef={endDateRef}
+            beginnerDateRef={beginnerDateRef}
+            calcCost={calcCost}
+            quantity={quantity}
+          />
+        ) : null}
       </div>
-      {<SellerTable bestSeller={bestSeller} />}
+      {bestSeller && <SellerTable bestSeller={bestSeller} />}
     </div>
   );
 };
