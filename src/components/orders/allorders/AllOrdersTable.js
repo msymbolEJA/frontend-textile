@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  useContext,
-} from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 
 import {
   Button,
@@ -18,7 +12,6 @@ import {
   TablePagination,
   TableContainer,
   TextField,
-  CircularProgress,
   Checkbox,
 } from "@material-ui/core";
 import FormData from "form-data";
@@ -602,11 +595,11 @@ function AllOrdersTable() {
     if (e.keyCode === 13) setBarcodeInput(barcodeInputRef.current.value);
   };
 
-  const handleRowClick = (id) => {
-    history.push({
-      pathname: `/order-details/${id}`,
-    });
-  };
+  // const handleRowClick = (id) => {
+  //   history.push({
+  //     pathname: `/order-details/${id}`,
+  //   });
+  // };
 
   const handleRowChange = (id, data) => {
     if (!data) return;
@@ -663,6 +656,7 @@ function AllOrdersTable() {
           setRows([]);
         });
     }
+    // eslint-disable-next-line
   }, [filters?.search, refreshTable]);
 
   const searchHandler = (value, keyCode) => {
@@ -701,17 +695,6 @@ function AllOrdersTable() {
       .finally(() => {
         getListFunc();
         setIsUploadingFile(false);
-      });
-  };
-
-  const handleGoogleSheet = () => {
-    // console.log("handleGoogleSheet");
-    getData("http://155.138.255.69:8080/etsy/google_sheet_workshop/")
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
       });
   };
 
@@ -1216,24 +1199,11 @@ function AllOrdersTable() {
               <div
                 style={{
                   marginRight: "10px",
-                  display: "flex",
-                  flexDirection: "column",
                 }}
               >
-                <Button
-                  variant="contained"
-                  color="default"
-                  className={classes.countryFilter}
-                  onClick={() => handleGoogleSheet()}
-                >
-                  <FormattedMessage
-                    id="saveGoogleSheet"
-                    defaultMessage="Save Google Sheet"
-                  />
-                </Button>
                 <a
                   style={{ fontSize: "1rem", marginTop: "10px" }}
-                  href="https://docs.google.com/spreadsheets/d/1AWqfQPgSqrzR1C1cV4Q6XJGVx3-4-VnoDBIVJknSPEM/edit#gid=0"
+                  href="https://docs.google.com/spreadsheets/d/1AMgAWogdjd4vFGrTOVsyxE_2LpYhdcOecUKgdkh8P-g/edit#gid=0"
                   target="_blank"
                   rel="noreferrer"
                 >
