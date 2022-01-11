@@ -19,6 +19,9 @@ const Favourites = () => {
 
   const getFavourites = () => {
     getFn("etsy/findShopListingsActive/").then((response) => {
+      response.data.sort(function (a, b) {
+        return parseFloat(b.num_favorers) - parseFloat(a.num_favorers);
+      });
       setTd(response.data);
     });
   };
