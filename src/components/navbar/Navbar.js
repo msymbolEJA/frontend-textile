@@ -493,6 +493,15 @@ export default function MenuAppBar() {
                   userRole === "shop_manager" ||
                   userRole === "shop_packer") && (
                   <div>
+                    <MenuItem
+                      id="favourites"
+                      onClick={(e) => handleDirClick(e)}
+                    >
+                      <FormattedMessage
+                        id="favourites"
+                        defaultMessage="Favourites"
+                      />
+                    </MenuItem>
                     <MenuItem id="search" onClick={(e) => handleDirClick(e)}>
                       <FormattedMessage id="search" defaultMessage="Search" />
                     </MenuItem>

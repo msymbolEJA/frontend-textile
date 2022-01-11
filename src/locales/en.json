@@ -125,5 +125,6 @@
   "manualRefresh": "Manual Refresh",
   "exclude": "Exclude",
   "include": "Include",
-  "getTypes": "Get Types"
+  "getTypes": "Get Types",
+  "favourites": "Favourites"
 }

@@ -1,7 +1,10 @@
 import axios from "axios";
 import FormData from "form-data";
+
 //const token = localStorage.getItem(localStoragePrefix + "x-auth-token");
 const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ + "-";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 export const postAuthData = async (path, data) => {
   const response = await axios.post(`${path}`, data, {
     headers: {
@@ -122,6 +125,18 @@ export const deleteProduct = async (path) => {
   const response = await axios.delete(path, {
     Authorization: `Bearer ${token}`,
     "Content-Type": "multipart/form-data",
+  });
+  return response;
+};
+
+export const getFn = async (path) => {
+  const token = localStorage.getItem(localStoragePrefix + "x-auth-token");
+  const response = await axios.get(`${BASE_URL}${path}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
   });
   return response;
 };

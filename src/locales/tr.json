@@ -172,5 +172,6 @@
   "manualRefresh": "Manuel Güncelle",
   "getTypes": "Tipleri Getir",
   "exclude": "Hariç",
-  "include": "Dahil"
+  "include": "Dahil",
+  "favourites": "Favoriler"
 }
