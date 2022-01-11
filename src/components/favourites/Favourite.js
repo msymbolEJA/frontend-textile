@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import { getQueryParams } from "../../helper/getQueryParams";
 import { getFn } from "../../helper/PostData";
 import CustomPagination from "../tableitems/CustomPagination";
@@ -7,6 +7,7 @@ import CustomTable from "../tableitems/customtable/CustomTable";
 
 const Favourite = () => {
   const { id } = useParams();
+  const history = useHistory();
   const filter = getQueryParams();
   const [td, setTd] = useState();
   const [page, setPage] = useState(filter.page);
@@ -37,11 +38,20 @@ const Favourite = () => {
     { id: 3, title: "Create Date", key: "create_date" },
     { id: 4, title: "Created TSZ", key: "creation_tsz" },
   ];
+
+  const handleChangePage = (pg) => {
+    setPage(pg);
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set("page", pg);
+    history.push(`${window.location.pathname}?${currentUrlParams.toString()}`);
+  };
   return (
     <div>
       <h2>Favourite</h2>
       <CustomTable tableHeader={tableHeader} tableData={td} />
-      {td && <CustomPagination page={page} setPage={setPage} />}
+      {td && (
+        <CustomPagination page={page} handleChangePage={handleChangePage} />
+      )}
     </div>
   );
 };

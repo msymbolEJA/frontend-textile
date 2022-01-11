@@ -62,24 +62,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CustomPagination = ({ page, setPage }) => {
+const CustomPagination = ({ page, handleChangePage }) => {
   const classes = useStyles();
-
-  const handlePageChange = (e) => {
-    setPage(e.target.id);
-  };
 
   page = Number(page);
 
+  const handlePageChange = (e) => {
+    handleChangePage(e.target.id);
+  };
+
   const handleFirstPage = () => {
-    setPage(1);
+    handleChangePage(1);
   };
 
   const handlePrevPage = () => {
-    setPage(page - 1);
+    handleChangePage(page - 1);
   };
   const handleNextPage = () => {
-    setPage(page + 1);
+    handleChangePage(page + 1);
   };
 
   return (
