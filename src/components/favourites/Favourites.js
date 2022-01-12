@@ -11,7 +11,7 @@ const Favourites = () => {
       key: "listing_id",
       type: "innerUrl",
       url: "listing_id",
-      beginningUrl: "",
+      beginningUrl: "favourites/",
       endingUrl: "?page=1",
     },
     { id: 2, title: "Views", type: "normal", key: "views" },
