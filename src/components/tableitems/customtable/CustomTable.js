@@ -47,7 +47,17 @@ const CustomTable = ({ tableHeader, tableData }) => {
             tableData?.map((user, ind) => (
               <tr className={classes.tr} key={user.id || ind}>
                 {tableHeader.map((header, id) =>
-                  header.key === "title" ? (
+                  header.type === "innerUrl" ? (
+                    <td key={header.id || id} className={classes.td}>
+                      <a
+                        href={`${header.beginningUrl || ""}${user[header.key]}${
+                          header.endingUrl || ""
+                        }`}
+                      >
+                        {user[header.key]}
+                      </a>
+                    </td>
+                  ) : header.type === "outerUrl" ? (
                     <td key={header.id || id} className={classes.td}>
                       <a
                         href={user[header.key2]}
@@ -57,18 +67,8 @@ const CustomTable = ({ tableHeader, tableData }) => {
                         {user[header.key]}
                       </a>
                     </td>
-                  ) : header.key === "listing_id" ? (
+                  ) : header.type === "time" ? (
                     <td key={header.id || id} className={classes.td}>
-                      <a href={`favourites/${user[header.key]}?page=1`}>
-                        {user[header.key]}
-                      </a>
-                    </td>
-                  ) : header.key === "last_modified_tsz" ||
-                    header.key === "original_creation_tsz" ||
-                    header.key === "creation_tsz" ||
-                    header.key === "create_date" ? (
-                    <td key={header.id || id} className={classes.td}>
-                      {/* {user[header.key]} */}
                       {moment
                         .utc(user[header.key] * 1000)
                         .local()

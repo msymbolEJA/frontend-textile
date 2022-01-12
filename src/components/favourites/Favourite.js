@@ -33,10 +33,10 @@ const Favourite = () => {
   }, [page, id]);
 
   const tableHeader = [
-    { id: 1, title: "User Id", key: "user_id" },
-    { id: 2, title: "Login Name", key: "login_name" },
-    { id: 3, title: "Create Date", key: "create_date" },
-    { id: 4, title: "Created TSZ", key: "creation_tsz" },
+    { id: 1, title: "User Id", type: "normal", key: "user_id" },
+    { id: 2, title: "Login Name", type: "normal", key: "login_name" },
+    { id: 3, title: "Create Date", type: "time", key: "create_date" },
+    { id: 4, title: "Created TSZ", type: "time", key: "creation_tsz" },
   ];
 
   const handleChangePage = (pg) => {
