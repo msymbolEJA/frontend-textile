@@ -50,6 +50,7 @@ const Favourites = () => {
 
   return (
     <div>
+      <h2>Favourites</h2>
       <CustomTable tableData={td} tableHeader={tableHeader} />
     </div>
   );

@@ -4,7 +4,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ChevronLeft";
 import FirstPageIcon from "@material-ui/icons/FirstPage";
 import ArrowForwardIosIcon from "@material-ui/icons/ChevronRight";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   paginationWrapper: {
     display: "flex",
     justifyContent: "center",
@@ -65,11 +65,9 @@ const useStyles = makeStyles((theme) => ({
     width: 55,
     height: 53,
   },
-}));
+};
 
 const CustomPagination = ({ page, handleChangePage }) => {
-  const classes = useStyles();
-
   page = Number(page);
 
   const handlePageChange = (e) => {
@@ -88,39 +86,39 @@ const CustomPagination = ({ page, handleChangePage }) => {
   };
 
   return (
-    <div className={classes.paginationWrapper}>
+    <div style={styles.paginationWrapper}>
       {page > 3 ? (
-        <div className={classes.empty}>
-          <div onClick={handleFirstPage} className={classes.skipWrapper}>
+        <div style={styles.empty}>
+          <div onClick={handleFirstPage} style={styles.skipWrapper}>
             <FirstPageIcon fontSize="large" />
           </div>
         </div>
       ) : (
-        <div className={classes.empty}></div>
+        <div style={styles.empty}></div>
       )}
       {page > 1 ? (
-        <div className={classes.empty}>
-          <div className={classes.skipWrapper}>
+        <div style={styles.empty}>
+          <div style={styles.skipWrapper}>
             <ArrowBackIosIcon fontSize="large" onClick={handlePrevPage} />
           </div>
         </div>
       ) : (
         <div style={{ display: "flex" }}>
-          <div className={classes.empty}></div>
-          <div className={classes.empty}></div>
+          <div style={styles.empty}></div>
+          <div style={styles.empty}></div>
         </div>
       )}
       {
-        <div className={classes.firstPreviousWrapper}>
+        <div style={styles.firstPreviousWrapper}>
           {page === 1 ? (
-            <div className={classes.empty}></div>
+            <div style={styles.empty}></div>
           ) : page === 2 ? (
-            <div className={classes.firstPreviousWrapper}>
-              <p className={classes.empty}></p>
-              <div className={classes.empty}>
+            <div style={styles.firstPreviousWrapper}>
+              <p style={styles.empty}></p>
+              <div style={styles.empty}>
                 <p
                   id={page - 1}
-                  className={classes.minusOneWrapper}
+                  style={styles.minusOneWrapper}
                   onClick={handlePageChange}
                 >
                   {page - 1}
@@ -128,20 +126,20 @@ const CustomPagination = ({ page, handleChangePage }) => {
               </div>
             </div>
           ) : (
-            <div className={classes.firstPreviousWrapper}>
-              <div className={classes.empty}>
+            <div style={styles.firstPreviousWrapper}>
+              <div style={styles.empty}>
                 <p
                   id={page - 2}
-                  className={classes.secondMinusWrapper}
+                  style={styles.secondMinusWrapper}
                   onClick={handlePageChange}
                 >
                   {page - 2}
                 </p>
               </div>
-              <div className={classes.empty}>
+              <div style={styles.empty}>
                 <p
                   id={page - 1}
-                  className={classes.secondMinusOneWrapper}
+                  style={styles.secondMinusOneWrapper}
                   onClick={handlePageChange}
                 >
                   {page - 1}
@@ -149,24 +147,24 @@ const CustomPagination = ({ page, handleChangePage }) => {
               </div>
             </div>
           )}
-          <div className={classes.empty}>
-            <p id={page} className={classes.pagePar} onClick={handlePageChange}>
+          <div style={styles.empty}>
+            <p id={page} style={styles.pagePar} onClick={handlePageChange}>
               {page}
             </p>
           </div>
-          <div className={classes.empty}>
+          <div style={styles.empty}>
             <p
               id={page + 1}
-              className={classes.firstPlusOne}
+              style={styles.firstPlusOne}
               onClick={handlePageChange}
             >
               {page + 1}
             </p>
           </div>
-          <div className={classes.empty}>
+          <div style={styles.empty}>
             <p
               id={page + 2}
-              className={classes.firstPlusTwo}
+              style={styles.firstPlusTwo}
               onClick={handlePageChange}
             >
               {page + 2}
@@ -175,10 +173,10 @@ const CustomPagination = ({ page, handleChangePage }) => {
         </div>
       }
       <div style={{ display: "flex" }}>
-        <div className={classes.lastPageIcon}>
+        <div style={styles.lastPageIcon}>
           <ArrowForwardIosIcon fontSize="large" onClick={handleNextPage} />
         </div>
-        <div className={classes.empty}></div>
+        <div style={styles.empty}></div>
       </div>
     </div>
   );
