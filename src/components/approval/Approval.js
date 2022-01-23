@@ -636,14 +636,85 @@ function App({ history }) {
             open={Boolean(repeatAnchorEl)}
             onClose={handleRepeatMenuClose}
           >
-            <hr />
-            <StyledMenuItem>
+            {/* <hr/> */}
+            <span />
+            {/* <StyledMenuItem>
               <ListItemText
                 primary="Wrong manufacturing"
                 id="Wrong manufacturing"
                 onClick={handleRepeatMenuItemClick(
                   row,
                   repeatReasons.MANUFACTURING_ERROR
+                )}
+              />
+            </StyledMenuItem> */}
+            <StyledMenuItem>
+              <ListItemText
+                primary="Letter Pattern Is Wrong"
+                id="Letter Pattern Is Wrong"
+                onClick={handleRepeatMenuItemClick(
+                  row,
+                  repeatReasons.LETTER_PATTERN_IS_WRONG
+                )}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemText
+                primary="Wrong Color"
+                id="Wrong Color"
+                onClick={handleRepeatMenuItemClick(
+                  row,
+                  repeatReasons.WRONG_COLOR
+                )}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemText
+                primary="Stone Fall"
+                id="Stone Fall"
+                onClick={handleRepeatMenuItemClick(
+                  row,
+                  repeatReasons.STONE_FALL
+                )}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemText
+                primary="Different Product"
+                id="Different Product"
+                onClick={handleRepeatMenuItemClick(
+                  row,
+                  repeatReasons.DIFFERENT_PRODUCT
+                )}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemText
+                primary="Long Chain"
+                id="Long Chain"
+                onClick={handleRepeatMenuItemClick(
+                  row,
+                  repeatReasons.LONG_CHAIN
+                )}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemText
+                primary="Short Chain"
+                id="Short Chain"
+                onClick={handleRepeatMenuItemClick(
+                  row,
+                  repeatReasons.SHORT_CHAIN
+                )}
+              />
+            </StyledMenuItem>
+            <StyledMenuItem>
+              <ListItemText
+                primary="Different Font"
+                id="Different Font"
+                onClick={handleRepeatMenuItemClick(
+                  row,
+                  repeatReasons.DIFFERENT_FONT
                 )}
               />
             </StyledMenuItem>
