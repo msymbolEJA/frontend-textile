@@ -3,6 +3,8 @@ import { TableCell } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import CustomTableCell from "./CustomTableCell";
+import Tooltip from "@material-ui/core/Tooltip";
+import Button from "@material-ui/core/Button";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -18,7 +20,7 @@ const ShopifyColumnHeaders = () => {
   return (
     <>
       <StyledTableCell align="center">
-        <FormattedMessage id="countryId" defaultMessage="Country Id" />
+        <FormattedMessage id="title" defaultMessage="Title" />
       </StyledTableCell>
       <StyledTableCell align="center">
         <FormattedMessage id="variation1" defaultMessage="Variation1" />
@@ -33,7 +35,7 @@ const ShopifyColumnHeaders = () => {
         <FormattedMessage id="variation4" defaultMessage="Variation4" />
       </StyledTableCell>
       <StyledTableCell align="center">
-        <FormattedMessage id="title" defaultMessage="Title" />
+        <FormattedMessage id="countryId" defaultMessage="Country Id" />
       </StyledTableCell>
     </>
   );
@@ -47,7 +49,19 @@ const useStyles = makeStyles((theme) => ({
     height: 40,
     maxWidth: "130px",
   },
+  button: {
+    maxWidth: "130px",
+  },
 }));
+
+const CustomTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0, 0, 0, 0.87)",
+    boxShadow: theme.shadows[1],
+    fontSize: "0.75rem",
+  },
+}))(Tooltip);
 
 export const ShopifyColumnValues = ({ row = [{ mapping_data: [] }] }) => {
   const classes = useStyles();
@@ -59,20 +73,23 @@ export const ShopifyColumnValues = ({ row = [{ mapping_data: [] }] }) => {
 
   return (
     <>
-      <CustomTableCell {...{ row, name: "country_id" }} />
+      <CustomTableCell {...{ row, name: "title" }} />
       {row.mapping_data?.map((each, index) => (
-        <TableCell
-          key={index}
-          //   style={{ maxWidth: "200px" }}
-          align="center"
-          className={classes.tableCell}
-        >
-          {each.name}
-          <br />
-          <b style={{ fontSize: "1.1rem" }}>{each.value}</b>
+        <TableCell key={index} align="center" className={classes.tableCell}>
+          {each?.name?.toLowerCase()?.includes("image") ? (
+            <CustomTooltip title={each.name} placement="top-start">
+              <Button className={classes.button}>
+                <img src={each.value} alt={each.value} width="100px" />
+              </Button>
+            </CustomTooltip>
+          ) : (
+            <CustomTooltip title={each.name} placement="top-start">
+              <Button className={classes.button}>{each.value}</Button>
+            </CustomTooltip>
+          )}
         </TableCell>
       ))}
-      <CustomTableCell {...{ row, name: "title" }} />
+      <CustomTableCell {...{ row, name: "country_id" }} />
     </>
   );
 };
