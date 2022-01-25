@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import ContentEditable from "react-contenteditable";
 import FontPreview from "./FontPreview";
+import { repeatReplacerWithTR } from "../../helper/Functions";
 
 const useStyles = makeStyles(() => ({
   tableCell: {
@@ -134,15 +135,23 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
           />
         </>
       ) : null}
-      <ContentEditable
-        className={
-          name === "explanation" ? classes.editable : classes.editableMod
-        }
-        html={content || ""} // innerHTML of the editable div
-        disabled={false} // use true to disable edition
-        onChange={handleContentChange} // handle innerHTML change
-        onBlur={handleBlur} // handle innerHTML change
-      />
+      {name === "explanation" ? (
+        <ContentEditable
+          className={classes.editable}
+          html={repeatReplacerWithTR(row[name]) || ""} // innerHTML of the editable div
+          disabled={false} // use true to disable edition
+          onChange={handleContentChange} // handle innerHTML change
+          onBlur={handleBlur} // handle innerHTML change
+        />
+      ) : (
+        <ContentEditable
+          className={classes.editableMod}
+          html={content || ""} // innerHTML of the editable div
+          disabled={false} // use true to disable edition
+          onChange={handleContentChange} // handle innerHTML change
+          onBlur={handleBlur} // handle innerHTML change
+        />
+      )}
       {/*   {true ? (
         <TextareaAutosize
           defaultValue={row[name] ? row[name] : ""} // first : value={row[name]} // i've changed

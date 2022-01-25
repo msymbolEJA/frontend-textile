@@ -34,3 +34,26 @@ export function getDPI() {
 
   return result;
 }
+
+export const repeatReplacerWithTR = (exp) => {
+  return exp
+    .replace("_", " ")
+    .replace("REPEAT", "TEKRAR")
+    .replace("MANUFACTURING ERROR", "ÜRETİM HATASI")
+    .replace("LETTER_PATTERN_IS_WRONG", "HARF DİZİLİMİ YANLIŞ")
+    .replace("WRONG_COLOR", "YANLIŞ RENK")
+    .replace("STONE_FALL", "TAŞI DÜŞMÜŞ")
+    .replace("DIFFERENT_PRODUCT", "FARKLI ÜRÜN")
+    .replace("LONG_CHAIN", "ZİNCİR UZUN")
+    .replace("SHORT_CHAIN", "ZİNCİR KISA")
+    .replace("DIFFERENT_FONT", "FARKLI FONT")
+    .replace("DISCOLORATION", "RENK ATMA")
+    .replace(": BREAK OFF", ": KOPMA")
+    .replace(": LOST IN MAIL", ": POSTA DA KAYBOLDU")
+    .replace(": SECOND", ": DİĞER")
+    .replace("&#039;", "'")
+    .replace("&#39;", "'")
+    .replace("&lt;", "<")
+    .replace("&gt;", ">")
+    .replaceAll(",", ", ");
+};

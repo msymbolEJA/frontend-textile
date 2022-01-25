@@ -126,5 +126,6 @@
   "exclude": "Exclude",
   "include": "Include",
   "getTypes": "Get Types",
-  "favourites": "Favourites"
+  "favourites": "Favourites",
+  "result": "Result"
 }
