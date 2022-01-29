@@ -57,7 +57,9 @@ const useStyles = makeStyles(() => ({
 const EditableTableCell = ({ row, name, onChange, from }) => {
   useEffect(() => {
     setContent(
-      name === "variation_1_value"
+      name === "explanation"
+        ? repeatReplacerWithTR(row[name])
+        : name === "variation_1_value"
         ? row[name]
             ?.replace(" US women&#039;s letter", "")
             ?.replace(" US women's letter", "") === "2X"
@@ -135,23 +137,15 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
           />
         </>
       ) : null}
-      {name === "explanation" ? (
-        <ContentEditable
-          className={classes.editable}
-          html={repeatReplacerWithTR(row[name]) || ""} // innerHTML of the editable div
-          disabled={false} // use true to disable edition
-          onChange={handleContentChange} // handle innerHTML change
-          onBlur={handleBlur} // handle innerHTML change
-        />
-      ) : (
-        <ContentEditable
-          className={classes.editableMod}
-          html={content || ""} // innerHTML of the editable div
-          disabled={false} // use true to disable edition
-          onChange={handleContentChange} // handle innerHTML change
-          onBlur={handleBlur} // handle innerHTML change
-        />
-      )}
+
+      <ContentEditable
+        className={classes.editableMod}
+        html={content || ""} // innerHTML of the editable div
+        disabled={false} // use true to disable edition
+        onChange={handleContentChange} // handle innerHTML change
+        onBlur={handleBlur} // handle innerHTML change
+      />
+
       {/*   {true ? (
         <TextareaAutosize
           defaultValue={row[name] ? row[name] : ""} // first : value={row[name]} // i've changed
