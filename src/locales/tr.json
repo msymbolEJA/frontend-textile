@@ -173,5 +173,6 @@
   "getTypes": "Tipleri Getir",
   "exclude": "Hariç",
   "include": "Dahil",
-  "favourites": "Favoriler"
+  "favourites": "Favoriler",
+  "statistics": "İstatistikler"
 }

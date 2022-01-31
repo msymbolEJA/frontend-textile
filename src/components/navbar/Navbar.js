@@ -477,14 +477,11 @@ export default function MenuAppBar() {
                   </div>
                 )}
 
-                {userRole === "admin" ||
-                userRole === "shop_manager" ||
-                userRole === "shop_packer" ||
-                localUser === "Kalanima" ? (
+                {userRole === "admin" ? (
                   <MenuItem id="best-seller" onClick={(e) => handleDirClick(e)}>
                     <FormattedMessage
-                      id="topSeller"
-                      defaultMessage="Top Seller"
+                      id="statistics"
+                      defaultMessage="Statistics"
                     />
                   </MenuItem>
                 ) : null}

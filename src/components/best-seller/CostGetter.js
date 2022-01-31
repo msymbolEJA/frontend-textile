@@ -42,7 +42,8 @@ const CostGetter = ({ quantity, calcCost }) => {
         ) : (
           <>
             <h3>
-              {calcCost.totalCost && "Total Cost : $" + calcCost.totalCost}
+              {calcCost.totalCost &&
+                "Total Cost : $" + calcCost.totalCost.toFixed(2)}
             </h3>
             <h3>{calcCost.totalCost && "Quantity : " + quantity}</h3>
             <h3>
