@@ -814,20 +814,36 @@ function AllOrdersTable() {
                     <FormattedMessage id="type" defaultMessage="Type" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage id="length" defaultMessage="Length" />
+                    <FormattedMessage
+                      id="variation1"
+                      defaultMessage="Variation 1"
+                    />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage id="color" defaultMessage="Color" />
+                    <FormattedMessage
+                      id="variation2"
+                      defaultMessage="Variation 2"
+                    />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage id="quantity" defaultMessage="Quantity" />
+                    <FormattedMessage
+                      id="variation3"
+                      defaultMessage="Variation 3"
+                    />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage id="size" defaultMessage="Size" />
+                    <FormattedMessage
+                      id="variation4"
+                      defaultMessage="Variation 4"
+                    />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage id="start" defaultMessage="Start" />
+                    <FormattedMessage
+                      id="variation5"
+                      defaultMessage="Variation 5"
+                    />
                   </StyledTableCell>
+
                   <StyledTableCell align="center">
                     <FormattedMessage id="space" defaultMessage="Space" />
                   </StyledTableCell>
@@ -933,11 +949,13 @@ function AllOrdersTable() {
                   ) : (
                     <>
                       <CustomTableCell {...{ row, name: "type" }} />
+                      {/* This wil change with shopify */}
                       <CustomTableCell {...{ row, name: "length" }} />
                       <CustomTableCell {...{ row, name: "color" }} />
                       <CustomTableCell {...{ row, name: "qty" }} />
                       <CustomTableCell {...{ row, name: "size" }} />
                       <CustomTableCell {...{ row, name: "start" }} />
+                      {/* --------------------------- */}
                       <CustomTableCell {...{ row, name: "space" }} />
                       <EditableTableCell
                         onClick={(e) => e.stopPropagation()}
