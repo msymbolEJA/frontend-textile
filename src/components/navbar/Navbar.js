@@ -23,8 +23,6 @@ import {
   ThumbUp as ThumbUpIcon,
   ViewList as ViewListIcon,
   LocalShipping as LocalShippingIcon,
-  ShoppingBasket as ShoppingBasketIcon,
-  Storefront as StorefrontIcon,
 } from "@material-ui/icons";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
@@ -147,7 +145,7 @@ export default function MenuAppBar() {
   const classes = useStyles(); // eslint-disable-next-line
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
-  const { user, lang, setLang, setStore, store } = useContext(AppContext);
+  const { user, lang, setLang } = useContext(AppContext);
   //console.log("user", user);
   const open = Boolean(anchorEl);
   const history = useHistory();
@@ -199,8 +197,6 @@ export default function MenuAppBar() {
     localStorage.removeItem("localEmail");
     localStorage.removeItem("localRole");
     localStorage.removeItem("localId");
-    localStorage.removeItem("store");
-    setStore("shop1");
   };
 
   const localUser = localStorage.getItem("localUser");
@@ -256,43 +252,6 @@ export default function MenuAppBar() {
               </Typography>
             )}
           </IconButton>
-          {/*********************************/}
-          {/* SHOPIFY - ETSY TRANSFER */}
-          {/*********************************/}
-          {localStorage.getItem("localUser") === "Admintest" ? (
-            <>
-              <StorefrontIcon
-                onClick={() => {
-                  setStore("shop1");
-                  localStorage.setItem("store", "shop1");
-                }}
-                className={
-                  store === "shop1"
-                    ? mobileView
-                      ? classes.mobileActiveButton
-                      : classes.activeShopButton
-                    : mobileView
-                    ? classes.mobileNonActiveShopButton
-                    : classes.nonActiveShopButton
-                }
-              />
-              <ShoppingBasketIcon
-                onClick={() => {
-                  setStore("shop2");
-                  localStorage.setItem("store", "shop2");
-                }}
-                className={
-                  store === "shop2"
-                    ? mobileView
-                      ? classes.mobileActiveButton
-                      : classes.activeShopButton
-                    : mobileView
-                    ? classes.mobileNonActiveShopButton
-                    : classes.nonActiveShopButton
-                }
-              />
-            </>
-          ) : null}
           <div className={classes.title}>
             <div style={{ flexDirection: "row" }}>
               <Button

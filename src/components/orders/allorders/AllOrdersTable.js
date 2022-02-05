@@ -105,8 +105,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const localStoragePrefix =
-  process.env.REACT_APP_STORE_NAME_ORJ + "-" + localStorage.getItem("store");
+const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
 
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
@@ -123,7 +122,7 @@ function AllOrdersTable() {
   );
   const [selected, setSelected] = useState([]);
   const [countryFilter, setCountryFilter] = useState("all");
-  const { user, store } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const filters = getQueryParams();
   const barcodeInputRef = useRef();
   const uploadLabelRef = useRef();
@@ -160,9 +159,7 @@ function AllOrdersTable() {
         );
         if (response.data.last_updated !== l || bypass) {
           getData(
-            store === "shop1"
-              ? `${BASE_URL}etsy/orders/?status=in_progress&limit=${2500}&offset=0`
-              : `${BASE_URL}shopify/orders/?status=in_progress&limit=${2500}&offset=0`
+            `${BASE_URL}etsy/orders/?status=in_progress&limit=${2500}&offset=0`
           )
             .then((response) => {
               const o = response?.data?.results?.length
@@ -193,13 +190,7 @@ function AllOrdersTable() {
   };
 
   const getLastUpdateDate = () => {
-    getData(
-      `${BASE_URL}${
-        store === "shop1"
-          ? "etsy/get_mapping_update_date/"
-          : "shopify/get_mapping_update_date/"
-      }`
-    )
+    getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
         const l = localStorage.getItem(
           `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
@@ -226,7 +217,7 @@ function AllOrdersTable() {
       } else filters.ordering = "-id";
 
       getData(
-        `${BASE_URL}${store === "shop1" ? "etsy/orders/" : "shopify/orders/"}?${
+        `${BASE_URL}etsy/orders/?${
           filters?.status ? `status=${filters?.status}` : ""
         }&is_repeat=${filters?.is_repeat}&is_followup=${
           filters?.is_followup
@@ -313,7 +304,6 @@ function AllOrdersTable() {
     countryFilter,
     count,
     selectedTag,
-    store,
   ]);
 
   useEffect(() => {
@@ -365,9 +355,7 @@ function AllOrdersTable() {
   };
 
   const getAllPdfFunc = () => {
-    getAllPdf(
-      `${BASE_URL}${store === "shop1" ? "etsy/all_pdf/" : "shopify/all_pdf/"}`
-    )
+    getAllPdf(`${BASE_URL}etsy/all_pdf/`)
       .then((response) => {
         setAllPdf(response.data.a);
       })
@@ -380,21 +368,10 @@ function AllOrdersTable() {
     const data = "";
     let urlPrint;
     if (countryFilter === "usa") {
-      urlPrint = `${BASE_URL}${
-        store === "shop1"
-          ? "etsy/print_all/?type=us"
-          : "shopify/print_all/?type=us"
-      }`;
+      urlPrint = `${BASE_URL}etsy/print_all/?type=us`;
     } else if (countryFilter === "int") {
-      urlPrint = `${BASE_URL}${
-        store === "shop1"
-          ? "etsy/print_all/?type=int"
-          : "shopify/print_all/?type=int"
-      }`;
-    } else
-      urlPrint = `${BASE_URL}${
-        store === "shop1" ? "etsy/print_all/" : "shopify/print_all/"
-      }`;
+      urlPrint = `${BASE_URL}etsy/print_all/?type=int`;
+    } else urlPrint = `${BASE_URL}etsy/print_all/`;
 
     getData(urlPrint, data)
       .then((data) => {
@@ -434,12 +411,7 @@ function AllOrdersTable() {
   // };
 
   const changeOrderStatus = (id, status) => {
-    putData(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-      }${id}/`,
-      { status }
-    )
+    putData(`${BASE_URL}etsy/mapping/${id}/`, { status })
       .then((response) => {
         const pdfUrl = `${BASE_URL}${response.data[1]}`;
         console.log("pfdUrl", pdfUrl);
@@ -470,9 +442,7 @@ function AllOrdersTable() {
     let siblings = [];
 
     await globalSearch(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-      }?receipt__receipt_id=${currentReceiptId}`
+      `${BASE_URL}etsy/mapping/?receipt__receipt_id=${currentReceiptId}`
     ).then((response) => {
       if (response?.data?.results?.length)
         siblings = response?.data?.results
@@ -608,12 +578,7 @@ function AllOrdersTable() {
       Object.values(data)[0]
     )
       return;
-    putData(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-      }${id}/`,
-      data
-    )
+    putData(`${BASE_URL}etsy/mapping/${id}/`, data)
       .then((response) => {})
       .catch((error) => {
         console.log(error);
@@ -643,9 +608,9 @@ function AllOrdersTable() {
     if (filters?.search) {
       globalSearch(
         // `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
-        `${BASE_URL}${
-          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-        }?search=${filters?.search}&limit=${25}&offset=${page * 25}`
+        `${BASE_URL}etsy/mapping/?search=${
+          filters?.search
+        }&limit=${25}&offset=${page * 25}`
       )
         .then((response) => {
           setRows(response.data.results);
@@ -786,11 +751,7 @@ function AllOrdersTable() {
               <StyledTableCell align="center">
                 <FormattedMessage id="status" defaultMessage="Status" />
               </StyledTableCell>
-              {store !== "shop1" ? (
-                <>
-                  <ShopifyColumns />
-                </>
-              ) : NON_SKU ? (
+              {NON_SKU ? (
                 <>
                   <StyledTableCell align="center">
                     <FormattedMessage id="type" defaultMessage="Type" />
@@ -931,11 +892,7 @@ function AllOrdersTable() {
                     </>
                   ) : null}
                   <CustomTableCell {...{ row, name: "status" }} />
-                  {store !== "shop1" ? (
-                    <>
-                      <ShopifyColumnValues row={row} name={"sku"} />
-                    </>
-                  ) : NON_SKU ? (
+                  {NON_SKU ? (
                     <>
                       <CustomTableCell {...{ row, name: "sku" }} />
                       <CustomTableCell
@@ -1330,11 +1287,7 @@ function AllOrdersTable() {
             allPdf?.map((pdf, index) => (
               <div key={`${index}${pdf}`}>
                 <a
-                  href={`${BASE_URL}${
-                    store === "shop1"
-                      ? "media/pdf/bulk/"
-                      : "media/pdf/shopify/bulk"
-                  }${pdf}`}
+                  href={`${BASE_URL}media/pdf/bulk/${pdf}`}
                   target="_blank"
                   rel="noreferrer"
                 >

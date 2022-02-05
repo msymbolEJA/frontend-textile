@@ -11,8 +11,7 @@ import {
 import { FormattedMessage, useIntl } from "react-intl";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const localStoragePrefix =
-  process.env.REACT_APP_STORE_NAME_ORJ + "-" + localStorage.getItem("store");
+const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
 
 const useStyles = makeStyles((theme) => ({
   root: {

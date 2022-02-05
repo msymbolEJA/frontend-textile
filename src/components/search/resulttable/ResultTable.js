@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -7,29 +7,18 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableFooter,
-  TablePagination,
   Paper,
   TableContainer,
   Checkbox,
-  CircularProgress,
   Menu,
   MenuItem,
   ListItemText,
 } from "@material-ui/core";
-import {
-  putData,
-  getData,
-  globalSearch,
-  putImage,
-  postData,
-} from "../../../helper/PostData";
+import { putData, putImage, postData } from "../../../helper/PostData";
 import SortableTableCell from "./SortableTableCell";
 
-import CustomTableCell from "./CustomTableCell";
 import Typography from "@material-ui/core/Typography";
 import { FormattedMessage } from "react-intl";
-import { AppContext } from "../../../context/Context";
 import { statusData } from "../../../helper/Constants";
 import { toastWarnNotify } from "../../otheritems/ToastNotify";
 import FlagAndFavCell from "./FlagAndFavCell";
@@ -39,11 +28,10 @@ import {
   // ThumbUpAlt as ThumbUpAltIcon,
 } from "@material-ui/icons";
 import EditableTableCell from "../../tableitems/EditableTableCell";
-import { tagsData, repeatReasons } from "../../../helper/Constants";
+import { repeatReasons } from "../../../helper/Constants";
 import OrderStatus from "../../tableitems/CustomSelectCell";
 import UploadFile from "../../tableitems/UploadFile";
 import ConstantTableCell from "../../tableitems/ConstantTableCell";
-import ShopifyColumns, { ShopifyColumnsValues } from "./ShopifyColumns";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {},
@@ -128,7 +116,6 @@ function ResultTable({ list, history, refreshSearch }) {
   const [rows, setRows] = useState();
   const [orderBy, setOrderBy] = useState("created_date");
   const [order, setOrder] = useState("asc");
-  const { store } = useContext(AppContext);
   const [selectedRowId, setSelectedRowId] = useState();
   const [selected, setSelected] = useState([]);
   const filters = {};
@@ -150,12 +137,7 @@ function ResultTable({ list, history, refreshSearch }) {
     )
       return;
     setLoading(true);
-    putData(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-      }${id}/`,
-      data
-    )
+    putData(`${BASE_URL}etsy/mapping/${id}/`, data)
       .then((response) => {
         refreshSearch();
       })
@@ -210,9 +192,7 @@ function ResultTable({ list, history, refreshSearch }) {
     e.stopPropagation();
     try {
       // let path = `${BASE_URL_MAPPING}${id}/`;
-      let path = `${BASE_URL}${
-        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-      }${id}/`;
+      let path = `${BASE_URL}etsy/mapping/${id}/`;
       putImage(path, imgFile, "image.png")
         .then((res) => {
           console.log(res);
@@ -416,12 +396,7 @@ function ResultTable({ list, history, refreshSearch }) {
   };
 
   const handleApproveSelected = () => {
-    postData(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/approved_all/" : "shopify/approved_all/"
-      }`,
-      { ids: selected }
-    )
+    postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
       .then((res) => {
         toastWarnNotify("Selected 'PENDING' orders are approved");
         setSelected([]);
@@ -485,9 +460,7 @@ function ResultTable({ list, history, refreshSearch }) {
   const handleCheckBoxClick = (event, id, row) => {
     const selectedIndex = selected?.indexOf(id);
     let newSelected = [];
-    if (store === "shop2") {
-      // Shopify check for specific product - dont exist now
-    } else if (NON_SKU) {
+    if (NON_SKU) {
       if (
         !(
           (
@@ -593,16 +566,7 @@ function ResultTable({ list, history, refreshSearch }) {
                     setOrderBy={setOrderBy}
                   />
                 ) : null}
-                {store === "shop2" ? (
-                  <ShopifyColumns
-                    setOrderBy={setOrderBy}
-                    handleRequestSort={handleRequestSort}
-                    order={order}
-                    orderBy={orderBy}
-                    colName1="Country Id"
-                    property1="country_id"
-                  />
-                ) : NON_SKU ? (
+                {NON_SKU ? (
                   <>
                     <SortableTableCell
                       property="variation_1_value"
@@ -854,13 +818,7 @@ function ResultTable({ list, history, refreshSearch }) {
                           }}
                         />
                       ) : null}
-                      {store === "shop2" ? (
-                        <ShopifyColumnsValues
-                          row={row}
-                          onChange={onChange}
-                          name1="country_id"
-                        />
-                      ) : NON_SKU ? (
+                      {NON_SKU ? (
                         <>
                           <EditableTableCell
                             {...{
@@ -960,9 +918,7 @@ function ResultTable({ list, history, refreshSearch }) {
                         <Checkbox
                           checked={isItemSelected}
                           disabled={
-                            store === "shop2"
-                              ? false
-                              : NON_SKU
+                            NON_SKU
                               ? !(
                                   (
                                     !!row?.variation_1_value?.replace(

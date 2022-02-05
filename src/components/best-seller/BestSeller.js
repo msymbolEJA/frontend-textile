@@ -70,7 +70,6 @@ const groupByKey = (list, key) =>
   );
 
 const DateGetter = () => {
-  const { store } = useContext(AppContext);
   const classes = useStyles();
   const beginnerDateRef = useRef();
   const endDateRef = useRef();
@@ -112,13 +111,7 @@ const DateGetter = () => {
     });
     setBestSeller({ ...bestSeller, isLoading: true });
     getData(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy" : "shopify"
-      }/type-color_number_list/?creation_tsz__iexact=&creation_tsz__lte=${
-        endDateRef.current.value
-      }+00%3A00%3A00&creation_tsz__gte=${
-        beginnerDateRef.current.value
-      }+00%3A00%3A00`
+      `${BASE_URL}etsy/type-color_number_list/?creation_tsz__iexact=&creation_tsz__lte=${endDateRef.current.value}+00%3A00%3A00&creation_tsz__gte=${beginnerDateRef.current.value}+00%3A00%3A00`
     ).then((response) => {
       const list = groupByKey(response.data.results, "type");
       const totals = Object.keys(list).map((o) =>

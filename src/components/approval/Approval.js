@@ -126,8 +126,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const localStoragePrefix =
-  process.env.REACT_APP_STORE_NAME_ORJ + "-" + localStorage.getItem("store");
+const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
 
 function App({ history }) {
   const [rows, setRows] = useState([]);
@@ -136,7 +135,6 @@ function App({ history }) {
   const [count, setCount] = useState(0);
   const [orderBy, setOrderBy] = useState("created_date");
   const [order, setOrder] = useState("asc");
-  const { store } = useContext(AppContext);
   const [selectedRowId, setSelectedRowId] = useState();
   const [selected, setSelected] = useState([]);
   const filters = getQueryParams();
@@ -150,7 +148,7 @@ function App({ history }) {
   const getListFunc = () => {
     setloading(true);
     getData(
-      `${BASE_URL}${store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"}?${
+      `${BASE_URL}etsy/mapping/?${
         filters?.status ? `status=${filters?.status}` : ""
       }&is_repeat=${filters?.is_repeat}&is_followup=${
         filters?.is_followup
@@ -182,16 +180,8 @@ function App({ history }) {
       .finally(() => setloading(false));
   };
 
-  // console.log("store", store);
-
   const getLastUpdateDate = () => {
-    getData(
-      `${BASE_URL}${
-        store === "shop1"
-          ? "etsy/get_mapping_update_date/"
-          : "shopify/get_mapping_update_date/"
-      }`
-    )
+    getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
         const l = localStorage.getItem(
           `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
@@ -234,7 +224,6 @@ function App({ history }) {
     filters.search,
     count,
     selectedTag,
-    store,
   ]);
 
   useEffect(() => {
@@ -276,20 +265,14 @@ function App({ history }) {
   };
 
   const handleRowChange = (id, data) => {
-    if (!Object.keys(data)[0] && store === "shop1") return;
+    if (!Object.keys(data)[0]) return;
     if (
       rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
-        Object.values(data)[0] &&
-      store === "shop1"
+      Object.values(data)[0]
     )
       return;
     setloading(true);
-    putData(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-      }${id}/`,
-      data
-    )
+    putData(`${BASE_URL}etsy/mapping/${id}/`, data)
       .then((response) => {})
       .catch((error) => {
         console.log(error);
@@ -349,9 +332,7 @@ function App({ history }) {
     e.stopPropagation();
     try {
       // let path = `${BASE_URL_MAPPING}${id}/`;
-      let path = `${BASE_URL}${
-        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-      }${id}/`;
+      let path = `${BASE_URL}etsy/mapping/${id}/`;
       putImage(path, imgFile, "image.png")
         .then((res) => {
           console.log(res);
@@ -411,12 +392,7 @@ function App({ history }) {
 
   const handleApproveSelected = () => {
     // postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
-    postData(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/approved_all/" : "shopify/approved_all/"
-      }`,
-      { ids: selected }
-    )
+    postData(`${BASE_URL}etsy/approved_all/}`, { ids: selected })
       .then((res) => {
         toastWarnNotify("Selected 'PENDING' orders are approved");
         if (filters?.search) {
@@ -475,10 +451,7 @@ function App({ history }) {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = rows?.map((row) => {
-        if (store === "shop2") {
-          // Check shopify for approve all button - dont exist control now
-          return row?.id;
-        } else if (NON_SKU) {
+        if (NON_SKU) {
           if (
             !(
               (
@@ -515,9 +488,7 @@ function App({ history }) {
   const handleCheckBoxClick = (event, id, row) => {
     const selectedIndex = selected?.indexOf(id);
     let newSelected = [];
-    if (store === "shop2") {
-      // Shopify check for specific product - dont exist now
-    } else if (NON_SKU) {
+    if (NON_SKU) {
       if (
         !(
           (
@@ -566,9 +537,9 @@ function App({ history }) {
     if (filters?.search) {
       globalSearch(
         // `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
-        `${BASE_URL}${
-          store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-        }?search=${filters?.search}&limit=${25}&offset=${page * 25}`
+        `${BASE_URL}etsy/mapping/?search=${
+          filters?.search
+        }&limit=${25}&offset=${page * 25}`
       )
         .then((response) => {
           setRows(response.data.results);
@@ -892,16 +863,7 @@ function App({ history }) {
                   setOrderBy={setOrderBy}
                 />
               ) : null}
-              {store === "shop2" ? (
-                <ShopifyColumns
-                  setOrderBy={setOrderBy}
-                  handleRequestSort={handleRequestSort}
-                  order={order}
-                  orderBy={orderBy}
-                  colName1="Country Id"
-                  property1="country_id"
-                />
-              ) : NON_SKU ? (
+              {NON_SKU ? (
                 <>
                   <SortableTableCell
                     property="variation_1_value"
@@ -1175,14 +1137,7 @@ function App({ history }) {
                         }}
                       />
                     ) : null}
-                    {store === "shop2" ? (
-                      <ShopifyColumnsValues
-                        row={row}
-                        handleRowChange={handleRowChange}
-                        onChange={onChange}
-                        name1="country_id"
-                      />
-                    ) : NON_SKU ? (
+                    {NON_SKU ? (
                       <>
                         <EditableTableCell
                           {...{
@@ -1281,9 +1236,7 @@ function App({ history }) {
                       <Checkbox
                         checked={isItemSelected}
                         disabled={
-                          store === "shop2"
-                            ? false
-                            : NON_SKU
+                          NON_SKU
                             ? !(
                                 (
                                   !!row?.variation_1_value?.replace(

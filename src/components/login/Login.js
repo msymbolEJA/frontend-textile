@@ -126,7 +126,6 @@ export default function Login() {
             localStorage.setItem("localEmail", response?.data?.email);
             localStorage.setItem("localRole", response?.data?.role);
             localStorage.setItem("localId", response?.data?.id);
-            localStorage.setItem("store", "shop1");
             console.log("Logged in succesfully!");
             setAuth(true);
             if (response?.data?.role === "workshop_designer") {

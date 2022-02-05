@@ -32,7 +32,7 @@ const messages = {
 };
 
 function App() {
-  const { lang, store } = useContext(AppContext);
+  const { lang } = useContext(AppContext);
 
   const setDocumentTitle = () => {
     const userRole = localStorage.getItem("localRole");
@@ -42,13 +42,7 @@ function App() {
       userRole === "shop_packer"
         ? "pending"
         : "awaiting";
-    getData(
-      `${BASE_URL}${
-        store === "shop1"
-          ? "etsy/summary_order/"
-          : "shopify/shopify_summary_order/"
-      }`
-    ).then((response) => {
+    getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
       const obj = response?.data?.[0].find((item) => item.status === stat);
       const inProgessNumber = obj?.status_count || 0;
       const tabTitle = inProgessNumber + " | " + STORE_NAME;
@@ -64,7 +58,7 @@ function App() {
       clearInterval(caller);
     };
     // eslint-disable-next-line
-  }, [store]);
+  }, []);
   return (
     <ThemeProvider theme={theme}>
       <IntlProvider messages={messages[lang]} locale={lang} defaultLocale="en">

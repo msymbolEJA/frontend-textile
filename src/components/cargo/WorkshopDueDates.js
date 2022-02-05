@@ -56,15 +56,12 @@ const useStyles = makeStyles((theme) => ({
 export default function CustomizedTables() {
   const classes = useStyles();
   const [cargoList, setCargoList] = useState({});
-  const { store } = useContext(AppContext);
 
   useEffect(() => {
-    getData(
-      `${BASE_URL}${store === "shop1" ? "etsy" : "shopify"}/due_dates/`
-    ).then((response) => {
+    getData(`${BASE_URL}etsy/due_dates/`).then((response) => {
       setCargoList(response.data);
     });
-  }, [store]);
+  }, []);
 
   return (
     <Grid item xs={12} md={12} className={classes.root}>

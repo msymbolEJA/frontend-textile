@@ -1,8 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Form from "./Form";
 import ResultTable from "./resulttable/ResultTable";
 import { queryData, globalSearch } from "../../helper/PostData";
-import { AppContext } from "../../context/Context";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -22,7 +21,6 @@ const Search = ({ location }) => {
     location?.state?.global || ""
   );
   const [fillError, setFillError] = useState();
-  const { store } = useContext(AppContext);
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
@@ -30,11 +28,7 @@ const Search = ({ location }) => {
       if (globalSearchKey.length > 2) {
         // globalSearch(`${BASE_URL_MAPPING}?search=${globalSearchKey}`)
         globalSearch(
-          `${BASE_URL}${
-            store === "shop1"
-              ? "etsy/mapping_search/"
-              : "shopify/mapping_search/"
-          }?search=${globalSearchKey}`
+          `${BASE_URL}etsy/mapping_search/?search=${globalSearchKey}`
         )
           .then((response) => {
             //console.log(response.data);
@@ -62,9 +56,7 @@ const Search = ({ location }) => {
         setFillError();
         queryString = queryString.slice(0, -1);
         // let path = `${BASE_URL_MAPPING}${queryString}`;
-        let path = `${BASE_URL}${
-          store === "shop1" ? "etsy/mapping_search/" : "shopify/mapping_search/"
-        }${queryString}`;
+        let path = `${BASE_URL}etsy/mapping_search/${queryString}`;
         queryData(path)
           .then((response) => {
             setList(response?.data?.results || []);

@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-  const { user, store } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const { formatMessage } = useIntl();
   const [orderSummary, setOrderSummary] = useState();
   const [workshopDueDates, setWorkshopDueDates] = useState();
@@ -54,13 +54,7 @@ const Dashboard = () => {
   const userRole = user?.role || localRole;
 
   const getListFunc = () => {
-    getData(
-      `${BASE_URL}${
-        store === "shop1"
-          ? "etsy/summary_order/"
-          : "shopify/shopify_summary_order/"
-      }`
-    ).then((response) => {
+    getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
       const isSilveristicOrBelky =
         process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic" ||
         process.env.REACT_APP_STORE_NAME_ORJ === "Belky";
@@ -112,14 +106,10 @@ const Dashboard = () => {
   useEffect(() => {
     getListFunc();
     // eslint-disable-next-line
-  }, [store]);
+  }, []);
 
   useEffect(() => {
-    getData(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/due_dates/" : "shopify/due_dates/"
-      }`
-    )
+    getData(`${BASE_URL}etsy/due_dates/`)
       .then((response) => {
         const newResult = [];
         const obj = response.data;
@@ -132,16 +122,10 @@ const Dashboard = () => {
       .catch((err) => {
         setWorkshopDueDates("noOrders");
       });
-  }, [store]);
+  }, []);
 
   useEffect(() => {
-    getData(
-      `${BASE_URL}${
-        store === "shop1"
-          ? "etsy/shipment_due_dates/"
-          : "shopify/shipment_due_dates/"
-      }`
-    )
+    getData(`${BASE_URL}etsy/shipment_due_dates/`)
       .then((response) => {
         const newResult = [];
         const obj = response.data;
@@ -154,7 +138,7 @@ const Dashboard = () => {
       .catch((err) => {
         setShipmentDueDates("noOrders");
       });
-  }, [store]);
+  }, []);
 
   // console.log("localUser", localUser);
   // console.log(localUser === "admin");

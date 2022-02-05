@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
 
 const OrderDetails = ({ match }) => {
   const [rows, setRows] = useState([]);
-  const { user, store } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const localUser = localStorage.getItem("localUser");
 
   const [logs, setLogs] = useState([]);
@@ -104,12 +104,7 @@ const OrderDetails = ({ match }) => {
 
   const getPdf = () => {
     let data = match.params.id;
-    getOnePdf(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/print_one/" : "shopify/print_one/"
-      }`,
-      data
-    )
+    getOnePdf(`${BASE_URL}etsy/print_one/`, data)
       .then((res) => {
         //console.log(res.data.url);
         const link = document.createElement("a");
@@ -126,11 +121,7 @@ const OrderDetails = ({ match }) => {
   };
 
   useEffect(() => {
-    fetch(
-      `${BASE_URL}${store === "shop1" ? "media/pdf/" : "media/pdf/shopify/"}${
-        match.params.id
-      }.pdf`
-    )
+    fetch(`${BASE_URL}media/pdf/${match.params.id}.pdf`)
       .then((res) => {
         if (res.status !== 404) {
           setIsPdfExist(true);
@@ -138,12 +129,8 @@ const OrderDetails = ({ match }) => {
       })
       .catch((err) => console.log("err", err));
 
-    let url = `${BASE_URL}${
-      store === "shop1" ? "etsy/orders/" : "shopify/orders/"
-    }${match.params.id}/`;
-    let urlLogs = `${BASE_URL}${
-      store === "shop1" ? "etsy/dateLogs/" : "shopify/dateLogs/"
-    }${match.params.id}/`;
+    let url = `${BASE_URL}etsy/orders/${match.params.id}/`;
+    let urlLogs = `${BASE_URL}etsy/dateLogs/${match.params.id}/`;
     getData(url)
       .then((res) => {
         setRows([res.data]);
@@ -156,7 +143,7 @@ const OrderDetails = ({ match }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [match.params.id, refresh, store]);
+  }, [match.params.id, refresh]);
 
   const handleSendToStock = () => {
     const newData = {
@@ -175,12 +162,7 @@ const OrderDetails = ({ match }) => {
 
   const handleStockChange = (id, data) => {
     // putData(`${BASE_URL_MAPPING}${id}/`, data)
-    putData(
-      `${BASE_URL}${
-        store === "shop1" ? "etsy/mapping/" : "shopify/mapping/"
-      }${id}/`,
-      data
-    )
+    putData(`${BASE_URL}etsy/mapping/${id}/`, data)
       .then((response) => {})
       .catch((error) => {
         console.log(error);
@@ -291,9 +273,7 @@ const OrderDetails = ({ match }) => {
                     </StyledTableCell>
                   </>
                 ) : null}
-                {store === "shop2" ? (
-                  <ShopifyColumnHeaders />
-                ) : NON_SKU ? (
+                {NON_SKU ? (
                   <>
                     <StyledTableCell align="center">
                       <FormattedMessage id="type" defaultMessage="Type" />
@@ -371,9 +351,7 @@ const OrderDetails = ({ match }) => {
                         <CustomTableCell {...{ row, name: "supplier" }} />
                       </>
                     ) : null}
-                    {store === "shop2" ? (
-                      <ShopifyColumnValues row={row} />
-                    ) : NON_SKU ? (
+                    {NON_SKU ? (
                       <>
                         <CustomTableCell {...{ row, name: "sku" }} />
                         <CustomTableCell
@@ -453,9 +431,7 @@ const OrderDetails = ({ match }) => {
       ) && isPdfExist ? (
         <>
           <a
-            href={`${BASE_URL}${
-              store === "shop1" ? "media/pdf/" : "media/pdf/shopify/"
-            }${match.params.id}.pdf`}
+            href={`${BASE_URL}media/pdf/${match.params.id}.pdf`}
             target="_blank"
             rel="noreferrer"
           >
