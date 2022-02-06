@@ -9,3 +9,11 @@ body {
   word-wrap: break-word;
   text-align: center;
 }
+
+.cp {
+  cursor: pointer;
+}
+
+.m-10 {
+  margin: 10px;
+}

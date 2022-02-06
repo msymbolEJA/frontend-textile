@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
 
@@ -23,8 +23,12 @@ import {
   ThumbUp as ThumbUpIcon,
   ViewList as ViewListIcon,
   LocalShipping as LocalShippingIcon,
+  Notifications as NotificationsIcon,
 } from "@material-ui/icons";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Badge, Drawer } from "@material-ui/core";
+import { getData, putData } from "../../helper/PostData";
+import Notification from "./Notification";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const STORE_NAME = process.env.REACT_APP_STORE_NAME;
@@ -146,6 +150,11 @@ export default function MenuAppBar() {
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const { user, lang, setLang } = useContext(AppContext);
+  const [notification, setNotification] = useState({
+    count: 0,
+    results: [],
+    drawer: false,
+  });
   //console.log("user", user);
   const open = Boolean(anchorEl);
   const history = useHistory();
@@ -163,6 +172,16 @@ export default function MenuAppBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const getNotification = async () => {
+    getData(`${BASE_URL}etsy/notification/`).then((response) => {
+      setNotification(response.data);
+    });
+  };
+
+  useEffect(() => {
+    getNotification();
+  }, []);
 
   let localRole = localStorage.getItem("localRole");
   const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ + "-";
@@ -231,6 +250,24 @@ export default function MenuAppBar() {
     setAnchorEl(null);
   };
 
+  const toggleDrawer = (open) => {
+    setNotification({ ...notification, drawer: open });
+    !open && getNotification();
+  };
+
+  const handleNotification = (e, id, item) => {
+    putData(`${BASE_URL}etsy/notification/${id}/`, {
+      isRead: e.target.checked,
+      mapping_id: item.mapping_id,
+    })
+      .then((response) => {
+        console.log("response", response);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
   return (
     <div className={classes.root}>
       <FormGroup></FormGroup>
@@ -252,6 +289,24 @@ export default function MenuAppBar() {
               </Typography>
             )}
           </IconButton>
+          <Badge
+            badgeContent={notification?.count}
+            className="cp"
+            color="secondary"
+            children={<NotificationsIcon />}
+            onClick={() => toggleDrawer(true)}
+          />
+          <Drawer
+            anchor="top"
+            open={notification.drawer}
+            onClose={() => toggleDrawer(false)}
+          >
+            <Notification
+              toggleDrawer={toggleDrawer}
+              notification={notification}
+              handleNotification={handleNotification}
+            />
+          </Drawer>
           <div className={classes.title}>
             <div style={{ flexDirection: "row" }}>
               <Button
