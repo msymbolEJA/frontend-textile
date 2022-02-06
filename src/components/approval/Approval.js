@@ -897,7 +897,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="length"
+                    colName="variation1"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -905,7 +905,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="color"
+                    colName="variation2"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -913,7 +913,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="quantity"
+                    colName="variation3"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -921,7 +921,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="size"
+                    colName="variation4"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -929,7 +929,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="start"
+                    colName="variation5"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
