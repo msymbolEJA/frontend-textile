@@ -7,8 +7,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 
-export default function AlertDialog({ open, handleDialogClose, id }) {
+export default function AlertDialog({ open, handleDialogClose, dialog }) {
   const { formatMessage } = useIntl();
+
   return (
     <Dialog
       open={open}
@@ -16,10 +17,19 @@ export default function AlertDialog({ open, handleDialogClose, id }) {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      {id ? (
+      {dialog?.id ? (
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {id} -{" "}
+            {dialog?.id} -{" "}
+            {formatMessage({
+              id: "status",
+            })}
+            :
+            {formatMessage({
+              id: dialog?.statu || "-",
+              defaultMessage: dialog?.statu || "-",
+            })}
+            <br />
             {formatMessage({
               id: "statusNotInProgress",
             })}

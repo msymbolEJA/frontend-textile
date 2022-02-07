@@ -142,8 +142,7 @@ function AllOrdersTable() {
   const [refreshTable, setRefreshTable] = useState(false);
   const [loading, setloading] = useState(false);
   const [searchWord, setSearchWord] = useState("");
-  const [isDialogOpen, setDialogOpen] = useState(false);
-  const [dialogId, setDialogId] = useState(false);
+  const [dialog, setDialog] = useState({ statu: "", id: "", open: false });
 
   const localRole = localStorage.getItem("localRole");
 
@@ -492,7 +491,18 @@ function AllOrdersTable() {
       setCurrentBarcodeList([...currentBarcodeList, id]);
       // changeOrderStatus(id, "ready");
     } else {
-      setDialogId(id);
+      getData(`${BASE_URL}etsy/orders/${id}/`)
+        .then((response) => {
+          setDialog({
+            ...dialog,
+            statu: response?.data?.status,
+            id: id,
+            open: true,
+          });
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
     }
     barcodeInputRef.current.value = null;
     setBarcodeInput(null);
@@ -549,11 +559,11 @@ function AllOrdersTable() {
   };
 
   useEffect(() => {
-    setDialogOpen(dialogId ? true : false);
-  }, [dialogId]);
+    setDialog({ ...dialog, open: dialog?.id ? true : false });
+  }, [dialog?.id]);
 
   const handleDialogClose = () => {
-    setDialogId(false);
+    setDialog({ ...dialog, open: false, id: "", statu: "" });
   };
 
   const handleScan = (data) => {
@@ -1314,9 +1324,9 @@ function AllOrdersTable() {
         />
       ) : null}
       <CustomDialog
-        open={isDialogOpen}
-        id={dialogId}
+        open={dialog?.open}
         handleDialogClose={handleDialogClose}
+        dialog={dialog}
       />
     </div>
   );
