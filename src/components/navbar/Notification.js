@@ -42,6 +42,11 @@ const useStyles = makeStyles({
   tableHeadCell: {
     color: "white",
   },
+  warning: {
+    backgroundColor: "#ffc166",
+    padding: "0.5rem",
+    borderRadius: 5,
+  },
 });
 
 const Notification = ({ toggleDrawer, notification, handleNotification }) => {
@@ -58,40 +63,46 @@ const Notification = ({ toggleDrawer, notification, handleNotification }) => {
         </div>
       </div>
       <div>
-        <TableContainer component={Paper}>
-          <Table size="small">
-            <TableHead className={classes.tableHead}>
-              <TableRow>
-                <TableCell className={classes.tableHeadCell}>Id</TableCell>
-                <TableCell className={classes.tableHeadCell}>
-                  Mapping Id
-                </TableCell>
-                <TableCell className={classes.tableHeadCell}>Message</TableCell>
-                <TableCell className={classes.tableHeadCell}>
-                  Is Read?
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {notification?.results?.map((item, index) => {
-                return (
-                  <StyledTableRow key={index}>
-                    <TableCell>{item.id}</TableCell>
-                    <TableCell>{item.mapping_id}</TableCell>
-                    <TableCell>{item.message}</TableCell>
-                    <TableCell>
-                      <Checkbox
-                        color="primary"
-                        checked={item.is_read}
-                        onChange={(e) => handleNotification(e, item.id, item)}
-                      />
-                    </TableCell>
-                  </StyledTableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {!notification?.results?.length ? (
+          <div className={classes.warning}>No Notification!</div>
+        ) : (
+          <TableContainer component={Paper}>
+            <Table size="small">
+              <TableHead className={classes.tableHead}>
+                <TableRow>
+                  <TableCell className={classes.tableHeadCell}>Id</TableCell>
+                  <TableCell className={classes.tableHeadCell}>
+                    Mapping Id
+                  </TableCell>
+                  <TableCell className={classes.tableHeadCell}>
+                    Message
+                  </TableCell>
+                  <TableCell className={classes.tableHeadCell}>
+                    Is Read?
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {notification?.results?.map((item, index) => {
+                  return (
+                    <StyledTableRow key={index}>
+                      <TableCell>{item.id}</TableCell>
+                      <TableCell>{item.mapping_id}</TableCell>
+                      <TableCell>{item.message}</TableCell>
+                      <TableCell>
+                        <Checkbox
+                          color="primary"
+                          checked={item.is_read}
+                          onChange={(e) => handleNotification(e, item.id, item)}
+                        />
+                      </TableCell>
+                    </StyledTableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </div>
     </div>
   );
