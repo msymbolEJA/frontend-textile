@@ -391,7 +391,6 @@ function App({ history }) {
   };
 
   const handleApproveSelected = () => {
-    console.log("handleApproveSelected");
     // postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
     postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
       .then((res) => {

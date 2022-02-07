@@ -240,9 +240,13 @@ const Dashboard = () => {
                 id: "quantity",
                 defaultMessage: "QUANTITY",
               }).toUpperCase()}
-              data={shipmentDueDates
-                ?.slice(Math.max(shipmentDueDates?.length - 10, 0))
-                ?.reverse()}
+              data={
+                shipmentDueDates?.length > 10
+                  ? shipmentDueDates?.slice(
+                      Math.max(shipmentDueDates?.length - 10, 0)
+                    )
+                  : shipmentDueDates
+              }
             />
           ) : null}
           {/* {userRole === "admin" ? (
