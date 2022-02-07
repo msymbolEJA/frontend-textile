@@ -289,24 +289,29 @@ export default function MenuAppBar() {
               </Typography>
             )}
           </IconButton>
-          <Badge
-            badgeContent={notification?.count}
-            className="cp"
-            color="secondary"
-            children={<NotificationsIcon />}
-            onClick={() => toggleDrawer(true)}
-          />
-          <Drawer
-            anchor="top"
-            open={notification.drawer}
-            onClose={() => toggleDrawer(false)}
-          >
-            <Notification
-              toggleDrawer={toggleDrawer}
-              notification={notification}
-              handleNotification={handleNotification}
-            />
-          </Drawer>
+          {/* Only can see by workshop users. */}
+          {userRole?.includes("workshop") && (
+            <>
+              <Badge
+                badgeContent={notification?.count}
+                className="cp"
+                color="secondary"
+                children={<NotificationsIcon />}
+                onClick={() => toggleDrawer(true)}
+              />
+              <Drawer
+                anchor="top"
+                open={notification.drawer}
+                onClose={() => toggleDrawer(false)}
+              >
+                <Notification
+                  toggleDrawer={toggleDrawer}
+                  notification={notification}
+                  handleNotification={handleNotification}
+                />
+              </Drawer>
+            </>
+          )}
           <div className={classes.title}>
             <div style={{ flexDirection: "row" }}>
               <Button

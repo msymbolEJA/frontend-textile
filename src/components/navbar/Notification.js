@@ -11,6 +11,7 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
+import { FormattedMessage } from "react-intl";
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -52,33 +53,43 @@ const useStyles = makeStyles({
 const Notification = ({ toggleDrawer, notification, handleNotification }) => {
   const classes = useStyles();
 
-  console.log("Notification", notification);
-
   return (
     <div className={classes.list}>
       <div className={classes.header}>
-        <h2>Notification</h2>
+        <h2>
+          <FormattedMessage id="notification" defaultMessage="Notification!" />
+        </h2>
         <div className={classes.header}>
           <CancelIcon className="cp m-10" onClick={() => toggleDrawer(false)} />
         </div>
       </div>
       <div>
         {!notification?.results?.length ? (
-          <div className={classes.warning}>No Notification!</div>
+          <div className={classes.warning}>
+            <FormattedMessage
+              id="noNotification"
+              defaultMessage="No Notification!"
+            />
+          </div>
         ) : (
           <TableContainer component={Paper}>
             <Table size="small">
               <TableHead className={classes.tableHead}>
                 <TableRow>
-                  <TableCell className={classes.tableHeadCell}>Id</TableCell>
                   <TableCell className={classes.tableHeadCell}>
-                    Mapping Id
+                    <FormattedMessage id="id" defaultMessage="Id" />
                   </TableCell>
                   <TableCell className={classes.tableHeadCell}>
-                    Message
+                    <FormattedMessage
+                      id="mappingId"
+                      defaultMessage="Mapping Id"
+                    />
                   </TableCell>
                   <TableCell className={classes.tableHeadCell}>
-                    Is Read?
+                    <FormattedMessage id="message" defaultMessage="Message" />
+                  </TableCell>
+                  <TableCell className={classes.tableHeadCell}>
+                    <FormattedMessage id="isRead?" defaultMessage="IsRead?" />
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -87,7 +98,11 @@ const Notification = ({ toggleDrawer, notification, handleNotification }) => {
                   return (
                     <StyledTableRow key={index}>
                       <TableCell>{item.id}</TableCell>
-                      <TableCell>{item.mapping_id}</TableCell>
+                      <TableCell>
+                        <a href={`/order-details/${item.mapping_id}`}>
+                          {item.mapping_id}
+                        </a>
+                      </TableCell>
                       <TableCell>{item.message}</TableCell>
                       <TableCell>
                         <Checkbox

@@ -176,5 +176,9 @@
   "exclude": "Hariç",
   "include": "Dahil",
   "favourites": "Favoriler",
-  "statistics": "İstatistikler"
+  "statistics": "İstatistikler",
+  "message": "Mesaj",
+  "isRead?": "Okundu?",
+  "noNotification": "Bildirim Yok",
+  "notification": "Bildirim"
 }
