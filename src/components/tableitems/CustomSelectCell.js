@@ -26,14 +26,16 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         value={row[name]}
         // disabled={false}
         disabled={
-          NON_SKU
+          (NON_SKU
             ? !(
                 (!!row?.variation_1_value && !!row?.variation_2_value)
                 // &&
                 // !!row?.variation_1_name &&
                 // !!row?.variation_2_name
               )
-            : !(!!row.supplier && !!row.type && !!row.color && !!row.length)
+            : !(!!row.supplier && !!row.type && !!row.color && !!row.length)) ||
+          row[name] === "in_progress" ||
+          row[name] === "ready"
         }
         name={name}
         onChange={(e) => onSelectChange(e, row)}
