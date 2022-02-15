@@ -318,6 +318,7 @@ export default function MenuAppBar() {
                 color="primary"
                 variant="outlined"
                 id="all-orders"
+                disabled={userRole?.includes("workshop") && notification?.count}
                 className={
                   mobileView
                     ? classes.button2
