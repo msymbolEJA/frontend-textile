@@ -937,7 +937,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="space"
+                    colName="variation6"
                     setOrderBy={setOrderBy}
                   />
                 </>

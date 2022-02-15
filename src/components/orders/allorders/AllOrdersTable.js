@@ -816,7 +816,10 @@ function AllOrdersTable() {
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    <FormattedMessage id="space" defaultMessage="Space" />
+                    <FormattedMessage
+                      id="variation6"
+                      defaultMessage="Variation 6"
+                    />
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <FormattedMessage id="goldGr" />
