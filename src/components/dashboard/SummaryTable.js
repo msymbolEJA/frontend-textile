@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+import { AppContext } from "../../context/Context";
 
 import {
   Paper,
@@ -74,8 +75,10 @@ export default function SummaryTable({
   lastDateOfOrder,
   healthCheck,
 }) {
-  // const { user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
+  let localRole = localStorage.getItem("localRole");
 
+  const userRole = user?.role || localRole;
   let total =
     (data !== "noOrders" &&
       data?.length > 0 &&
@@ -136,14 +139,19 @@ export default function SummaryTable({
                     <TableRow
                       key={index}
                       className={classes.tableRow}
-                      onClick={() =>
-                        title === "orders"
-                          ? history.push(
-                              `/all-orders?&status=${item.cell1.toLowerCase()}&limit=${
-                                PAGE_ROW_NUMBER || 25
-                              }&offset=0`
-                            )
-                          : null
+                      onClick={
+                        !userRole?.includes("workshop")
+                          ? () =>
+                              title === "orders"
+                                ? history.push(
+                                    `/all-orders?&status=${item.cell1
+                                      .toLowerCase()
+                                      .replace(" ", "_")}&limit=${
+                                      PAGE_ROW_NUMBER || 25
+                                    }&offset=0`
+                                  )
+                                : null
+                          : () => {}
                       }
                     >
                       <TableCell align="left" component="th" scope="row">
