@@ -51,7 +51,7 @@ const AppRouter = () => {
 
 const DefaultContainer = () => (
   <div>
-    <Navbar />
+    <PrivateRouter component={Navbar} />
     <PrivateRouter exact path="/" component={Dashboard} />
     <PrivateRouter exact path="/all-orders" component={AllOrdersTable} />
     <PrivateRouter exact path="/account" component={Account} />
