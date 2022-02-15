@@ -78,7 +78,12 @@ export default function CustomizedTables({ match }) {
         <TableBody>
           {cargoList.length
             ? cargoList.map((row, i) => (
-                <StyledTableRow key={i}>
+                <StyledTableRow
+                  key={i}
+                  style={{
+                    background: row.type.includes("14K") ? "gold" : "inherit",
+                  }}
+                >
                   <StyledTableCell align="center" component="th" scope="row">
                     <a href={`/order-details/${row.id}`}>{row.id}</a>
                   </StyledTableCell>
