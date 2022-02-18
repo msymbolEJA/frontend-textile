@@ -139,19 +139,16 @@ export default function SummaryTable({
                     <TableRow
                       key={index}
                       className={classes.tableRow}
-                      onClick={
-                        !userRole?.includes("workshop")
-                          ? () =>
-                              title === "orders"
-                                ? history.push(
-                                    `/all-orders?&status=${item.cell1
-                                      .toLowerCase()
-                                      .replace(" ", "_")}&limit=${
-                                      PAGE_ROW_NUMBER || 25
-                                    }&offset=0`
-                                  )
-                                : null
-                          : () => {}
+                      onClick={() =>
+                        title === "orders"
+                          ? history.push(
+                              `/all-orders?&status=${item.cell1
+                                .toLowerCase()
+                                .replace(" ", "_")}&limit=${
+                                PAGE_ROW_NUMBER || 25
+                              }&offset=0`
+                            )
+                          : null
                       }
                     >
                       <TableCell align="left" component="th" scope="row">
