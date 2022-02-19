@@ -65,7 +65,13 @@ const Dashboard = () => {
         setHealthCheck(response.data[2]);
       } else {
         setlastDateOfOrder(response.data[3]);
-        setHealthCheck(response.data[4]);
+        if ("check_shopify" in response?.data[5]) {
+          setHealthCheck({
+            check: response?.data[4]?.check && response?.data[5]?.check_shopify,
+          });
+        } else {
+          setHealthCheck(response.data[4]);
+        }
       }
 
       response.data[0].forEach((item) => {
