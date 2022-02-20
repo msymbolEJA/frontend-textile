@@ -497,14 +497,12 @@ export default function MenuAppBar() {
                   </div>
                 )}
 
-                {userRole === "admin" ? (
-                  <MenuItem id="best-seller" onClick={(e) => handleDirClick(e)}>
-                    <FormattedMessage
-                      id="statistics"
-                      defaultMessage="Statistics"
-                    />
-                  </MenuItem>
-                ) : null}
+                <MenuItem id="best-seller" onClick={(e) => handleDirClick(e)}>
+                  <FormattedMessage
+                    id="statistics"
+                    defaultMessage="Statistics"
+                  />
+                </MenuItem>
 
                 {(userRole === "admin" ||
                   userRole === "shop_manager" ||

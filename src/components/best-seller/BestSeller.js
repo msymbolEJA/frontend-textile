@@ -70,6 +70,11 @@ const groupByKey = (list, key) =>
   );
 
 const DateGetter = () => {
+  const { user } = useContext(AppContext);
+
+  let localRole = localStorage.getItem("localRole");
+
+  const userRole = user?.role || localRole;
   const classes = useStyles();
   const beginnerDateRef = useRef();
   const endDateRef = useRef();
@@ -168,7 +173,7 @@ const DateGetter = () => {
             </div>
           </Paper>
         </div>
-        {quantity ? (
+        {quantity && userRole === "admin" ? (
           <CostGetter
             endDateRef={endDateRef}
             beginnerDateRef={beginnerDateRef}
