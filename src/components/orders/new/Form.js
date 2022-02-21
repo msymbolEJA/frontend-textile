@@ -54,7 +54,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function InputForm({ handleSubmit, handleChange, info }) {
+export default function InputForm({
+  handleSubmit,
+  handleChange,
+  info,
+  typeOptions,
+}) {
   const classes = useStyles();
   const { formatMessage } = useIntl();
 
@@ -98,6 +103,7 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
             <FormControl
               variant="outlined"
               fullWidth
+              margin="dense"
               className={classes.formControl}
             >
               <InputLabel id="demo-simple-select-outlined-label">
@@ -135,22 +141,33 @@ export default function InputForm({ handleSubmit, handleChange, info }) {
                 </Select>
               )}
             </FormControl>
-            <TextField
+            <FormControl
               variant="outlined"
               margin="dense"
-              required
               fullWidth
-              name="type"
-              label={formatMessage({
-                id: "type",
-                defaultMessage: "Type",
-              })}
-              type="text"
-              id="type"
-              autoComplete="type"
-              onChange={handleChange}
-              value={info.type}
-            />
+              className={classes.formControl}
+            >
+              <InputLabel id="demo-simple-select-outlined-label">
+                {formatMessage({
+                  id: "type",
+                  defaultMessage: "Type",
+                })}
+              </InputLabel>
+              <Select
+                onChange={handleChange}
+                required
+                fullWidth
+                name="type"
+                label="Type"
+                value={info.type}
+              >
+                {typeOptions?.map((item) => (
+                  <MenuItem key={item.desc} value={item.desc}>
+                    {item.desc}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               variant="outlined"
               margin="dense"
