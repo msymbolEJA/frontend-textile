@@ -180,5 +180,7 @@
   "message": "Mesaj",
   "isRead?": "Okundu?",
   "noNotification": "Bildirim Yok",
-  "notification": "Bildirim"
+  "notification": "Bildirim",
+  "attention": "Dikkat",
+  "areYouSureToDeleteCargo": "Bu kargoyu silmek istediğinize emin misiniz?"
 }

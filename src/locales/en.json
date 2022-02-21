@@ -135,5 +135,7 @@
   "variation4": "Variation 4",
   "variation5": "Variation 5",
   "variation6": "Variation 6",
-  "action": "Action"
+  "action": "Action",
+  "attention": "Attention",
+  "areYouSureToDeleteCargo": "Are you sure to delete this Cargo?"
 }
