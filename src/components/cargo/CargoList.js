@@ -17,6 +17,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { FormattedMessage } from "react-intl";
 import EditableTableCell from "./EditableTableCell";
 import { putData } from "../../helper/PostData";
+import api from "../../helper/api";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -136,6 +137,15 @@ export default function CustomizedTables() {
     handleRowChange(id, { [name]: e.target.innerText });
   };
 
+  const handleCancel = (id) => {
+    api(`/etsy/cancelCargo/${id}/`, "get")
+      .then((response) => {
+        console.log("response", response);
+        getListFunc();
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <TableContainer component={Paper} className={classes.root}>
       {isAdmin ? (
@@ -205,13 +215,16 @@ export default function CustomizedTables() {
                 defaultMessage="Tracking Number"
               />
             </StyledTableCell>
+            <StyledTableCell align="center">
+              <FormattedMessage id="action" defaultMessage="Action" />
+            </StyledTableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
           {cargoList === undefined ? null : cargoList?.length === 0 ? (
             <tr>
-              <td colSpan="7">No Item!</td>
+              <td colSpan="50">No Item!</td>
             </tr>
           ) : (
             cargoList.map((ws, j) =>
@@ -299,6 +312,19 @@ export default function CustomizedTables() {
                         ),
                       }}
                     />
+                    <StyledTableCell
+                      align="center"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        size="small"
+                        onClick={(e) => handleCancel(row.id)}
+                      >
+                        Cancel
+                      </Button>
+                    </StyledTableCell>
                   </StyledTableRow>
                 );
               })
