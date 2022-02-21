@@ -39,8 +39,8 @@ import SortableTableCell from "./SortableTableCell";
 import CustomButtonGroup from "./CustomButtonGroup";
 import { tagsData, repeatReasons } from "../../helper/Constants";
 import { FormattedMessage } from "react-intl";
-import { AppContext } from "../../context/Context";
-import ShopifyColumns, { ShopifyColumnsValues } from "./ShopifyColumns";
+import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 // const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
@@ -1073,6 +1073,12 @@ function App({ history }) {
                         borderRight: "0.5px solid #E0E0E0",
                       }}
                     >
+                      {row?.shop === "Etsy" ? (
+                        <AddShoppingCartIcon color="primary" />
+                      ) : row?.shop === "Shopify" ? (
+                        <ShoppingBasketIcon color="secondary" />
+                      ) : null}
+                      <br />
                       <FlagIcon
                         style={{
                           color: row["is_followup"] ? "red" : "grey",
