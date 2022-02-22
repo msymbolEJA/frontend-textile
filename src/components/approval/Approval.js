@@ -1073,9 +1073,7 @@ function App({ history }) {
                         borderRight: "0.5px solid #E0E0E0",
                       }}
                     >
-                      {row?.shop === "Etsy" ? (
-                        <AddShoppingCartIcon color="primary" />
-                      ) : row?.shop === "Shopify" ? (
+                      {row?.shop === "Shopify" ? (
                         <ShoppingBasketIcon color="secondary" />
                       ) : null}
                       <br />
