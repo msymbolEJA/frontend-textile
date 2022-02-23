@@ -124,6 +124,8 @@ function ResultTable({ list, history, refreshSearch }) {
   const [loading, setLoading] = useState(false);
   const [repeatMenuData, setRepeatMenuData] = useState({});
 
+  let localRole = localStorage.getItem("localRole");
+
   useEffect(() => {
     setRows(list);
   }, [list, list?.length, list?.[0], list?.[0]?.explanation]);
@@ -209,6 +211,7 @@ function ResultTable({ list, history, refreshSearch }) {
     }
   };
   const handlerFlagRepeatChange = (id, name, value) => {
+    if (localRole?.includes("workshop")) return;
     if (name === "is_repeat" && value === false) {
       let data = { [name]: !value, status: "awaiting" };
       handleRowChange(id, data);
@@ -232,6 +235,7 @@ function ResultTable({ list, history, refreshSearch }) {
   };
 
   const handlerRepeatChange = (e, id, is_repeat) => {
+    if (localRole?.includes("workshop")) return;
     if (is_repeat) {
       let data = { is_repeat: false };
       handleRowChange(id, data);

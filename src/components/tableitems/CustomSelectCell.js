@@ -18,6 +18,8 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
   const classes = useStyles();
   const { formatMessage } = useIntl();
 
+  let localRole = localStorage.getItem("localRole");
+
   return (
     <div>
       <select
@@ -26,7 +28,9 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         value={row[name]}
         // disabled={false}
         disabled={
-          (NON_SKU
+          (localRole?.includes("workshop")
+            ? true
+            : NON_SKU
             ? !(
                 (!!row?.variation_1_value && !!row?.variation_2_value)
                 // &&

@@ -73,6 +73,8 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
     );
   }, [row]);
 
+  let localRole = localStorage.getItem("localRole");
+
   const classes = useStyles();
   const [content, setContent] = useState(
     name === "explanation"
@@ -138,13 +140,17 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
         </>
       ) : null}
 
-      <ContentEditable
-        className={classes.editableMod}
-        html={content || ""} // innerHTML of the editable div
-        disabled={false} // use true to disable edition
-        onChange={handleContentChange} // handle innerHTML change
-        onBlur={handleBlur} // handle innerHTML change
-      />
+      {localRole?.includes("workshop") ? (
+        <p>{content}</p>
+      ) : (
+        <ContentEditable
+          className={classes.editableMod}
+          html={content || ""} // innerHTML of the editable div
+          disabled={false} // use true to disable edition
+          onChange={handleContentChange} // handle innerHTML change
+          onBlur={handleBlur} // handle innerHTML change
+        />
+      )}
 
       {/*   {true ? (
         <TextareaAutosize
