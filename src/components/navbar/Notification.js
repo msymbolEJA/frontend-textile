@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import { notificationReplacer } from "../../helper/Functions";
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -103,7 +104,9 @@ const Notification = ({ toggleDrawer, notification, handleNotification }) => {
                           {item.mapping_id}
                         </a>
                       </TableCell>
-                      <TableCell>{item.message}</TableCell>
+                      <TableCell>
+                        {notificationReplacer(item.message)}
+                      </TableCell>
                       <TableCell>
                         <Checkbox
                           color="primary"

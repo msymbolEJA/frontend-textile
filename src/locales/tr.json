@@ -182,5 +182,6 @@
   "noNotification": "Bildirim Yok",
   "notification": "Bildirim",
   "attention": "Dikkat",
-  "areYouSureToDeleteCargo": "Bu kargoyu silmek istediğinize emin misiniz?"
+  "areYouSureToDeleteCargo": "Bu kargoyu silmek istediğinize emin misiniz?",
+  "is_followup": "TAKIPTE MI?"
 }
