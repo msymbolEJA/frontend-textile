@@ -20,6 +20,9 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
 
   let localRole = localStorage.getItem("localRole");
 
+  let disabledForReadyNProgress =
+    row[name] === "in_progress" || row[name] === "ready";
+
   return (
     <div>
       <select
@@ -28,7 +31,7 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         value={row[name]}
         // disabled={false}
         disabled={
-          (localRole?.includes("workshop")
+          localRole?.includes("workshop")
             ? true
             : NON_SKU
             ? !(
@@ -37,9 +40,10 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
                 // !!row?.variation_1_name &&
                 // !!row?.variation_2_name
               )
-            : !(!!row.supplier && !!row.type && !!row.color && !!row.length)) ||
-          row[name] === "in_progress" ||
-          row[name] === "ready"
+            : !(!!row.supplier && !!row.type && !!row.color && !!row.length)
+          //   ||
+          // row[name] === "in_progress" ||
+          // row[name] === "ready"
         }
         name={name}
         onChange={(e) => onSelectChange(e, row)}
@@ -47,7 +51,17 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
       >
         <optgroup>
           {statusData.map((item, index) => (
-            <option key={`${index}+${item}`} value={item}>
+            <option
+              key={`${index}+${item}`}
+              value={item}
+              disabled={
+                disabledForReadyNProgress
+                  ? item === "cancelled"
+                    ? ""
+                    : "disabled"
+                  : ""
+              }
+            >
               {formatMessage({
                 id: item === "awaiting" ? "approved" : item,
                 defaultMessage: item === "awaiting" ? "APPROVED" : item,
