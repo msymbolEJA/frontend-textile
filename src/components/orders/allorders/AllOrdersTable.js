@@ -695,11 +695,18 @@ function AllOrdersTable() {
 
   const sortByGiftMessages = () => {
     let tmp;
-    try {
-      tmp = rows.sort((a, b) => (a.gift_message < b.gift_message ? 1 : -1));
-    } catch (error) {
-    } finally {
-      setSortedRows(tmp);
+    if (rows.length > 0) {
+      try {
+        if (rows[0].gift_message > rows[rows.length - 1].gift_message) {
+          tmp = rows.sort((a, b) => (a.gift_message > b.gift_message ? 1 : -1));
+        } else {
+          tmp = rows.sort((a, b) => (a.gift_message < b.gift_message ? 1 : -1));
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setSortedRows([...tmp]);
+      }
     }
   };
 
