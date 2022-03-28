@@ -19,6 +19,7 @@ import { putData } from "../../helper/PostData";
 import api from "../../helper/api";
 import ConfirmDialog from "../otheritems/ConfirmModal";
 import { toastSuccessNotify } from "../otheritems/ToastNotify";
+import DownloadFile from "@material-ui/icons/GetApp";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -224,6 +225,9 @@ export default function CustomizedTables() {
                 />
               </StyledTableCell>
               <StyledTableCell align="center">
+                <FormattedMessage id="download" defaultMessage="Download" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
                 <FormattedMessage id="action" defaultMessage="Action" />
               </StyledTableCell>
             </TableRow>
@@ -331,6 +335,14 @@ export default function CustomizedTables() {
                           ),
                         }}
                       />
+                      <StyledTableCell
+                        align="center"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <a href={`${BASE_URL}/media/dhl/${row.id}.zip`}>
+                          <DownloadFile />
+                        </a>
+                      </StyledTableCell>
                       <StyledTableCell
                         align="center"
                         onClick={(e) => e.stopPropagation()}
