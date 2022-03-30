@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
-import { postData } from "../../helper/PostData";
+import { getData, postData } from "../../helper/PostData";
 import {
   toastErrorNotify,
   toastSuccessNotify,
@@ -84,8 +84,12 @@ const CargoPage = ({ getListFunc, ids, setRefreshTable, countryFilter }) => {
 
     postData(urlCargo, cargoForm)
       .then((res) => {
-        toastSuccessNotify(res.data.Success);
-        setResult(res.data.Success);
+        toastSuccessNotify(res.data?.success);
+        setResult(res.data?.success);
+        if (res.data?.shipment_id)
+          getData(
+            `${BASE_URL}dhl/createdhlBulkLabel_cargo/${res.data?.shipment_id}/`
+          ).then((response) => {});
       })
       .catch(({ response }) => {
         setResult(response.data.Failed);

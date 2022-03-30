@@ -339,7 +339,7 @@ export default function CustomizedTables() {
                         align="center"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <a href={`${BASE_URL}/media/dhl/${row.id}.zip`}>
+                        <a href={`${BASE_URL}media/dhl/${row.id}.zip`}>
                           <DownloadFile />
                         </a>
                       </StyledTableCell>
