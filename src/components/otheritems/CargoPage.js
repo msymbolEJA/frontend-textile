@@ -86,10 +86,10 @@ const CargoPage = ({ getListFunc, ids, setRefreshTable, countryFilter }) => {
       .then((res) => {
         toastSuccessNotify(res.data?.success);
         setResult(res.data?.success);
-        if (res.data?.shipment_id)
-          getData(
-            `${BASE_URL}dhl/createdhlBulkLabel_cargo/${res.data?.shipment_id}/`
-          ).then((response) => {});
+        // if (res.data?.shipment_id)
+        //   getData(
+        //     `${BASE_URL}dhl/createdhlBulkLabel_cargo/${res.data?.shipment_id}/`
+        //   ).then((response) => {});
       })
       .catch(({ response }) => {
         setResult(response.data.Failed);

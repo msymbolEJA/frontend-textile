@@ -75,6 +75,7 @@ export default function CustomizedTables() {
   const history = useHistory();
   const [getSupplier, setGetSupplier] = useState("");
   const [selectedId, setSelectedId] = useState();
+  const [refreshPage, setRefreshPage] = useState(false);
   const { isAdmin } = useContext(AppContext);
 
   const getListFunc = () => {
@@ -152,6 +153,18 @@ export default function CustomizedTables() {
         getListFunc();
       })
       .catch((error) => console.log(error));
+  };
+
+  const printHandler = (id) => {
+    if (id)
+      getData(`${BASE_URL}dhl/createdhlBulkLabel_cargo/${id}/`)
+        .then((response) => {})
+        .catch(({ response }) => {
+          console.log(response.data.Failed);
+        })
+        .finally(() => {
+          setRefreshPage(!refreshPage);
+        });
   };
 
   return (
@@ -339,9 +352,23 @@ export default function CustomizedTables() {
                         align="center"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <a href={`${BASE_URL}media/dhl/${row.id}.zip`}>
-                          <DownloadFile />
-                        </a>
+                        {!row?.is_label ? (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.print}
+                            onClick={() => printHandler(row.id)}
+                          >
+                            <FormattedMessage
+                              id="getLabel"
+                              defaultMessage="Get Label"
+                            />
+                          </Button>
+                        ) : (
+                          <a href={`${BASE_URL}media/dhl/${row.id}.zip`}>
+                            <DownloadFile />
+                          </a>
+                        )}
                       </StyledTableCell>
                       <StyledTableCell
                         align="center"

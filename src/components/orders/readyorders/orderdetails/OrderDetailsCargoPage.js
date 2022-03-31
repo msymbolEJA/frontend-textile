@@ -86,6 +86,12 @@ const CargoPage = ({ getListFunc, id, setRefresh }) => {
       })
       .finally(() => {
         if (setRefresh) setRefresh(true);
+
+/*   "success": len(failed_list) == 0,
+            "failed_list":failed_list,
+            "shipment_id": shipment_id */
+
+
       });
     setCargoForm({
       ref_number_f: "",
