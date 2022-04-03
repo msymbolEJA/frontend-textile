@@ -67,6 +67,34 @@ export const repeatReasons = {
   SECOND: "SECOND",
 };
 
+export const repeatReasonsLinen = {
+  SEWING_MISTAKE: "SEWING MISTAKE",
+  CUSTOMER_SOURCED: "CUSTOMER SOURCED",
+  MISSING_CUSTOMIZATION: "MISSING CUSTOMIZATION",
+  MISSING_INFO: "MISSING INFO",
+  WRONG_COLOR: "WRONG COLOR",
+  DIFFERENT_PRODUCT: "DIFFERENT PRODUCT",
+  DISCOLORATION: "DISCOLORATION",
+  LOST_IN_MAIL: "LOST IN MAIL",
+  SECOND: "SECOND",
+};
+
+export const repeatReasonsMenuItemsLinenia = [
+  {id: "SEWING_MISTAKE", name: "SEWING MISTAKE", value: "Sewing Mistake"},
+  {id: "CUSTOMER_SOURCED", name: "CUSTOMER SOURCED", value: "Customer Sourced"},
+  {
+    id: "MISSING_CUSTOMIZATION",
+    name: "MISSING CUSTOMIZATION",
+    value: "Missing Customization",
+  },
+  {id: "MISSING_INFO", name: "MISSING INFO", value: "Missing Info"},
+  {id: "WRONG_COLOR", name: "WRONG COLOR", value: "Wrong Color"},
+  {id: "DIFFERENT_PRODUCT", name: "DIFFERENT PRODUCT", value: "Different Product"},
+  {id: "DISCOLORATION", name: "DISCOLORATION", value: "Discoloration"},
+  {id: "LOST_IN_MAIL", name: "LOST IN MAIL", value: "Lost in Mail"},
+  {id: "SECOND", name: "SECOND", value: "Second"},
+];
+
 export const STORE_BASE_URLS = {
   BELKY: "http://45.76.57.100:8080/",
   SHINY: "http://144.202.67.136:8080/",

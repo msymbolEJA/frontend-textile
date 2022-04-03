@@ -23,7 +23,10 @@ import {
   Repeat as RepeatIcon,
   // ThumbUpAlt as ThumbUpAltIcon,
 } from "@material-ui/icons";
-import { statusData } from "../../helper/Constants";
+import {
+  repeatReasonsMenuItemsLinenia,
+  statusData,
+} from "../../helper/Constants";
 
 import { putData, getData, globalSearch } from "../../helper/PostData";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
@@ -46,6 +49,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 // const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true" || false;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
+const STORE_ORJ = process.env.REACT_APP_STORE_NAME_ORJ;
 
 const StyledMenu = withStyles({
   paper: {
@@ -427,7 +431,7 @@ function App({ history }) {
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
-      default:
+      default: 
         newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
     }
@@ -609,123 +613,135 @@ function App({ history }) {
           >
             {/* <hr/> */}
             <span />
-            {/* <StyledMenuItem>
-              <ListItemText
-                primary="Wrong manufacturing"
-                id="Wrong manufacturing"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.MANUFACTURING_ERROR
-                )}
-              />
-            </StyledMenuItem> */}
-            <StyledMenuItem>
-              <ListItemText
-                primary="Letter Pattern Is Wrong"
-                id="Letter Pattern Is Wrong"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.LETTER_PATTERN_IS_WRONG
-                )}
-              />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemText
-                primary="Wrong Color"
-                id="Wrong Color"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.WRONG_COLOR
-                )}
-              />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemText
-                primary="Stone Fall"
-                id="Stone Fall"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.STONE_FALL
-                )}
-              />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemText
-                primary="Different Product"
-                id="Different Product"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.DIFFERENT_PRODUCT
-                )}
-              />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemText
-                primary="Long Chain"
-                id="Long Chain"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.LONG_CHAIN
-                )}
-              />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemText
-                primary="Short Chain"
-                id="Short Chain"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.SHORT_CHAIN
-                )}
-              />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemText
-                primary="Different Font"
-                id="Different Font"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.DIFFERENT_FONT
-                )}
-              />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemText
-                primary="Discoloration"
-                id="discoloration"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.DISCOLORATION
-                )}
-              />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemText
-                primary="Break off"
-                id="break off"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.BREAK_OFF
-                )}
-              />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemText
-                primary="Lost in mail"
-                id="lost in mail"
-                onClick={handleRepeatMenuItemClick(
-                  row,
-                  repeatReasons.LOST_IN_MAIL
-                )}
-              />
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemText
-                primary="Second"
-                id="Second"
-                onClick={handleRepeatMenuItemClick(row, repeatReasons.SECOND)}
-              />
-            </StyledMenuItem>
+            {STORE_ORJ === "Linenia" ? (
+              <div>
+                {repeatReasonsMenuItemsLinenia.map((reason) => (
+                  <StyledMenuItem key={reason.id}>
+                    <ListItemText
+                      primary={reason.value}
+                      id={reason.value}
+                      onClick={handleRepeatMenuItemClick(
+                        row,
+                        repeatReasonsLinen[reason.id]
+                      )}
+                    />
+                  </StyledMenuItem>
+                ))}
+              </div>
+            ) : (
+              <div>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Letter Pattern Is Wrong"
+                    id="Letter Pattern Is Wrong"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.LETTER_PATTERN_IS_WRONG
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Wrong Color"
+                    id="Wrong Color"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.WRONG_COLOR
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Stone Fall"
+                    id="Stone Fall"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.STONE_FALL
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Different Product"
+                    id="Different Product"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.DIFFERENT_PRODUCT
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Long Chain"
+                    id="Long Chain"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.LONG_CHAIN
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Short Chain"
+                    id="Short Chain"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.SHORT_CHAIN
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Different Font"
+                    id="Different Font"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.DIFFERENT_FONT
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Discoloration"
+                    id="discoloration"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.DISCOLORATION
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Break off"
+                    id="break off"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.BREAK_OFF
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Lost in mail"
+                    id="lost in mail"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.LOST_IN_MAIL
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary="Second"
+                    id="Second"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.SECOND
+                    )}
+                  />
+                </StyledMenuItem>
+              </div>
+            )}
             <StyledMenuItem style={{ justifyContent: "space-around" }}>
               <Button
                 color="primary"

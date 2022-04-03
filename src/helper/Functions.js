@@ -55,7 +55,16 @@ export const repeatReplacerWithTR = (exp) => {
     ?.replace("&#39;", "'")
     ?.replace("&lt;", "<")
     ?.replace("&gt;", ">")
-    ?.replaceAll(",", ", ");
+    ?.replace(",", ", ")
+    ?.replace("SEWING_MISTAKE", ": DIKIS HATASI")
+    ?.replace("CUSTOMER_SOURCED", ": MUSTERI KAYNAKLI")
+    ?.replace("MISSING_CUSTOMIZATION", ": YANLIS OZELLESTIRME")
+    ?.replace("MISSING_INFO", ": HATALI BILGI")
+    ?.replace("WRONG_COLOR", ": HATALI RENK")
+    ?.replace("DIFFERENT_PRODUCT", ": YANLIS ÜRÜN")
+    ?.replace("DISCOLORATION", ": RENK ATMA")
+    ?.replace("LOST_IN_MAIL", ": POSTA DA KAYBOLDU")
+    ?.replace("SECOND", ": DIGER");
 };
 
 export const notificationReplacer = (exp) => {
