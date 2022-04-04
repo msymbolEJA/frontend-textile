@@ -72,7 +72,8 @@ export default function CustomizedTables({ match }) {
             <StyledTableCell align="center">ITEM INDEX</StyledTableCell>
             <StyledTableCell align="center">TYPE</StyledTableCell>
             <StyledTableCell align="center">STATUS</StyledTableCell>
-            <StyledTableCell align="center">NOTE</StyledTableCell>
+            <StyledTableCell align="center">HAS LABEL?</StyledTableCell>
+            <StyledTableCell align="center">TRACKING ID</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -96,7 +97,12 @@ export default function CustomizedTables({ match }) {
                   </StyledTableCell>
                   <StyledTableCell align="center">{row.type}</StyledTableCell>
                   <StyledTableCell align="center">{row.status}</StyledTableCell>
-                  <StyledTableCell align="center">{row.note}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.is_label ? "+" : "-"}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row.tracking_code}
+                  </StyledTableCell>
                 </StyledTableRow>
               ))
             : null}
