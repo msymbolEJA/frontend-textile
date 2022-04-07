@@ -75,7 +75,6 @@ export default function CustomizedTables() {
   const history = useHistory();
   const [getSupplier, setGetSupplier] = useState("");
   const [selectedId, setSelectedId] = useState();
-  const [refreshPage, setRefreshPage] = useState(false);
   const { isAdmin } = useContext(AppContext);
 
   const getListFunc = () => {
@@ -158,13 +157,13 @@ export default function CustomizedTables() {
   const printHandler = (id) => {
     if (id)
       getData(`${BASE_URL}dhl/createdhlBulkLabel_cargo/${id}/`)
-        .then((response) => {})
+        .then((response) => {
+          window?.location.reload(false);
+        })
         .catch(({ response }) => {
           console.log(response.data.Failed);
         })
-        .finally(() => {
-          setRefreshPage(!refreshPage);
-        });
+        .finally(() => {});
   };
 
   return (
