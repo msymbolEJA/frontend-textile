@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -7,6 +7,8 @@ const useStyles = makeStyles((theme) => ({
     resize: "none",
     margin: "0",
     fontFamily: "inherit",
+    width: "100px",
+    textAlign: "center",
   },
 }));
 

@@ -33,23 +33,6 @@ const UpdateDetailsTable = ({ row }) => {
   const [data, setData] = useState([]);
   const classes = useStyles();
 
-
-  const handleSelectChange = (e) => {
-    // putData(`${BASE_URL}etsy/ordersTable/${row?.receipt_id}/`
-    putData(`${BASE_URL}etsy/ordersTable/${row?.receipt_id}/`, {
-      ...row,
-      shipping_method: e.target.value,
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => getDetailsForUpdate());
-  };
-
-
   const handleEditChange = (content, name) => {
     putData(`${BASE_URL}etsy/ordersTable/${row?.receipt_id}/`, {
       ...row,
@@ -105,13 +88,13 @@ const UpdateDetailsTable = ({ row }) => {
                   ) : item.type === "dropdown" ? (
                     <div>
                       <select
-                        onChange={handleSelectChange}
+                        onChange={(e) =>handleEditChange(e.target.value, item.objKey)}
                         value={
                           data[item.objKey] ? data[item.objKey] : "Not Selected"
                         }
                       >
                         {item.values.map((value, index) => (
-                          <option value={value.name} key={index}>
+                          <option value={value.value} key={index}>
                             {value.name}
                           </option>
                         ))}
