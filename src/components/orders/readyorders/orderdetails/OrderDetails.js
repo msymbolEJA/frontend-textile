@@ -18,6 +18,7 @@ import { AppContext } from "../../../../context/Context";
 import ShopifyColumnHeaders, {
   ShopifyColumnValues,
 } from "../../allorders/ShopifyColumns";
+import UpdateDetailsTable from "./UpdateDetailsTable";
 
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -410,6 +411,10 @@ const OrderDetails = ({ match }) => {
           </div>
         </TableContainer>
       </Paper>
+      {(userRole === "admin" || userRole === "shop_manager") && (
+        <UpdateDetailsTable row={rows[0]} />
+      )}
+
       {rows[0]?.status === "ready" ? (
         <OrderDetailsCargoPage id={match.params.id} setRefresh={setRefresh} />
       ) : null}

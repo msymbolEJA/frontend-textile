@@ -85,19 +85,27 @@ export const repeatReasonsLinen = {
 };
 
 export const repeatReasonsMenuItemsLinenia = [
-  {id: "SEWING_MISTAKE", name: "SEWING MISTAKE", value: "Sewing Mistake"},
-  {id: "CUSTOMER_SOURCED", name: "CUSTOMER SOURCED", value: "Customer Sourced"},
+  { id: "SEWING_MISTAKE", name: "SEWING MISTAKE", value: "Sewing Mistake" },
+  {
+    id: "CUSTOMER_SOURCED",
+    name: "CUSTOMER SOURCED",
+    value: "Customer Sourced",
+  },
   {
     id: "MISSING_CUSTOMIZATION",
     name: "MISSING CUSTOMIZATION",
     value: "Missing Customization",
   },
-  {id: "MISSING_INFO", name: "MISSING INFO", value: "Missing Info"},
-  {id: "WRONG_COLOR", name: "WRONG COLOR", value: "Wrong Color"},
-  {id: "DIFFERENT_PRODUCT", name: "DIFFERENT PRODUCT", value: "Different Product"},
-  {id: "DISCOLORATION", name: "DISCOLORATION", value: "Discoloration"},
-  {id: "LOST_IN_MAIL", name: "LOST IN MAIL", value: "Lost in Mail"},
-  {id: "SECOND", name: "SECOND", value: "Second"},
+  { id: "MISSING_INFO", name: "MISSING INFO", value: "Missing Info" },
+  { id: "WRONG_COLOR", name: "WRONG COLOR", value: "Wrong Color" },
+  {
+    id: "DIFFERENT_PRODUCT",
+    name: "DIFFERENT PRODUCT",
+    value: "Different Product",
+  },
+  { id: "DISCOLORATION", name: "DISCOLORATION", value: "Discoloration" },
+  { id: "LOST_IN_MAIL", name: "LOST IN MAIL", value: "Lost in Mail" },
+  { id: "SECOND", name: "SECOND", value: "Second" },
 ];
 
 export const STORE_BASE_URLS = {
@@ -180,4 +188,40 @@ export const colorNumberColumns = [
     objKey: "color_count",
     translate: "colorCount",
   },
+];
+
+export const updateDetailsTable = [
+  { id: 1, name: "Orders Id", objKey: "orders_id", type: "number" },
+  // { id: 2, name: "Receipt Id", objKey: "receipt_id", type: "number" },
+  { id: 3, name: "Name", objKey: "name", type: "text" },
+  { id: 4, name: "Email", objKey: "buyer_email", type: "text" },
+  { id: 5, name: "First Line", objKey: "first_line", type: "text" },
+  { id: 5, name: "Second Line", objKey: "second_line", type: "text" },
+  { id: 5, name: "City", objKey: "city", type: "text" },
+  { id: 5, name: "State", objKey: "state", type: "text" },
+  { id: 5, name: "Zip", objKey: "zip", type: "text" },
+  { id: 5, name: "Country Id", objKey: "country_id", type: "number" },
+  {
+    id: 5,
+    name: "Shipping Method",
+    objKey: "shipping_method",
+    type: "dropdown",
+    values: [
+      { id: 1, name: "Standard" },
+      { id: 2, name: "USPS First-Class Mail" },
+      { id: 3, name: "Standard Shipping" },
+      { id: 4, name: "Standard" },
+      { id: 5, name: "USPS Priority Mail" },
+      { id: 6, name: "Priorty" },
+      { id: 7, name: "FirstPackage" },
+      { id: 8, name: "USPS Priority Mail Express" },
+      { id: 9, name: "GND" },
+      { id: 10, name: "EXP" },
+      { id: 11, name: "MAX" },
+      { id: 12, name: "PLT" },
+    ],
+  },
+  { id: 5, name: "Tracking Code", objKey: "tracking_code", type: "text" },
+  { id: 5, name: "Tracking Url", objKey: "tracking_url", type: "url" },
+  { id: 5, name: "Carrier Name", objKey: "carrier_name", type: "text" },
 ];
