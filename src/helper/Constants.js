@@ -3,6 +3,7 @@ export const tagsData = [
   "awaiting",
   "in_progress",
   "ready",
+  "warehouse",
   "in_transit",
   "cancelled",
   "shipped",
@@ -12,6 +13,7 @@ export const nonAdminTagsData = [
   "awaiting",
   "in_progress",
   "ready",
+  "warehouse",
   "in_transit",
   "cancelled",
 ];
@@ -21,6 +23,7 @@ export const statusData = [
   "awaiting",
   "in_progress",
   "ready",
+  "warehouse",
   "in_transit",
   "cancelled",
   "shipped",

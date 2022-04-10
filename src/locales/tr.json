@@ -42,6 +42,7 @@
   "approved": "BEKLEYEN",
   "awaiting": "BEKLEYEN",
   "cancelled": "IPTAL",
+  "warehouse": "DEPO",
   "shipped": "KARGO",
   "all_orders": "HEPSI",
   "repeat": "TEKRAR",

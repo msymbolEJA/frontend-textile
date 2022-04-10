@@ -38,6 +38,7 @@
   "in transit": "IN TRANSIT",
   "awaiting": "APPROVED",
   "cancelled": "CANCELLED",
+  "warehouse": "WAREHOUSE",
   "shipped": "SHIPPED",
   "all_orders": "ALL ORDERS",
   "repeat": "REPEAT",
