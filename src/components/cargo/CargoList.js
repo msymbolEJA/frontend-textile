@@ -75,9 +75,13 @@ export default function CustomizedTables() {
   const history = useHistory();
   const [getSupplier, setGetSupplier] = useState("");
   const [selectedId, setSelectedId] = useState();
-  const { isAdmin } = useContext(AppContext);
+  const { isAdmin, user } = useContext(AppContext);
 
-  const getListFunc = () => {
+  let localRole = localStorage.getItem("localRole");
+
+  const userRole = user?.role || localRole;
+
+  const getListFunc = useCallback(() => {
     getData(`${BASE_URL}etsy/cargo_list/${getSupplier}`).then((response) => {
       let dataObj = response.data;
       const formattedData = dataObj
@@ -91,7 +95,7 @@ export default function CustomizedTables() {
 
       setCargoList(formattedData);
     });
-  };
+  }, [getSupplier]);
 
   useEffect(() => {
     getListFunc();
@@ -236,9 +240,13 @@ export default function CustomizedTables() {
                   defaultMessage="Tracking Number"
                 />
               </StyledTableCell>
-              <StyledTableCell align="center">
-                <FormattedMessage id="download" defaultMessage="Download" />
-              </StyledTableCell>
+              {userRole === "admin" ||
+              userRole === "shop_manager" ||
+              userRole === "shop_packer" ? (
+                <StyledTableCell align="center">
+                  <FormattedMessage id="download" defaultMessage="Download" />
+                </StyledTableCell>
+              ) : null}
               <StyledTableCell align="center">
                 <FormattedMessage id="action" defaultMessage="Action" />
               </StyledTableCell>
@@ -347,28 +355,34 @@ export default function CustomizedTables() {
                           ),
                         }}
                       />
-                      <StyledTableCell
-                        align="center"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {!row?.is_label ? (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.print}
-                            onClick={() => printHandler(row.id)}
-                          >
-                            <FormattedMessage
-                              id="getLabel"
-                              defaultMessage="Get Label"
-                            />
-                          </Button>
-                        ) : (
-                          <a href={`${BASE_URL}media/dhl/${row.id}.zip`}>
-                            <DownloadFile />
-                          </a>
-                        )}
-                      </StyledTableCell>
+
+                      {userRole === "admin" ||
+                      userRole === "shop_manager" ||
+                      userRole === "shop_packer" ? (
+                        <StyledTableCell
+                          align="center"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {!row?.is_label ? (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              className={classes.print}
+                              onClick={() => printHandler(row.id)}
+                            >
+                              <FormattedMessage
+                                id="getLabel"
+                                defaultMessage="Get Label"
+                              />
+                            </Button>
+                          ) : (
+                            <a href={`${BASE_URL}media/dhl/${row.id}.zip`}>
+                              <DownloadFile />
+                            </a>
+                          )}
+                        </StyledTableCell>
+                      ) : null}
+
                       <StyledTableCell
                         align="center"
                         onClick={(e) => e.stopPropagation()}
