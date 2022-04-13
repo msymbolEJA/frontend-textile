@@ -345,8 +345,8 @@ function AllOrdersTable() {
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
-      default:
-        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+      default: //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`;
         break;
     }
     history.push(`/all-orders?&${newUrl}`);
@@ -1246,9 +1246,9 @@ function AllOrdersTable() {
                   : `${rows.length} 
                     ${
                       selectedTag
-                        ? ` /${
+                        ? `/${
                             localStorage.getItem(
-                              `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                              `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
                             ) ?? 0
                           }`
                         : ""
