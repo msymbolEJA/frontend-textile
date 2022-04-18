@@ -921,7 +921,10 @@ function AllOrdersTable() {
                       <CustomTableCell
                         {...{ row, name: "variation_2_value" }}
                       />
-                      <CustomTableCell {...{ row, name: "explanation_mod" }} />
+                      <EditableTableCell
+                      onClick={(e) => e.stopPropagation()}
+                      {...{ row, name: "explanation_mod", onChange }} 
+                      />
                     </>
                   ) : (
                     <>

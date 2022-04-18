@@ -71,7 +71,7 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
         ? row[name]?.replace("Linen_Dress_", "")
         : ""
     );
-  }, [row]);
+  }, [row, name]);
 
   let localRole = localStorage.getItem("localRole");
 
@@ -140,7 +140,8 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
         </>
       ) : null}
 
-      {localRole?.includes("workshop") ? (
+      {(localRole?.includes("workshop") && !(name === "explanation_mod")) ||
+      name === "explanation" ? (
         <p>{content}</p>
       ) : (
         <ContentEditable
