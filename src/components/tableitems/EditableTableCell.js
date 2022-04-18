@@ -140,8 +140,7 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
         </>
       ) : null}
 
-      {(localRole?.includes("workshop") && !(name === "explanation_mod")) ||
-      name === "explanation" ? (
+      {localRole?.includes("workshop") && name === "explanation" ? (
         <p>{content}</p>
       ) : (
         <ContentEditable
