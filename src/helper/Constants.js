@@ -3,9 +3,9 @@ export const tagsData = [
   "awaiting",
   "in_progress",
   "ready",
-  "warehouse",
   "in_transit",
   "cancelled",
+  "warehouse",
   "shipped",
 ];
 
@@ -13,9 +13,9 @@ export const nonAdminTagsData = [
   "awaiting",
   "in_progress",
   "ready",
-  "warehouse",
   "in_transit",
   "cancelled",
+  "warehouse",
 ];
 
 export const statusData = [
@@ -23,9 +23,9 @@ export const statusData = [
   "awaiting",
   "in_progress",
   "ready",
-  "warehouse",
   "in_transit",
   "cancelled",
+  "warehouse",
   "shipped",
 ];
 
@@ -42,8 +42,8 @@ export const sortingArrayAdmin = [
   "AWAITING",
   "IN PROGRESS",
   "READY",
-  "WAREHOUSE",
   "IN TRANSIT",
+  "WAREHOUSE",
   "SHIPPED",
   "CANCELLED",
 ];
@@ -53,9 +53,9 @@ export const sortingArrayUser = [
   "AWAITING",
   "IN PROGRESS",
   "READY",
-  "WAREHOUSE",
   "IN TRANSIT",
   "CANCELLED",
+  "WAREHOUSE",
 ];
 
 export const repeatReasons = {
