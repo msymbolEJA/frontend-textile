@@ -13,18 +13,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function ConfirmDialog({
-  selectedId = false,
-  setSelectedId,
-  handleCancel,
+  handleConfirm,
+  selectedItem,
+  setSelectedItem
 }) {
   const handleClose = () => {
-    setSelectedId(false);
+    setSelectedItem(false);
   };
 
   return (
     <div>
       <Dialog
-        open={selectedId ? true : false}
+        open={selectedItem?.id ? true : false}
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
@@ -37,8 +37,8 @@ export default function ConfirmDialog({
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             <FormattedMessage
-              id="areYouSureToDeleteCargo"
-              defaultMessage="Are you sure to delete this cargo?"
+              id="areYouSure"
+              defaultMessage="Are you sure?"
             />
           </DialogContentText>
         </DialogContent>
@@ -46,8 +46,8 @@ export default function ConfirmDialog({
           <Button onClick={handleClose} variant="contained" color="primary">
             <FormattedMessage id="cancel" defaultMessage="Cancel" />
           </Button>
-          <Button onClick={handleCancel} variant="contained" color="secondary">
-            <FormattedMessage id="delete" defaultMessage="Delete" />
+          <Button onClick={handleConfirm} variant="contained" color="secondary">
+            <FormattedMessage id={selectedItem?.action ? selectedItem?.action : 'confirm'} defaultMessage="Confirm" />
           </Button>
         </DialogActions>
       </Dialog>

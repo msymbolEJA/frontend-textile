@@ -74,7 +74,7 @@ export default function CustomizedTables() {
   const [cargoList, setCargoList] = useState();
   const history = useHistory();
   const [getSupplier, setGetSupplier] = useState("");
-  const [selectedId, setSelectedId] = useState();
+  const [selectedItem, setSelectedItem] = useState();
   const { isAdmin, user } = useContext(AppContext);
 
   let localRole = localStorage.getItem("localRole");
@@ -140,22 +140,23 @@ export default function CustomizedTables() {
   );
 
   const onChange = (e, id, name) => {
-    // console.log(id, name);
     handleRowChange(id, { [name]: e.target.innerText });
   };
 
-  const handleConfirm = (id) => {
-    setSelectedId(id);
-  };
-
-  const handleCancel = () => {
-    setSelectedId(null);
-    api(`/etsy/cancelCargo/${selectedId}/`, "get")
+  const handleConfirm = () => {
+    const url =
+      selectedItem.action === "undo"
+        ? `/etsy/undoCargo/${selectedItem?.id}/`
+        : selectedItem?.action === "delete"
+        ? `/etsy/cancelCargo/${selectedItem?.id}/`
+        : null;
+    api(url, "get")
       .then((response) => {
         toastSuccessNotify(response?.data);
         getListFunc();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(() => setSelectedItem(null));
   };
 
   const printHandler = (id) => {
@@ -168,6 +169,10 @@ export default function CustomizedTables() {
           console.log(response.data.Failed);
         })
         .finally(() => {});
+  };
+
+  const handleConfirmModal = (e, id, action) => {
+    setSelectedItem({ ...selectedItem, id, action });
   };
 
   return (
@@ -389,9 +394,21 @@ export default function CustomizedTables() {
                       >
                         <Button
                           variant="contained"
+                          color="primary"
+                          size="small"
+                          onClick={(e) => handleConfirmModal(e, row.id, "undo")}
+                        >
+                          <FormattedMessage id="undo" defaultMessage="Undo" />
+                        </Button>
+                        <br />
+                        <br />
+                        <Button
+                          variant="contained"
                           color="secondary"
                           size="small"
-                          onClick={(e) => handleConfirm(row.id)}
+                          onClick={(e) =>
+                            handleConfirmModal(e, row.id, "delete")
+                          }
                         >
                           <FormattedMessage
                             id="delete"
@@ -408,9 +425,9 @@ export default function CustomizedTables() {
         </Table>
       </TableContainer>
       <ConfirmDialog
-        handleCancel={handleCancel}
-        setSelectedId={setSelectedId}
-        selectedId={selectedId}
+        handleConfirm={handleConfirm}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
       />
     </>
   );

@@ -184,5 +184,10 @@
   "notification": "Bildirim",
   "attention": "Dikkat",
   "areYouSureToDeleteCargo": "Bu kargoyu silmek istediğinize emin misiniz?",
-  "is_followup": "TAKIPTE MI?"
+  "is_followup": "TAKIPTE MI?",
+  "download": "İndir",
+  "undo": "Geri Al",
+  "confirm": "Onayla",
+  "areYouSure": "Emin misiniz?",
+  "getLabel" : "Etiket Getir"
 }

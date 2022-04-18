@@ -138,5 +138,9 @@
   "variation6": "Variation 6",
   "action": "Action",
   "attention": "Attention",
-  "areYouSureToDeleteCargo": "Are you sure to delete this Cargo?"
+  "areYouSureToDeleteCargo": "Are you sure to delete this Cargo?",
+  "download": "Download",
+  "undo": "Undo",
+  "confirm": "Confirm",
+  "areYouSure": "Are you sure?"
 }
