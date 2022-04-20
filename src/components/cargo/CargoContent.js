@@ -82,26 +82,28 @@ export default function CustomizedTables({ match }) {
                 <StyledTableRow
                   key={i}
                   style={{
-                    background: row.type.includes("14K") ? "gold" : "inherit",
+                    background: row?.type?.includes("14K") ? "gold" : "inherit",
                   }}
                 >
                   <StyledTableCell align="center" component="th" scope="row">
                     <a href={`/order-details/${row.id}`}>{row.id}</a>
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.receipt_id}
+                    {row?.receipt_id}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{row.name}</StyledTableCell>
+                  <StyledTableCell align="center">{row?.name}</StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.item_index}
+                    {row?.item_index}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{row.type}</StyledTableCell>
-                  <StyledTableCell align="center">{row.status}</StyledTableCell>
+                  <StyledTableCell align="center">{row?.type}</StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.is_label ? "+" : "-"}
+                    {row?.status}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {row.tracking_code}
+                    {row?.is_label ? "+" : "-"}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {row?.tracking_code}
                   </StyledTableCell>
                 </StyledTableRow>
               ))
