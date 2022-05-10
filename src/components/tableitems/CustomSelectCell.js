@@ -54,13 +54,7 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
             <option
               key={`${index}+${item}`}
               value={item}
-              disabled={
-                disabledForReadyNProgress
-                  ? item === "cancelled"
-                    ? ""
-                    : "disabled"
-                  : ""
-              }
+              disabled={disabledForReadyNProgress ? "disabled" : ""}
             >
               {formatMessage({
                 id: item === "awaiting" ? "approved" : item,
