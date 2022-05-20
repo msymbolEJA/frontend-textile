@@ -245,9 +245,10 @@ export default function CustomizedTables() {
                   defaultMessage="Tracking Number"
                 />
               </StyledTableCell>
-              {userRole === "admin" ||
-              userRole === "shop_manager" ||
-              userRole === "shop_packer" ? (
+              {process.env.REACT_APP_IS_DHL_ENABLED === "true" &&
+              (userRole === "admin" ||
+                userRole === "shop_manager" ||
+                userRole === "shop_packer") ? (
                 <StyledTableCell align="center">
                   <FormattedMessage id="download" defaultMessage="Download" />
                 </StyledTableCell>
@@ -360,10 +361,10 @@ export default function CustomizedTables() {
                           ),
                         }}
                       />
-
-                      {userRole === "admin" ||
-                      userRole === "shop_manager" ||
-                      userRole === "shop_packer" ? (
+                      {process.env.REACT_APP_IS_DHL_ENABLED === "true" &&
+                      (userRole === "admin" ||
+                        userRole === "shop_manager" ||
+                        userRole === "shop_packer") ? (
                         <StyledTableCell
                           align="center"
                           onClick={(e) => e.stopPropagation()}
