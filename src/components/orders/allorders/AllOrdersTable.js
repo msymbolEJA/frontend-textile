@@ -265,15 +265,21 @@ function AllOrdersTable() {
     getLastUpdateDate();
     if (filters?.status === "awaiting") getAllPdfFunc();
     if (filters?.status === "ready") getOrdersInProgress();
-    const tmp =
-      JSON.parse(
-        localStorage.getItem(
-          `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`
-        )
-      ) ?? [];
-    if (!tmp?.length) {
+    let tmp;
+    try {
+      tmp =
+        JSON.parse(
+          localStorage.getItem(
+            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`
+          )
+        ) ?? [];
+    } catch (error) {
+      tmp = [];
+    }
+    if (!tmp) {
       getListFunc();
-    } else {
+    }
+    if (tmp?.length) {
       const resultFilteredByCountry =
         countryFilter === "all"
           ? tmp
@@ -922,8 +928,8 @@ function AllOrdersTable() {
                         {...{ row, name: "variation_2_value" }}
                       />
                       <EditableTableCell
-                      onClick={(e) => e.stopPropagation()}
-                      {...{ row, name: "explanation_mod", onChange }} 
+                        onClick={(e) => e.stopPropagation()}
+                        {...{ row, name: "explanation_mod", onChange }}
                       />
                     </>
                   ) : (
