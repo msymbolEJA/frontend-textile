@@ -162,20 +162,6 @@ const Dashboard = () => {
   // console.log({ localRole });
   // console.log({ newStatu });
 
-  const manualRefresh = () => {
-    let arr = []; // Array to hold the keys includes last_updated
-    // Iterate over localStorage and insert the keys that meet the condition into arr
-    for (let i = 0; i < localStorage.length; i++) {
-      if (localStorage.key(i).includes("last_updated")) {
-        arr.push(localStorage.key(i));
-      }
-    }
-    // Iterate over arr and remove the items by key
-    for (let i = 0; i < arr.length; i++) {
-      localStorage.removeItem(arr[i]);
-    }
-  };
-
   return (
     <div className={classes.root}>
       <div className={classes.boxes}>
@@ -183,17 +169,6 @@ const Dashboard = () => {
           lastDateOfOrder={lastDateOfOrder}
           healthCheck={healthCheck}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={manualRefresh}
-        >
-          <FormattedMessage
-            id="manualRefresh"
-            defaultMessage="Manual Refresh"
-          />
-        </Button>
         <Grid container spacing={2} style={{ justifyContent: "center" }}>
           <SummaryTable
             title="orders"

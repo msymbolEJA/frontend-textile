@@ -1,6 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { FormattedMessage } from "react-intl";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -19,6 +20,7 @@ import Button from "@material-ui/core/Button";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
+import Replay from "@material-ui/icons/Replay";
 import {
   ThumbUp as ThumbUpIcon,
   ViewList as ViewListIcon,
@@ -267,7 +269,19 @@ export default function MenuAppBar() {
         console.log("error", error);
       });
   };
-
+  const manualRefresh = () => {
+    let arr = []; // Array to hold the keys includes last_updated
+    // Iterate over localStorage and insert the keys that meet the condition into arr
+    for (let i = 0; i < localStorage.length; i++) {
+      if (localStorage.key(i).includes("last_updated")) {
+        arr.push(localStorage.key(i));
+      }
+    }
+    // Iterate over arr and remove the items by key
+    for (let i = 0; i < arr.length; i++) {
+      localStorage.removeItem(arr[i]);
+    }
+  };
   return (
     <div className={classes.root}>
       <FormGroup></FormGroup>
@@ -414,6 +428,13 @@ export default function MenuAppBar() {
               ) : null}
             </div>
           </div>
+          <Tooltip title={"Reset All"} placement="bottom-start">
+            <Replay
+              style={{ cursor: "pointer", margin: "0 1rem" }}
+              onClick={manualRefresh}
+            />
+          </Tooltip>
+
           {mobileView ? null : (
             <div style={{ marginRight: "2rem" }}>
               <FormControl className={classes.formControl}>
@@ -436,6 +457,7 @@ export default function MenuAppBar() {
               </FormControl>
             </div>
           )}
+
           {auth && (
             <div className={classes.rightTop}>
               {mobileView ? null : (
