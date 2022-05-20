@@ -208,14 +208,21 @@ function App({ history }) {
   useEffect(() => {
     if (filters?.search) return;
     getLastUpdateDate();
-    const tmp =
-      JSON.parse(
-        localStorage.getItem(
-          `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}`
-        )
-      ) ?? [];
-    if (!tmp.length) getListFunc();
-    else {
+    let tmp;
+    try {
+      tmp =
+        JSON.parse(
+          localStorage.getItem(
+            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`
+          )
+        ) ?? [];
+    } catch (error) {
+      tmp = [];
+    }
+    if (!tmp) {
+      getListFunc();
+    }
+    if (tmp?.length) {
       setRows(tmp);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
