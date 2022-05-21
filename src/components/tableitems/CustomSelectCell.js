@@ -21,7 +21,8 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
   let localRole = localStorage.getItem("localRole");
 
   let disabledForReadyNProgress =
-    row[name] === "in_progress" || row[name] === "ready";
+    !localRole?.includes("workshop") &&
+    (row[name] === "in_progress" || row[name] === "ready");
 
   return (
     <div>
@@ -30,7 +31,7 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         id={name}
         value={row[name]}
         // disabled={false}
-        disabled={
+        /*     disabled={
           localRole?.includes("workshop")
             ? true
             : NON_SKU
@@ -44,7 +45,7 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
           //   ||
           // row[name] === "in_progress" ||
           // row[name] === "ready"
-        }
+        } */
         name={name}
         onChange={(e) => onSelectChange(e, row)}
         onClick={(e) => e.stopPropagation()}

@@ -786,16 +786,22 @@ function ResultTable({ list, history, refreshSearch }) {
                             )
                           }
                         />
-                        <RepeatIcon
-                          style={{
-                            color: row["is_repeat"] ? "red" : "grey",
-                            cursor: "pointer",
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handlerRepeatChange(e, row.id, row.is_repeat);
-                          }}
-                        />
+                        {row["status"] === "in_progress" ||
+                        row["status"] === "ready" ? null : (
+                          <>
+                            <RepeatIcon
+                              style={{
+                                color: row["is_repeat"] ? "red" : "grey",
+                                cursor: "pointer",
+                              }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handlerRepeatChange(e, row.id, row.is_repeat);
+                              }}
+                            />
+                          </>
+                        )}
+
                         {Boolean(repeatAnchorEl) && row.id === rowIdToRepeat
                           ? repeatMenu(row)
                           : null}
