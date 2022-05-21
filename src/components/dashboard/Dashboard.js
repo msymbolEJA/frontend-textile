@@ -56,8 +56,7 @@ const Dashboard = () => {
   const getListFunc = () => {
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
       const isSilveristicOrBelky =
-        process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic" ||
-        process.env.REACT_APP_STORE_NAME_ORJ === "Belky";
+        process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic";
 
       const newResult = [];
       if (isSilveristicOrBelky) {
