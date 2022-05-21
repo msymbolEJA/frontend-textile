@@ -98,20 +98,24 @@ const DateGetter = () => {
       // console.log(response.data.results);
       setQuantity(response.data.count);
 
-      let res = response.data.results.reduce(function (a, b) {
-        return { cost: Number(a.cost) + Number(b.cost) }; // returns object with property x
-      });
+      let res =
+        response?.data?.results.length &&
+        response?.data?.results?.reduce(function (a, b) {
+          return { cost: Number(a.cost) + Number(b.cost) }; // returns object with property x
+        });
 
-      let isRepeatRes = response.data.results.reduce(
-        (total, x) => (x.is_repeat === true ? total + 1 : total),
-        0
-      );
+      let isRepeatRes =
+        response?.data?.results.length &&
+        response?.data?.results?.reduce(
+          (total, x) => (x.is_repeat === true ? total + 1 : total),
+          0
+        );
 
       setCalcCost({
         ...calcCost,
-        totalCost: res.cost,
+        totalCost: res?.cost ?? 0,
         isLoading: false,
-        isRepeatNumber: isRepeatRes,
+        isRepeatNumber: isRepeatRes ?? 0,
       });
     });
     setBestSeller({ ...bestSeller, isLoading: true });
