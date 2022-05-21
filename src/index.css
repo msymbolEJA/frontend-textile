@@ -17,3 +17,34 @@ body {
 .m-10 {
   margin: 10px;
 }
+
+
+@media only screen and (min-width: 1200px) {
+  .MuiTableCell-root {
+    font-size: 1.2rem !important;   
+   }
+   .MuiButton-label {
+    font-size: 1.2rem !important;   
+   }
+   
+   select {
+     height: 2.1rem !important;
+     font-size: 1.2rem !important;   
+     padding: 0;
+   }
+}
+
+@media only screen and (max-width: 768px) {
+  .MuiTableCell-root {
+    font-size: 0.9rem !important;   
+   }
+   .MuiButton-label {
+    font-size: 0.9rem !important;   
+   }
+   
+   select {
+     height: 1.5rem !important;
+     font-size: 0.75rem !important;   
+     padding: 0;
+   }
+}

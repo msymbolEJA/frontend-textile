@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 650,
   },
   btn: {
-    width: 150,
     margin: theme.spacing(0.5),
   },
   btnGroup: {
