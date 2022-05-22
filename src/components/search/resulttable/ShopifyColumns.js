@@ -25,10 +25,10 @@ const ShopifyColumnsHeaders = ({
         colName={colName1}
         setOrderBy={setOrderBy}
       />
-      <TableCellHeader id="variation1" headerName="Variation1" />
-      <TableCellHeader id="variation2" headerName="Variation2" />
-      <TableCellHeader id="variation3" headerName="Variation3" />
-      <TableCellHeader id="variation4" headerName="Variation4" />
+      <TableCellHeader id="var-1" headerName="Var-1" />
+      <TableCellHeader id="var-2" headerName="Var-2" />
+      <TableCellHeader id="var-3" headerName="Var-3" />
+      <TableCellHeader id="var-4" headerName="Var-4" />
       {/* <SortableTableCell
         property="variation_2_value"
         handleRequestSort={handleRequestSort}

@@ -921,7 +921,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="variation1"
+                    colName="var-1"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -929,7 +929,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="variation2"
+                    colName="var-2"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -937,7 +937,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="variation3"
+                    colName="var-3"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -945,7 +945,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="variation4"
+                    colName="var-4"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -953,7 +953,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="variation5"
+                    colName="var-5"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -961,7 +961,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="variation6"
+                    colName="var-6"
                     setOrderBy={setOrderBy}
                   />
                 </>
@@ -1253,6 +1253,7 @@ function App({ history }) {
                         borderBottom: "1px solid #e0e0e0",
                         pointerEvents:
                           row.status === "pending" ? "auto" : "none",
+                        borderLeft: "0.5px solid #E0E0E0",
                         borderRight: "0.5px solid #E0E0E0",
                       }}
                       onClick={(e) => {

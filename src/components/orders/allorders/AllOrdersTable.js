@@ -798,41 +798,23 @@ function AllOrdersTable() {
                     <FormattedMessage id="type" defaultMessage="Type" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage
-                      id="variation1"
-                      defaultMessage="Variation 1"
-                    />
+                    <FormattedMessage id="var-1" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage
-                      id="variation2"
-                      defaultMessage="Variation 2"
-                    />
+                    <FormattedMessage id="var-2" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage
-                      id="variation3"
-                      defaultMessage="Variation 3"
-                    />
+                    <FormattedMessage id="var-3" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage
-                      id="variation4"
-                      defaultMessage="Variation 4"
-                    />
+                    <FormattedMessage id="var-4" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage
-                      id="variation5"
-                      defaultMessage="Variation 5"
-                    />
+                    <FormattedMessage id="var-5" />
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    <FormattedMessage
-                      id="variation6"
-                      defaultMessage="Variation 6"
-                    />
+                    <FormattedMessage id="var-6" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <FormattedMessage id="goldGr" />
