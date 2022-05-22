@@ -25,6 +25,7 @@ const useStyles = makeStyles(() => ({
     padding: 0,
     width: "100px",
     maxWidth: "200px",
+    borderRight: "0.5px solid #E0E0E0",
   },
   explanationInput: {
     fontSize: "1rem",
