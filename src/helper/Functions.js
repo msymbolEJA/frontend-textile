@@ -39,32 +39,11 @@ export const repeatReplacerWithTR = (exp) => {
   return exp
     ?.replace("_", " ")
     ?.replace("REPEAT", "TEKRAR")
-    ?.replace("MANUFACTURING ERROR", "ÜRETİM HATASI")
-    ?.replace("LETTER_PATTERN_IS_WRONG", "HARF DİZİLİMİ YANLIŞ")
-    ?.replace("WRONG_COLOR", "YANLIŞ RENK")
-    ?.replace("STONE_FALL", "TAŞI DÜŞMÜŞ")
-    ?.replace("DIFFERENT_PRODUCT", "FARKLI ÜRÜN")
-    ?.replace("LONG_CHAIN", "ZİNCİR UZUN")
-    ?.replace("SHORT_CHAIN", "ZİNCİR KISA")
-    ?.replace("DIFFERENT_FONT", "FARKLI FONT")
-    ?.replace("DISCOLORATION", "RENK ATMA")
-    ?.replace(": BREAK OFF", ": KOPMA")
-    ?.replace(": LOST IN MAIL", ": POSTA DA KAYBOLDU")
-    ?.replace(": SECOND", ": DİĞER")
     ?.replace("&#039;", "'")
     ?.replace("&#39;", "'")
     ?.replace("&lt;", "<")
     ?.replace("&gt;", ">")
-    ?.replace(",", ", ")
-    ?.replace("SEWING_MISTAKE", ": DIKIS HATASI")
-    ?.replace("CUSTOMER_SOURCED", ": MUSTERI KAYNAKLI")
-    ?.replace("MISSING_CUSTOMIZATION", ": YANLIS OZELLESTIRME")
-    ?.replace("MISSING_INFO", ": HATALI BILGI")
-    ?.replace("WRONG_COLOR", ": HATALI RENK")
-    ?.replace("DIFFERENT_PRODUCT", ": YANLIS ÜRÜN")
-    ?.replace("DISCOLORATION", ": RENK ATMA")
-    ?.replace("LOST_IN_MAIL", ": POSTA DA KAYBOLDU")
-    ?.replace("SECOND", ": DIGER");
+    ?.replace(",", ", ");
 };
 
 export const notificationReplacer = (exp) => {
@@ -102,16 +81,5 @@ export const notificationReplacer = (exp) => {
     ?.replace("price", "Fiyat")
     ?.replace("personalization", "Kişiselleştirme")
     ?.replace("type", "Tip")
-    ?.replace("LETTER PATTERN IS WRONG", "HARF DİZİLİMİ YANLIŞ")
-    ?.replace("WRONG COLOR", "YANLIŞ RENK")
-    ?.replace("STONE FALL", "TAŞI DÜŞMÜŞ")
-    ?.replace("DIFFERENT PRODUCT", "FARKLI ÜRÜN")
-    ?.replace("LONG CHAIN", "ZİNCİR UZUN")
-    ?.replace("SHORT CHAIN", "ZİNCİR KISA")
-    ?.replace("DIFFERENT FONT", "FARKLI FONT")
-    ?.replace("DISCOLORATION", "RENK ATMA")
-    ?.replace("BREAK OFF", "KOPMA")
-    ?.replace("LOST IN MAIL", "POSTA DA KAYBOLDU")
-    ?.replace("SECOND", "DİĞER")
     ?.replace("ready_date", "Atölyeye Gönderilme Tarihi");
 };

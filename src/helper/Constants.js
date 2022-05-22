@@ -59,53 +59,53 @@ export const sortingArrayUser = [
 ];
 
 export const repeatReasons = {
-  LETTER_PATTERN_IS_WRONG: "LETTER PATTERN IS WRONG",
-  WRONG_COLOR: "WRONG COLOR",
-  STONE_FALL: "STONE FALL",
-  DIFFERENT_PRODUCT: "DIFFERENT PRODUCT",
-  LONG_CHAIN: "LONG CHAIN",
-  SHORT_CHAIN: "SHORT CHAIN",
-  DIFFERENT_FONT: "DIFFERENT FONT",
-  DISCOLORATION: "DISCOLORATION",
-  BREAK_OFF: "BREAK OFF",
-  LOST_IN_MAIL: "LOST IN MAIL",
-  SECOND: "SECOND",
+  LETTER_PATTERN_IS_WRONG: "HARF DİZİLİMİ YANLIŞ",
+  WRONG_COLOR: "YANLIŞ RENK",
+  STONE_FALL: "TAŞI DÜŞMÜŞ",
+  DIFFERENT_PRODUCT: "FARKLI ÜRÜN",
+  LONG_CHAIN: "ZİNCİR UZUN",
+  SHORT_CHAIN: "ZİNCİR KISA",
+  DIFFERENT_FONT: "FARKLI FONT",
+  DISCOLORATION: "RENK ATMA",
+  BREAK_OFF: "KOPMA",
+  LOST_IN_MAIL: "POSTADA KAYIP",
+  SECOND: "DİĞER",
 };
 
 export const repeatReasonsLinen = {
-  SEWING_MISTAKE: "SEWING MISTAKE",
-  CUSTOMER_SOURCED: "CUSTOMER SOURCED",
-  MISSING_CUSTOMIZATION: "MISSING CUSTOMIZATION",
-  MISSING_INFO: "MISSING INFO",
-  WRONG_COLOR: "WRONG COLOR",
-  DIFFERENT_PRODUCT: "DIFFERENT PRODUCT",
-  DISCOLORATION: "DISCOLORATION",
-  LOST_IN_MAIL: "LOST IN MAIL",
-  SECOND: "SECOND",
+  SEWING_MISTAKE: "DIKIS HATASI",
+  CUSTOMER_SOURCED: "MUSTERI KAYNAKLI",
+  MISSING_CUSTOMIZATION: "YANLIS OZELLESTIRME",
+  MISSING_INFO: "HATALI BILGI",
+  WRONG_COLOR: "HATALI RENK",
+  DIFFERENT_PRODUCT: "YANLIS ÜRÜN",
+  DISCOLORATION: "RENK ATMA",
+  LOST_IN_MAIL: "POSTADA KAYIP",
+  SECOND: "DİĞER",
 };
 
 export const repeatReasonsMenuItemsLinenia = [
-  { id: "SEWING_MISTAKE", name: "SEWING MISTAKE", value: "Sewing Mistake" },
+  { id: "SEWING_MISTAKE", name: "SEWING MISTAKE", value: "DIKIS HATASI" },
   {
     id: "CUSTOMER_SOURCED",
     name: "CUSTOMER SOURCED",
-    value: "Customer Sourced",
+    value: "MUSTERI KAYNAKLI",
   },
   {
     id: "MISSING_CUSTOMIZATION",
     name: "MISSING CUSTOMIZATION",
-    value: "Missing Customization",
+    value: "YANLIS OZELLESTIRME",
   },
-  { id: "MISSING_INFO", name: "MISSING INFO", value: "Missing Info" },
-  { id: "WRONG_COLOR", name: "WRONG COLOR", value: "Wrong Color" },
+  { id: "MISSING_INFO", name: "MISSING INFO", value: "HATALI BILGI" },
+  { id: "WRONG_COLOR", name: "WRONG COLOR", value: "HATALI RENK" },
   {
     id: "DIFFERENT_PRODUCT",
     name: "DIFFERENT PRODUCT",
-    value: "Different Product",
+    value: "YANLIS ÜRÜN",
   },
-  { id: "DISCOLORATION", name: "DISCOLORATION", value: "Discoloration" },
-  { id: "LOST_IN_MAIL", name: "LOST IN MAIL", value: "Lost in Mail" },
-  { id: "SECOND", name: "SECOND", value: "Second" },
+  { id: "DISCOLORATION", name: "DISCOLORATION", value: "RENK ATMA" },
+  { id: "LOST_IN_MAIL", name: "LOST IN MAIL", value: "POSTADA KAYIP" },
+  { id: "SECOND", name: "SECOND", value: "DİĞER" },
 ];
 
 export const STORE_BASE_URLS = {

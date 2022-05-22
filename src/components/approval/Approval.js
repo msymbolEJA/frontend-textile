@@ -640,7 +640,7 @@ function App({ history }) {
               <div>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Letter Pattern Is Wrong"
+                    primary={repeatReasons.LETTER_PATTERN_IS_WRONG}
                     id="Letter Pattern Is Wrong"
                     onClick={handleRepeatMenuItemClick(
                       row,
@@ -650,7 +650,7 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Wrong Color"
+                    primary={repeatReasons.WRONG_COLOR}
                     id="Wrong Color"
                     onClick={handleRepeatMenuItemClick(
                       row,
@@ -660,7 +660,7 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Stone Fall"
+                    primary={repeatReasons.STONE_FALL}
                     id="Stone Fall"
                     onClick={handleRepeatMenuItemClick(
                       row,
@@ -670,7 +670,7 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Different Product"
+                    primary={repeatReasons.DIFFERENT_PRODUCT}
                     id="Different Product"
                     onClick={handleRepeatMenuItemClick(
                       row,
@@ -680,7 +680,7 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Long Chain"
+                    primary={repeatReasons.LONG_CHAIN}
                     id="Long Chain"
                     onClick={handleRepeatMenuItemClick(
                       row,
@@ -690,7 +690,7 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Short Chain"
+                    primary={repeatReasons.SHORT_CHAIN}
                     id="Short Chain"
                     onClick={handleRepeatMenuItemClick(
                       row,
@@ -700,7 +700,7 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Different Font"
+                    primary={repeatReasons.DIFFERENT_FONT}
                     id="Different Font"
                     onClick={handleRepeatMenuItemClick(
                       row,
@@ -710,7 +710,7 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Discoloration"
+                    primary={repeatReasons.DISCOLORATION}
                     id="discoloration"
                     onClick={handleRepeatMenuItemClick(
                       row,
@@ -720,7 +720,7 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Break off"
+                    primary={repeatReasons.BREAK_OFF}
                     id="break off"
                     onClick={handleRepeatMenuItemClick(
                       row,
@@ -730,7 +730,7 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Lost in mail"
+                    primary={repeatReasons.LOST_IN_MAIL}
                     id="lost in mail"
                     onClick={handleRepeatMenuItemClick(
                       row,
@@ -740,7 +740,7 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
-                    primary="Second"
+                    primary={repeatReasons.SECOND}
                     id="Second"
                     onClick={handleRepeatMenuItemClick(
                       row,
