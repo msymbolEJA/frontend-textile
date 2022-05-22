@@ -23,16 +23,16 @@ const ShopifyColumnHeaders = () => {
         <FormattedMessage id="title" defaultMessage="Title" />
       </StyledTableCell>
       <StyledTableCell align="center">
-        <FormattedMessage id="var-1" defaultMessage="Var-1" />
+        <FormattedMessage id="var1" defaultMessage="Var1" />
       </StyledTableCell>
       <StyledTableCell align="center">
-        <FormattedMessage id="var-2" defaultMessage="Var-2" />
+        <FormattedMessage id="var2" defaultMessage="Var2" />
       </StyledTableCell>
       <StyledTableCell align="center">
-        <FormattedMessage id="var-3" defaultMessage="Var-3" />
+        <FormattedMessage id="var3" defaultMessage="Var3" />
       </StyledTableCell>
       <StyledTableCell align="center">
-        <FormattedMessage id="var-4" defaultMessage="Var-4" />
+        <FormattedMessage id="var4" defaultMessage="Var4" />
       </StyledTableCell>
       <StyledTableCell align="center">
         <FormattedMessage id="countryId" defaultMessage="Country Id" />

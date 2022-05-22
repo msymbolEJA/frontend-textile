@@ -8,7 +8,7 @@ import { repeatReplacerWithTR } from "../../helper/Functions";
 
 const useStyles = makeStyles(() => ({
   tableCell: {
-    padding: 0,
+    padding: 1,
     width: "100px",
     maxWidth: "100px",
     borderRight: "0.5px solid #E0E0E0",
@@ -19,13 +19,12 @@ const useStyles = makeStyles(() => ({
     background: "transparent",
     resize: "none",
     border: "none",
-    wordWrap: "break-word",
+    //wordWrap: "break-word",
   },
   explanationTableCell: {
     padding: 0,
     width: "100px",
     maxWidth: "200px",
-    borderRight: "0.5px solid #E0E0E0",
   },
   explanationInput: {
     fontSize: "1rem",
@@ -40,7 +39,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
-    wordBreak: "break-all",
+    //wordBreak: "break-all",
     minWidth: "200px",
   },
   editableMod: {
@@ -49,13 +48,13 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
-    wordBreak: "break-all",
+    //wordBreak: "break-all",
     minWidth: "auto",
   },
   allOrdersTableCell: {},
 }));
 
-const EditableTableCell = ({ row, name, onChange, from }) => {
+const EditableTableCell = ({ row, name, onChange, from, minWidth = 50 }) => {
   useEffect(() => {
     setContent(
       name === "explanation"
@@ -124,6 +123,7 @@ const EditableTableCell = ({ row, name, onChange, from }) => {
       className={expTableCell}
       onClick={(e) => e.stopPropagation()}
       style={{
+        minWidth: minWidth ?? "auto",
         backgroundColor:
           isDanger &&
           (row[name] === " " || row[name] === "" || row[name] === null)

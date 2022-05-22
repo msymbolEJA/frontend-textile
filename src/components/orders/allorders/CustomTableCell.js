@@ -6,16 +6,22 @@ import { useIntl } from "react-intl";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {
-    width: 130,
     height: 40,
   },
   input: {
-    width: 130,
     height: 40,
   },
 }));
 
-const CustomTableCell = ({ row, name, name2, name3, name4, ...rest }) => {
+const CustomTableCell = ({
+  row,
+  name,
+  name2,
+  name3,
+  name4,
+  name5,
+  ...rest
+}) => {
   const classes = useStyles();
   const { formatMessage } = useIntl();
 
@@ -45,7 +51,14 @@ const CustomTableCell = ({ row, name, name2, name3, name4, ...rest }) => {
           moment(row[name]).format("MM-DD-YY HH:mm") === "Invalid date" ? (
             row[name] || "-"
           ) : (
-            moment.utc(row[name]).local().format("MM-DD-YY HH:mm")
+            <>
+              {moment.utc(row[name]).local().format("MM-DD-YY HH:mm")}
+              {name5 === "ready_date" &&
+              moment(row[name5]).format("MM-DD-YY HH:mm") !== "Invalid date"
+                ? " / " +
+                  moment.utc(row[name5]).local().format("MM-DD-YY HH:mm")
+                : null}
+            </>
           )
         ) : name === "variation_1_value" ? (
           row[name] &&

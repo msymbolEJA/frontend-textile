@@ -109,7 +109,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "5px 2px",
     lineHeight: 1,
     fontSize: "small",
-    maxWidth: 64,
   },
 }));
 
@@ -921,7 +920,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="var-1"
+                    colName="var1"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -929,7 +928,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="var-2"
+                    colName="var2"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -937,7 +936,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="var-3"
+                    colName="var3"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -945,7 +944,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="var-4"
+                    colName="var4"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -953,7 +952,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="var-5"
+                    colName="var5"
                     setOrderBy={setOrderBy}
                   />
                   <SortableTableCell
@@ -961,7 +960,7 @@ function App({ history }) {
                     handleRequestSort={handleRequestSort}
                     order={order}
                     orderBy={orderBy}
-                    colName="var-6"
+                    colName="var6"
                     setOrderBy={setOrderBy}
                   />
                 </>
@@ -1197,6 +1196,7 @@ function App({ history }) {
                           }}
                         />
                         <EditableTableCell
+                          // var1
                           {...{
                             row,
                             name: "length",
@@ -1204,10 +1204,12 @@ function App({ history }) {
                           }}
                         />
                         <EditableTableCell
+                          // var2
                           {...{
                             row,
                             name: "color",
                             onChange,
+                            minWidth: 60,
                           }}
                         />
                         <EditableTableCell
@@ -1215,6 +1217,7 @@ function App({ history }) {
                             row,
                             name: "qty",
                             onChange,
+                            minWidth: 70,
                           }}
                         />
                         <EditableTableCell
@@ -1229,6 +1232,7 @@ function App({ history }) {
                             row,
                             name: "start",
                             onChange,
+                            minWidth: 80,
                           }}
                         />
                         <EditableTableCell
@@ -1236,6 +1240,7 @@ function App({ history }) {
                             row,
                             name: "space",
                             onChange,
+                            minWidth: 80,
                           }}
                         />
                       </>
@@ -1245,6 +1250,7 @@ function App({ history }) {
                         row,
                         name: "explanation",
                         onChange,
+                        minWidth: 300,
                       }}
                     />
                     <td
@@ -1255,6 +1261,7 @@ function App({ history }) {
                           row.status === "pending" ? "auto" : "none",
                         borderLeft: "0.5px solid #E0E0E0",
                         borderRight: "0.5px solid #E0E0E0",
+                        minWidth: 90,
                       }}
                       onClick={(e) => {
                         e.stopPropagation();

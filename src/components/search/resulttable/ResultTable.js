@@ -914,6 +914,7 @@ function ResultTable({ list, history, refreshSearch }) {
                           pointerEvents:
                             row.status === "pending" ? "auto" : "none",
                           borderRight: "0.5px solid #E0E0E0",
+                          minWidth: 90,
                         }}
                         onClick={(e) => {
                           e.stopPropagation();

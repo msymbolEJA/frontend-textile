@@ -21,25 +21,25 @@ body {
 
 @media only screen and (min-width: 1200px) {
   .MuiTableCell-root {
-    font-size: 1.2rem !important;   
+    font-size: 1rem !important;   
    }
    .MuiButton-label {
-    font-size: 1.2rem !important;   
+    font-size: 1rem !important;   
    }
    
    select {
-     height: 2.1rem !important;
-     font-size: 1.2rem !important;   
+     height: 1.75rem !important;
+     font-size: 0.85rem !important;   
      padding: 0;
    }
 }
 
 @media only screen and (max-width: 768px) {
   .MuiTableCell-root {
-    font-size: 0.9rem !important;   
+    font-size: 0.85rem !important;   
    }
    .MuiButton-label {
-    font-size: 0.9rem !important;   
+    font-size: 0.85rem !important;   
    }
    
    select {

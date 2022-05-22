@@ -748,17 +748,13 @@ function AllOrdersTable() {
                 <FormattedMessage id="index" defaultMessage="Index" />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage
-                  id="createdTSZ"
-                  defaultMessage="Created TSZ"
-                />
-              </StyledTableCell>
-              <StyledTableCell align="center">
+                <FormattedMessage id="createdTSZ" defaultMessage="Created" />/{" "}
                 <FormattedMessage
                   id="ready_date"
                   defaultMessage="Approval Date"
                 />
               </StyledTableCell>
+
               {userRole === "admin" ||
               userRole === "shop_manager" ||
               userRole === "shop_packer" ? (
@@ -766,14 +762,14 @@ function AllOrdersTable() {
                   <StyledTableCell align="center">
                     <FormattedMessage id="buyer" defaultMessage="Buyer" />
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  {/*                   <StyledTableCell align="center">
                     <FormattedMessage id="supplier" defaultMessage="Supplier" />
-                  </StyledTableCell>
+                  </StyledTableCell> */}
                 </>
               ) : null}
-              <StyledTableCell align="center">
+              {/*               <StyledTableCell align="center">
                 <FormattedMessage id="status" defaultMessage="Status" />
-              </StyledTableCell>
+              </StyledTableCell> */}
               {NON_SKU ? (
                 <>
                   <StyledTableCell align="center">
@@ -798,27 +794,27 @@ function AllOrdersTable() {
                     <FormattedMessage id="type" defaultMessage="Type" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage id="var-1" />
+                    <FormattedMessage id="var1" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage id="var-2" />
+                    <FormattedMessage id="var2" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage id="var-3" />
+                    <FormattedMessage id="var3" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage id="var-4" />
+                    <FormattedMessage id="var4" />
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    <FormattedMessage id="var-5" />
+                    <FormattedMessage id="var5" />
                   </StyledTableCell>
 
                   <StyledTableCell align="center">
-                    <FormattedMessage id="var-6" />
+                    <FormattedMessage id="var6" />
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  {/*          <StyledTableCell align="center">
                     <FormattedMessage id="goldGr" />
-                  </StyledTableCell>
+                  </StyledTableCell> */}
                 </>
               )}
               <StyledTableCell align="center">
@@ -889,17 +885,19 @@ function AllOrdersTable() {
                       name4: "is_repeat",
                     }}
                   />
-                  <CustomTableCell {...{ row, name: "creation_tsz" }} />
-                  <CustomTableCell {...{ row, name: "ready_date" }} />
+                  <CustomTableCell
+                    {...{ row, name: "creation_tsz", name5: "ready_date" }}
+                  />
+                  {/*   <CustomTableCell {...{ row, name: "ready_date" }} /> */}
                   {userRole === "admin" ||
                   userRole === "shop_manager" ||
                   userRole === "shop_packer" ? (
                     <>
                       <CustomTableCell {...{ row, name: "buyer" }} />
-                      <CustomTableCell {...{ row, name: "supplier" }} />
+                      {/*   <CustomTableCell {...{ row, name: "supplier" }} /> */}
                     </>
                   ) : null}
-                  <CustomTableCell {...{ row, name: "status" }} />
+                  {/*    <CustomTableCell {...{ row, name: "status" }} /> */}
                   {NON_SKU ? (
                     <>
                       <CustomTableCell {...{ row, name: "sku" }} />
@@ -925,7 +923,7 @@ function AllOrdersTable() {
                       <CustomTableCell {...{ row, name: "start" }} />
                       {/* --------------------------- */}
                       <CustomTableCell {...{ row, name: "space" }} />
-                      <EditableTableCell
+                      {/*   <EditableTableCell
                         onClick={(e) => e.stopPropagation()}
                         {...{
                           row,
@@ -933,7 +931,7 @@ function AllOrdersTable() {
                           onChange,
                           from: "all-orders",
                         }}
-                      />
+                      /> */}
                     </>
                   )}
                   <EditableTableCell
