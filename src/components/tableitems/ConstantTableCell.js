@@ -5,7 +5,7 @@ import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   tableCell: {
-    padding: 1,
+    padding: 10,
     width: 130,
     height: 40,
     borderRight: "0.5px solid #E0E0E0",

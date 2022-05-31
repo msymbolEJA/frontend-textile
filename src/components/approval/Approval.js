@@ -1091,7 +1091,7 @@ function App({ history }) {
                         e.stopPropagation();
                       }}
                       style={{
-                        padding: 0,
+                        padding: 5,
                         borderBottom: "1px solid #e0e0e0",
                         borderRight: "0.5px solid #E0E0E0",
                       }}
@@ -1250,7 +1250,7 @@ function App({ history }) {
                         row,
                         name: "explanation",
                         onChange,
-                        minWidth: 300,
+                        minWidth: 200,
                       }}
                     />
                     <td

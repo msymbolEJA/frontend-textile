@@ -8,7 +8,7 @@ import { repeatReplacerWithTR } from "../../helper/Functions";
 
 const useStyles = makeStyles(() => ({
   tableCell: {
-    padding: 1,
+    padding: 10,
     width: "100px",
     maxWidth: "100px",
     borderRight: "0.5px solid #E0E0E0",
