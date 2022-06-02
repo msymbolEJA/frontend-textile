@@ -26,8 +26,8 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: "rgb(100, 149, 237)",
+    color: theme.palette.common.black,
   },
   body: {
     fontSize: 14,
@@ -456,7 +456,10 @@ const OrderDetails = ({ match }) => {
         <Table className={classes.table2} aria-label="simple table">
           <TableHead>
             <TableRow
-              style={{ backgroundColor: "black", borderRadius: "0.5rem" }}
+              style={{
+                backgroundColor: "rgb(100, 149, 237)",
+                borderRadius: "0.5rem",
+              }}
             >
               <TableCell align="center" style={{ color: "white" }}>
                 <FormattedMessage id="date" defaultMessage="Date" />

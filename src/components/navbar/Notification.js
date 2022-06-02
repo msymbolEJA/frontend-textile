@@ -39,10 +39,10 @@ const useStyles = makeStyles({
     margin: "0 0.5rem",
   },
   tableHead: {
-    backgroundColor: "black",
+    backgroundColor: "rgb(100, 149, 237)",
   },
   tableHeadCell: {
-    color: "white",
+    color: "black",
   },
   warning: {
     backgroundColor: "#ffc166",

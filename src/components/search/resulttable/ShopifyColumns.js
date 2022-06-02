@@ -98,6 +98,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 1,
     width: 130,
     height: 40,
+    fontFamily: "Courier New",
     borderRight: "0.5px solid #E0E0E0",
     maxWidth: "190px",
   },

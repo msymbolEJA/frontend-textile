@@ -6,10 +6,10 @@ import moment from "moment";
 const useStyles = makeStyles((theme) => ({
   tableCell: {
     padding: 10,
-    width: 130,
+    width: 100,
     height: 40,
     borderRight: "0.5px solid #E0E0E0",
-    maxWidth: "190px",
+    maxWidth: "150px",
     color: " rgba(0, 0, 0, 0.87)",
     fontFamily: "Courier New",
   },

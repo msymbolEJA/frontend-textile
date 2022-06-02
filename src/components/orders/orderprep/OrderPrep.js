@@ -20,8 +20,8 @@ import CustomCheckbox from "./CustomCheckbox";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor: "rgb(100, 149, 237)",
+    color: theme.palette.common.black,
   },
   body: {
     fontSize: 14,

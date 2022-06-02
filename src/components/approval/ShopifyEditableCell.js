@@ -6,7 +6,7 @@ import ContentEditable from "react-contenteditable";
 
 const useStyles = makeStyles(() => ({
   tableCell: {
-    padding: 0,
+    padding: 10,
     width: "100px",
 
     //minWidth: "100px",
@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     wordWrap: "break-word",
   },
   explanationTableCell: {
-    padding: 0,
+    padding: 10,
     width: "100px",
     // minHeight: "100px",
     borderRight: "0.5px solid #E0E0E0",

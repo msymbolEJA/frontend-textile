@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
     wordWrap: "break-word",
   },
   explanationTableCell: {
-    padding: 0,
+    padding: 10,
     width: "100px",
     // minHeight: "100px",
     maxWidth: "300px",

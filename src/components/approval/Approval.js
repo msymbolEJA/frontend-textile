@@ -44,7 +44,7 @@ import CustomButtonGroup from "./CustomButtonGroup";
 import { tagsData, repeatReasons } from "../../helper/Constants";
 import { FormattedMessage } from "react-intl";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import { AppContext } from "../../context/Context";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 // const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
@@ -122,11 +122,13 @@ const StyledTableRow = withStyles((theme) => ({
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: "#f5f5dc",
+    backgroundColor: "rgb(100, 149, 237)",
     color: theme.palette.common.black,
     fontWeight: "bold",
+    fontFamily: "Courier New",
   },
   body: {
+    fontFamily: "Courier New",
     fontSize: 14,
   },
 }))(TableCell);
@@ -149,6 +151,7 @@ function App({ history }) {
   const [loading, setloading] = useState(false);
   const [repeatMenuData, setRepeatMenuData] = useState({});
   const [refreshTable, setRefreshTable] = useState(false);
+  const { user } = useContext(AppContext);
 
   const getListFunc = () => {
     setloading(true);
@@ -977,7 +980,7 @@ function App({ history }) {
               <StyledTableCell
                 align="center"
                 style={{
-                  padding: 0,
+                  padding: 10,
                   pointerEvents: selectedTag === "pending" ? "auto" : "none",
                   borderRight: "0.5px solid #E0E0E0",
                 }}
@@ -1026,14 +1029,16 @@ function App({ history }) {
                 colName="customerNote"
                 setOrderBy={setOrderBy}
               />
-              <SortableTableCell
-                property="gift_message"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="giftMessage"
-                setOrderBy={setOrderBy}
-              />
+              {user !== "DrMel" ? (
+                <SortableTableCell
+                  property="gift_message"
+                  handleRequestSort={handleRequestSort}
+                  order={order}
+                  orderBy={orderBy}
+                  colName="giftMessage"
+                  setOrderBy={setOrderBy}
+                />
+              ) : null}
               <SortableTableCell
                 property="note"
                 handleRequestSort={handleRequestSort}
@@ -1251,12 +1256,12 @@ function App({ history }) {
                         row,
                         name: "explanation",
                         onChange,
-                        minWidth: 200,
+                        minWidth: 120,
                       }}
                     />
                     <td
                       style={{
-                        padding: 0,
+                        padding: 10,
                         borderBottom: "1px solid #e0e0e0",
                         pointerEvents:
                           row.status === "pending" ? "auto" : "none",
@@ -1317,15 +1322,17 @@ function App({ history }) {
                     <ConstantTableCell
                       {...{ row, name: "message_from_buyer", onChange }}
                     />
-                    <EditableTableCell
-                      {...{ row, name: "gift_message", onChange }}
-                    />
+                    {user !== "DrMel" ? (
+                      <EditableTableCell
+                        {...{ row, name: "gift_message", onChange }}
+                      />
+                    ) : null}
                     <EditableTableCell {...{ row, name: "note", onChange }} />
                     <td
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
-                      style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}
+                      style={{ padding: 10, borderBottom: "1px solid #e0e0e0" }}
                     >
                       <UploadFile
                         {...{

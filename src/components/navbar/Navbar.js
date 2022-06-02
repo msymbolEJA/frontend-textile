@@ -80,8 +80,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   activeButton: {
-    backgroundColor: "black",
-    color: "white",
+    backgroundColor: "rgb(100, 149, 237)",
+    color: "black",
+    fontWeight: "bold",
     margin: "0.1rem",
     width: "11.5rem",
     borderColor: "white",
@@ -96,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
     width: 50,
     fontSize: 9,
     fontWeight: "bold",
-    padding: 0,
+    padding: 10,
     "&:hover": {
       color: "white",
       borderColor: "white",

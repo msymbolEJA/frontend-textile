@@ -17,9 +17,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
   tableCellHeader: {
-    color: "white",
+    color: "black",
     border: "1px white solid",
-    backgroundColor: "black",
+    backgroundColor: "rgb(100, 149, 237)",
     padding: 13,
   },
   darkTableRow: {

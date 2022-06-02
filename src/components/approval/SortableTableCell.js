@@ -13,8 +13,8 @@ const useStyles = makeStyles({
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    paddng: 0,
-    backgroundColor: "#f5f5dc",
+    padding: 10,
+    backgroundColor: "rgb(100, 149, 237)",
     color: theme.palette.common.black,
     borderRight: "0.5px solid #E0E0E0",
     fontWeight: "bold",
@@ -36,18 +36,18 @@ const SortableTableCell = ({
 }) => {
   let customStyle;
   if (property === "explanation") {
-    customStyle = { padding: 0, textAlign: "center", minWidth: "200px" };
+    customStyle = { padding: 10, textAlign: "center", minWidth: "200px" };
   } else if (
     property === "variation_1_name" ||
     property === "variation_2_name" ||
     property === "variation_1_value" ||
     property === "variation_2_value"
   ) {
-    customStyle = { padding: 0, textAlign: "center", minWidth: "150px" };
+    customStyle = { padding: 10, textAlign: "center", minWidth: "150px" };
   } else if (property === "id") {
-    customStyle = { padding: 0, textAlign: "center", maxWidth: "30px" };
+    customStyle = { padding: 10, textAlign: "center" };
   } else {
-    customStyle = { padding: 0, textAlign: "center" };
+    customStyle = { padding: 10, textAlign: "center" };
   }
   const classes = useStyles();
 

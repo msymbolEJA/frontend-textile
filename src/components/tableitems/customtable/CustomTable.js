@@ -18,8 +18,8 @@ const styles = {
   customTh: {
     border: "1px solid #ddd",
     textAlign: "left",
-    background: "#343a40",
-    color: "#fff",
+    backgroundColor: "rgb(100, 149, 237)",
+    color: "black",
     padding: "10px",
   },
   customTd: {

@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     //wordWrap: "break-word",
   },
   explanationTableCell: {
-    padding: 0,
+    padding: 10,
     width: "100px",
     maxWidth: "200px",
   },
@@ -54,7 +54,7 @@ const useStyles = makeStyles(() => ({
   allOrdersTableCell: {},
 }));
 
-const EditableTableCell = ({ row, name, onChange, from, minWidth = 50 }) => {
+const EditableTableCell = ({ row, name, onChange, from, minWidth = 40 }) => {
   useEffect(() => {
     setContent(
       name === "explanation"

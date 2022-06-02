@@ -108,7 +108,7 @@ export default function SummaryTable({
         </div>
         <div>
           <Table className={classes.table}>
-            <TableHead style={{ backgroundColor: "black" }}>
+            <TableHead style={{ backgroundColor: "rgb(100, 149, 237)" }}>
               <TableRow>
                 <TableCell align="left" style={{ color: "white" }}>
                   {header1}

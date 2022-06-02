@@ -4,7 +4,7 @@ import Input from "@material-ui/core/Input";
 
 const useStyles = makeStyles(() => ({
   tableCell: {
-    padding: 0,
+    padding: 10,
     width: "fit-content",
   },
 }));

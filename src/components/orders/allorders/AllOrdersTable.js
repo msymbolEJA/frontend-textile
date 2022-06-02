@@ -50,8 +50,9 @@ const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: "black",
-    color: theme.palette.common.white,
+    backgroundColor: "rgb(100, 149, 237)",
+    color: theme.palette.common.black,
+    fontWeight: "bold",
   },
   body: {
     fontSize: 14,
@@ -955,7 +956,9 @@ function AllOrdersTable() {
                     }}
                     {...{ row, name: "gift_message" }}
                   />
-                  <td style={{ padding: 0, borderBottom: "1px solid #e0e0e0" }}>
+                  <td
+                    style={{ padding: 10, borderBottom: "1px solid #e0e0e0" }}
+                  >
                     {row?.image ? (
                       <ViewImageFile {...{ row, name: "image" }} />
                     ) : (

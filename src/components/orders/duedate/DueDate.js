@@ -11,29 +11,28 @@ import style from "./styles";
 import { getHeaders, getBodyItems } from "../../../helper/Functions";
 
 const StyledTableCell = withStyles((theme) => ({
-    head: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    body: {
-      fontSize: 14,
-    },
-  }))(TableCell);
-  
-  
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      width: "100%",
-      marginTop: theme.spacing(3),
-      overflowX: "auto",
-    },
-    table: {
-      minWidth: 650,
-    },
-    selectTableCell: {
-      width: 60,
-    },
-  }));
+  head: {
+    backgroundColor: "rgb(100, 149, 237)",
+    color: theme.palette.common.black,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    marginTop: theme.spacing(3),
+    overflowX: "auto",
+  },
+  table: {
+    minWidth: 650,
+  },
+  selectTableCell: {
+    width: 60,
+  },
+}));
 
 export default function DueDate() {
   let headers = getHeaders(data);
@@ -59,7 +58,7 @@ export default function DueDate() {
           <tr style={style.tableCell} key={index}>
             {item?.map((elm, ind) => (
               <>
-                <tr key={ind} >
+                <tr key={ind}>
                   <a href="/">{elm.id}</a>
                 </tr>
                 <hr />

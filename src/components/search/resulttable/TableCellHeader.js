@@ -12,8 +12,8 @@ const useStyles = makeStyles({
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    padding: 0,
-    backgroundColor: "#f5f5dc",
+    padding: 10,
+    backgroundColor: "rgb(100, 149, 237)",
     color: theme.palette.common.black,
     borderRight: "0.5px solid #E0E0E0",
     fontFamily: "Courier New",

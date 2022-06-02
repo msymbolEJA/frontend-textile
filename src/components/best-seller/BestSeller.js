@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     // justifyContent: "space-evenly",
     alignItems: "center",
     // height: 400,
+    fontFamily: "Courier New",
     border: "1px solid lightgrey",
     borderRadius: "5px",
   },

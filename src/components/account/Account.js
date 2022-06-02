@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "3rem",
   },
   hrStyle: {
-    backgroundColor: "black",
+    backgroundColor: "rgb(100, 149, 237)",
     height: "0.5px",
     border: 0,
     width: "20rem",

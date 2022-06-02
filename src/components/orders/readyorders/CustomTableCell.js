@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
   tableCell: {
     width: 130,
     height: 40,
+    fontFamily: "Courier New",
   },
   input: {
     width: 130,

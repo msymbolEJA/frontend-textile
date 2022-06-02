@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
     width: 120,
     height: 40,
     borderRight: "0.5px solid #E0E0E0",
+    fontFamily: "Courier New",
   },
 }));
 

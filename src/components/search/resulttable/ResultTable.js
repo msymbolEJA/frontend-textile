@@ -661,7 +661,7 @@ function ResultTable({ list, history, refreshSearch }) {
                 <StyledTableCell
                   align="center"
                   style={{
-                    padding: 0,
+                    padding: 10,
                     borderRight: "0.5px solid #E0E0E0",
                   }}
                 >
@@ -769,7 +769,7 @@ function ResultTable({ list, history, refreshSearch }) {
                           e.stopPropagation();
                         }}
                         style={{
-                          padding: 0,
+                          padding: 10,
                           borderBottom: "1px solid #e0e0e0",
                           borderRight: "0.5px solid #E0E0E0",
                         }}
@@ -909,7 +909,7 @@ function ResultTable({ list, history, refreshSearch }) {
 
                       <td
                         style={{
-                          padding: 0,
+                          padding: 10,
                           borderBottom: "1px solid #e0e0e0",
                           pointerEvents:
                             row.status === "pending" ? "auto" : "none",
@@ -978,7 +978,7 @@ function ResultTable({ list, history, refreshSearch }) {
                           e.stopPropagation();
                         }}
                         style={{
-                          padding: 0,
+                          padding: 10,
                           borderBottom: "1px solid #e0e0e0",
                         }}
                       >

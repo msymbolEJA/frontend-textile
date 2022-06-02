@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: "black",
+    backgroundColor: "rgb(100, 149, 237)",
     color: theme.palette.common.white,
   },
   body: {
@@ -60,6 +60,7 @@ const CustomTooltip = withStyles((theme) => ({
     color: "rgba(0, 0, 0, 0.87)",
     boxShadow: theme.shadows[1],
     fontSize: "0.75rem",
+    fontFamily: "Courier New",
   },
 }))(Tooltip);
 

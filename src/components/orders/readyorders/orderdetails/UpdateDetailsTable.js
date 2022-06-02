@@ -16,7 +16,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
   thead: {
-    backgroundColor: "black",
+    backgroundColor: "rgb(100, 149, 237)",
     "& th": {
       color: theme.palette.common.white,
       textAlign: "center",
@@ -45,16 +45,17 @@ const UpdateDetailsTable = ({ row }) => {
         console.log(error);
       })
       .finally(() => getDetailsForUpdate());
-  }
+  };
 
   const getDetailsForUpdate = () => {
-    row?.receipt_id && getData(`${BASE_URL}etsy/ordersTable/${row?.receipt_id}/`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log({ err });
-      });
+    row?.receipt_id &&
+      getData(`${BASE_URL}etsy/ordersTable/${row?.receipt_id}/`)
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch((err) => {
+          console.log({ err });
+        });
   };
 
   useEffect(() => {
@@ -88,7 +89,9 @@ const UpdateDetailsTable = ({ row }) => {
                   ) : item.type === "dropdown" ? (
                     <div>
                       <select
-                        onChange={(e) =>handleEditChange(e.target.value, item.objKey)}
+                        onChange={(e) =>
+                          handleEditChange(e.target.value, item.objKey)
+                        }
                         value={
                           data[item.objKey] ? data[item.objKey] : "Not Selected"
                         }
@@ -102,7 +105,11 @@ const UpdateDetailsTable = ({ row }) => {
                       </select>
                     </div>
                   ) : item.type === "editable" ? (
-                    <EditableTableCell data={data} name={item.objKey} onChange={handleEditChange} />
+                    <EditableTableCell
+                      data={data}
+                      name={item.objKey}
+                      onChange={handleEditChange}
+                    />
                   ) : (
                     data[item.objKey]
                   )}

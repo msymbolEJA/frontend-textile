@@ -7,6 +7,7 @@ import { useIntl } from "react-intl";
 const useStyles = makeStyles((theme) => ({
   tableCell: {
     height: 40,
+    fontFamily: "Courier New",
   },
   input: {
     height: 40,
