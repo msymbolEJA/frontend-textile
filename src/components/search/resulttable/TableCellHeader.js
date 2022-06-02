@@ -12,11 +12,12 @@ const useStyles = makeStyles({
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    paddng: 0,
+    padding: 0,
     backgroundColor: "#f5f5dc",
     color: theme.palette.common.black,
     borderRight: "0.5px solid #E0E0E0",
     fontFamily: "Courier New",
+    fontWeight: "bold",
   },
 }))(TableCell);
 
