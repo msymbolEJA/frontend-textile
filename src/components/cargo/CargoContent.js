@@ -100,7 +100,17 @@ export default function CustomizedTables({ match }) {
                     {row?.status}
                   </StyledTableCell>
                   <StyledTableCell align="center">
-                    {row?.is_label ? "+" : "-"}
+                    {row?.is_label ? (
+                      <a
+                        href={`${BASE_URL}media/dhl/shipments/${match.params.id}/${row.id}.pdf`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        View
+                      </a>
+                    ) : (
+                      "-"
+                    )}
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     {row?.tracking_code}
