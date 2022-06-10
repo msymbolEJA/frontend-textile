@@ -283,6 +283,8 @@ export default function MenuAppBar() {
     for (let i = 0; i < arr.length; i++) {
       localStorage.removeItem(arr[i]);
     }
+    window?.location.reload();
+    return false;
   };
   return (
     <div className={classes.root}>
