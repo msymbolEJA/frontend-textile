@@ -8,6 +8,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import SearchIcon from "@material-ui/icons/Search";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,10 +42,17 @@ const CustomButtonGroup = ({
   const classes = useStyles();
   const { formatMessage } = useIntl();
   const myInputRef = useRef(null);
+  const mobileView = useMediaQuery("(max-width:1024px)");
 
   return (
     <div>
-      <div className={classes.btnGroup}>
+      <div
+        className={classes.btnGroup}
+        style={{
+          marginTop: mobileView ? "3rem" : "1rem",
+        }}
+      >
+        {" "}
         {tagsData.map((tag) => (
           <Button
             className={classes.btn}

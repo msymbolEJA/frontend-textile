@@ -73,6 +73,8 @@ const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: "white",
     margin: "0.1rem",
+    fontSize: "1rem !important",
+    fontWeight: "bold",
     width: "11.5rem",
     "&:hover": {
       color: "white",
@@ -94,10 +96,9 @@ const useStyles = makeStyles((theme) => ({
   button2: {
     backgroundColor: "white",
     margin: "0.1rem",
-    width: 50,
-    fontSize: 9,
+    fontSize: "1rem !important",
     fontWeight: "bold",
-    padding: 10,
+    padding: "2px",
     "&:hover": {
       color: "white",
       borderColor: "white",
@@ -106,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
   activeShopButton: {
     color: "#3F51B5",
     backgroundColor: "white",
-    padding: 10,
+    padding: "2px",
     borderRadius: "50%",
   },
   nonActiveShopButton: {
@@ -125,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
   mobileActiveButton: {
     color: "#3F51B5",
     backgroundColor: "white",
-    padding: 10,
+    padding: "2px",
     borderRadius: "50%",
     fontSize: "1rem",
   },

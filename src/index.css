@@ -17,16 +17,14 @@ body {
 .m-10 {
   margin: 10px;
 }
+.MuiTableCell-root {
+  font-size: 1.2rem !important;   
+ }
+ .MuiButton-label {
+  font-size: 1.2rem !important;   
+ }
 
-
-@media only screen and (min-width: 1200px) {
-  .MuiTableCell-root {
-    font-size: 1rem !important;   
-   }
-   .MuiButton-label {
-    font-size: 1rem !important;   
-   }
-   
+@media only screen and (min-width: 1200px) {  
    select {
      height: 1.75rem !important;
      font-size: 0.85rem !important;   
@@ -35,13 +33,7 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
-  .MuiTableCell-root {
-    font-size: 0.85rem !important;   
-   }
-   .MuiButton-label {
-    font-size: 0.85rem !important;   
-   }
-   
+
    select {
      height: 1.5rem !important;
      font-size: 0.75rem !important;   
