@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "10px",
     border: "1px solid lightgrey",
     borderRadius: "5px",
+    overflowX: "auto",
   },
   bottom: {
     display: "flex",

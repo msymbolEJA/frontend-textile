@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import moment from "moment";
 import SellerTable from "./SellerTable";
 import CostGetter from "./CostGetter";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     color: theme.palette.text.primary,
     // marginTop: 39,
-    marginLeft: 8,
+    margin: "auto",
     width: "fit-content",
     display: "flex",
     flexDirection: "row",
@@ -72,6 +73,7 @@ const groupByKey = (list, key) =>
 
 const DateGetter = () => {
   const { user } = useContext(AppContext);
+  const mobileView = useMediaQuery("(max-width:1024px)");
 
   let localRole = localStorage.getItem("localRole");
 
@@ -149,9 +151,21 @@ const DateGetter = () => {
       <h2 className={classes.header}>
         <FormattedMessage id="topSeller" />
       </h2>
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: mobileView ? "column" : "row",
+        }}
+      >
         <div className={classes.top}>
-          <Paper className={classes.paper}>
+          <Paper
+            className={classes.paper}
+            style={{
+              display: mobileView ? "block" : "flex",
+            }}
+          >
             <div className={classes.inputs}>
               <label htmlFor="beginnerDate" className={classes.label}>
                 <FormattedMessage id="startDate" defaultMessage="Start Date" />:
