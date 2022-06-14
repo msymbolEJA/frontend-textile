@@ -29,7 +29,14 @@ const FlagAndFavCell = ({ row, name, name2, name3 }) => {
         </>
       ) : null}
       {name === "id" ? (
-        <a href={`/order-details/${row.id}`}>{row[name]}</a>
+        <a
+          style={{
+            pointerEvents: "all",
+          }}
+          href={`/order-details/${row.id}`}
+        >
+          {row[name]}
+        </a>
       ) : (
         row[name]
       )}

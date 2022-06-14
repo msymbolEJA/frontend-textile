@@ -1069,6 +1069,11 @@ function App({ history }) {
                     //onBlur={(e) => handleRowBlur(e, row.id)}
                     //onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                     style={{
+                      pointerEvents:
+                        row["status"] === "in_progress" ||
+                        row["status"] === "ready"
+                          ? "none"
+                          : "auto",
                       backgroundColor:
                         (row.status !== "pending") & (row.approved === false)
                           ? "#FF9494"
