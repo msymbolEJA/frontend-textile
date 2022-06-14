@@ -189,23 +189,24 @@ function App({ history }) {
   };
 
   const getLastUpdateDate = () => {
-    getData(`${BASE_URL}etsy/get_mapping_update_date/`)
-      .then((response) => {
-        const l = localStorage.getItem(
-          `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
-        );
-        if (response.data.last_updated !== l) {
-          localStorage.setItem(
-            `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
-            response.data.last_updated
-          );
-          if (!filters?.search) getListFunc();
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      })
-      .finally(() => {});
+    if (!filters?.search) getListFunc();
+    // getData(`${BASE_URL}etsy/get_mapping_update_date/`)
+    //   .then((response) => {
+    //     const l = localStorage.getItem(
+    //       `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
+    //     );
+    //     if (response.data.last_updated !== l) {
+    //       localStorage.setItem(
+    //         `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
+    //         response.data.last_updated
+    //       );
+    //       if (!filters?.search) getListFunc();
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log("error", error);
+    //   })
+    //   .finally(() => {});
   };
 
   useEffect(() => {
