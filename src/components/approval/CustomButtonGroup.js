@@ -111,20 +111,6 @@ const CustomButtonGroup = ({
         >
           <FormattedMessage id="repeat" defaultMessage="REPEAT" />
         </Button>
-        <Button
-          className={classes.btn}
-          disabled={loading}
-          id="followUp"
-          key="followUp"
-          onClick={(e) => handleTagChange(e)}
-          variant="contained"
-          style={{
-            backgroundColor: selectedTag === "followUp" ? "#3F51B5" : null,
-            color: selectedTag === "followUp" ? "white" : null,
-          }}
-        >
-          <FormattedMessage id="followUp" defaultMessage="FOLLOW UP" />
-        </Button>
       </div>
     </div>
   );

@@ -90,10 +90,6 @@ const Dashboard = () => {
           if (item.is_repeat)
             newResult.push({ cell1: "REPEAT", cell2: item.status_count });
         });
-        response.data[2].forEach((item) => {
-          if (item.is_followup)
-            newResult.push({ cell1: "FOLLOW UP", cell2: item.status_count });
-        });
       }
 
       const currentSortingArray =

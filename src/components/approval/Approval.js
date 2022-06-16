@@ -158,9 +158,7 @@ function App({ history }) {
     getData(
       `${BASE_URL}etsy/mapping/?${
         filters?.status ? `status=${filters?.status}` : ""
-      }&is_repeat=${filters?.is_repeat}&is_followup=${
-        filters?.is_followup
-      }&ordering=${filters?.ordering || "-id"}&limit=${
+      }&is_repeat=${filters?.is_repeat}&ordering=${filters?.ordering || "-id"}&limit=${
         filters?.limit || 0
       }&offset=${filters?.offset}`
     )
@@ -232,7 +230,6 @@ function App({ history }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.ordering,
-    filters.is_followup,
     filters.status,
     filters.is_repeat,
     filters.limit,
@@ -436,9 +433,6 @@ function App({ history }) {
         break;
       case "repeat":
         newUrl += `is_repeat=true&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-        break;
-      case "followUp":
-        newUrl += `is_followup=true&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
@@ -1090,7 +1084,6 @@ function App({ history }) {
                         name: "id",
                         name2: "receipt",
                         name3: "item_index",
-                        name4: "is_followup",
                         name5: "is_repeat",
                         handlerFlagRepeatChange,
                       }}
@@ -1112,19 +1105,6 @@ function App({ history }) {
                         <ShoppingBasketIcon color="secondary" />
                       ) : null}
                       <br />
-                      <FlagIcon
-                        style={{
-                          color: row["is_followup"] ? "red" : "grey",
-                          cursor: "pointer",
-                        }}
-                        onClick={() =>
-                          handlerFlagRepeatChange(
-                            row.id,
-                            "is_followup",
-                            row["is_followup"]
-                          )
-                        }
-                      />
                       {row["status"] === "in_progress" ||
                       row["status"] === "ready" ? null : (
                         <>
