@@ -264,7 +264,7 @@ const StockList = () => {
           console.log(response.data.length);
           console.log(response.data);
           setListCount(response.data.length);
-          setStockListArr(response.data);
+          setStockListArr(response.data?.results || []);
           //setList(response.data);
         })
         .catch((error) => {
