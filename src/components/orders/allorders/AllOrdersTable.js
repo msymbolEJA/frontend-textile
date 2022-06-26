@@ -107,8 +107,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
-const isBeyazit =
-  localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
+const isBeyazit = localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
   const [sortedRows, setSortedRows] = useState([]);

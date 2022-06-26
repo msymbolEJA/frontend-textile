@@ -117,7 +117,7 @@ export default function Login() {
       setLinProgress(true);
       postAuthData(`${BASE_URL}account/login/`, values)
         .then((response) => {
-          // console.log({ response });
+          console.log({ response });
           setUser(response?.data);
           const token = response?.data?.access;
           if (token) {
@@ -126,6 +126,7 @@ export default function Login() {
             localStorage.setItem("localEmail", response?.data?.email);
             localStorage.setItem("localRole", response?.data?.role);
             localStorage.setItem("localId", response?.data?.id);
+            localStorage.setItem("workshop", response?.data?.workshop);
             console.log("Logged in succesfully!");
             setAuth(true);
             if (response?.data?.role === "workshop_designer") {

@@ -34,8 +34,7 @@ import Favourites from "../components/favourites/Favourites";
 import Favourite from "../components/favourites/Favourite";
 
 const history = require("history").createBrowserHistory();
-const isBeyazit =
-  localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
+const isBeyazit = localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
 const AppRouter = () => {
   return (
     <Router history={history}>

@@ -13,8 +13,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { beyazitTagsData } from "../../../helper/Constants";
 
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
-const isBeyazit =
-  localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
+const isBeyazit = localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",

@@ -224,7 +224,7 @@ export default function MenuAppBar() {
 
   const localUser = localStorage.getItem("localUser");
   const isBeyazit =
-    localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
+    localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
 
   const userRole = user?.role || localRole;
 

@@ -72,8 +72,7 @@ const useStyles = makeStyles({
     flexWrap: "wrap",
   },
 });
-const isBeyazit =
-  localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
+const isBeyazit = localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
 export default function CustomizedTables() {
   const classes = useStyles();
   const [cargoList, setCargoList] = useState();

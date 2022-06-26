@@ -43,7 +43,7 @@ function App() {
         ? "pending"
         : "awaiting";
     const isBeyazit =
-      localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
+      localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
     if (isBeyazit) return;
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
       const obj = response?.data?.[0].find((item) => item.status === stat);
