@@ -10,9 +10,11 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import SearchIcon from "@material-ui/icons/Search";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { beyazitTagsData } from "../../../helper/Constants";
 
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
-
+const isBeyazit =
+  localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -56,7 +58,11 @@ const CustomButtonGroup = ({
 
   const { isAdmin } = useContext(AppContext);
 
-  let statusTags = isAdmin ? tagsData : nonAdminTagsData;
+  let statusTags = isBeyazit
+    ? beyazitTagsData
+    : isAdmin
+    ? tagsData
+    : nonAdminTagsData;
 
   let localRole = localStorage.getItem("localRole");
 

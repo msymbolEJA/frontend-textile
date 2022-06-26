@@ -223,6 +223,8 @@ export default function MenuAppBar() {
   };
 
   const localUser = localStorage.getItem("localUser");
+  const isBeyazit =
+    localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
 
   const userRole = user?.role || localRole;
 
@@ -308,7 +310,7 @@ export default function MenuAppBar() {
             )}
           </IconButton>
           {/* Only can see by workshop users. */}
-          {userRole?.includes("workshop") && (
+          {!isBeyazit && userRole?.includes("workshop") && (
             <>
               <Badge
                 badgeContent={notification?.count}
@@ -336,7 +338,11 @@ export default function MenuAppBar() {
                 color="primary"
                 variant="outlined"
                 id="all-orders"
-                disabled={userRole?.includes("workshop") && notification?.count}
+                disabled={
+                  userRole?.includes("workshop") &&
+                  !isBeyazit &&
+                  notification?.count
+                }
                 className={
                   mobileView
                     ? classes.button2
@@ -398,7 +404,7 @@ export default function MenuAppBar() {
                   />
                 </Button>
               )}
-              {window?.location?.pathname !== "/search" ? (
+              {!isBeyazit && window?.location?.pathname !== "/search" ? (
                 <OutlinedInput
                   type="text"
                   defaultValue=""
@@ -439,7 +445,7 @@ export default function MenuAppBar() {
             />
           </Tooltip>
 
-          {mobileView ? null : (
+          {isBeyazit || mobileView ? null : (
             <div style={{ marginRight: "2rem" }}>
               <FormControl className={classes.formControl}>
                 <NativeSelect
@@ -462,7 +468,7 @@ export default function MenuAppBar() {
             </div>
           )}
 
-          {auth && (
+          {!isBeyazit && auth && (
             <div className={classes.rightTop}>
               {mobileView ? null : (
                 <div className={classes.userInfo}>

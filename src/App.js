@@ -42,6 +42,9 @@ function App() {
       userRole === "shop_packer"
         ? "pending"
         : "awaiting";
+    const isBeyazit =
+      localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
+    if (isBeyazit) return;
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
       const obj = response?.data?.[0].find((item) => item.status === stat);
       const inProgessNumber = obj?.status_count || 0;

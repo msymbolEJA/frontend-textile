@@ -34,7 +34,8 @@ import Favourites from "../components/favourites/Favourites";
 import Favourite from "../components/favourites/Favourite";
 
 const history = require("history").createBrowserHistory();
-
+const isBeyazit =
+  localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
 const AppRouter = () => {
   return (
     <Router history={history}>
@@ -43,7 +44,20 @@ const AppRouter = () => {
         <Route path="/reset/:id" component={ResetPassword} />
         <Route path="/forgot" component={ForgetPassword} />
         <Route exact path="/login" component={Login} />
-        <Route component={DefaultContainer} />
+        {isBeyazit ? (
+          <>
+            <PrivateRouter component={Navbar} />
+            <PrivateRouter exact path="/cargo-list" component={CargoList} />
+            <PrivateRouter exact path="/" component={AllOrdersTable} />
+            <PrivateRouter
+              exact
+              path="/all-orders"
+              component={AllOrdersTable}
+            />
+          </>
+        ) : (
+          <Route component={DefaultContainer} />
+        )}
       </Switch>
     </Router>
   );

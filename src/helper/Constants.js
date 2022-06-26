@@ -17,6 +17,7 @@ export const nonAdminTagsData = [
   "in_transit",
   "cancelled",
 ];
+export const beyazitTagsData = ["awaiting", "in_progress", "ready"];
 
 export const statusData = [
   "pending",

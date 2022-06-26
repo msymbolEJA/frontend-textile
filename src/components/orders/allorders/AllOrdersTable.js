@@ -107,7 +107,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
-
+const isBeyazit =
+  localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
   const [sortedRows, setSortedRows] = useState([]);
@@ -215,16 +216,15 @@ function AllOrdersTable() {
       if (filters?.status === "shipped" || filters?.status === "ready") {
         filters.ordering = "-last_updated";
       } else filters.ordering = "-id";
+      const url = `${BASE_URL}etsy/orders/?${`status=${
+        filters?.status || "awaiting"
+      }`}&is_repeat=${filters?.is_repeat}&is_followup=${
+        filters?.is_followup
+      }&ordering=${filters?.ordering}&limit=${filters?.limit || 0}&offset=${
+        filters?.offset
+      }`;
 
-      getData(
-        `${BASE_URL}etsy/orders/?${
-          filters?.status ? `status=${filters?.status}` : ""
-        }&is_repeat=${filters?.is_repeat}&is_followup=${
-          filters?.is_followup
-        }&ordering=${filters?.ordering}&limit=${filters?.limit || 0}&offset=${
-          filters?.offset
-        }`
-      )
+      getData(url)
         .then((response) => {
           const t = response?.data?.results?.length
             ? response?.data?.results
@@ -262,6 +262,10 @@ function AllOrdersTable() {
   };
 
   useEffect(() => {
+    if (!filters?.status) {
+      history.push("/all-orders?&status=awaiting&limit=2500&offset=0");
+      return;
+    }
     if (filters?.search) return;
     getLastUpdateDate();
     if (filters?.status === "awaiting") getAllPdfFunc();

@@ -72,7 +72,8 @@ const useStyles = makeStyles({
     flexWrap: "wrap",
   },
 });
-
+const isBeyazit =
+  localStorage.getItem("localUser")?.toLowerCase() === "beyazit";
 export default function CustomizedTables() {
   const classes = useStyles();
   const [cargoList, setCargoList] = useState();
@@ -257,9 +258,11 @@ export default function CustomizedTables() {
                   <FormattedMessage id="download" defaultMessage="Download" />
                 </StyledTableCell>
               ) : null}
-              <StyledTableCell align="center">
-                <FormattedMessage id="action" defaultMessage="Action" />
-              </StyledTableCell>
+              {!isBeyazit && (
+                <StyledTableCell align="center">
+                  <FormattedMessage id="action" defaultMessage="Action" />
+                </StyledTableCell>
+              )}
             </TableRow>
           </TableHead>
 
@@ -393,34 +396,38 @@ export default function CustomizedTables() {
                         </StyledTableCell>
                       ) : null}
 
-                      <StyledTableCell
-                        align="center"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                          onClick={(e) => handleConfirmModal(e, row.id, "undo")}
+                      {!isBeyazit && (
+                        <StyledTableCell
+                          align="center"
+                          onClick={(e) => e.stopPropagation()}
                         >
-                          <FormattedMessage id="undo" defaultMessage="Undo" />
-                        </Button>
-                        <br />
-                        <br />
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          size="small"
-                          onClick={(e) =>
-                            handleConfirmModal(e, row.id, "delete")
-                          }
-                        >
-                          <FormattedMessage
-                            id="delete"
-                            defaultMessage="Delete"
-                          />
-                        </Button>
-                      </StyledTableCell>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            onClick={(e) =>
+                              handleConfirmModal(e, row.id, "undo")
+                            }
+                          >
+                            <FormattedMessage id="undo" defaultMessage="Undo" />
+                          </Button>
+                          <br />
+                          <br />
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            size="small"
+                            onClick={(e) =>
+                              handleConfirmModal(e, row.id, "delete")
+                            }
+                          >
+                            <FormattedMessage
+                              id="delete"
+                              defaultMessage="Delete"
+                            />
+                          </Button>
+                        </StyledTableCell>
+                      )}
                     </StyledTableRow>
                   );
                 })
