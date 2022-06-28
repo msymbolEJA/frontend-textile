@@ -153,8 +153,7 @@ function AllOrdersTable() {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
         const l = localStorage.getItem(
-          `${localStoragePrefix}-in_progress-${
-            PAGE_ROW_NUMBER || 2500
+          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 2500
           }-0-last_updated`
         );
         if (response.data.last_updated !== l || bypass) {
@@ -186,7 +185,7 @@ function AllOrdersTable() {
       .catch((error) => {
         console.log("error", error);
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
   const getLastUpdateDate = () => {
@@ -206,7 +205,7 @@ function AllOrdersTable() {
       .catch((error) => {
         console.log("error", error);
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
   const getListFunc = () => {
@@ -215,13 +214,10 @@ function AllOrdersTable() {
       if (filters?.status === "shipped" || filters?.status === "ready") {
         filters.ordering = "-last_updated";
       } else filters.ordering = "-id";
-      const url = `${BASE_URL}etsy/orders/?${`status=${
-        filters?.status || "awaiting"
-      }`}&is_repeat=${filters?.is_repeat}&is_followup=${
-        filters?.is_followup
-      }&ordering=${filters?.ordering}&limit=${filters?.limit || 0}&offset=${
-        filters?.offset
-      }`;
+      const url = `${BASE_URL}etsy/orders/?${`status=${filters?.status || "awaiting"
+        }`}&is_repeat=${filters?.is_repeat}&is_followup=${filters?.is_followup
+        }&ordering=${filters?.ordering}&limit=${filters?.limit || 0}&offset=${filters?.offset
+        }`;
 
       getData(url)
         .then((response) => {
@@ -288,16 +284,16 @@ function AllOrdersTable() {
         countryFilter === "all"
           ? tmp
           : tmp.filter((item) =>
-              countryFilter === "usa"
-                ? item.country_id === "209"
-                : item.country_id !== "209"
-            );
+            countryFilter === "usa"
+              ? item.country_id === "209"
+              : item.country_id !== "209"
+          );
 
       const ft =
         filters?.status === "in_progress"
           ? resultFilteredByCountry.filter(
-              (item) => !currentBarcodeList.includes(item.id.toString())
-            )
+            (item) => !currentBarcodeList.includes(item.id.toString())
+          )
           : resultFilteredByCountry;
       setRows(ft);
     }
@@ -599,7 +595,7 @@ function AllOrdersTable() {
     )
       return;
     putData(`${BASE_URL}etsy/mapping/${id}/`, data)
-      .then((response) => {})
+      .then((response) => { })
       .catch((error) => {
         console.log(error);
       })
@@ -628,8 +624,7 @@ function AllOrdersTable() {
     if (filters?.search) {
       globalSearch(
         // `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
-        `${BASE_URL}etsy/mapping/?search=${
-          filters?.search
+        `${BASE_URL}etsy/mapping/?search=${filters?.search
         }&limit=${25}&offset=${page * 25}`
       )
         .then((response) => {
@@ -760,8 +755,8 @@ function AllOrdersTable() {
               </StyledTableCell>
 
               {userRole === "admin" ||
-              userRole === "shop_manager" ||
-              userRole === "shop_packer" ? (
+                userRole === "shop_manager" ||
+                userRole === "shop_packer" ? (
                 <>
                   <StyledTableCell align="center">
                     <FormattedMessage id="buyer" defaultMessage="Buyer" />
@@ -827,7 +822,7 @@ function AllOrdersTable() {
                   defaultMessage="Explanation"
                 />
               </StyledTableCell>
-              <StyledTableCell
+              {!isBeyazit && <StyledTableCell
                 align="center"
                 onClick={() => sortByGiftMessages()}
                 style={{ cursor: "pointer" }}
@@ -836,7 +831,7 @@ function AllOrdersTable() {
                   id="giftMessage"
                   defaultMessage="Gift Message"
                 />
-              </StyledTableCell>
+              </StyledTableCell>}
               <StyledTableCell align="center">
                 <FormattedMessage id="image" defaultMessage="Image" />
               </StyledTableCell>
@@ -858,7 +853,7 @@ function AllOrdersTable() {
                   style={{
                     backgroundColor:
                       row["type"]?.includes("14K") ||
-                      row["explanation"]?.includes("14K")
+                        row["explanation"]?.includes("14K")
                         ? "#ffef8a"
                         : null,
                   }}
@@ -894,8 +889,8 @@ function AllOrdersTable() {
                   />
                   {/*   <CustomTableCell {...{ row, name: "ready_date" }} /> */}
                   {userRole === "admin" ||
-                  userRole === "shop_manager" ||
-                  userRole === "shop_packer" ? (
+                    userRole === "shop_manager" ||
+                    userRole === "shop_packer" ? (
                     <>
                       <CustomTableCell {...{ row, name: "buyer" }} />
                       {/*   <CustomTableCell {...{ row, name: "supplier" }} /> */}
@@ -947,7 +942,7 @@ function AllOrdersTable() {
                       from: "all-orders",
                     }}
                   />
-                  <CustomTableCell
+                  {!isBeyazit && <CustomTableCell
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
@@ -958,7 +953,7 @@ function AllOrdersTable() {
                       e.stopPropagation();
                     }}
                     {...{ row, name: "gift_message" }}
-                  />
+                  />}
                   <td
                     style={{ padding: 10, borderBottom: "1px solid #e0e0e0" }}
                   >
@@ -1097,38 +1092,38 @@ function AllOrdersTable() {
             <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
               {currentBarcodeList?.length
                 ? currentBarcodeList?.map((item) => (
-                    <p
-                      key={item}
-                      style={{
-                        border: "1px blue solid",
-                        borderRadius: 4,
-                        color: "blue",
-                        margin: "0 5px",
-                        padding: "0 5px",
-                        fontWeight: "bold",
-                        height: "23px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => removeItemfromBarcodeList(item)}
-                    >
-                      {item}
-                      {currentSiblingList
-                        .filter((cs) => cs?.id?.toString() === item?.toString())
-                        .map((s) =>
-                          s.siblings.map((m, index) => (
-                            <span
-                              style={{
-                                color: "black",
-                                fontStyle: "italic",
-                                fontSize: "0.8rem",
-                              }}
-                            >
-                              {`-${m}`}
-                            </span>
-                          ))
-                        )}
-                    </p>
-                  ))
+                  <p
+                    key={item}
+                    style={{
+                      border: "1px blue solid",
+                      borderRadius: 4,
+                      color: "blue",
+                      margin: "0 5px",
+                      padding: "0 5px",
+                      fontWeight: "bold",
+                      height: "23px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => removeItemfromBarcodeList(item)}
+                  >
+                    {item}
+                    {currentSiblingList
+                      .filter((cs) => cs?.id?.toString() === item?.toString())
+                      .map((s) =>
+                        s.siblings.map((m, index) => (
+                          <span
+                            style={{
+                              color: "black",
+                              fontStyle: "italic",
+                              fontSize: "0.8rem",
+                            }}
+                          >
+                            {`-${m}`}
+                          </span>
+                        ))
+                      )}
+                  </p>
+                ))
                 : null}
             </div>
           </div>
@@ -1148,7 +1143,7 @@ function AllOrdersTable() {
           style={{
             display:
               process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
-              process.env.REACT_APP_STORE_NAME === "Linen Serisi"
+                process.env.REACT_APP_STORE_NAME === "Linen Serisi"
                 ? "flex"
                 : "none",
             color: "#001A33",
@@ -1230,24 +1225,22 @@ function AllOrdersTable() {
                 />{" "}
                 :{" "}
                 {rows?.length ===
-                Number(
-                  localStorage.getItem(
-                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  Number(
+                    localStorage.getItem(
+                      `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                    )
                   )
-                )
                   ? localStorage.getItem(
+                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  ) ?? 0
+                  : `${rows.length} 
+                    ${selectedTag
+                    ? `/${localStorage.getItem(
                       `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
                     ) ?? 0
-                  : `${rows.length} 
-                    ${
-                      selectedTag
-                        ? `/${
-                            localStorage.getItem(
-                              `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
-                            ) ?? 0
-                          }`
-                        : ""
-                    }
+                    }`
+                    : ""
+                  }
                       `}
                 {selectedTag === "in_progress" && (
                   <>
