@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
-const isBeyazit = localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
+
 function AllOrdersTable() {
   const [rows, setRows] = useState([]);
   const [sortedRows, setSortedRows] = useState([]);
@@ -121,6 +121,8 @@ function AllOrdersTable() {
       localStorage.getItem(`${localStoragePrefix}-sibling_list`) || "[]"
     )
   );
+  const isBeyazit = localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
+  console.log("🚀 ~ file: AllOrdersTable.js ~ line 111 ~ isBeyazit", isBeyazit)
   const [selected, setSelected] = useState([]);
   const [countryFilter, setCountryFilter] = useState("all");
   const { user } = useContext(AppContext);
