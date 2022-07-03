@@ -72,8 +72,13 @@ const useStyles = makeStyles({
     flexWrap: "wrap",
   },
 });
-const isBeyazit = localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
+
 export default function CustomizedTables() {
+  const isBeyazit =
+    (localStorage.getItem("localRole") === "workshop_manager" ||
+      !localStorage.getItem("localRole") ||
+      localStorage.getItem("localRole") === "null") &&
+    localStorage.getItem("workshop")?.toLowerCase() !== "asya";
   const classes = useStyles();
   const [cargoList, setCargoList] = useState();
   const history = useHistory();

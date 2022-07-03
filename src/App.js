@@ -42,8 +42,13 @@ function App() {
       userRole === "shop_packer"
         ? "pending"
         : "awaiting";
+
     const isBeyazit =
-      localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
+      (localStorage.getItem("localRole") === "workshop_manager" ||
+        !localStorage.getItem("localRole") ||
+        localStorage.getItem("localRole") === "null") &&
+      localStorage.getItem("workshop")?.toLowerCase() !== "asya";
+
     if (isBeyazit) return;
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
       const obj = response?.data?.[0].find((item) => item.status === stat);

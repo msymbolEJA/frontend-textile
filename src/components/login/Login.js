@@ -117,7 +117,7 @@ export default function Login() {
       setLinProgress(true);
       postAuthData(`${BASE_URL}account/login/`, values)
         .then((response) => {
-          console.log({ response });
+          // console.log({ response });
           setUser(response?.data);
           const token = response?.data?.access;
           if (token) {

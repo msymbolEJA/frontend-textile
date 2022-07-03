@@ -34,8 +34,14 @@ import Favourites from "../components/favourites/Favourites";
 import Favourite from "../components/favourites/Favourite";
 
 const history = require("history").createBrowserHistory();
-const isBeyazit = localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
+
 const AppRouter = () => {
+  const isBeyazit =
+    (localStorage.getItem("localRole") === "workshop_manager" ||
+      !localStorage.getItem("localRole") ||
+      localStorage.getItem("localRole") === "null") &&
+    localStorage.getItem("workshop")?.toLowerCase() !== "asya";
+
   return (
     <Router history={history}>
       <Switch>
@@ -47,12 +53,12 @@ const AppRouter = () => {
           <>
             <PrivateRouter component={Navbar} />
             <PrivateRouter exact path="/cargo-list" component={CargoList} />
-            <PrivateRouter exact path="/" component={AllOrdersTable} />
             <PrivateRouter
               exact
               path="/all-orders"
               component={AllOrdersTable}
             />
+            <PrivateRouter exact path="/" component={AllOrdersTable} />
           </>
         ) : (
           <Route component={DefaultContainer} />

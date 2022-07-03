@@ -13,7 +13,6 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { beyazitTagsData } from "../../../helper/Constants";
 
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
-const isBeyazit = localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -56,7 +55,11 @@ const CustomButtonGroup = ({
   const mobileView = useMediaQuery("(max-width:1024px)");
 
   const { isAdmin } = useContext(AppContext);
-
+  const isBeyazit =
+    (localStorage.getItem("localRole") === "workshop_manager" ||
+      !localStorage.getItem("localRole") ||
+      localStorage.getItem("localRole") === "null") &&
+    localStorage.getItem("workshop")?.toLowerCase() !== "asya";
   let statusTags = isBeyazit
     ? beyazitTagsData
     : isAdmin

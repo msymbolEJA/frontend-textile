@@ -4,7 +4,6 @@ export const AppContext = createContext();
 
 export const ContextProvider = (props) => {
   const [user, setUser] = useState(localStorage.getItem("localUser"));
-  console.log("🚀 ~ file: Context.js ~ line 7 ~ ContextProvider ~ user", user);
   const [auth, setAuth] = useState(false);
   const [lang, setLang] = useState(navigator.language.split(/[-_]/)[0]);
 

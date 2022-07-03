@@ -224,7 +224,10 @@ export default function MenuAppBar() {
 
   const localUser = localStorage.getItem("localUser");
   const isBeyazit =
-    localStorage.getItem("workshop")?.toLowerCase() === "beyazit";
+    (localStorage.getItem("localRole") === "workshop_manager" ||
+      !localStorage.getItem("localRole") ||
+      localStorage.getItem("localRole") === "null") &&
+    localStorage.getItem("workshop")?.toLowerCase() !== "asya";
 
   const userRole = user?.role || localRole;
 
@@ -467,7 +470,49 @@ export default function MenuAppBar() {
               </FormControl>
             </div>
           )}
-
+          {isBeyazit && auth ? (
+            <div className={classes.rightTop}>
+              {mobileView ? null : (
+                <div className={classes.userInfo}>
+                  <div className={classes.userRole}>
+                    {user?.role?.toUpperCase() || localRole?.toUpperCase()}
+                  </div>
+                  <div className={classes.userName}>
+                    {localUser || user?.user || user?.username}
+                  </div>
+                </div>
+              )}
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                style={{ marginTop: "3.2rem" }}
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleLogout}>
+                  <FormattedMessage id="logout" defaultMessage="Logout" />
+                </MenuItem>
+              </Menu>
+            </div>
+          ) : null}
           {!isBeyazit && auth && (
             <div className={classes.rightTop}>
               {mobileView ? null : (
