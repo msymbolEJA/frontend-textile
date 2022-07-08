@@ -182,6 +182,32 @@ const OrderDetails = ({ match }) => {
     }
   };
 
+  const handleValidateAddress = () => {
+    getData(`${BASE_URL}dhl/validate_address/${match.params.id}/`)
+      .then((response) => {
+        if (!response?.data || response.data.includes("Not Found")) {
+          alert("Address not found");
+        } else alert("Address is valid");
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setRefresh(!refresh));
+  };
+
+  const createCargoLabel = () => {
+    getData(`${BASE_URL}dhl/createdhlOneLabel_cargo/${match.params.id}/`)
+      .then((response) => {
+        if (!response?.data || response.data.includes("Not Found")) {
+          alert("Address not found");
+        } else alert("Address is valid");
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => setRefresh(!refresh));
+  };
+
   return (
     <div>
       <Paper className={classes.root}>
@@ -450,6 +476,39 @@ const OrderDetails = ({ match }) => {
         <p>
           <FormattedMessage id="noPdfFiles" />
         </p>
+      )}
+      {(userRole === "admin" || userRole === "shop_manager") && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "1rem",
+            margin: "2rem",
+          }}
+        >
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleValidateAddress}
+          >
+            Validate address
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={createCargoLabel}
+          >
+            Print DHL LABEL
+          </Button>
+          <a
+            href={`${BASE_URL}media/dhl/shipments/${rows?.[0]?.receipt_id}/${match.params.id}.pdf`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Label
+          </a>
+        </div>
       )}
 
       <TableContainer component={Paper}>

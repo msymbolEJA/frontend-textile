@@ -10,7 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { getData } from "../../helper/PostData";
 import Typography from "@material-ui/core/Typography";
-
+import ContactMailIcon from "@material-ui/icons/ContactMail";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const StyledTableCell = withStyles((theme) => ({
@@ -108,6 +108,8 @@ export default function CustomizedTables({ match }) {
                       >
                         View
                       </a>
+                    ) : !row?.is_address_valid ? (
+                      <ContactMailIcon style={{ color: "red" }} />
                     ) : (
                       "-"
                     )}
