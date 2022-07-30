@@ -191,12 +191,7 @@ export default function MenuAppBar() {
   const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ + "-";
   const searchHandler = (value, keyCode) => {
     if (keyCode === 13 && value) {
-      history.push({
-        pathname: "/search",
-        state: {
-          global: value,
-        },
-      });
+      history.push(`/search?key=${value}`);
     }
   };
 
@@ -336,7 +331,14 @@ export default function MenuAppBar() {
             </>
           )}
           <div className={classes.title}>
-            <div style={{ flexDirection: "row" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <Button
                 color="primary"
                 variant="outlined"
