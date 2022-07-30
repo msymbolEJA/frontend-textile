@@ -10,6 +10,10 @@ body {
   text-align: center;
 }
 
+.MuiTableCell-body {
+  color: #000! important;
+}
+
 .cp {
   cursor: pointer;
 }
