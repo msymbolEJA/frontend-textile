@@ -10,6 +10,9 @@ body {
   text-align: center;
 }
 
+td {
+  border: 0.5px #E0E0E0 solid !important;
+}
 .MuiTableCell-body {
   color: #000! important;
 }

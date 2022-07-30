@@ -33,6 +33,7 @@ const SortableTableCell = ({
   orderBy,
   colName,
   setOrderBy,
+  style,
 }) => {
   let customStyle;
   if (property === "explanation") {
@@ -55,7 +56,7 @@ const SortableTableCell = ({
     <>
       <StyledTableCell
         align="center"
-        style={customStyle}
+        style={({ ...customStyle }, { ...style })}
         //sortDirection={orderBy === "id" ? order : false}
         onClick={() => setOrderBy(property)}
       >

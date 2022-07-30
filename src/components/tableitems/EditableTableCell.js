@@ -51,21 +51,28 @@ const useStyles = makeStyles(() => ({
   allOrdersTableCell: {},
 }));
 
-const EditableTableCell = ({ row, name, onChange, from, minWidth = 40 }) => {
+const EditableTableCell = ({
+  row,
+  name,
+  onChange,
+  from,
+  minWidth = 40,
+  style,
+}) => {
   useEffect(() => {
     setContent(
       name === "explanation"
         ? repeatReplacerWithTR(row[name])
         : name === "variation_1_value"
         ? row[name]
-            ?.replace(" US women&#039;s letter", "")
-            ?.replace(" US women's letter", "") === "2X"
+            ?.replaceAll(" US women&#039;s letter", "")
+            ?.replaceAll(" US women's letter", "") === "2X"
           ? "2XL"
           : row[name]
-              ?.replace(" US women&#039;s letter", "")
-              ?.replace(" US women's letter", "")
+              ?.replaceAll(" US women&#039;s letter", "")
+              ?.replaceAll(" US women's letter", "")
         : row[name]
-        ? row[name]?.replace("Linen_Dress_", "")
+        ? row[name]?.replaceAll("Linen_Dress_", "")?.replaceAll("Linen_", "")
         : ""
     );
   }, [row, name]);
@@ -78,14 +85,14 @@ const EditableTableCell = ({ row, name, onChange, from, minWidth = 40 }) => {
       ? row[name]?.replaceAll(",", ", ")
       : name === "variation_1_value"
       ? row[name]
-          ?.replace(" US women&#039;s letter", "")
-          ?.replace(" US women's letter", "") === "2X"
+          ?.replaceAll(" US women&#039;s letter", "")
+          ?.replaceAll(" US women's letter", "") === "2X"
         ? "2XL"
         : row[name]
-            ?.replace(" US women&#039;s letter", "")
-            ?.replace(" US women's letter", "")
+            ?.replaceAll(" US women&#039;s letter", "")
+            ?.replaceAll(" US women's letter", "")
       : row[name]
-      ? row[name]?.replaceAll("Linen_Dress_", "")
+      ? row[name]?.replaceAll("Linen_Dress_", "")?.replaceAll("Linen_", "")
       : ""
   );
 
@@ -126,6 +133,7 @@ const EditableTableCell = ({ row, name, onChange, from, minWidth = 40 }) => {
           (row[name] === " " || row[name] === "" || row[name] === null)
             ? "#FF9494"
             : null,
+        ...style,
       }}
     >
       {name === "qty" && content.includes("FONT") ? (

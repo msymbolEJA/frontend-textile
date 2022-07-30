@@ -52,11 +52,7 @@ const NON_SKU = process.env.REACT_APP_NON_SKU === "true" || false;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 const STORE_ORJ = process.env.REACT_APP_STORE_NAME_ORJ;
 
-const StyledMenu = withStyles({
-  paper: {
-    border: "1px solid #d3d4d5",
-  },
-})((props) => (
+const StyledMenu = withStyles({})((props) => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
@@ -979,7 +975,6 @@ function App({ history }) {
                 style={{
                   padding: 10,
                   pointerEvents: selectedTag === "pending" ? "auto" : "none",
-                  borderRight: "0.5px solid #E0E0E0",
                 }}
               >
                 <Button
@@ -1100,8 +1095,6 @@ function App({ history }) {
                       }}
                       style={{
                         padding: 5,
-                        borderBottom: "1px solid #e0e0e0",
-                        borderRight: "0.5px solid #E0E0E0",
                       }}
                     >
                       {row?.shop === "Shopify" ? (
@@ -1159,6 +1152,7 @@ function App({ history }) {
                     ) : null}
                     {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
                       <EditableTableCell
+                        style={{ fontWeight: "bold" }}
                         {...{
                           row,
                           name: "sku",
@@ -1169,6 +1163,7 @@ function App({ history }) {
                     {NON_SKU ? (
                       <>
                         <EditableTableCell
+                          style={{ fontWeight: "bold" }}
                           {...{
                             row,
                             name: "variation_1_value",
@@ -1176,6 +1171,7 @@ function App({ history }) {
                           }}
                         />
                         <EditableTableCell
+                          style={{ fontWeight: "bold" }}
                           {...{
                             row,
                             name: "variation_2_value",
@@ -1253,11 +1249,8 @@ function App({ history }) {
                     <td
                       style={{
                         padding: 10,
-                        borderBottom: "1px solid #e0e0e0",
                         pointerEvents:
                           row.status === "pending" ? "auto" : "none",
-                        borderLeft: "0.5px solid #E0E0E0",
-                        borderRight: "0.5px solid #E0E0E0",
                         minWidth: 90,
                       }}
                       onClick={(e) => {
@@ -1323,7 +1316,7 @@ function App({ history }) {
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
-                      style={{ padding: 10, borderBottom: "1px solid #e0e0e0" }}
+                      style={{ padding: 10 }}
                     >
                       <UploadFile
                         {...{
