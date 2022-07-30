@@ -21,13 +21,19 @@ const CustomTableCell = ({
   name3,
   name4,
   name5,
+  style,
   ...rest
 }) => {
   const classes = useStyles();
   const { formatMessage } = useIntl();
 
   return (
-    <TableCell align="center" className={classes.tableCell} {...rest}>
+    <TableCell
+      align="center"
+      style={style}
+      className={classes.tableCell}
+      {...rest}
+    >
       {name2 ? (
         <>
           {row[name2]}
@@ -75,7 +81,7 @@ const CustomTableCell = ({
                 : row[name].replace("_", " "),
           })
         ) : name === "sku" ? (
-          row[name] && row[name].substring("Linen_Dress_".length)
+          row[name]?.replaceAll("Linen_Dress_", "")?.replaceAll("Linen_", "")
         ) : row[name] ? (
           row[name]
             .replace("_", " ")

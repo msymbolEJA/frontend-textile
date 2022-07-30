@@ -911,12 +911,29 @@ function AllOrdersTable() {
                   {/*    <CustomTableCell {...{ row, name: "status" }} /> */}
                   {NON_SKU ? (
                     <>
-                      <CustomTableCell {...{ row, name: "sku" }} />
                       <CustomTableCell
-                        {...{ row, name: "variation_1_value" }}
+                        style={{ fontWeight: "bold" }}
+                        {...{ row, name: "sku" }}
                       />
                       <CustomTableCell
-                        {...{ row, name: "variation_2_value" }}
+                        style={{ fontWeight: "bold" }}
+                        {...{
+                          row,
+                          name:
+                            row["sku"] === "Linen_Pillow"
+                              ? "variation_2_value"
+                              : "variation_1_value",
+                        }}
+                      />
+                      <CustomTableCell
+                        style={{ fontWeight: "bold" }}
+                        {...{
+                          row,
+                          name:
+                            row["sku"] === "Linen_Pillow"
+                              ? "variation_1_value"
+                              : "variation_2_value",
+                        }}
                       />
                       <EditableTableCell
                         onClick={(e) => e.stopPropagation()}

@@ -1166,7 +1166,10 @@ function App({ history }) {
                           style={{ fontWeight: "bold" }}
                           {...{
                             row,
-                            name: "variation_1_value",
+                            name:
+                              row["sku"] === "Linen_Pillow"
+                                ? "variation_2_value"
+                                : "variation_1_value",
                             onChange,
                           }}
                         />
@@ -1174,7 +1177,10 @@ function App({ history }) {
                           style={{ fontWeight: "bold" }}
                           {...{
                             row,
-                            name: "variation_2_value",
+                            name:
+                              row["sku"] === "Linen_Pillow"
+                                ? "variation_1_value"
+                                : "variation_2_value",
                             onChange,
                           }}
                         />
