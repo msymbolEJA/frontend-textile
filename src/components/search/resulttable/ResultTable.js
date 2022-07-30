@@ -663,6 +663,7 @@ function ResultTable({ list, history, refreshSearch }) {
                   style={{
                     padding: 10,
                     borderRight: "0.5px solid #E0E0E0",
+                    background: "rgb(100, 149, 237)"
                   }}
                 >
                   <Button

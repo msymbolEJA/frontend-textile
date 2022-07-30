@@ -130,7 +130,7 @@ const Search = ({ location, history }) => {
           </div>
         </div>
       ) : null}
-      {list?.length ? <ResultTable list={list} /> : null}
+      {list?.length ? <ResultTable list={list} refreshSearch={handleSubmit}/> : null}
     </div>
   );
 };

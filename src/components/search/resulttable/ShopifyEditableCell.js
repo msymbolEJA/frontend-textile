@@ -21,21 +21,6 @@ const useStyles = makeStyles(() => ({
     border: "none",
     wordWrap: "break-word",
   },
-  explanationTableCell: {
-    padding: 10,
-    width: "100px",
-    // minHeight: "100px",
-    borderRight: "0.5px solid #E0E0E0",
-    maxWidth: "300px",
-  },
-  explanationInput: {
-    fontSize: "1rem",
-    maxHeight: "100%",
-    width: "100%",
-    minWidth: "190px",
-    maxWidth: "190px",
-    //wordWrap: "break-word"
-  },
   editable: {
     minHeight: "109px",
     display: "flex",

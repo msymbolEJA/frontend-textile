@@ -158,9 +158,9 @@ function App({ history }) {
     getData(
       `${BASE_URL}etsy/mapping/?${
         filters?.status ? `status=${filters?.status}` : ""
-      }&is_repeat=${filters?.is_repeat}&ordering=${filters?.ordering || "-id"}&limit=${
-        filters?.limit || 0
-      }&offset=${filters?.offset}`
+      }&is_repeat=${filters?.is_repeat}&ordering=${
+        filters?.ordering || "-id"
+      }&limit=${filters?.limit || 0}&offset=${filters?.offset}`
     )
       .then((response) => {
         const t = response?.data?.results?.length
@@ -867,14 +867,16 @@ function App({ history }) {
                 colName="createdDate"
                 setOrderBy={setOrderBy}
               />
-              <SortableTableCell
-                property="supplier"
-                handleRequestSort={handleRequestSort}
-                order={order}
-                orderBy={orderBy}
-                colName="supplier"
-                setOrderBy={setOrderBy}
-              />
+              {process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic" ? (
+                <SortableTableCell
+                  property="supplier"
+                  handleRequestSort={handleRequestSort}
+                  order={order}
+                  orderBy={orderBy}
+                  colName="supplier"
+                  setOrderBy={setOrderBy}
+                />
+              ) : null}
               {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
                 <SortableTableCell
                   property="sku"
@@ -1145,13 +1147,15 @@ function App({ history }) {
                     <ConstantTableCell
                       {...{ row, name: "created_date", name3: "buyer" }}
                     />
-                    <EditableTableCell
-                      {...{
-                        row,
-                        name: "supplier",
-                        onChange,
-                      }}
-                    />
+                    {process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic" ? (
+                      <EditableTableCell
+                        {...{
+                          row,
+                          name: "supplier",
+                          onChange,
+                        }}
+                      />
+                    ) : null}
                     {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
                       <EditableTableCell
                         {...{

@@ -25,13 +25,7 @@ const useStyles = makeStyles(() => ({
     padding: 10,
     width: "100px",
     maxWidth: "200px",
-  },
-  explanationInput: {
-    fontSize: "1rem",
-    maxHeight: "100%",
-    width: "100%",
-    minWidth: "190px",
-    maxWidth: "190px",
+    whiteSpace: "pre-wrap",
   },
   editable: {
     minHeight: "109px",

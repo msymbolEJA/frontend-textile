@@ -16,20 +16,6 @@ const useStyles = makeStyles(() => ({
     border: "none",
     wordWrap: "break-word",
   },
-  explanationTableCell: {
-    padding: 10,
-    width: "100px",
-    // minHeight: "100px",
-    maxWidth: "300px",
-  },
-  explanationInput: {
-    fontSize: "1rem",
-    maxHeight: "100%",
-    width: "100%",
-    minWidth: "190px",
-    maxWidth: "190px",
-    //wordWrap: "break-word"
-  },
   editable: {
     minHeight: "50px",
     minWidth: "100px",
