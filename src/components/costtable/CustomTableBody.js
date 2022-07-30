@@ -31,6 +31,8 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     cursor: "pointer",
+    whiteSpace: "pre-wrap",
+
   },
 });
 

@@ -40,6 +40,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     flexDirection: "column",
     //wordBreak: "break-all",
+    whiteSpace: "pre-wrap",
     minWidth: "200px",
   },
   editableMod: {
@@ -49,6 +50,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     flexDirection: "column",
     //wordBreak: "break-all",
+    whiteSpace: "pre-wrap",
     minWidth: "auto",
   },
   allOrdersTableCell: {},
@@ -88,7 +90,7 @@ const EditableTableCell = ({ row, name, onChange, from, minWidth = 40 }) => {
             ?.replace(" US women&#039;s letter", "")
             ?.replace(" US women's letter", "")
       : row[name]
-      ? row[name]?.replace("Linen_Dress_", "")
+      ? row[name]?.replaceAll("Linen_Dress_", "")
       : ""
   );
 

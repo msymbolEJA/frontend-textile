@@ -37,6 +37,8 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
+    whiteSpace: "pre-wrap",
+
   },
 }));
 

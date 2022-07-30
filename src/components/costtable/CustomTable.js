@@ -34,6 +34,8 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    whiteSpace: "pre-wrap",
+
   },
   container: {
     minHeight: "150px",
