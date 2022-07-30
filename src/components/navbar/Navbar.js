@@ -39,7 +39,7 @@ const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: 50,
+    marginTop: 80,
   },
   menuButton: {
     marginRight: theme.spacing(0),

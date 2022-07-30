@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     flexDirection: "column",
     whiteSpace: "pre-wrap",
-
+    wordBreak: "break-word",
   },
   allOrdersTableCell: {},
 }));

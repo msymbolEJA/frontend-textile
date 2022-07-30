@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     cursor: "pointer",
     whiteSpace: "pre-wrap",
-
+    wordBreak: "break-word",
   },
 });
 

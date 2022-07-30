@@ -1067,6 +1067,7 @@ function App({ history }) {
                     //onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                     style={{
                       pointerEvents:
+                        loading ||
                         row["status"] === "in_progress" ||
                         row["status"] === "ready"
                           ? "none"

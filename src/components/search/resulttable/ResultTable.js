@@ -118,7 +118,6 @@ function ResultTable({ list, history, refreshSearch }) {
   const [order, setOrder] = useState("asc");
   const [selectedRowId, setSelectedRowId] = useState();
   const [selected, setSelected] = useState([]);
-  const filters = {};
   const [repeatAnchorEl, setRepeatAnchorEl] = useState();
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
   const [loading, setLoading] = useState(false);
@@ -519,7 +518,7 @@ function ResultTable({ list, history, refreshSearch }) {
             {rows.length})
           </Typography>
           <Table
-            className={classes.table}
+            className={loading ? classes.disabled : classes.table}
             stickyHeader
             aria-label="sticky table"
             size="small"
@@ -663,7 +662,7 @@ function ResultTable({ list, history, refreshSearch }) {
                   style={{
                     padding: 10,
                     borderRight: "0.5px solid #E0E0E0",
-                    background: "rgb(100, 149, 237)"
+                    background: "rgb(100, 149, 237)",
                   }}
                 >
                   <Button
@@ -725,11 +724,7 @@ function ResultTable({ list, history, refreshSearch }) {
               </TableRow>
             </TableHead>
 
-            <TableBody
-              style={{
-                pointerEvents: loading ? "none" : "auto",
-              }}
-            >
+            <TableBody>
               {rows &&
                 rows?.length &&
                 rows?.map((row, index) => {
@@ -743,9 +738,10 @@ function ResultTable({ list, history, refreshSearch }) {
                       //onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                       style={{
                         pointerEvents:
-                          localRole !== "workshop_manager" &&
-                          (row["status"] === "in_progress" ||
-                            row["status"] === "ready")
+                          loading ||
+                          (localRole !== "workshop_manager" &&
+                            (row["status"] === "in_progress" ||
+                              row["status"] === "ready"))
                             ? "none"
                             : "auto",
                         backgroundColor:

@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     whiteSpace: "pre-wrap",
-
+    wordBreak: "break-word",
   },
   container: {
     minHeight: "150px",
