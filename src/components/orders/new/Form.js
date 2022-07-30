@@ -141,129 +141,185 @@ export default function InputForm({
                 </Select>
               )}
             </FormControl>
-            <FormControl
-              variant="outlined"
-              margin="dense"
-              fullWidth
-              className={classes.formControl}
-            >
-              <InputLabel id="demo-simple-select-outlined-label">
-                {formatMessage({
-                  id: "type",
-                  defaultMessage: "Type",
-                })}
-              </InputLabel>
-              <Select
-                onChange={handleChange}
-                required
-                fullWidth
-                name="type"
-                label="Type"
-                value={info.type}
-              >
-                {typeOptions?.map((item) => (
-                  <MenuItem key={item.desc} value={item.desc}>
-                    {item.desc}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <TextField
-              variant="outlined"
-              margin="dense"
-              required
-              fullWidth
-              name="length"
-              label={formatMessage({
-                id: "length",
-                defaultMessage: "Length",
-              })}
-              type="text"
-              id="length"
-              autoComplete="length"
-              onChange={handleChange}
-              value={info.length}
-            />
-            <TextField
-              variant="outlined"
-              margin="dense"
-              required
-              fullWidth
-              name="color"
-              label={formatMessage({
-                id: "color",
-                defaultMessage: "Color",
-              })}
-              type="text"
-              id="color"
-              autoComplete="color"
-              onChange={handleChange}
-              value={info.color}
-            />
-            <TextField
-              variant="outlined"
-              margin="dense"
-              required
-              fullWidth
-              name="qty"
-              label={formatMessage({
-                id: "quantity",
-                defaultMessage: "Quantity",
-              })}
-              type="text"
-              id="qty"
-              autoComplete="qty"
-              onChange={handleChange}
-              value={info.qty}
-            />
-            <TextField
-              variant="outlined"
-              margin="dense"
-              required
-              fullWidth
-              name="size"
-              label={formatMessage({
-                id: "size",
-                defaultMessage: "Size",
-              })}
-              type="text"
-              id="size"
-              autoComplete="size"
-              onChange={handleChange}
-              value={info.size}
-            />
-            <TextField
-              variant="outlined"
-              margin="dense"
-              required
-              fullWidth
-              name="start"
-              label={formatMessage({
-                id: "start",
-                defaultMessage: "Start",
-              })}
-              type="text"
-              id="start"
-              autoComplete="start"
-              onChange={handleChange}
-              value={info.start}
-            />
-            <TextField
-              variant="outlined"
-              margin="dense"
-              required
-              fullWidth
-              name="space"
-              label={formatMessage({
-                id: "space",
-                defaultMessage: "Space",
-              })}
-              type="text"
-              id="space"
-              autoComplete="space"
-              onChange={handleChange}
-              value={info.space}
-            />
+            {STORE_NAME === "Linen Serisi" ? (
+              <>
+                <TextField
+                  variant="outlined"
+                  margin="dense"
+                  required
+                  fullWidth
+                  name="type"
+                  label={formatMessage({
+                    id: "type",
+                    defaultMessage: "Type",
+                  })}
+                  type="text"
+                  id="type"
+                  autoComplete="type"
+                  onChange={handleChange}
+                  value={info.type}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="dense"
+                  required
+                  fullWidth
+                  name="color"
+                  label={formatMessage({
+                    id: "color",
+                    defaultMessage: "Color",
+                  })}
+                  type="text"
+                  id="color"
+                  autoComplete="color"
+                  onChange={handleChange}
+                  value={info.color}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="dense"
+                  required
+                  fullWidth
+                  name="size"
+                  label={formatMessage({
+                    id: "size",
+                    defaultMessage: "Size",
+                  })}
+                  type="text"
+                  id="size"
+                  autoComplete="size"
+                  onChange={handleChange}
+                  value={info.size}
+                />
+              </>
+            ) : (
+              <>
+                <FormControl
+                  variant="outlined"
+                  margin="dense"
+                  fullWidth
+                  className={classes.formControl}
+                >
+                  <InputLabel id="demo-simple-select-outlined-label">
+                    {formatMessage({
+                      id: "type",
+                      defaultMessage: "Type",
+                    })}
+                  </InputLabel>
+                  <Select
+                    onChange={handleChange}
+                    required
+                    fullWidth
+                    name="type"
+                    label="Type"
+                    value={info.type}
+                  >
+                    {typeOptions?.map((item) => (
+                      <MenuItem key={item.desc} value={item.desc}>
+                        {item.desc}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <TextField
+                  variant="outlined"
+                  margin="dense"
+                  required
+                  fullWidth
+                  name="length"
+                  label={formatMessage({
+                    id: "length",
+                    defaultMessage: "Length",
+                  })}
+                  type="text"
+                  id="length"
+                  autoComplete="length"
+                  onChange={handleChange}
+                  value={info.length}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="dense"
+                  required
+                  fullWidth
+                  name="color"
+                  label={formatMessage({
+                    id: "color",
+                    defaultMessage: "Color",
+                  })}
+                  type="text"
+                  id="color"
+                  autoComplete="color"
+                  onChange={handleChange}
+                  value={info.color}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="dense"
+                  required
+                  fullWidth
+                  name="qty"
+                  label={formatMessage({
+                    id: "quantity",
+                    defaultMessage: "Quantity",
+                  })}
+                  type="text"
+                  id="qty"
+                  autoComplete="qty"
+                  onChange={handleChange}
+                  value={info.qty}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="dense"
+                  required
+                  fullWidth
+                  name="size"
+                  label={formatMessage({
+                    id: "size",
+                    defaultMessage: "Size",
+                  })}
+                  type="text"
+                  id="size"
+                  autoComplete="size"
+                  onChange={handleChange}
+                  value={info.size}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="dense"
+                  required
+                  fullWidth
+                  name="start"
+                  label={formatMessage({
+                    id: "start",
+                    defaultMessage: "Start",
+                  })}
+                  type="text"
+                  id="start"
+                  autoComplete="start"
+                  onChange={handleChange}
+                  value={info.start}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="dense"
+                  required
+                  fullWidth
+                  name="space"
+                  label={formatMessage({
+                    id: "space",
+                    defaultMessage: "Space",
+                  })}
+                  type="text"
+                  id="space"
+                  autoComplete="space"
+                  onChange={handleChange}
+                  value={info.space}
+                />
+              </>
+            )}
             <TextField
               variant="outlined"
               margin="dense"
