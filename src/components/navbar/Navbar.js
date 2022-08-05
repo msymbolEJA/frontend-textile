@@ -191,7 +191,12 @@ export default function MenuAppBar() {
   const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ + "-";
   const searchHandler = (value, keyCode) => {
     if (keyCode === 13 && value) {
-      history.push(`/search?key=${value}`);
+      history.push({
+        pathname: "/search",
+        state: {
+          global: value,
+        },
+      });
     }
   };
 
