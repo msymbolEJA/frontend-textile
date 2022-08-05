@@ -4,6 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useFormik } from "formik";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,25 +45,40 @@ export default function SearchForm({
 }) {
   const classes = useStyles();
   const { formatMessage } = useIntl();
+  const formik = useFormik({
+    initialValues: {
+      id: globalSearchKey?.length < 7 ? globalSearchKey : "",
+      status: "",
+      buyer: "",
+      sku: "",
+      supplier: "",
+      explanation: "",
+      receipt: globalSearchKey?.length > 7 ? globalSearchKey : "",
+      tracking_code: "",
+    },
+    onSubmit: (values) => {
+      handleSubmit(values);
+    },
+  });
 
   return (
     <div>
       <div>
-        <form className={classes.root}>
+        <form className={classes.root} onSubmit={formik.handleSubmit}>
           <>
             <TextField
               className={classes.item}
               variant="outlined"
               margin="dense"
               name="receipt"
+              value={formik.values.receipt}
+              onChange={formik.handleChange}
               label={formatMessage({
                 id: "receiptId",
                 defaultMessage: "Receipt Id",
               })}
               type="nmuber"
               id="receipt"
-              onChange={handleChange}
-              value={info.receipt}
               autoFocus
             />
             <TextField
@@ -73,11 +89,11 @@ export default function SearchForm({
                 id: "id",
                 defaultMessage: "Id",
               })}
+              value={formik.values.id}
+              onChange={formik.handleChange}
               type="text"
               name="id"
               autoComplete="id"
-              onChange={handleChange}
-              value={info.id}
             />
             <TextField
               className={classes.item}
@@ -88,11 +104,11 @@ export default function SearchForm({
                 id: "status",
                 defaultMessage: "Status",
               })}
+              value={formik.values.status}
+              onChange={formik.handleChange}
               type="text"
               name="status"
               autoComplete="status"
-              onChange={handleChange}
-              value={info.status}
             />
             <TextField
               className={classes.item}
@@ -103,11 +119,11 @@ export default function SearchForm({
                 id: "buyer",
                 defaultMessage: "Buyer",
               })}
+              value={formik.values.buyer}
+              onChange={formik.handleChange}
               type="text"
               name="buyer"
               autoComplete="buyer"
-              onChange={handleChange}
-              value={info.buyer}
             />
             <TextField
               className={classes.item}
@@ -118,11 +134,11 @@ export default function SearchForm({
                 id: "sku",
                 defaultMessage: "SKU",
               })}
+              value={formik.values.sku}
+              onChange={formik.handleChange}
               type="text"
               name="sku"
               autoComplete="sku"
-              onChange={handleChange}
-              value={info.sku}
             />
             <TextField
               className={classes.item}
@@ -133,10 +149,10 @@ export default function SearchForm({
                 id: "supplier",
                 defaultMessage: "Supplier",
               })}
+              value={formik.values.supplier}
+              onChange={formik.handleChange}
               type="text"
               id="supplier"
-              onChange={handleChange}
-              value={info.supplier}
             />
             <TextField
               className={classes.item}
@@ -147,10 +163,10 @@ export default function SearchForm({
                 id: "internalNote",
                 defaultMessage: "Internal Note",
               })}
+              value={formik.values.explanation}
+              onChange={formik.handleChange}
               type="text"
               id="explanation"
-              onChange={handleChange}
-              value={info.explanation}
             />
 
             <TextField
@@ -158,14 +174,14 @@ export default function SearchForm({
               variant="outlined"
               margin="dense"
               name="tracking_code"
+              value={formik.values.tracking_code}
+              onChange={formik.handleChange}
               label={formatMessage({
                 id: "trackingCode",
                 defaultMessage: "Tracking Code",
               })}
               type="text"
               id="tracking_code"
-              onChange={handleChange}
-              value={info.tracking_code}
             />
           </>
           <Button
@@ -173,7 +189,6 @@ export default function SearchForm({
             variant="contained"
             color="primary"
             className={classes.btn}
-            onClick={(e) => handleSubmit(e)}
           >
             <FormattedMessage id="search" defaultMessage="Search" />
           </Button>
@@ -181,7 +196,7 @@ export default function SearchForm({
             variant="contained"
             color="default"
             className={classes.btn}
-            onClick={clearBtn}
+            onClick={formik.resetForm}
           >
             <FormattedMessage id="clear" defaultMessage="Clear" />
           </Button>

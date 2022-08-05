@@ -18,52 +18,42 @@ const Search = ({ location, history }) => {
   const [globalSearchKey, setGlobalSearchKey] = useState(
     location?.state?.global || ""
   );
-  const [info, setInfo] = useState({
-    id: "",
-    status: "",
-    buyer: "",
-    sku: "",
-    supplier: "",
-    explanation: "",
-    receipt: location?.state?.global || "",
-    tracking_code: "",
-  });
 
   const [fillError, setFillError] = useState();
 
   useEffect(() => {
-    handleSubmit();
+    if (setGlobalSearchKey) handleSubmit({});
   }, [globalSearchKey]);
 
-  const handleSubmit = (e) => {
-    if (e) e.preventDefault();
+  const handleSubmit = (values) => {
     if (globalSearchKey) {
       if (globalSearchKey.length > 2) {
         // globalSearch(`${BASE_URL_MAPPING}?search=${globalSearchKey}`)
         globalSearch(
-          `${BASE_URL}etsy/mapping_search/?receipt=${globalSearchKey.substring(
-            0,
-            10
-          )}`
+          `${BASE_URL}etsy/mapping_search/?${
+            globalSearchKey?.length < 7 ? "id" : "receipt"
+          }=${globalSearchKey.substring(0, 10)}`
         )
           .then((response) => {
             //console.log(response.data);
             setList(response?.data?.results || []);
             setFillError();
+            setGlobalSearchKey();
           })
           .catch((error) => {
             console.log(error);
             setList([]);
             setFillError("Hata. Tekrar deneyiniz");
+            setGlobalSearchKey();
           });
       } else {
         setFillError("En az 3 karakter giriniz.");
       }
     } else {
       let queryString = "?";
-      Object.keys(info).forEach((key) => {
-        if (info[key]) {
-          queryString = `${queryString}${key}=${info[key].substring(0, 10)}&`;
+      Object.keys(values).forEach((key) => {
+        if (values[key]) {
+          queryString = `${queryString}${key}=${values[key].substring(0, 10)}&`;
         }
       });
       if (queryString === "?") {
@@ -85,31 +75,10 @@ const Search = ({ location, history }) => {
     }
   };
 
-  const clearBtn = () => {
-    setInfo({
-      id: "",
-      status: "",
-      buyer: "",
-      sku: "",
-      supplier: "",
-      explanation: "",
-      receipt: "",
-      tracking_code: "",
-    });
-    setGlobalSearchKey("");
-  };
-
-  const handleChange = (e) => {
-    setInfo({ ...info, [e.target.name]: e.target.value });
-  };
-
   return (
     <div style={{ marginTop: 20 }}>
       <Form
-        handleChange={handleChange}
         handleSubmit={handleSubmit}
-        info={info}
-        clearBtn={clearBtn}
         setGlobalSearchKey={setGlobalSearchKey}
         globalSearchKey={globalSearchKey}
         fillError={fillError}
