@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme) => ({
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true" || false;
 
-function ResultTable({ list, history, refreshSearch }) {
+function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
   const classes = useStyles();
   const [rows, setRows] = useState();
   const [orderBy, setOrderBy] = useState("created_date");
@@ -120,7 +120,7 @@ function ResultTable({ list, history, refreshSearch }) {
   const [selected, setSelected] = useState([]);
   const [repeatAnchorEl, setRepeatAnchorEl] = useState();
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
-  const [loading, setLoading] = useState(false);
+  const [disableCells, setDisableCells] = useState(false);
   const [repeatMenuData, setRepeatMenuData] = useState({});
 
   let localRole = localStorage.getItem("localRole");
@@ -128,6 +128,15 @@ function ResultTable({ list, history, refreshSearch }) {
   useEffect(() => {
     setRows(list);
   }, [list, list?.length, list?.[0], list?.[0]?.explanation]);
+
+  const onChange = (e, id, name) => {
+    if (!rows.length || !name) return;
+    if (
+      rows?.filter((item) => item.id === id)?.[0]?.[name] === e.target.innerText
+    )
+      return;
+    handleRowChange(id, { [name]: e.target.innerText });
+  };
 
   const handleRowChange = (id, data) => {
     if (!Object.keys(data)[0]) return;
@@ -143,10 +152,13 @@ function ResultTable({ list, history, refreshSearch }) {
         refreshSearch();
       })
       .catch((error) => {
-        console.log(error);
-        toastWarnNotify("Save error!");
+        console.log(error?.response?.data);
+        toastWarnNotify(
+          error?.response?.data[Object.keys(error?.response?.data)[0]][0] ||
+            "Save error!"
+        );
       })
-      .finally(() => setLoading(false));
+      .finally(() => setTimeout(() => setDisableCells(false), 1000));
   };
 
   const onSelectChange = (e, row) => {
@@ -221,16 +233,6 @@ function ResultTable({ list, history, refreshSearch }) {
       let data = { [name]: !value };
       handleRowChange(id, data);
     }
-  };
-
-  const onChange = (e, id, name) => {
-    if (!rows.length || !name) return;
-    if (
-      rows?.filter((item) => item.id === name)?.[0]?.[name] ===
-      e.target.innerText
-    )
-      return;
-    handleRowChange(id, { [name]: e.target.innerText });
   };
 
   const handlerRepeatChange = (e, id, is_repeat) => {
@@ -517,6 +519,7 @@ function ResultTable({ list, history, refreshSearch }) {
             <FormattedMessage id="resultTable" defaultMessage="Result Table" />(
             {rows.length})
           </Typography>
+          {disableCells ? "SAVING..." : ""}
           <Table
             className={loading ? classes.disabled : classes.table}
             stickyHeader
@@ -821,6 +824,8 @@ function ResultTable({ list, history, refreshSearch }) {
                           row,
                           name: "supplier",
                           onChange,
+                          disableCells,
+                          setDisableCells,
                         }}
                       />
                       {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
@@ -829,6 +834,8 @@ function ResultTable({ list, history, refreshSearch }) {
                             row,
                             name: "sku",
                             onChange,
+                            disableCells,
+                            setDisableCells,
                           }}
                         />
                       ) : null}
@@ -839,6 +846,8 @@ function ResultTable({ list, history, refreshSearch }) {
                               row,
                               name: "variation_1_value",
                               onChange,
+                              disableCells,
+                              setDisableCells,
                             }}
                           />
                           <EditableTableCell
@@ -846,6 +855,8 @@ function ResultTable({ list, history, refreshSearch }) {
                               row,
                               name: "variation_2_value",
                               onChange,
+                              disableCells,
+                              setDisableCells,
                             }}
                           />
                         </>
@@ -856,6 +867,8 @@ function ResultTable({ list, history, refreshSearch }) {
                               row,
                               name: "type",
                               onChange,
+                              disableCells,
+                              setDisableCells,
                             }}
                           />
                           <EditableTableCell
@@ -863,6 +876,8 @@ function ResultTable({ list, history, refreshSearch }) {
                               row,
                               name: "length",
                               onChange,
+                              disableCells,
+                              setDisableCells,
                             }}
                           />
                           <EditableTableCell
@@ -870,6 +885,8 @@ function ResultTable({ list, history, refreshSearch }) {
                               row,
                               name: "color",
                               onChange,
+                              disableCells,
+                              setDisableCells,
                             }}
                           />
                           <EditableTableCell
@@ -877,6 +894,8 @@ function ResultTable({ list, history, refreshSearch }) {
                               row,
                               name: "qty",
                               onChange,
+                              disableCells,
+                              setDisableCells,
                             }}
                           />
                           <EditableTableCell
@@ -884,6 +903,8 @@ function ResultTable({ list, history, refreshSearch }) {
                               row,
                               name: "size",
                               onChange,
+                              disableCells,
+                              setDisableCells,
                             }}
                           />
                           <EditableTableCell
@@ -898,6 +919,8 @@ function ResultTable({ list, history, refreshSearch }) {
                               row,
                               name: "space",
                               onChange,
+                              disableCells,
+                              setDisableCells,
                             }}
                           />
                         </>
@@ -907,6 +930,8 @@ function ResultTable({ list, history, refreshSearch }) {
                           row,
                           name: "explanation",
                           onChange,
+                          disableCells,
+                          setDisableCells,
                         }}
                       />
 
@@ -973,9 +998,23 @@ function ResultTable({ list, history, refreshSearch }) {
                         {...{ row, name: "message_from_buyer", onChange }}
                       />
                       <EditableTableCell
-                        {...{ row, name: "gift_message", onChange }}
+                        {...{
+                          row,
+                          name: "gift_message",
+                          onChange,
+                          disableCells,
+                          setDisableCells,
+                        }}
                       />
-                      <EditableTableCell {...{ row, name: "note", onChange }} />
+                      <EditableTableCell
+                        {...{
+                          row,
+                          name: "note",
+                          onChange,
+                          disableCells,
+                          setDisableCells,
+                        }}
+                      />
                       <td
                         onClick={(e) => {
                           e.stopPropagation();

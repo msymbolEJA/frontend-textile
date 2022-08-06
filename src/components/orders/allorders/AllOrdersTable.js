@@ -622,7 +622,7 @@ function AllOrdersTable() {
   const onChange = (e, id, name) => {
     if (!rows?.length || !name || !e?.target?.innerText) return;
     if (
-      rows?.filter((item) => item.id === name)?.[0]?.[name] ===
+      rows?.filter((item) => item.id === id)?.[0]?.[name] ===
       e.target.innerText
     )
       return;

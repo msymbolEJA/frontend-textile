@@ -58,6 +58,8 @@ const EditableTableCell = ({
   from,
   minWidth = 40,
   style,
+  disableCells,
+  setDisableCells,
 }) => {
   useEffect(() => {
     setContent(
@@ -97,6 +99,7 @@ const EditableTableCell = ({
   );
 
   const handleContentChange = (e) => {
+    setDisableCells(true);
     setContent(e.target.value);
   };
 
@@ -127,6 +130,7 @@ const EditableTableCell = ({
       className={expTableCell}
       onClick={(e) => e.stopPropagation()}
       style={{
+        pointerEvents: disableCells ? "none" : "auto",
         minWidth: minWidth ?? "auto",
         backgroundColor:
           isDanger &&

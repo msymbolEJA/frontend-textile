@@ -13,6 +13,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const Search = ({ location, history }) => {
   const [list, setList] = useState();
+  const [loading, setLoading] = useState();
   const filters = getQueryParams();
   const { formatMessage } = useIntl();
   const [globalSearchKey, setGlobalSearchKey] = useState(
@@ -32,28 +33,34 @@ const Search = ({ location, history }) => {
         globalSearch(
           `${BASE_URL}etsy/mapping_search/?${
             globalSearchKey?.length < 7 ? "id" : "receipt"
-          }=${globalSearchKey.substring(0, 10)}`
+          }=${globalSearchKey.toString().substring(0, 10)}`
         )
           .then((response) => {
             //console.log(response.data);
             setList(response?.data?.results || []);
             setFillError();
             setGlobalSearchKey();
+            setLoading(false);
           })
           .catch((error) => {
             console.log(error);
             setList([]);
             setFillError("Hata. Tekrar deneyiniz");
             setGlobalSearchKey();
+            setLoading(false);
           });
       } else {
         setFillError("En az 3 karakter giriniz.");
       }
     } else {
+      if (!values) return;
       let queryString = "?";
+
       Object.keys(values).forEach((key) => {
         if (values[key]) {
-          queryString = `${queryString}${key}=${values[key].substring(0, 10)}&`;
+          queryString = `${queryString}${key}=${values[key]
+            .toString()
+            .substring(0, 10)}&`;
         }
       });
       if (queryString === "?") {
@@ -61,15 +68,16 @@ const Search = ({ location, history }) => {
       } else {
         setFillError();
         queryString = queryString.slice(0, -1);
-        // let path = `${BASE_URL_MAPPING}${queryString}`;
         let path = `${BASE_URL}etsy/mapping_search/${queryString}`;
         queryData(path)
           .then((response) => {
             setList(response?.data?.results || []);
+            setLoading(false);
           })
           .catch((error) => {
             console.log(error);
             setList([]);
+            setLoading(false);
           });
       }
     }
@@ -83,7 +91,12 @@ const Search = ({ location, history }) => {
         globalSearchKey={globalSearchKey}
         fillError={fillError}
       />
-      <ResultTable list={list} refreshSearch={handleSubmit} />
+      <ResultTable
+        list={list}
+        refreshSearch={handleSubmit}
+        loading={loading}
+        setLoading={setLoading}
+      />
     </div>
   );
 };
