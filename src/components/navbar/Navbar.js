@@ -152,6 +152,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MenuAppBar() {
   const classes = useStyles(); // eslint-disable-next-line
   const [auth, setAuth] = useState(true);
+  const [searchText, setSearchText] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const { user, lang, setLang } = useContext(AppContext);
   const [notification, setNotification] = useState({
@@ -189,15 +190,13 @@ export default function MenuAppBar() {
 
   let localRole = localStorage.getItem("localRole");
   const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ + "-";
-  const searchHandler = (value, keyCode) => {
-    if (keyCode === 13 && value) {
-      history.push({
-        pathname: "/search",
-        state: {
-          global: value,
-        },
-      });
-    }
+  const handleSearch = (e) => {
+    history.push({
+      pathname: "/search",
+      state: {
+        global: searchText,
+      },
+    });
   };
 
   const handleMainPage = () => {
@@ -418,27 +417,15 @@ export default function MenuAppBar() {
                 <OutlinedInput
                   type="text"
                   defaultValue=""
-                  onKeyDown={(e) =>
-                    searchHandler(
-                      myInputRef.current.childNodes[0].value,
-                      e.keyCode
-                    )
-                  }
+                  onChange={(e) => setSearchText(e.target.value)}
+                  onKeyDown={(e) => e.keyCode === 13 && handleSearch()}
                   ref={myInputRef}
                   className={
                     mobileView ? classes.textFieldMobil : classes.textField
                   }
                   endAdornment={
                     <InputAdornment position="end">
-                      <IconButton
-                        onClick={() =>
-                          searchHandler(
-                            myInputRef.current.childNodes[0].value,
-                            13
-                          )
-                        }
-                        edge="end"
-                      >
+                      <IconButton onClick={handleSearch} edge="end">
                         <SearchIcon />
                       </IconButton>
                     </InputAdornment>
