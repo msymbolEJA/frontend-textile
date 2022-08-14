@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { updateDetailsTable } from "../../../../helper/Constants";
+import { updateDetailsMappingTable } from "../../../../helper/Constants";
 import { getData, putData } from "../../../../helper/PostData";
 import EditableTableCell from "./EditableTableCell";
 
@@ -69,14 +69,14 @@ const UpdateDetailsTable = ({ row }) => {
         <Table>
           <TableHead className={classes.thead}>
             <TableRow>
-              {updateDetailsTable.map((item, index) => (
+              {updateDetailsMappingTable.map((item, index) => (
                 <TableCell key={index}>{item.name}</TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody className={classes.tbody}>
             <TableRow>
-              {updateDetailsTable.map((item, index) => (
+              {updateDetailsMappingTable.map((item, index) => (
                 <TableCell key={index}>
                   {item.type === "url" ? (
                     <a
@@ -88,20 +88,21 @@ const UpdateDetailsTable = ({ row }) => {
                     </a>
                   ) : item.type === "dropdown" ? (
                     <div>
+                      {data[item.objKey]}
                       <select
                         onChange={(e) =>
                           handleEditChange(e.target.value, item.objKey)
                         }
-                        value={
-                          data[item.objKey] ? data[item.objKey] : "Not Selected"
-                        }
                       >
+                        <option value="" disabled selected>
+                          Select your option
+                        </option>
+
                         {item.values.map((value, index) => (
                           <option value={value.value} key={index}>
                             {value.name}
                           </option>
                         ))}
-                        <option value={"Not Selected"}>Not Selected</option>
                       </select>
                     </div>
                   ) : item.type === "editable" ? (

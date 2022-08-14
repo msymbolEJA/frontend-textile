@@ -194,7 +194,7 @@ export const colorNumberColumns = [
   },
 ];
 
-export const updateDetailsTable = [
+export const updateDetailsMappingTable = [
   { id: 1, name: "Orders Id", objKey: "orders_id", type: "number" },
   // { id: 2, name: "Receipt Id", objKey: "receipt_id", type: "number" },
   { id: 3, name: "Name", objKey: "name", type: "text" },
