@@ -622,8 +622,7 @@ function AllOrdersTable() {
   const onChange = (e, id, name) => {
     if (!rows?.length || !name || !e?.target?.innerText) return;
     if (
-      rows?.filter((item) => item.id === id)?.[0]?.[name] ===
-      e.target.innerText
+      rows?.filter((item) => item.id === id)?.[0]?.[name] === e.target.innerText
     )
       return;
     handleRowChange(id, { [name]: e.target.innerText });
@@ -764,18 +763,13 @@ function AllOrdersTable() {
                 />
               </StyledTableCell>
 
-              {userRole === "admin" ||
-              userRole === "shop_manager" ||
-              userRole === "shop_packer" ? (
-                <>
-                  <StyledTableCell align="center">
-                    <FormattedMessage id="buyer" defaultMessage="Buyer" />
-                  </StyledTableCell>
-                  {/*                   <StyledTableCell align="center">
+              <StyledTableCell align="center">
+                <FormattedMessage id="buyer" defaultMessage="Buyer" />
+              </StyledTableCell>
+              {/*                   <StyledTableCell align="center">
                     <FormattedMessage id="supplier" defaultMessage="Supplier" />
                   </StyledTableCell> */}
-                </>
-              ) : null}
+
               {/*               <StyledTableCell align="center">
                 <FormattedMessage id="status" defaultMessage="Status" />
               </StyledTableCell> */}
@@ -900,14 +894,10 @@ function AllOrdersTable() {
                     {...{ row, name: "creation_tsz", name5: "ready_date" }}
                   />
                   {/*   <CustomTableCell {...{ row, name: "ready_date" }} /> */}
-                  {userRole === "admin" ||
-                  userRole === "shop_manager" ||
-                  userRole === "shop_packer" ? (
-                    <>
-                      <CustomTableCell {...{ row, name: "buyer" }} />
-                      {/*   <CustomTableCell {...{ row, name: "supplier" }} /> */}
-                    </>
-                  ) : null}
+
+                  <CustomTableCell {...{ row, name: "buyer" }} />
+                  {/*   <CustomTableCell {...{ row, name: "supplier" }} /> */}
+
                   {/*    <CustomTableCell {...{ row, name: "status" }} /> */}
                   {NON_SKU ? (
                     <>
@@ -937,7 +927,12 @@ function AllOrdersTable() {
                       />
                       <EditableTableCell
                         onClick={(e) => e.stopPropagation()}
-                        {...{ row, name: "explanation_mod", onChange }}
+                        {...{
+                          row,
+                          name: "explanation_mod",
+                          onChange,
+                          minWidth: 250,
+                        }}
                       />
                     </>
                   ) : (
@@ -950,7 +945,9 @@ function AllOrdersTable() {
                       <CustomTableCell {...{ row, name: "size" }} />
                       <CustomTableCell {...{ row, name: "start" }} />
                       {/* --------------------------- */}
-                      <CustomTableCell {...{ row, name: "space" }} />
+                      <CustomTableCell
+                        {...{ row, name: "space", minWidth: 250 }}
+                      />
                       {/*   <EditableTableCell
                         onClick={(e) => e.stopPropagation()}
                         {...{
@@ -969,6 +966,7 @@ function AllOrdersTable() {
                       name: "explanation",
                       onChange,
                       from: "all-orders",
+                      minWidth: 250,
                     }}
                   />
                   {!isBeyazit && (

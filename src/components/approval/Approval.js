@@ -251,8 +251,7 @@ function App({ history }) {
   const onChange = (e, id, name) => {
     if (!rows.length || !name) return;
     if (
-      rows?.filter((item) => item.id === id)?.[0]?.[name] ===
-      e.target.innerText
+      rows?.filter((item) => item.id === id)?.[0]?.[name] === e.target.innerText
     )
       return;
     handleRowChange(id, { [name]: e.target.innerText });
@@ -1249,7 +1248,7 @@ function App({ history }) {
                         row,
                         name: "explanation",
                         onChange,
-                        minWidth: 120,
+                        minWidth: 250,
                       }}
                     />
                     <td
@@ -1307,10 +1306,20 @@ function App({ history }) {
                       />
                     </td>
                     <ConstantTableCell
-                      {...{ row, name: "personalization", onChange }}
+                      {...{
+                        row,
+                        name: "personalization",
+                        onChange,
+                        minWidth: 250,
+                      }}
                     />
                     <ConstantTableCell
-                      {...{ row, name: "message_from_buyer", onChange }}
+                      {...{
+                        row,
+                        name: "message_from_buyer",
+                        onChange,
+                        minWidth: 150,
+                      }}
                     />
                     {user !== "DrMel" ? (
                       <EditableTableCell

@@ -9,12 +9,11 @@ const useStyles = makeStyles((theme) => ({
     width: 100,
     height: 40,
     borderRight: "0.5px solid #E0E0E0",
-    maxWidth: "150px",
     fontFamily: "Courier New",
   },
 }));
 
-const ConstantTableCell = ({ row, name, name2, name3 }) => {
+const ConstantTableCell = ({ row, name, name2, name3, minWidth }) => {
   //console.log("row", row);
   const classes = useStyles();
   return (
@@ -22,6 +21,7 @@ const ConstantTableCell = ({ row, name, name2, name3 }) => {
       align="center"
       className={classes.tableCell}
       style={{
+        minWidth,
         backgroundColor:
           name === "personalization" && !row[name]?.trim() && "#FF9494",
       }}
