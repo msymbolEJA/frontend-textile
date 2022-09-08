@@ -215,7 +215,7 @@ export const updateDetailsMappingTable = [
       { id: 2, name: "USPS First-Class Mail", value: "USPS First-Class Mail" },
       { id: 3, name: "Standard Shipping", value: "Standard Shipping" },
       { id: 5, name: "USPS Priority Mail", value: "USPS Priority Mail" },
-      { id: 6, name: "Priorty", value: "Priorty" },
+      { id: 6, name: "Priority", value: "Priority" },
       { id: 7, name: "FirstPackage", value: "FirstPackage" },
       {
         id: 8,
