@@ -187,7 +187,7 @@ export default function CustomizedTables() {
   return (
     <>
       <TableContainer component={Paper} className={classes.root}>
-        {isAdmin ? (
+        {/* {isAdmin ? (
           <div>
             <Button
               variant="contained"
@@ -217,7 +217,7 @@ export default function CustomizedTables() {
               Beyazit
             </Button>
           </div>
-        ) : null}
+        ) : null} */}
         <Typography className={classes.header} variant="h3">
           <FormattedMessage id="cargoList" defaultMessage="Cargo List" />
         </Typography>
