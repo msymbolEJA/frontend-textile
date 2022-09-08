@@ -110,8 +110,10 @@ export default function CustomizedTables({ match }) {
                       </a>
                     ) : !row?.is_address_valid ? (
                       <ContactMailIcon style={{ color: "red" }} />
-                    ) : (
+                    ) : row?.is_valid_shipment_method && row?.is_valid_type ? (
                       "-"
+                    ) : (
+                      "N/A"
                     )}
                   </StyledTableCell>
                   <StyledTableCell align="center">
