@@ -140,8 +140,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   textFieldMobil: {
-    width: 150,
-    height: 25,
+    width: 300,
+    height: 40,
     backgroundColor: "white",
     "& input": {
       fontSize: "10px",
@@ -343,30 +343,33 @@ export default function MenuAppBar() {
                 alignItems: "center",
               }}
             >
-              <Button
-                color="primary"
-                variant="outlined"
-                id="all-orders"
-                disabled={
-                  userRole?.includes("workshop") &&
-                  !isBeyazit &&
-                  notification?.count
-                }
-                className={
-                  mobileView
-                    ? classes.button2
-                    : window.location.pathname.includes("orders")
-                    ? classes.activeButton
-                    : classes.button
-                }
-                startIcon={mobileView ? null : <ViewListIcon />}
-                onClick={handleClick}
-              >
-                <FormattedMessage id="orders" defaultMessage="Orders" />
-              </Button>
-              {userRole === "admin" ||
-              userRole === "shop_manager" ||
-              userRole === "shop_packer" ? (
+              {!mobileView && (
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  id="all-orders"
+                  disabled={
+                    userRole?.includes("workshop") &&
+                    !isBeyazit &&
+                    notification?.count
+                  }
+                  className={
+                    mobileView
+                      ? classes.button2
+                      : window.location.pathname.includes("orders")
+                      ? classes.activeButton
+                      : classes.button
+                  }
+                  startIcon={mobileView ? null : <ViewListIcon />}
+                  onClick={handleClick}
+                >
+                  <FormattedMessage id="orders" defaultMessage="Orders" />
+                </Button>
+              )}
+              {!mobileView &&
+              (userRole === "admin" ||
+                userRole === "shop_manager" ||
+                userRole === "shop_packer") ? (
                 <>
                   <Button
                     color="primary"
@@ -549,11 +552,25 @@ export default function MenuAppBar() {
                     <MenuItem>
                       <a
                         className={classes.hrefStyle}
-                        href={`${BASE_URL}admin/`}
-                        target="_blank"
-                        rel="noreferrer"
+                        href={`/all-orders?status=pending&limit=2500&offset=0/`}
                       >
-                        Admin Panel
+                        Orders
+                      </a>
+                    </MenuItem>
+                    <MenuItem>
+                      <a
+                        className={classes.hrefStyle}
+                        href={`/approval?status=pending&limit=2500&offset=0/`}
+                      >
+                        Admin
+                      </a>
+                    </MenuItem>
+                    <MenuItem>
+                      <a
+                        className={classes.hrefStyle}
+                        href={`/cargo-list?status=pending&limit=2500&offset=0/`}
+                      >
+                        Cargo List
                       </a>
                     </MenuItem>
                     <MenuItem
