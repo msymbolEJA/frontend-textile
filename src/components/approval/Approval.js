@@ -1248,7 +1248,10 @@ function App({ history }) {
                         row,
                         name: "explanation",
                         onChange,
-                        minWidth: 250,
+                        minWidth:
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi"
+                            ? 250
+                            : 0,
                       }}
                     />
                     <td
@@ -1310,7 +1313,10 @@ function App({ history }) {
                         row,
                         name: "personalization",
                         onChange,
-                        minWidth: 250,
+                        minWidth:
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi"
+                            ? 250
+                            : 0,
                       }}
                     />
                     <ConstantTableCell
@@ -1318,7 +1324,10 @@ function App({ history }) {
                         row,
                         name: "message_from_buyer",
                         onChange,
-                        minWidth: 150,
+                        minWidth:
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi"
+                            ? 150
+                            : 0,
                       }}
                     />
                     {user !== "DrMel" ? (
