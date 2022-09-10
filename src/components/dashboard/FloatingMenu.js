@@ -107,7 +107,7 @@ const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
       <ul className={classes.ulStyle}>
         <li>
           <div
-            className={healthCheck?.check ? classes.aStyle : classes.aErrorStyle}
+            className={healthCheck ? classes.aStyle : classes.aErrorStyle}
           >
             <span className={classes.spanStyle}>
               <FormattedMessage
@@ -135,7 +135,7 @@ const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
               <br />
               <div>
                 HealthCheck:
-                {healthCheck?.check ? (
+                {healthCheck ? (
                   <CheckCircleIcon
                     style={{
                       marginLeft: "10px",
@@ -156,7 +156,7 @@ const FloatingMenu = ({ lastDateOfOrder, healthCheck }) => {
             </span>
             <InfoIcon
               className={
-                healthCheck?.check ? classes.iconStyle : classes.iconErrorStyle
+                healthCheck ? classes.iconStyle : classes.iconErrorStyle
               }
             />
           </div>

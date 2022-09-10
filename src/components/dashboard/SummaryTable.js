@@ -73,7 +73,6 @@ export default function SummaryTable({
   header2,
   data,
   lastDateOfOrder,
-  healthCheck,
 }) {
   const { user } = useContext(AppContext);
   let localRole = localStorage.getItem("localRole");

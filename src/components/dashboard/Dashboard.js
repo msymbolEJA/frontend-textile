@@ -56,18 +56,24 @@ const Dashboard = () => {
   const getListFunc = () => {
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
       const newResult = [];
-      setlastDateOfOrder(response.data[3]);
-      if (response?.data[5]) {
-        if ("check_shopify" in response?.data[5]) {
-          setHealthCheck({
-            check:
-              response?.data[4]?.check && response?.data[5]?.check_shopify,
-          });
-        }
-      } else {
-        setHealthCheck(response.data[4]);
-      }
+      setlastDateOfOrder(response.data[2]);
+      const etsyCheck = response.data.filter(
+        (item) => Object.keys(item)[0] === "check"
+      )?.[0]?.check;
 
+      const isShopify = response.data.filter(
+        (item) => Object.keys(item)[0] === "check_shopify"
+      )?.length;
+
+      const shopifyCheck = response.data.filter(
+        (item) => Object.keys(item)[0] === "check_shopify"
+      )?.[0]?.check_shopify;
+
+      if (isShopify) {
+        setHealthCheck(shopifyCheck && etsyCheck);
+      } else {
+        setHealthCheck(etsyCheck);
+      }
 
       response.data[0].forEach((item) => {
         newResult.push({
@@ -85,8 +91,8 @@ const Dashboard = () => {
 
       const currentSortingArray =
         userRole === "admin" ||
-          userRole === "shop_manager" ||
-          userRole === "shop_packer"
+        userRole === "shop_manager" ||
+        userRole === "shop_packer"
           ? sortingArrayAdmin
           : sortingArrayUser;
       const newResult2 = currentSortingArray.map((object, i) => {
@@ -139,12 +145,12 @@ const Dashboard = () => {
   // console.log(localUser === "admin");
   const newStatu =
     localRole === "admin" ||
-      localRole === "shop_manager" ||
-      localRole === "shop_packer"
+    localRole === "shop_manager" ||
+    localRole === "shop_packer"
       ? "pending"
       : localRole === "workshop_designer"
-        ? "in_progress"
-        : "awaiting";
+      ? "in_progress"
+      : "awaiting";
   // console.log({ localRole });
   // console.log({ newStatu });
 
@@ -159,8 +165,9 @@ const Dashboard = () => {
           <SummaryTable
             title="orders"
             total={0}
-            next={`/all-orders?&status=${newStatu}&limit=${PAGE_ROW_NUMBER || 25
-              }&offset=0`}
+            next={`/all-orders?&status=${newStatu}&limit=${
+              PAGE_ROW_NUMBER || 25
+            }&offset=0`}
             icon={<ListAltIcon className={classes.icon} color="primary" />}
             header1={formatMessage({
               id: "status",
@@ -172,7 +179,6 @@ const Dashboard = () => {
             }).toUpperCase()}
             data={orderSummary}
             lastDateOfOrder={lastDateOfOrder}
-            healthCheck={healthCheck}
           />
           <SummaryTable
             title="behindSchedule"
@@ -192,8 +198,8 @@ const Dashboard = () => {
             data={workshopDueDates}
           />
           {userRole === "admin" ||
-            userRole === "shop_manager" ||
-            userRole === "shop_packer" ? (
+          userRole === "shop_manager" ||
+          userRole === "shop_packer" ? (
             <SummaryTable
               title="behindOverallSchedule"
               total={0}
@@ -212,8 +218,8 @@ const Dashboard = () => {
               data={
                 shipmentDueDates?.length > 10
                   ? shipmentDueDates?.slice(
-                    Math.max(shipmentDueDates?.length - 10, 0)
-                  )
+                      Math.max(shipmentDueDates?.length - 10, 0)
+                    )
                   : shipmentDueDates
               }
             />
