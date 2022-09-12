@@ -197,8 +197,8 @@ export const colorNumberColumns = [
 export const updateDetailsMappingTable = [
   { id: 1, name: "Orders Id", objKey: "orders_id", type: "number" },
   // { id: 2, name: "Receipt Id", objKey: "receipt_id", type: "number" },
-  { id: 3, name: "Name", objKey: "name", type: "text" },
-  { id: 4, name: "Email", objKey: "buyer_email", type: "text" },
+  { id: 3, name: "Name", objKey: "name", type: "editable" },
+  { id: 4, name: "Email", objKey: "buyer_email", type: "editable" },
   { id: 5, name: "First Line", objKey: "first_line", type: "editable" },
   { id: 5, name: "Second Line", objKey: "second_line", type: "editable" },
   { id: 5, name: "City", objKey: "city", type: "editable" },
