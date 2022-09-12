@@ -47,13 +47,13 @@ export default function SearchForm({
   const { formatMessage } = useIntl();
   const formik = useFormik({
     initialValues: {
-      id: globalSearchKey?.length < 7 ? globalSearchKey : "",
+      id: globalSearchKey?.length < 8 ? globalSearchKey : "",
       status: "",
       buyer: "",
       sku: "",
       supplier: "",
       explanation: "",
-      receipt: globalSearchKey?.length > 7 ? globalSearchKey : "",
+      receipt: globalSearchKey?.length >= 8 ? globalSearchKey : "",
       tracking_code: "",
     },
     onSubmit: (values) => {

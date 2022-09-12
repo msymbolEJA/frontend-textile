@@ -32,7 +32,7 @@ const Search = ({ location, history }) => {
         // globalSearch(`${BASE_URL_MAPPING}?search=${globalSearchKey}`)
         globalSearch(
           `${BASE_URL}etsy/mapping_search/?${
-            globalSearchKey?.length < 7 ? "id" : "receipt"
+            globalSearchKey?.length < 8 ? "id" : "receipt"
           }=${globalSearchKey.toString().substring(0, 10)}`
         )
           .then((response) => {
