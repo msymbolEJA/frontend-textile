@@ -47,7 +47,7 @@ function App() {
       (localStorage.getItem("localRole") === "workshop_manager" ||
         !localStorage.getItem("localRole") ||
         localStorage.getItem("localRole") === "null") &&
-      ["asya", "umraniye"].includes(
+      !["asya", "umraniye"].includes(
         localStorage.getItem("workshop")?.toLowerCase()
       );
 
