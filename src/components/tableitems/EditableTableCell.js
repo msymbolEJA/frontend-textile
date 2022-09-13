@@ -59,7 +59,7 @@ const EditableTableCell = ({
   minWidth = 40,
   style,
   disableCells,
-  setDisableCells,
+  setDisableCells = () => {},
 }) => {
   useEffect(() => {
     setContent(

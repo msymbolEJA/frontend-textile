@@ -46,10 +46,11 @@ const CustomTableCell = ({
             <a href={`/order-details/${row.id}`}>
               {row[name]?.length
                 ? row[name]
-                    .replace("&lt;", "<")
-                    .replace("&gt;", ">")
-                    .replace("&#039;", "'")
-                    .replace("&#39;", "'")
+                    .replaceAll("&lt;", "<")
+                    .replaceAll("&gt;", ">")
+                    .replaceAll("&#039;", "'")
+                    .replaceAll("&#39;", "'")
+                    .replaceAll("Pillow", "Yastik")
                 : row[name]}
             </a>
             <br />
@@ -70,38 +71,43 @@ const CustomTableCell = ({
         ) : name === "variation_1_value" ? (
           row[name] &&
           row[name]
-            .replace("US women&#039;s letter", "")
-            .replace("US women's letter", "")
+            .replaceAll("US women&#039;s letter", "")
+            .replaceAll("US women's letter", "")
+            .replaceAll("Pillow", "Yastik")
         ) : name === "status" ? (
           formatMessage({
             id: row[name] === "awaiting" ? "approved" : row[name],
             defaultMessage:
-              row[name]?.replace("_", " ") === "awaiting"
+              row[name]?.replaceAll("_", " ") === "awaiting"
                 ? "APPROVED"
-                : row[name].replace("_", " "),
+                : row[name].replaceAll("_", " ").replaceAll("Pillow", "Yastik"),
           })
         ) : name === "sku" ? (
-          row[name]?.replaceAll("Linen_Dress_", "")?.replaceAll("Linen_", "")
+          row[name]
+            ?.replaceAll("Linen_Dress_", "")
+            ?.replaceAll("Linen_", "")
+            .replaceAll("Pillow", "Yastik")
         ) : row[name] ? (
           row[name]
-            .replace("_", " ")
-            .replace("REPEAT", "TEKRAR")
-            .replace("MANUFACTURING ERROR", "ÜRETİM HATASI")
-            .replace("LETTER_PATTERN_IS_WRONG", "HARF DİZİLİMİ YANLIŞ")
-            .replace("WRONG_COLOR", "YANLIŞ RENK")
-            .replace("STONE_FALL", "TAŞI DÜŞMÜŞ")
-            .replace("DIFFERENT_PRODUCT", "FARKLI ÜRÜN")
-            .replace("LONG_CHAIN", "ZİNCİR UZUN")
-            .replace("SHORT_CHAIN", "ZİNCİR KISA")
-            .replace("DIFFERENT_FONT", "FARKLI FONT")
-            .replace("DISCOLORATION", "RENK ATMA")
-            .replace(": BREAK OFF", "")
-            .replace(": LOST IN MAIL", "")
-            .replace(": SECOND", "")
-            .replace("&#039;", "'")
-            .replace("&#39;", "'")
-            .replace("&lt;", "<")
-            .replace("&gt;", ">")
+            .replaceAll("_", " ")
+            .replaceAll("REPEAT", "TEKRAR")
+            .replaceAll("MANUFACTURING ERROR", "ÜRETİM HATASI")
+            .replaceAll("LETTER_PATTERN_IS_WRONG", "HARF DİZİLİMİ YANLIŞ")
+            .replaceAll("WRONG_COLOR", "YANLIŞ RENK")
+            .replaceAll("STONE_FALL", "TAŞI DÜŞMÜŞ")
+            .replaceAll("DIFFERENT_PRODUCT", "FARKLI ÜRÜN")
+            .replaceAll("LONG_CHAIN", "ZİNCİR UZUN")
+            .replaceAll("SHORT_CHAIN", "ZİNCİR KISA")
+            .replaceAll("DIFFERENT_FONT", "FARKLI FONT")
+            .replaceAll("DISCOLORATION", "RENK ATMA")
+            .replaceAll(": BREAK OFF", "")
+            .replaceAll(": LOST IN MAIL", "")
+            .replaceAll(": SECOND", "")
+            .replaceAll("&#039;", "'")
+            .replaceAll("&#39;", "'")
+            .replaceAll("&lt;", "<")
+            .replaceAll("&gt;", ">")
+            .replaceAll("Pillow", "Yastik")
         ) : (
           "-"
         )}
