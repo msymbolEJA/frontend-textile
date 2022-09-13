@@ -78,7 +78,9 @@ export default function CustomizedTables() {
     (localStorage.getItem("localRole") === "workshop_manager" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
-    localStorage.getItem("workshop")?.toLowerCase() !== "asya";
+    ["asya", "umraniye"].includes(
+      localStorage.getItem("workshop")?.toLowerCase()
+    );
   const classes = useStyles();
   const [cargoList, setCargoList] = useState();
   const history = useHistory();

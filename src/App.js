@@ -47,7 +47,9 @@ function App() {
       (localStorage.getItem("localRole") === "workshop_manager" ||
         !localStorage.getItem("localRole") ||
         localStorage.getItem("localRole") === "null") &&
-      localStorage.getItem("workshop")?.toLowerCase() !== "asya";
+      ["asya", "umraniye"].includes(
+        localStorage.getItem("workshop")?.toLowerCase()
+      );
 
     if (isBeyazit) return;
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {

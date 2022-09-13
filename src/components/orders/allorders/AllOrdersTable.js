@@ -125,7 +125,9 @@ function AllOrdersTable() {
     (localStorage.getItem("localRole") === "workshop_manager" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
-    localStorage.getItem("workshop")?.toLowerCase() !== "asya";
+    ["asya", "umraniye"].includes(
+      localStorage.getItem("workshop")?.toLowerCase()
+    );
   const [selected, setSelected] = useState([]);
   const [countryFilter, setCountryFilter] = useState("all");
   const { user } = useContext(AppContext);
