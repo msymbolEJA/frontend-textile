@@ -758,7 +758,8 @@ function AllOrdersTable() {
                 <FormattedMessage id="index" defaultMessage="Index" />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage id="createdTSZ" defaultMessage="Created" />/{" "}
+                <FormattedMessage id="createdTSZ" defaultMessage="Created" />
+                {" / "}
                 <FormattedMessage
                   id="ready_date"
                   defaultMessage="Approval Date"
@@ -893,7 +894,12 @@ function AllOrdersTable() {
                     }}
                   />
                   <CustomTableCell
-                    {...{ row, name: "creation_tsz", name5: "ready_date" }}
+                    {...{
+                      row,
+                      name: "creation_tsz",
+                      name5: "ready_date",
+                      style: { width: 140, maxWidth: 140 },
+                    }}
                   />
                   {/*   <CustomTableCell {...{ row, name: "ready_date" }} /> */}
 
@@ -947,9 +953,7 @@ function AllOrdersTable() {
                       <CustomTableCell {...{ row, name: "size" }} />
                       <CustomTableCell {...{ row, name: "start" }} />
                       {/* --------------------------- */}
-                      <CustomTableCell
-                        {...{ row, name: "space", minWidth: 250 }}
-                      />
+                      <CustomTableCell {...{ row, name: "space" }} />
                       {/*   <EditableTableCell
                         onClick={(e) => e.stopPropagation()}
                         {...{
@@ -968,7 +972,7 @@ function AllOrdersTable() {
                       name: "explanation",
                       onChange,
                       from: "all-orders",
-                      minWidth: 250,
+                      minWidth: 500,
                     }}
                   />
                   {!isBeyazit && (
@@ -982,7 +986,11 @@ function AllOrdersTable() {
                       onChange={(e) => {
                         e.stopPropagation();
                       }}
-                      {...{ row, name: "gift_message" }}
+                      {...{
+                        row,
+                        name: "gift_message",
+                        style: { minWidth: 240 },
+                      }}
                     />
                   )}
                   <td

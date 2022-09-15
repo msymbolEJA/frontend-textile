@@ -62,10 +62,12 @@ const CustomTableCell = ({
             <>
               {moment.utc(row[name]).local().format("MM-DD-YY HH:mm")}
               {name5 === "ready_date" &&
-              moment(row[name5]).format("MM-DD-YY HH:mm") !== "Invalid date"
-                ? " / " +
-                  moment.utc(row[name5]).local().format("MM-DD-YY HH:mm")
-                : null}
+              moment(row[name5]).format("MM-DD-YY HH:mm") !== "Invalid date" ? (
+                <>
+                  <br />
+                  {moment.utc(row[name5]).local().format("MM-DD-YY HH:mm")}
+                </>
+              ) : null}
             </>
           )
         ) : name === "variation_1_value" ? (
