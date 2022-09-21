@@ -109,7 +109,7 @@ const CustomButtonGroup = ({
           />
         </Button>
       ))}
-      {NON_SKU && (
+      {/* {NON_SKU && (
         <Button
           className={classes.btn}
           disabled={loading}
@@ -126,7 +126,7 @@ const CustomButtonGroup = ({
         >
           <FormattedMessage id={"allorders"} defaultMessage={"All Orders"} />
         </Button>
-      )}
+      )} */}
     </div>
   );
 };

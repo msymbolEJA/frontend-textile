@@ -427,7 +427,9 @@ function App({ history }) {
         newUrl += `limit=${25}&offset=${0}`;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_repeat=true&ordering=-last_updated&limit=${
+          PAGE_ROW_NUMBER || 25
+        }&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
@@ -974,6 +976,7 @@ function App({ history }) {
                 style={{
                   padding: 10,
                   pointerEvents: selectedTag === "pending" ? "auto" : "none",
+                  borderRight: "0.5px solid #E0E0E0",
                 }}
               >
                 <Button

@@ -269,7 +269,7 @@ function AllOrdersTable() {
 
   useEffect(() => {
     if (!filters?.status) {
-      history.push("/all-orders?&status=awaiting&limit=2500&offset=0");
+      history.push("/all-orders?limit=2500&offset=0");
       return;
     }
     if (filters?.search) return;
