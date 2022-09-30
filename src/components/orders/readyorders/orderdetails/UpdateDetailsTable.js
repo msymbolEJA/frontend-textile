@@ -11,7 +11,10 @@ import { useEffect, useState } from "react";
 import { updateDetailsMappingTable } from "../../../../helper/Constants";
 import { getData, putData } from "../../../../helper/PostData";
 import EditableTableCell from "./EditableTableCell";
-
+import {
+  toastErrorNotify,
+  toastSuccessNotify,
+} from "../../../otheritems/ToastNotify";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles((theme) => ({
@@ -87,7 +90,22 @@ const UpdateDetailsTable = ({ row }) => {
             <TableRow>
               {updateDetailsMappingTable.map((item, index) => {
                 return (
-                  <TableCell key={index}>
+                  <TableCell
+                    key={index}
+                    onClick={() => {
+                      item.objKey === "tracking_code" &&
+                        navigator.clipboard.writeText(
+                          data[item.objKey].substring(
+                            data[item.objKey].length - 15
+                          )
+                        ) &&
+                        toastSuccessNotify(
+                          `${data[item.objKey].substring(
+                            data[item.objKey].length - 15
+                          )} copied`
+                        );
+                    }}
+                  >
                     {item.type === "url" ? (
                       <a
                         href={data[item.objKey]}

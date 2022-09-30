@@ -4,12 +4,16 @@ import Input from "@material-ui/core/Input";
 import RepeatIcon from "@material-ui/icons/Repeat";
 import moment from "moment";
 import { useIntl } from "react-intl";
-
+import {
+  toastErrorNotify,
+  toastSuccessNotify,
+} from "../../otheritems/ToastNotify";
 const useStyles = makeStyles((theme) => ({
   tableCell: {
     width: 130,
     height: 40,
     fontFamily: "Courier New",
+    cursor: "pointer",
   },
   input: {
     width: 130,
@@ -23,7 +27,15 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <TableCell align="center" className={classes.tableCell}>
+    <TableCell
+      onClick={() => {
+        name === "id" &&
+          navigator.clipboard.writeText(row[name]) &&
+          toastSuccessNotify(`${row[name]} copied`);
+      }}
+      align="center"
+      className={classes.tableCell}
+    >
       {isEditMode ? (
         <Input
           value={row[name]}
