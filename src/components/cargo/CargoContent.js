@@ -48,7 +48,14 @@ const useStyles = makeStyles({
 export default function CustomizedTables({ match }) {
   const classes = useStyles();
   const [cargoList, setCargoList] = useState([]);
-
+  const handleSendTrackingCode = (rowId) => {
+    rowId &&
+      getData(`${BASE_URL}dhl/send_tracking_code_by_one/${rowId}/`)
+        .then((res) => {})
+        .catch((err) => {
+          console.log({ err });
+        });
+  };
   useEffect(() => {
     if (match?.params?.id)
       getData(`${BASE_URL}etsy/shipment/?id=${match.params.id}`).then(
@@ -118,6 +125,11 @@ export default function CustomizedTables({ match }) {
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     {row?.tracking_code}
+                    {row.tracking_code ? (
+                      <button onClick={() => handleSendTrackingCode(row.id)}>
+                        Send
+                      </button>
+                    ) : null}
                   </StyledTableCell>
                 </StyledTableRow>
               ))

@@ -33,6 +33,15 @@ const UpdateDetailsTable = ({ row }) => {
   const [data, setData] = useState([]);
   const classes = useStyles();
 
+  const handleSendTrackingCode = () => {
+    row?.receipt_id &&
+      getData(`${BASE_URL}dhl/send_tracking_code_by_one/${row?.id}/`)
+        .then((res) => {})
+        .catch((err) => {
+          console.log({ err });
+        });
+  };
+
   const handleEditChange = (content, name) => {
     putData(`${BASE_URL}etsy/ordersTable/${row?.receipt_id}/`, {
       ...row,
@@ -76,46 +85,51 @@ const UpdateDetailsTable = ({ row }) => {
           </TableHead>
           <TableBody className={classes.tbody}>
             <TableRow>
-              {updateDetailsMappingTable.map((item, index) => (
-                <TableCell key={index}>
-                  {item.type === "url" ? (
-                    <a
-                      href={data[item.objKey]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Visit
-                    </a>
-                  ) : item.type === "dropdown" ? (
-                    <div>
-                      {data[item.objKey]}
-                      <select
-                        onChange={(e) =>
-                          handleEditChange(e.target.value, item.objKey)
-                        }
+              {updateDetailsMappingTable.map((item, index) => {
+                return (
+                  <TableCell key={index}>
+                    {item.type === "url" ? (
+                      <a
+                        href={data[item.objKey]}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        <option value="" disabled selected>
-                          Select your option
-                        </option>
-
-                        {item.values.map((value, index) => (
-                          <option value={value.value} key={index}>
-                            {value.name}
+                        Visit
+                      </a>
+                    ) : item.type === "dropdown" ? (
+                      <div>
+                        {data[item.objKey]}
+                        <select
+                          onChange={(e) =>
+                            handleEditChange(e.target.value, item.objKey)
+                          }
+                        >
+                          <option value="" disabled selected>
+                            Select your option
                           </option>
-                        ))}
-                      </select>
-                    </div>
-                  ) : item.type === "editable" ? (
-                    <EditableTableCell
-                      data={data}
-                      name={item.objKey}
-                      onChange={handleEditChange}
-                    />
-                  ) : (
-                    data[item.objKey]
-                  )}
-                </TableCell>
-              ))}
+
+                          {item.values.map((value, index) => (
+                            <option value={value.value} key={index}>
+                              {value.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    ) : item.type === "editable" ? (
+                      <EditableTableCell
+                        data={data}
+                        name={item.objKey}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      data[item.objKey]
+                    )}
+                    {item.objKey === "tracking_code" ? (
+                      <button onClick={handleSendTrackingCode}>Send</button>
+                    ) : null}
+                  </TableCell>
+                );
+              })}
             </TableRow>
           </TableBody>
         </Table>
