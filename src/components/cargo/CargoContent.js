@@ -65,6 +65,22 @@ export default function CustomizedTables({ match }) {
       );
   }, [match?.params?.id]);
 
+  const handleUpdateStatus = () => {
+    match?.params?.id &&
+      getData(
+        `${BASE_URL}dhl/checking_order_status_update/${match?.params?.id}/`
+      )
+        .then((res) => {
+          getData(`${BASE_URL}etsy/shipment/?id=${match.params.id}`).then(
+            (response) => {
+              setCargoList(response.data);
+            }
+          );
+        })
+        .catch((err) => {
+          console.log({ err });
+        });
+  };
   return (
     <TableContainer component={Paper} className={classes.root}>
       <Typography className={classes.header} variant="h3">
@@ -78,7 +94,10 @@ export default function CustomizedTables({ match }) {
             <StyledTableCell align="center">CUSTOMER</StyledTableCell>
             <StyledTableCell align="center">ITEM INDEX</StyledTableCell>
             <StyledTableCell align="center">TYPE</StyledTableCell>
-            <StyledTableCell align="center">STATUS</StyledTableCell>
+            <StyledTableCell align="center">
+              STATUS
+              <br /> <button onClick={handleUpdateStatus}>Update</button>
+            </StyledTableCell>
             <StyledTableCell align="center">HAS LABEL?</StyledTableCell>
             <StyledTableCell align="center">TRACKING ID</StyledTableCell>
           </TableRow>
