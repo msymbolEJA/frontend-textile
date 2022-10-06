@@ -972,7 +972,7 @@ function AllOrdersTable() {
                       name: "explanation",
                       onChange,
                       from: "all-orders",
-                      minWidth: 500,
+                      minWidth: NON_SKU ? 500 : 250,
                     }}
                   />
                   {!isBeyazit && (
@@ -989,7 +989,7 @@ function AllOrdersTable() {
                       {...{
                         row,
                         name: "gift_message",
-                        style: { minWidth: 240 },
+                        style: { minWidth: NON_SKU ? 240 : 150 },
                       }}
                     />
                   )}
@@ -1177,7 +1177,24 @@ function AllOrdersTable() {
           </Button>
         </div>
         <hr />
-
+        {selectedTag === "in_progress" &&
+          process.env.REACT_APP_GOOGLE_SHEET_LINK && (
+            <div
+              style={{
+                marginRight: "10px",
+                textAlign: "right",
+              }}
+            >
+              <a
+                style={{ fontSize: "1rem", marginTop: "10px" }}
+                href={process.env.REACT_APP_GOOGLE_SHEET_LINK}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Open Google Sheet
+              </a>
+            </div>
+          )}
         <div
           style={{
             display:
@@ -1218,23 +1235,6 @@ function AllOrdersTable() {
               <FormattedMessage id="int" defaultMessage="International" />
             </Button>
           </div>
-          {selectedTag === "in_progress" &&
-            process.env.REACT_APP_STORE_NAME === "Linen Serisi" && (
-              <div
-                style={{
-                  marginRight: "10px",
-                }}
-              >
-                <a
-                  style={{ fontSize: "1rem", marginTop: "10px" }}
-                  href="https://docs.google.com/spreadsheets/d/1AMgAWogdjd4vFGrTOVsyxE_2LpYhdcOecUKgdkh8P-g/edit#gid=0"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Visit Google Sheet
-                </a>
-              </div>
-            )}
         </div>
         <div
           style={{
