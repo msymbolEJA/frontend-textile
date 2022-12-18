@@ -1064,9 +1064,10 @@ function App({ history }) {
                     //onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                     style={{
                       pointerEvents:
-                        loading ||
-                        row["status"] === "in_progress" ||
-                        row["status"] === "ready"
+                        (loading ||
+                          row["status"] === "in_progress" ||
+                          row["status"] === "ready") &&
+                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi"
                           ? "none"
                           : "auto",
                       backgroundColor:
@@ -1103,8 +1104,10 @@ function App({ history }) {
                         <ShoppingBasketIcon color="secondary" />
                       ) : null}
                       <br />
-                      {row["status"] === "in_progress" ||
-                      row["status"] === "ready" ? null : (
+                      {(row["status"] === "in_progress" ||
+                        row["status"] === "ready") &&
+                      process.env.REACT_APP_STORE_NAME !==
+                        "Kalpli Serisi" ? null : (
                         <>
                           <RepeatIcon
                             style={{
