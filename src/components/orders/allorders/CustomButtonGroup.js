@@ -70,7 +70,7 @@ const CustomButtonGroup = ({
 
   let localRole = localStorage.getItem("localRole");
 
-  if (localRole === "workshop_designer") {
+  if (localRole === "workshop_designer" || localRole === "workshop_designer2") {
     return null;
   }
 

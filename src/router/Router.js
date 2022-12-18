@@ -36,6 +36,8 @@ import Favourite from "../components/favourites/Favourite";
 const history = require("history").createBrowserHistory();
 
 const AppRouter = () => {
+  const localRole = localStorage.getItem("localRole");
+
   const isBeyazit =
     (localStorage.getItem("localRole") === "workshop_manager" ||
       !localStorage.getItem("localRole") ||
@@ -51,7 +53,9 @@ const AppRouter = () => {
         <Route path="/reset/:id" component={ResetPassword} />
         <Route path="/forgot" component={ForgetPassword} />
         <Route exact path="/login" component={Login} />
-        {isBeyazit ? (
+        {isBeyazit ||
+        localRole === "workshop_designer" ||
+        localRole === "workshop_designer2" ? (
           <>
             <PrivateRouter component={Navbar} />
             <PrivateRouter exact path="/cargo-list" component={CargoList} />

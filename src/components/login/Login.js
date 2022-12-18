@@ -129,7 +129,10 @@ export default function Login() {
             localStorage.setItem("workshop", response?.data?.workshop);
             console.log("Logged in succesfully!");
             setAuth(true);
-            if (response?.data?.role === "workshop_designer") {
+            if (
+              response?.data?.role === "workshop_designer" ||
+              response?.data?.role === "workshop_designer2"
+            ) {
               history.push(
                 `/all-orders?&status=in_progress&limit=${
                   PAGE_ROW_NUMBER || 25

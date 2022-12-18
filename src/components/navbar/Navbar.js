@@ -200,7 +200,10 @@ export default function MenuAppBar() {
   };
 
   const handleMainPage = () => {
-    if (localRole === "workshop_designer") {
+    if (
+      localRole === "workshop_designer" ||
+      localRole === "workshop_designer2"
+    ) {
       return null;
     } else {
       history.push("/");
@@ -244,7 +247,7 @@ export default function MenuAppBar() {
     localRole === "shop_manager" ||
     localRole === "shop_packer"
       ? "pending"
-      : localRole === "workshop_designer"
+      : localRole === "workshop_designer" || localRole === "workshop_designer2"
       ? "in_progress"
       : "awaiting";
   // console.log("Navbar newStatu", newStatu);
@@ -314,28 +317,31 @@ export default function MenuAppBar() {
             )}
           </IconButton>
           {/* Only can see by workshop users. */}
-          {!isBeyazit && userRole?.includes("workshop") && (
-            <>
-              <Badge
-                badgeContent={notification?.count}
-                className="cp"
-                color="secondary"
-                children={<NotificationsIcon />}
-                onClick={() => toggleDrawer(true)}
-              />
-              <Drawer
-                anchor="top"
-                open={notification.drawer}
-                onClose={() => toggleDrawer(false)}
-              >
-                <Notification
-                  toggleDrawer={toggleDrawer}
-                  notification={notification}
-                  handleNotification={handleNotification}
+          {!isBeyazit &&
+            localRole !== "workshop_designer" &&
+            localRole !== "workshop_designer2" &&
+            userRole?.includes("workshop") && (
+              <>
+                <Badge
+                  badgeContent={notification?.count}
+                  className="cp"
+                  color="secondary"
+                  children={<NotificationsIcon />}
+                  onClick={() => toggleDrawer(true)}
                 />
-              </Drawer>
-            </>
-          )}
+                <Drawer
+                  anchor="top"
+                  open={notification.drawer}
+                  onClose={() => toggleDrawer(false)}
+                >
+                  <Notification
+                    toggleDrawer={toggleDrawer}
+                    notification={notification}
+                    handleNotification={handleNotification}
+                  />
+                </Drawer>
+              </>
+            )}
           <div className={classes.title}>
             <div
               style={{
@@ -397,7 +403,9 @@ export default function MenuAppBar() {
                   </Button>
                 </>
               ) : null}
-              {mobileView || localRole === "workshop_designer" ? null : (
+              {mobileView ||
+              localRole === "workshop_designer" ||
+              localRole === "workshop_designer2" ? null : (
                 <Button
                   color="primary"
                   variant="outlined"
@@ -418,7 +426,10 @@ export default function MenuAppBar() {
                   />
                 </Button>
               )}
-              {!isBeyazit && window?.location?.pathname !== "/search" ? (
+              {!isBeyazit &&
+              localRole !== "workshop_designer" &&
+              localRole !== "workshop_designer2" &&
+              window?.location?.pathname !== "/search" ? (
                 <OutlinedInput
                   type="text"
                   defaultValue=""
@@ -587,12 +598,18 @@ export default function MenuAppBar() {
                   </div>
                 )}
 
-                <MenuItem id="best-seller" onClick={(e) => handleDirClick(e)}>
-                  <FormattedMessage
-                    id="statistics"
-                    defaultMessage="Statistics"
-                  />
-                </MenuItem>
+                {localRole !== "workshop_designer" &&
+                  localRole !== "workshop_designer2" && (
+                    <MenuItem
+                      id="best-seller"
+                      onClick={(e) => handleDirClick(e)}
+                    >
+                      <FormattedMessage
+                        id="statistics"
+                        defaultMessage="Statistics"
+                      />
+                    </MenuItem>
+                  )}
 
                 {(userRole === "admin" ||
                   userRole === "shop_manager" ||

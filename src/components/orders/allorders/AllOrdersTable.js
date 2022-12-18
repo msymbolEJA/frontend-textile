@@ -766,9 +766,12 @@ function AllOrdersTable() {
                 />
               </StyledTableCell>
 
-              <StyledTableCell align="center">
-                <FormattedMessage id="buyer" defaultMessage="Buyer" />
-              </StyledTableCell>
+              {localRole !== "workshop_designer" &&
+                localRole !== "workshop_designer2" && (
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="buyer" defaultMessage="Buyer" />
+                  </StyledTableCell>
+                )}
               {/*                   <StyledTableCell align="center">
                     <FormattedMessage id="supplier" defaultMessage="Supplier" />
                   </StyledTableCell> */}
@@ -799,25 +802,40 @@ function AllOrdersTable() {
                   <StyledTableCell align="center">
                     <FormattedMessage id="type" defaultMessage="Type" />
                   </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <FormattedMessage id="var1" />
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <FormattedMessage id="var2" />
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <FormattedMessage id="var3" />
-                  </StyledTableCell>
+                  {localRole !== "workshop_designer" &&
+                    localRole !== "workshop_designer2" && (
+                      <StyledTableCell align="center">
+                        <FormattedMessage id="var1" />
+                      </StyledTableCell>
+                    )}
+                  {localRole !== "workshop_designer" &&
+                    localRole !== "workshop_designer2" && (
+                      <StyledTableCell align="center">
+                        <FormattedMessage id="var2" />
+                      </StyledTableCell>
+                    )}
+                  {localRole !== "workshop_designer" &&
+                    localRole !== "workshop_designer2" && (
+                      <StyledTableCell align="center">
+                        <FormattedMessage id="var3" />
+                      </StyledTableCell>
+                    )}
                   <StyledTableCell align="center">
                     <FormattedMessage id="var4" />
                   </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <FormattedMessage id="var5" />
-                  </StyledTableCell>
+                  {localRole !== "workshop_designer" &&
+                    localRole !== "workshop_designer2" && (
+                      <StyledTableCell align="center">
+                        <FormattedMessage id="var5" />
+                      </StyledTableCell>
+                    )}
 
-                  <StyledTableCell align="center">
-                    <FormattedMessage id="var6" />
-                  </StyledTableCell>
+                  {localRole !== "workshop_designer" &&
+                    localRole !== "workshop_designer2" && (
+                      <StyledTableCell align="center">
+                        <FormattedMessage id="var6" />
+                      </StyledTableCell>
+                    )}
                   {/*          <StyledTableCell align="center">
                     <FormattedMessage id="goldGr" />
                   </StyledTableCell> */}
@@ -829,18 +847,20 @@ function AllOrdersTable() {
                   defaultMessage="Explanation"
                 />
               </StyledTableCell>
-              {!isBeyazit && (
-                <StyledTableCell
-                  align="center"
-                  onClick={() => sortByGiftMessages()}
-                  style={{ cursor: "pointer" }}
-                >
-                  <FormattedMessage
-                    id="giftMessage"
-                    defaultMessage="Gift Message"
-                  />
-                </StyledTableCell>
-              )}
+              {!isBeyazit &&
+                localRole !== "workshop_designer" &&
+                localRole !== "workshop_designer2" && (
+                  <StyledTableCell
+                    align="center"
+                    onClick={() => sortByGiftMessages()}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <FormattedMessage
+                      id="giftMessage"
+                      defaultMessage="Gift Message"
+                    />
+                  </StyledTableCell>
+                )}
               <StyledTableCell align="center">
                 <FormattedMessage id="image" defaultMessage="Image" />
               </StyledTableCell>
@@ -903,7 +923,10 @@ function AllOrdersTable() {
                   />
                   {/*   <CustomTableCell {...{ row, name: "ready_date" }} /> */}
 
-                  <CustomTableCell {...{ row, name: "buyer" }} />
+                  {localRole !== "workshop_designer" &&
+                    localRole !== "workshop_designer2" && (
+                      <CustomTableCell {...{ row, name: "buyer" }} />
+                    )}
                   {/*   <CustomTableCell {...{ row, name: "supplier" }} /> */}
 
                   {/*    <CustomTableCell {...{ row, name: "status" }} /> */}
@@ -947,13 +970,28 @@ function AllOrdersTable() {
                     <>
                       <CustomTableCell {...{ row, name: "type" }} />
                       {/* This wil change with shopify */}
-                      <CustomTableCell {...{ row, name: "length" }} />
-                      <CustomTableCell {...{ row, name: "color" }} />
-                      <CustomTableCell {...{ row, name: "qty" }} />
+                      {localRole !== "workshop_designer" &&
+                        localRole !== "workshop_designer2" && (
+                          <CustomTableCell {...{ row, name: "length" }} />
+                        )}
+                      {localRole !== "workshop_designer" &&
+                        localRole !== "workshop_designer2" && (
+                          <CustomTableCell {...{ row, name: "color" }} />
+                        )}
+                      {localRole !== "workshop_designer" &&
+                        localRole !== "workshop_designer2" && (
+                          <CustomTableCell {...{ row, name: "qty" }} />
+                        )}
                       <CustomTableCell {...{ row, name: "size" }} />
-                      <CustomTableCell {...{ row, name: "start" }} />
+                      {localRole !== "workshop_designer" &&
+                        localRole !== "workshop_designer2" && (
+                          <CustomTableCell {...{ row, name: "start" }} />
+                        )}
                       {/* --------------------------- */}
-                      <CustomTableCell {...{ row, name: "space" }} />
+                      {localRole !== "workshop_designer" &&
+                        localRole !== "workshop_designer2" && (
+                          <CustomTableCell {...{ row, name: "space" }} />
+                        )}
                       {/*   <EditableTableCell
                         onClick={(e) => e.stopPropagation()}
                         {...{
@@ -975,24 +1013,26 @@ function AllOrdersTable() {
                       minWidth: NON_SKU ? 500 : 250,
                     }}
                   />
-                  {!isBeyazit && (
-                    <CustomTableCell
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                      onBlur={(e) => {
-                        e.stopPropagation();
-                      }}
-                      onChange={(e) => {
-                        e.stopPropagation();
-                      }}
-                      {...{
-                        row,
-                        name: "gift_message",
-                        style: { minWidth: NON_SKU ? 240 : 150 },
-                      }}
-                    />
-                  )}
+                  {!isBeyazit &&
+                    localRole !== "workshop_designer" &&
+                    localRole !== "workshop_designer2" && (
+                      <CustomTableCell
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        onBlur={(e) => {
+                          e.stopPropagation();
+                        }}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                        }}
+                        {...{
+                          row,
+                          name: "gift_message",
+                          style: { minWidth: NON_SKU ? 240 : 150 },
+                        }}
+                      />
+                    )}
                   <td
                     style={{ padding: 10, borderBottom: "1px solid #e0e0e0" }}
                   >
@@ -1178,6 +1218,8 @@ function AllOrdersTable() {
         </div>
         <hr />
         {selectedTag === "in_progress" &&
+          localRole !== "workshop_designer" &&
+          localRole !== "workshop_designer2" &&
           process.env.REACT_APP_GOOGLE_SHEET_LINK && (
             <div
               style={{
@@ -1251,7 +1293,8 @@ function AllOrdersTable() {
               marginLeft: 16,
             }}
           >
-            {loading ? (
+            {localRole === "workshop_designer" ||
+            localRole === "workshop_designer2" ? null : loading ? (
               <FormattedMessage id="updating" />
             ) : (
               <>

@@ -148,7 +148,7 @@ const Dashboard = () => {
     localRole === "shop_manager" ||
     localRole === "shop_packer"
       ? "pending"
-      : localRole === "workshop_designer"
+      : (localRole === "workshop_designer" || localRole === "workshop_designer2")
       ? "in_progress"
       : "awaiting";
   // console.log({ localRole });
