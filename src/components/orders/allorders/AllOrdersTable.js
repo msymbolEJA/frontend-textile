@@ -790,12 +790,12 @@ function AllOrdersTable() {
                   <StyledTableCell align="center">
                     <FormattedMessage id="color" defaultMessage="Color" />
                   </StyledTableCell>
-                  {/* <StyledTableCell align="center">
+                  <StyledTableCell align="center">
                     <FormattedMessage
                       id="explanationMod"
                       defaultMessage="Mod-Explanation"
                     />
-                  </StyledTableCell> */}
+                  </StyledTableCell>
                 </>
               ) : (
                 <>
@@ -956,7 +956,7 @@ function AllOrdersTable() {
                               : "variation_2_value",
                         }}
                       />
-                      {/* <EditableTableCell
+                      <EditableTableCell
                         onClick={(e) => e.stopPropagation()}
                         {...{
                           row,
@@ -964,7 +964,7 @@ function AllOrdersTable() {
                           onChange,
                           minWidth: 250,
                         }}
-                      /> */}
+                      />
                     </>
                   ) : (
                     <>
@@ -1010,7 +1010,7 @@ function AllOrdersTable() {
                       name: "explanation",
                       onChange,
                       from: "all-orders",
-                      minWidth: NON_SKU ? 500 : 250,
+                      minWidth: 250,
                     }}
                   />
                   {!isBeyazit &&
