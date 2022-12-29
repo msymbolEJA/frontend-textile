@@ -62,7 +62,7 @@ const EditableTableCell = ({ row, name, onChange, trackingNumber }) => {
         onChange={handleContentChange} // handle innerHTML change
         onBlur={handleBlur} // handle innerHTML change
       />
-      {trackingNumber && (
+      {trackingNumber && trackingNumber !== "---" && (
         <a
           href={trackingNumber}
           target="_blank"

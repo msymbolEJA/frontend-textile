@@ -95,6 +95,8 @@ const OrderDetails = ({ match }) => {
 
   const [logs, setLogs] = useState([]);
   const [isPdfExist, setIsPdfExist] = useState(false);
+  const [receiptId, setReceiptId] = useState();
+  const [isLabelExist, setIsLabelExist] = useState(false);
   // console.log("isPdfExist", isPdfExist);
   const [refresh, setRefresh] = useState(false);
   const classes = useStyles();
@@ -120,6 +122,19 @@ const OrderDetails = ({ match }) => {
         console.log(error);
       });
   };
+  useEffect(() => {
+    if (receiptId) {
+      fetch(
+        `${BASE_URL}media/dhl/shipments/${receiptId}/${match.params.id}.pdf`
+      )
+        .then((res) => {
+          if (res.status !== 404) {
+            setIsLabelExist(true);
+          }
+        })
+        .catch((err) => console.log("err", err));
+    }
+  }, [match.params.id, receiptId]);
 
   useEffect(() => {
     fetch(`${BASE_URL}media/pdf/${match.params.id}.pdf`)
@@ -134,6 +149,7 @@ const OrderDetails = ({ match }) => {
     let urlLogs = `${BASE_URL}etsy/dateLogs/${match.params.id}/`;
     getData(url)
       .then((res) => {
+        setReceiptId(res?.data?.receipt_id);
         setRows([res.data]);
       })
       .then(() => {
@@ -501,13 +517,15 @@ const OrderDetails = ({ match }) => {
           >
             Print DHL LABEL
           </Button>
-          <a
-            href={`${BASE_URL}media/dhl/shipments/${rows?.[0]?.receipt_id}/${match.params.id}.pdf`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            View Label
-          </a>
+          {isLabelExist && (
+            <a
+              href={`${BASE_URL}media/dhl/shipments/${rows?.[0]?.receipt_id}/${match.params.id}.pdf`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View Label
+            </a>
+          )}
         </div>
       )}
 
