@@ -96,15 +96,15 @@ export default function CustomizedTables() {
     getData(`${BASE_URL}etsy/cargo_list/${getSupplier}`).then((response) => {
       let dataObj = response.data;
       const formattedData = dataObj
-        ? Object.keys(dataObj).map((key) => {
+        ? Object.keys(dataObj).flatMap((key) => {
             return Object.keys(dataObj[key]).map((key2) => ({
               ...dataObj[key][key2],
               refNumber: key2,
+              supplier: isBeyazit?"":key,
             }));
           })
         : [];
-
-      setCargoList(formattedData);
+       setCargoList(formattedData.sort((a, b) => b.id - a.id));
     });
   }, [getSupplier]);
 
@@ -278,14 +278,13 @@ export default function CustomizedTables() {
                 <td colSpan="50">No Item!</td>
               </tr>
             ) : (
-              cargoList.map((ws, j) =>
-                ws.reverse().map((row, i) => {
+              cargoList.map((row, i) => {
                   return (
                     <StyledTableRow
                       key={i}
                       onClick={() => handleRowClick(row.id)}
                     >
-                      <StyledTableCell align="center">{row.id}</StyledTableCell>
+                      <StyledTableCell align="center">{row.id}<br />({ row.supplier})</StyledTableCell>
                       <StyledTableCell
                         align="center"
                         component="th"
@@ -436,7 +435,7 @@ export default function CustomizedTables() {
                       )}
                     </StyledTableRow>
                   );
-                })
+                }
               )
             )}
           </TableBody>
