@@ -515,7 +515,7 @@ const OrderDetails = ({ match }) => {
             variant="contained"
             onClick={createCargoLabel}
           >
-            Print DHL LABEL
+            Get DHL LABEL
           </Button>
           {isLabelExist && (
             <a
