@@ -287,7 +287,7 @@ const UpdateDetailsTable = ({ row }) => {
                     id: "state",
                     defaultMessage: "State",
                   })}
-                  name="city"
+                  name="state"
                   defaultValue={accountData?.state}
                   onChange={(e) => changeHandler(e)}
                 />
