@@ -1067,7 +1067,8 @@ function App({ history }) {
                         (loading ||
                           row["status"] === "in_progress" ||
                           row["status"] === "ready") &&
-                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi"
+                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+                        process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic"
                           ? "none"
                           : "auto",
                       backgroundColor:
@@ -1106,8 +1107,9 @@ function App({ history }) {
                       <br />
                       {(row["status"] === "in_progress" ||
                         row["status"] === "ready") &&
-                      process.env.REACT_APP_STORE_NAME !==
-                        "Kalpli Serisi" ? null : (
+                      process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+                      process.env.REACT_APP_STORE_NAME_ORJ !==
+                        "Silveristic" ? null : (
                         <>
                           <RepeatIcon
                             style={{
@@ -1264,7 +1266,11 @@ function App({ history }) {
                       style={{
                         padding: 10,
                         pointerEvents:
-                          row.status === "pending" ? "auto" : "none",
+                          process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic"
+                            ? "auto"
+                            : row.status === "pending"
+                            ? "auto"
+                            : "none",
                         minWidth: 90,
                       }}
                       onClick={(e) => {

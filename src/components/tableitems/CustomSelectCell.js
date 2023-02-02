@@ -23,6 +23,7 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
   let disabledForReadyNProgress =
     !localRole?.includes("workshop") &&
     process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+    process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" &&
     (row[name] === "in_progress" || row[name] === "ready");
 
   return (
