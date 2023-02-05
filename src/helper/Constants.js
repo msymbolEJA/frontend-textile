@@ -16,6 +16,7 @@ export const nonAdminTagsData = [
   "ready",
   "in_transit",
   "cancelled",
+  "shipped",
 ];
 export const beyazitTagsData = ["awaiting", "in_progress", "ready"];
 
@@ -202,7 +203,7 @@ export const updateDetailsMappingTable = [
   { id: 5, name: "First Line", objKey: "first_line" },
   { id: 5, name: "Second Line", objKey: "second_line" },
   { id: 5, name: "City", objKey: "city" },
-  { id: 5, name: "State", objKey: "state"},
+  { id: 5, name: "State", objKey: "state" },
   { id: 5, name: "Zip", objKey: "zip" },
   { id: 5, name: "Country Id", objKey: "country_id", type: "number" },
   {

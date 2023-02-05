@@ -220,7 +220,7 @@ function AllOrdersTable() {
     setloading(true);
     if (!searchWord) {
       if (filters?.status === "shipped" || filters?.status === "ready") {
-        filters.ordering = "-last_updated";
+        filters.ordering = "-id";
       } else filters.ordering = "-id";
       const url = `${BASE_URL}etsy/orders/?${`status=${
         filters?.status || "awaiting"
@@ -426,6 +426,22 @@ function AllOrdersTable() {
   //   iframe.src = url;
   // };
 
+  const changeGoogleSheetReadyStatus = (id, is_ready) => {
+    console.log(
+      "🚀 ~ file: AllOrdersTable.js:430 ~ changeGoogleSheetReadyStatus ~ is_ready",
+      is_ready
+    );
+    putData(`${BASE_URL}etsy/mapping/${id}/`, { is_ready })
+      .then((response) => {
+        console.log("response", response);
+        getData(url);
+        setRefreshTable(!refreshTable);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        console.log(error.response);
+      });
+  };
   const changeOrderStatus = (id, status) => {
     putData(`${BASE_URL}etsy/mapping/${id}/`, { status })
       .then((response) => {
@@ -847,6 +863,14 @@ function AllOrdersTable() {
                   defaultMessage="Explanation"
                 />
               </StyledTableCell>
+              {process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ? (
+                <StyledTableCell align="center">
+                  <FormattedMessage
+                    id="showInGoogleSheet"
+                    defaultMessage="Google Sheet?"
+                  />
+                </StyledTableCell>
+              ) : null}
               {!isBeyazit &&
                 localRole !== "workshop_designer" &&
                 localRole !== "workshop_designer2" && (
@@ -1013,6 +1037,30 @@ function AllOrdersTable() {
                       minWidth: 250,
                     }}
                   />
+                  {process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ? (
+                    <td
+                      style={{
+                        padding: 10,
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      onBlur={(e) => {
+                        e.stopPropagation();
+                      }}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <Checkbox
+                        checked={row.is_ready}
+                        onChange={(e) =>
+                          changeGoogleSheetReadyStatus(row.id, e.target.checked)
+                        }
+                        color="primary"
+                      />
+                    </td>
+                  ) : null}
                   {!isBeyazit &&
                     localRole !== "workshop_designer" &&
                     localRole !== "workshop_designer2" && (
