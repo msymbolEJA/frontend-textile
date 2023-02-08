@@ -427,14 +427,15 @@ function AllOrdersTable() {
   // };
 
   const changeGoogleSheetReadyStatus = (id, is_ready) => {
-    console.log(
-      "🚀 ~ file: AllOrdersTable.js:430 ~ changeGoogleSheetReadyStatus ~ is_ready",
-      is_ready
-    );
     putData(`${BASE_URL}etsy/mapping/${id}/`, { is_ready })
       .then((response) => {
         console.log("response", response);
-        getData(url);
+        localStorage.removeItem(
+          `${localStoragePrefix}-in_progress-${
+            PAGE_ROW_NUMBER || 2500
+          }-0-last_updated`
+        );
+        getOrdersInProgress();
         setRefreshTable(!refreshTable);
       })
       .catch((error) => {
@@ -863,7 +864,8 @@ function AllOrdersTable() {
                   defaultMessage="Explanation"
                 />
               </StyledTableCell>
-              {process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ? (
+              {selectedTag === "in_progress" &&
+              process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ? (
                 <StyledTableCell align="center">
                   <FormattedMessage
                     id="showInGoogleSheet"
@@ -1037,7 +1039,8 @@ function AllOrdersTable() {
                       minWidth: 250,
                     }}
                   />
-                  {process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ? (
+                  {selectedTag === "in_progress" &&
+                  process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ? (
                     <td
                       style={{
                         padding: 10,
