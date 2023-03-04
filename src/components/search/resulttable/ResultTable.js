@@ -563,7 +563,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                   colName="supplier"
                   setOrderBy={setOrderBy}
                 />
-                {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+                {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas" ? (
                   <SortableTableCell
                     property="sku"
                     handleRequestSort={handleRequestSort}
@@ -828,7 +828,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                           setDisableCells,
                         }}
                       />
-                      {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+                      {process.env.REACT_APP_STORE_NAME === "Linen Serisi"  || process.env.REACT_APP_STORE_NAME === "Dallas" ? (
                         <EditableTableCell
                           {...{
                             row,

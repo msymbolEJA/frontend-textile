@@ -865,7 +865,9 @@ function AllOrdersTable() {
                 />
               </StyledTableCell>
               {selectedTag === "in_progress" &&
-              process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ? (
+              (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+                process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
+                process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                 <StyledTableCell align="center">
                   <FormattedMessage
                     id="showInGoogleSheet"
@@ -1040,7 +1042,10 @@ function AllOrdersTable() {
                     }}
                   />
                   {selectedTag === "in_progress" &&
-                  process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ? (
+                  (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+                    process.env.REACT_APP_STORE_NAME_ORJ ===
+                      "ShinyCustomized" ||
+                    process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                     <td
                       style={{
                         padding: 10,
@@ -1292,7 +1297,8 @@ function AllOrdersTable() {
           style={{
             display:
               process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
-              process.env.REACT_APP_STORE_NAME === "Linen Serisi"
+              process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+              process.env.REACT_APP_STORE_NAME === "Dallas"
                 ? "flex"
                 : "none",
             color: "#001A33",
