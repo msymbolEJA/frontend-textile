@@ -1043,8 +1043,7 @@ function AllOrdersTable() {
                   />
                   {selectedTag === "in_progress" &&
                   (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
-                    process.env.REACT_APP_STORE_NAME_ORJ ===
-                      "ShinyCustomized" ||
+                    process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
                     process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                     <td
                       style={{
@@ -1298,7 +1297,8 @@ function AllOrdersTable() {
             display:
               process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
               process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-              process.env.REACT_APP_STORE_NAME === "Dallas"
+              process.env.REACT_APP_STORE_NAME === "Dallas" ||
+              process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                 ? "flex"
                 : "none",
             color: "#001A33",

@@ -874,7 +874,7 @@ function App({ history }) {
                   setOrderBy={setOrderBy}
                 />
               ) : null}
-              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas" ? (
+              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                 <SortableTableCell
                   property="sku"
                   handleRequestSort={handleRequestSort}
@@ -1157,7 +1157,7 @@ function App({ history }) {
                         }}
                       />
                     ) : null}
-                    {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas" ? (
+                    {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                       <EditableTableCell
                         style={{ fontWeight: "bold" }}
                         {...{
@@ -1257,7 +1257,7 @@ function App({ history }) {
                         name: "explanation",
                         onChange,
                         minWidth:
-                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas"
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
                             : 0,
                       }}
@@ -1326,7 +1326,7 @@ function App({ history }) {
                         name: "personalization",
                         onChange,
                         minWidth:
-                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas"
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
                             : 0,
                       }}
@@ -1337,7 +1337,7 @@ function App({ history }) {
                         name: "message_from_buyer",
                         onChange,
                         minWidth:
-                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas"
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 150
                             : 0,
                       }}

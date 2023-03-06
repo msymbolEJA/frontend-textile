@@ -112,7 +112,7 @@ export default function InputForm({
                   defaultMessage: "Supplier",
                 })}
               </InputLabel>
-              {STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas" ? (
+              {STORE_NAME === "Linen Serisi" || STORE_NAME === "Dallas" || STORE_NAME === "Güneş Tekstil" ? (
                 <Select
                   labelId="demo-simple-select-outlined-label"
                   id="demo-simple-select-outlined"
@@ -141,7 +141,7 @@ export default function InputForm({
                 </Select>
               )}
             </FormControl>
-            {STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Dallas" ? (
+            {STORE_NAME === "Linen Serisi" || STORE_NAME === "Dallas"|| STORE_NAME === "Güneş Tekstil" ? (
               <>
                 <TextField
                   variant="outlined"
