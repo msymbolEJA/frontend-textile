@@ -616,7 +616,9 @@ function App({ history }) {
           >
             {/* <hr/> */}
             <span />
-            {STORE_ORJ === "Linenia" || STORE_ORJ === "DALLAS" || STORE_ORJ === "ShinyCustomized" ? (
+            {STORE_ORJ === "Linenia" ||
+            STORE_ORJ === "DALLAS" ||
+            STORE_ORJ === "ShinyCustomized" ? (
               <div>
                 {repeatReasonsMenuItemsLinenia.map((reason) => (
                   <StyledMenuItem key={reason.id}>
@@ -655,6 +657,16 @@ function App({ history }) {
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
+                    primary={repeatReasons.NEW_COLOR}
+                    id="Wrong Color"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.NEW_COLOR
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
                     primary={repeatReasons.STONE_FALL}
                     id="Stone Fall"
                     onClick={handleRepeatMenuItemClick(
@@ -670,6 +682,16 @@ function App({ history }) {
                     onClick={handleRepeatMenuItemClick(
                       row,
                       repeatReasons.DIFFERENT_PRODUCT
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary={repeatReasons.NEW_LINE_UP}
+                    id="Different Product"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.NEW_LINE_UP
                     )}
                   />
                 </StyledMenuItem>
@@ -720,6 +742,16 @@ function App({ history }) {
                     onClick={handleRepeatMenuItemClick(
                       row,
                       repeatReasons.BREAK_OFF
+                    )}
+                  />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemText
+                    primary={repeatReasons.BROKEN_LOCK}
+                    id="break off"
+                    onClick={handleRepeatMenuItemClick(
+                      row,
+                      repeatReasons.BROKEN_LOCK
                     )}
                   />
                 </StyledMenuItem>

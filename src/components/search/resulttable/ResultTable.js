@@ -304,6 +304,16 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
           </StyledMenuItem>
           <StyledMenuItem>
             <ListItemText
+              primary={repeatReasons.NEW_COLOR}
+              id="Wrong Color"
+              onClick={handleRepeatMenuItemClick(
+                row,
+                repeatReasons.NEW_COLOR
+              )}
+            />
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <ListItemText
               primary={repeatReasons.STONE_FALL}
               id="Stone Fall"
               onClick={handleRepeatMenuItemClick(row, repeatReasons.STONE_FALL)}
@@ -316,6 +326,16 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
               onClick={handleRepeatMenuItemClick(
                 row,
                 repeatReasons.DIFFERENT_PRODUCT
+              )}
+            />
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <ListItemText
+              primary={repeatReasons.NEW_LINE_UP}
+              id="Different Product"
+              onClick={handleRepeatMenuItemClick(
+                row,
+                repeatReasons.NEW_LINE_UP
               )}
             />
           </StyledMenuItem>
@@ -361,6 +381,13 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
               primary={repeatReasons.BREAK_OFF}
               id="break off"
               onClick={handleRepeatMenuItemClick(row, repeatReasons.BREAK_OFF)}
+            />
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <ListItemText
+              primary={repeatReasons.BROKEN_LOCK}
+              id="break off"
+              onClick={handleRepeatMenuItemClick(row, repeatReasons.BROKEN_LOCK)}
             />
           </StyledMenuItem>
           <StyledMenuItem>
