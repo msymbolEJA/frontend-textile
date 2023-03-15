@@ -910,11 +910,9 @@ function AllOrdersTable() {
                   style={{
                     backgroundColor:
                       process.env.REACT_APP_STORE_NAME === "Yildiz Serisi"
-                        ? (row["country_id"] !== "209" ||
-                            row["country_id"] !== "79" ||
-                            row["country_id"] !== "US" ||
-                            row["country_id"] !== "CA") &&
-                          row["shop"] === "Shopify"
+                        ? !["209", "79", "US", "CA"].includes(
+                            row["country_id"]
+                          ) && row["shop"] === "Shopify"
                           ? "#dad0d4"
                           : row["type"]?.includes("14K") ||
                             row["explanation"]?.includes("14K")
