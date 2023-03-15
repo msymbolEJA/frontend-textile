@@ -909,8 +909,19 @@ function AllOrdersTable() {
                   // onClick={() => handleRowClick(row.id)}
                   style={{
                     backgroundColor:
-                      row["type"]?.includes("14K") ||
-                      row["explanation"]?.includes("14K")
+                      process.env.REACT_APP_STORE_NAME === "Yildiz Serisi"
+                        ? (row["country_id"] !== "209" ||
+                            row["country_id"] !== "79" ||
+                            row["country_id"] !== "US" ||
+                            row["country_id"] !== "CA") &&
+                          row["shop"] === "Shopify"
+                          ? "#dad0d4"
+                          : row["type"]?.includes("14K") ||
+                            row["explanation"]?.includes("14K")
+                          ? "#ffef8a"
+                          : null
+                        : row["type"]?.includes("14K") ||
+                          row["explanation"]?.includes("14K")
                         ? "#ffef8a"
                         : null,
                   }}
@@ -1043,7 +1054,8 @@ function AllOrdersTable() {
                   />
                   {selectedTag === "in_progress" &&
                   (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
-                    process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
+                    process.env.REACT_APP_STORE_NAME_ORJ ===
+                      "ShinyCustomized" ||
                     process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                     <td
                       style={{
