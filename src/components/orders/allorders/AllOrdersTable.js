@@ -220,7 +220,7 @@ function AllOrdersTable() {
     setloading(true);
     if (!searchWord) {
       if (filters?.status === "shipped" || filters?.status === "ready") {
-        filters.ordering = "-id";
+        filters.ordering = '-last_updated';
       } else filters.ordering = "-id";
       const url = `${BASE_URL}etsy/orders/?${`status=${
         filters?.status || "awaiting"
