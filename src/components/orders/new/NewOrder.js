@@ -10,7 +10,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const initialValue = {
   customer: "",
-  supplier: STORE_NAME === "Linen Serisi" || STORE_NAME === "Dallas" || STORE_NAME === "Güneş Tekstil" ? "umraniye" : "asya",
+  supplier: STORE_NAME === "Linen Serisi" || STORE_NAME === "Kadife-1" || STORE_NAME === "Güneş Tekstil" ? "umraniye" : "asya",
   type: "",
   length: "",
   color: "",

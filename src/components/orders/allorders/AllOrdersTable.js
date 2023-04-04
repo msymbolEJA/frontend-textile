@@ -160,8 +160,7 @@ function AllOrdersTable() {
     getData(`${BASE_URL}etsy/get_mapping_update_date/`)
       .then((response) => {
         const l = localStorage.getItem(
-          `${localStoragePrefix}-in_progress-${
-            PAGE_ROW_NUMBER || 2500
+          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 2500
           }-0-last_updated`
         );
         if (response.data.last_updated !== l || bypass) {
@@ -193,7 +192,7 @@ function AllOrdersTable() {
       .catch((error) => {
         console.log("error", error);
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
   const getLastUpdateDate = () => {
@@ -213,7 +212,7 @@ function AllOrdersTable() {
       .catch((error) => {
         console.log("error", error);
       })
-      .finally(() => {});
+      .finally(() => { });
   };
 
   const getListFunc = () => {
@@ -222,13 +221,10 @@ function AllOrdersTable() {
       if (filters?.status === "shipped" || filters?.status === "ready") {
         filters.ordering = '-last_updated';
       } else filters.ordering = "-id";
-      const url = `${BASE_URL}etsy/orders/?${`status=${
-        filters?.status || "awaiting"
-      }`}&is_repeat=${filters?.is_repeat}&is_followup=${
-        filters?.is_followup
-      }&ordering=${filters?.ordering}&limit=${filters?.limit || 0}&offset=${
-        filters?.offset
-      }`;
+      const url = `${BASE_URL}etsy/orders/?${`status=${filters?.status || "awaiting"
+        }`}&is_repeat=${filters?.is_repeat}&is_followup=${filters?.is_followup
+        }&ordering=${filters?.ordering}&limit=${filters?.limit || 0}&offset=${filters?.offset
+        }`;
 
       getData(url)
         .then((response) => {
@@ -295,16 +291,16 @@ function AllOrdersTable() {
         countryFilter === "all"
           ? tmp
           : tmp.filter((item) =>
-              countryFilter === "usa"
-                ? item.country_id === "209"
-                : item.country_id !== "209"
-            );
+            countryFilter === "usa"
+              ? item.country_id === "209"
+              : item.country_id !== "209"
+          );
 
       const ft =
         filters?.status === "in_progress"
           ? resultFilteredByCountry.filter(
-              (item) => !currentBarcodeList.includes(item.id.toString())
-            )
+            (item) => !currentBarcodeList.includes(item.id.toString())
+          )
           : resultFilteredByCountry;
       setRows(ft);
     }
@@ -431,8 +427,7 @@ function AllOrdersTable() {
       .then((response) => {
         console.log("response", response);
         localStorage.removeItem(
-          `${localStoragePrefix}-in_progress-${
-            PAGE_ROW_NUMBER || 2500
+          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 2500
           }-0-last_updated`
         );
         getOrdersInProgress();
@@ -623,7 +618,7 @@ function AllOrdersTable() {
     )
       return;
     putData(`${BASE_URL}etsy/mapping/${id}/`, data)
-      .then((response) => {})
+      .then((response) => { })
       .catch((error) => {
         console.log(error);
       })
@@ -651,8 +646,7 @@ function AllOrdersTable() {
     if (filters?.search) {
       globalSearch(
         // `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
-        `${BASE_URL}etsy/mapping/?search=${
-          filters?.search
+        `${BASE_URL}etsy/mapping/?search=${filters?.search
         }&limit=${25}&offset=${page * 25}`
       )
         .then((response) => {
@@ -865,9 +859,9 @@ function AllOrdersTable() {
                 />
               </StyledTableCell>
               {selectedTag === "in_progress" &&
-              (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
-                process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
-                process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
+                (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+                  process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
+                  process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                 <StyledTableCell align="center">
                   <FormattedMessage
                     id="showInGoogleSheet"
@@ -911,17 +905,17 @@ function AllOrdersTable() {
                     backgroundColor:
                       process.env.REACT_APP_STORE_NAME === "Yildiz Serisi"
                         ? !["209", "79", "US", "CA"].includes(
-                            row["country_id"]
-                          ) && row["shop"] === "Shopify"
+                          row["country_id"]
+                        ) && row["shop"] === "Shopify"
                           ? "#dad0d4"
                           : row["type"]?.includes("14K") ||
                             row["explanation"]?.includes("14K")
-                          ? "#ffef8a"
-                          : null
+                            ? "#ffef8a"
+                            : null
                         : row["type"]?.includes("14K") ||
                           row["explanation"]?.includes("14K")
-                        ? "#ffef8a"
-                        : null,
+                          ? "#ffef8a"
+                          : null,
                   }}
                 >
                   {filters?.status === "ready" ? (
@@ -1051,10 +1045,10 @@ function AllOrdersTable() {
                     }}
                   />
                   {selectedTag === "in_progress" &&
-                  (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
-                    process.env.REACT_APP_STORE_NAME_ORJ ===
+                    (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+                      process.env.REACT_APP_STORE_NAME_ORJ ===
                       "ShinyCustomized" ||
-                    process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
+                      process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                     <td
                       style={{
                         padding: 10,
@@ -1236,38 +1230,38 @@ function AllOrdersTable() {
             <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
               {currentBarcodeList?.length
                 ? currentBarcodeList?.map((item) => (
-                    <p
-                      key={item}
-                      style={{
-                        border: "1px blue solid",
-                        borderRadius: 4,
-                        color: "blue",
-                        margin: "0 5px",
-                        padding: "0 5px",
-                        fontWeight: "bold",
-                        height: "23px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => removeItemfromBarcodeList(item)}
-                    >
-                      {item}
-                      {currentSiblingList
-                        .filter((cs) => cs?.id?.toString() === item?.toString())
-                        .map((s) =>
-                          s.siblings.map((m, index) => (
-                            <span
-                              style={{
-                                color: "black",
-                                fontStyle: "italic",
-                                fontSize: "0.8rem",
-                              }}
-                            >
-                              {`-${m}`}
-                            </span>
-                          ))
-                        )}
-                    </p>
-                  ))
+                  <p
+                    key={item}
+                    style={{
+                      border: "1px blue solid",
+                      borderRadius: 4,
+                      color: "blue",
+                      margin: "0 5px",
+                      padding: "0 5px",
+                      fontWeight: "bold",
+                      height: "23px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => removeItemfromBarcodeList(item)}
+                  >
+                    {item}
+                    {currentSiblingList
+                      .filter((cs) => cs?.id?.toString() === item?.toString())
+                      .map((s) =>
+                        s.siblings.map((m, index) => (
+                          <span
+                            style={{
+                              color: "black",
+                              fontStyle: "italic",
+                              fontSize: "0.8rem",
+                            }}
+                          >
+                            {`-${m}`}
+                          </span>
+                        ))
+                      )}
+                  </p>
+                ))
                 : null}
             </div>
           </div>
@@ -1306,9 +1300,9 @@ function AllOrdersTable() {
           style={{
             display:
               process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
-              process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-              process.env.REACT_APP_STORE_NAME === "Dallas" ||
-              process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                 ? "flex"
                 : "none",
             color: "#001A33",
@@ -1361,9 +1355,9 @@ function AllOrdersTable() {
             }}
           >
             {localRole === "workshop_designer" ||
-            localRole === "workshop_designer2" ? null : loading ? (
-              <FormattedMessage id="updating" />
-            ) : (
+              localRole === "workshop_designer2" ? null : loading ? (
+                <FormattedMessage id="updating" />
+              ) : (
               <>
                 <FormattedMessage id="total" defaultMessage="Total" />{" "}
                 <FormattedMessage
@@ -1374,24 +1368,22 @@ function AllOrdersTable() {
                 />{" "}
                 :{" "}
                 {rows?.length ===
-                Number(
-                  localStorage.getItem(
-                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  Number(
+                    localStorage.getItem(
+                      `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                    )
                   )
-                )
                   ? localStorage.getItem(
+                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  ) ?? 0
+                  : `${rows.length} 
+                    ${selectedTag
+                    ? `/${localStorage.getItem(
                       `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
                     ) ?? 0
-                  : `${rows.length} 
-                    ${
-                      selectedTag
-                        ? `/${
-                            localStorage.getItem(
-                              `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
-                            ) ?? 0
-                          }`
-                        : ""
-                    }
+                    }`
+                    : ""
+                  }
                       `}
                 {selectedTag === "in_progress" && (
                   <>
