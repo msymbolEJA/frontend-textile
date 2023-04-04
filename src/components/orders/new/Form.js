@@ -112,7 +112,7 @@ export default function InputForm({
                   defaultMessage: "Supplier",
                 })}
               </InputLabel>
-              {STORE_NAME === "Linen Serisi" || STORE_NAME === "Kadife-1" || STORE_NAME === "Güneş Tekstil" ? (
+              {STORE_NAME === "Linen Serisi" || STORE_NAME === "Kadife-1" || STORE_NAME === "Mina" || STORE_NAME === "Güneş Tekstil" ? (
                 <Select
                   labelId="demo-simple-select-outlined-label"
                   id="demo-simple-select-outlined"
@@ -141,7 +141,7 @@ export default function InputForm({
                 </Select>
               )}
             </FormControl>
-            {STORE_NAME === "Linen Serisi" || STORE_NAME === "Kadife-1"|| STORE_NAME === "Güneş Tekstil" ? (
+            {STORE_NAME === "Linen Serisi" || STORE_NAME === "Kadife-1" || STORE_NAME === "Mina" || STORE_NAME === "Güneş Tekstil" ? (
               <>
                 <TextField
                   variant="outlined"

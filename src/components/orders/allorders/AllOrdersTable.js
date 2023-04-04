@@ -861,6 +861,7 @@ function AllOrdersTable() {
               {selectedTag === "in_progress" &&
                 (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
                   process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
+                  process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
                   process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                 <StyledTableCell align="center">
                   <FormattedMessage
@@ -1047,7 +1048,8 @@ function AllOrdersTable() {
                   {selectedTag === "in_progress" &&
                     (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
                       process.env.REACT_APP_STORE_NAME_ORJ ===
-                      "ShinyCustomized" ||
+                      "ShinyCustomized" || process.env.REACT_APP_STORE_NAME_ORJ ===
+                      "LinenByMN" ||
                       process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                     <td
                       style={{
@@ -1302,6 +1304,7 @@ function AllOrdersTable() {
               process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
                 process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                 process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                process.env.REACT_APP_STORE_NAME === "Mina" ||
                 process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                 ? "flex"
                 : "none",

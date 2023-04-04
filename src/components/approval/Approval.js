@@ -152,10 +152,8 @@ function App({ history }) {
   const getListFunc = () => {
     setloading(true);
     getData(
-      `${BASE_URL}etsy/mapping/?${
-        filters?.status ? `status=${filters?.status}` : ""
-      }&is_repeat=${filters?.is_repeat}&ordering=${
-        filters?.ordering || "-id"
+      `${BASE_URL}etsy/mapping/?${filters?.status ? `status=${filters?.status}` : ""
+      }&is_repeat=${filters?.is_repeat}&ordering=${filters?.ordering || "-id"
       }&limit=${filters?.limit || 0}&offset=${filters?.offset}`
     )
       .then((response) => {
@@ -281,7 +279,7 @@ function App({ history }) {
       return;
     setloading(true);
     putData(`${BASE_URL}etsy/mapping/${id}/`, data)
-      .then((response) => {})
+      .then((response) => { })
       .catch((error) => {
         console.log(error);
       })
@@ -427,9 +425,8 @@ function App({ history }) {
         newUrl += `limit=${25}&offset=${0}`;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&ordering=-last_updated&limit=${
-          PAGE_ROW_NUMBER || 25
-        }&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_repeat=true&ordering=-last_updated&limit=${PAGE_ROW_NUMBER || 25
+          }&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
@@ -544,8 +541,7 @@ function App({ history }) {
     if (filters?.search) {
       globalSearch(
         // `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
-        `${BASE_URL}etsy/mapping/?search=${
-          filters?.search
+        `${BASE_URL}etsy/mapping/?search=${filters?.search
         }&limit=${25}&offset=${page * 25}`
       )
         .then((response) => {
@@ -617,8 +613,9 @@ function App({ history }) {
             {/* <hr/> */}
             <span />
             {STORE_ORJ === "Linenia" ||
-            STORE_ORJ === "DALLAS" ||
-            STORE_ORJ === "ShinyCustomized" ? (
+              STORE_ORJ === "DALLAS" ||
+              STORE_ORJ === "LinenByMN" ||
+              STORE_ORJ === "ShinyCustomized" ? (
               <div>
                 {repeatReasonsMenuItemsLinenia.map((reason) => (
                   <StyledMenuItem key={reason.id}>
@@ -839,23 +836,21 @@ function App({ history }) {
             )}{" "}
             :{" "}
             {rows.length ===
-            Number(
-              localStorage.getItem(
-                `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+              Number(
+                localStorage.getItem(
+                  `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                )
               )
-            )
               ? localStorage.getItem(
+                `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+              ) ?? 0
+              : `${rows.length} 
+              ${selectedTag
+                ? ` /${localStorage.getItem(
                   `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
                 ) ?? 0
-              : `${rows.length} 
-              ${
-                selectedTag
-                  ? ` /${
-                      localStorage.getItem(
-                        `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
-                      ) ?? 0
-                    }`
-                  : ""
+                }`
+                : ""
               }
                 `}
           </>
@@ -906,7 +901,7 @@ function App({ history }) {
                   setOrderBy={setOrderBy}
                 />
               ) : null}
-              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
+              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                 <SortableTableCell
                   property="sku"
                   handleRequestSort={handleRequestSort}
@@ -1099,8 +1094,8 @@ function App({ history }) {
                         (loading ||
                           row["status"] === "in_progress" ||
                           row["status"] === "ready") &&
-                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
-                        process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic"
+                          process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+                          process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic"
                           ? "none"
                           : "auto",
                       backgroundColor:
@@ -1108,8 +1103,8 @@ function App({ history }) {
                           ? "#FF9494"
                           : row["type"]?.includes("14K") ||
                             row["explanation"]?.includes("14K")
-                          ? "#ffef8a"
-                          : null,
+                            ? "#ffef8a"
+                            : null,
                     }}
                   >
                     <FlagAndFavCell
@@ -1139,8 +1134,8 @@ function App({ history }) {
                       <br />
                       {(row["status"] === "in_progress" ||
                         row["status"] === "ready") &&
-                      process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
-                      process.env.REACT_APP_STORE_NAME_ORJ !==
+                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+                        process.env.REACT_APP_STORE_NAME_ORJ !==
                         "Silveristic" ? null : (
                         <>
                           <RepeatIcon
@@ -1189,7 +1184,7 @@ function App({ history }) {
                         }}
                       />
                     ) : null}
-                    {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
+                    {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                       <EditableTableCell
                         style={{ fontWeight: "bold" }}
                         {...{
@@ -1289,7 +1284,7 @@ function App({ history }) {
                         name: "explanation",
                         onChange,
                         minWidth:
-                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
                             : 0,
                       }}
@@ -1301,8 +1296,8 @@ function App({ history }) {
                           process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic"
                             ? "auto"
                             : row.status === "pending"
-                            ? "auto"
-                            : "none",
+                              ? "auto"
+                              : "none",
                         minWidth: 90,
                       }}
                       onClick={(e) => {
@@ -1321,32 +1316,32 @@ function App({ history }) {
                         disabled={
                           NON_SKU
                             ? !(
-                                (
-                                  !!row?.variation_1_value?.replace(
-                                    /\s/g,
-                                    ""
-                                  ) &&
-                                  !!row?.variation_2_value?.replace(/\s/g, "")
-                                )
-                                // &&
-                                // !!row?.variation_1_name?.replace(/\s/g, "") &&
-                                // !!row?.variation_2_name?.replace(/\s/g, "")
+                              (
+                                !!row?.variation_1_value?.replace(
+                                  /\s/g,
+                                  ""
+                                ) &&
+                                !!row?.variation_2_value?.replace(/\s/g, "")
                               )
+                              // &&
+                              // !!row?.variation_1_name?.replace(/\s/g, "") &&
+                              // !!row?.variation_2_name?.replace(/\s/g, "")
+                            )
                             : !(
-                                !!row.supplier?.replace(/\s/g, "") &&
-                                !!row.type?.replace(/\s/g, "") &&
-                                !!row.color?.replace(/\s/g, "") &&
-                                !!row.length?.replace(/\s/g, "") &&
-                                !(
-                                  row["type"]
-                                    ?.toLowerCase()
-                                    ?.includes("kolye") &&
-                                  row["type"]
-                                    ?.toLowerCase()
-                                    ?.includes("imza") &&
-                                  !row["image"]
-                                )
+                              !!row.supplier?.replace(/\s/g, "") &&
+                              !!row.type?.replace(/\s/g, "") &&
+                              !!row.color?.replace(/\s/g, "") &&
+                              !!row.length?.replace(/\s/g, "") &&
+                              !(
+                                row["type"]
+                                  ?.toLowerCase()
+                                  ?.includes("kolye") &&
+                                row["type"]
+                                  ?.toLowerCase()
+                                  ?.includes("imza") &&
+                                !row["image"]
                               )
+                            )
                         }
                         color="primary"
                         inputProps={{ "aria-labelledby": labelId }}
@@ -1358,7 +1353,7 @@ function App({ history }) {
                         name: "personalization",
                         onChange,
                         minWidth:
-                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
                             : 0,
                       }}
@@ -1369,7 +1364,7 @@ function App({ history }) {
                         name: "message_from_buyer",
                         onChange,
                         minWidth:
-                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 150
                             : 0,
                       }}

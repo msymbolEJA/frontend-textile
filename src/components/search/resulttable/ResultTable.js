@@ -155,7 +155,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
         console.log(error?.response?.data);
         toastWarnNotify(
           error?.response?.data[Object.keys(error?.response?.data)[0]][0] ||
-            "Save error!"
+          "Save error!"
         );
       })
       .finally(() => setTimeout(() => setDisableCells(false), 1000));
@@ -590,7 +590,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                   colName="supplier"
                   setOrderBy={setOrderBy}
                 />
-                {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
+                {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                   <SortableTableCell
                     property="sku"
                     handleRequestSort={handleRequestSort}
@@ -769,9 +769,9 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                       style={{
                         pointerEvents:
                           loading ||
-                          (localRole !== "workshop_manager" &&
-                            (row["status"] === "in_progress" ||
-                              row["status"] === "ready"))
+                            (localRole !== "workshop_manager" &&
+                              (row["status"] === "in_progress" ||
+                                row["status"] === "ready"))
                             ? "none"
                             : "auto",
                         backgroundColor:
@@ -779,8 +779,8 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                             ? "#FF9494"
                             : row["type"]?.includes("14K") ||
                               row["explanation"]?.includes("14K")
-                            ? "#ffef8a"
-                            : null,
+                              ? "#ffef8a"
+                              : null,
                       }}
                     >
                       <FlagAndFavCell
@@ -821,7 +821,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                           }
                         />
                         {row["status"] === "in_progress" ||
-                        row["status"] === "ready" ? null : (
+                          row["status"] === "ready" ? null : (
                           <>
                             <RepeatIcon
                               style={{
@@ -855,7 +855,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                           setDisableCells,
                         }}
                       />
-                      {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
+                      {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                         <EditableTableCell
                           {...{
                             row,
@@ -987,32 +987,32 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                           disabled={
                             NON_SKU
                               ? !(
-                                  (
-                                    !!row?.variation_1_value?.replace(
-                                      /\s/g,
-                                      ""
-                                    ) &&
-                                    !!row?.variation_2_value?.replace(/\s/g, "")
-                                  )
-                                  // &&
-                                  // !!row?.variation_1_name?.replace(/\s/g, "") &&
-                                  // !!row?.variation_2_name?.replace(/\s/g, "")
+                                (
+                                  !!row?.variation_1_value?.replace(
+                                    /\s/g,
+                                    ""
+                                  ) &&
+                                  !!row?.variation_2_value?.replace(/\s/g, "")
                                 )
+                                // &&
+                                // !!row?.variation_1_name?.replace(/\s/g, "") &&
+                                // !!row?.variation_2_name?.replace(/\s/g, "")
+                              )
                               : !(
-                                  !!row.supplier?.replace(/\s/g, "") &&
-                                  !!row.type?.replace(/\s/g, "") &&
-                                  !!row.color?.replace(/\s/g, "") &&
-                                  !!row.length?.replace(/\s/g, "") &&
-                                  !(
-                                    row["type"]
-                                      ?.toLowerCase()
-                                      ?.includes("kolye") &&
-                                    row["type"]
-                                      ?.toLowerCase()
-                                      ?.includes("imza") &&
-                                    !row["image"]
-                                  )
+                                !!row.supplier?.replace(/\s/g, "") &&
+                                !!row.type?.replace(/\s/g, "") &&
+                                !!row.color?.replace(/\s/g, "") &&
+                                !!row.length?.replace(/\s/g, "") &&
+                                !(
+                                  row["type"]
+                                    ?.toLowerCase()
+                                    ?.includes("kolye") &&
+                                  row["type"]
+                                    ?.toLowerCase()
+                                    ?.includes("imza") &&
+                                  !row["image"]
                                 )
+                              )
                           }
                           color="primary"
                           inputProps={{ "aria-labelledby": labelId }}
