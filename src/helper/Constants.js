@@ -1,7 +1,5 @@
 
-export const isStoreTextile = process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" || process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" || process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS"
-console.log("🚀 ~ file: Constants.js:3 ~ isStoreTextile:", isStoreTextile)
-console.log("🚀 ~ file: Constants.js:3 ~ isStoreTextile:", isStoreTextile)
+export const isStoreTextile = process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" || process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" || process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" || process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS"
 
 export const tagsDataOther = [
   "pending",
