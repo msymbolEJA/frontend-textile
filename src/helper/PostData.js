@@ -87,6 +87,19 @@ export const putImage = async (path, image, imageName) => {
   return response;
 };
 
+export const removeImage = async (path) => {
+
+  const token = localStorage.getItem(localStoragePrefix + "x-auth-token");
+
+  const response = await axios.delete(path, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+};
+
+
 export const getOnePdf = async (path, data) => {
   const fd = new FormData();
   fd.append("a", data);

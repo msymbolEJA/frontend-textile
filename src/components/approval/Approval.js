@@ -33,7 +33,7 @@ import { putData, getData, globalSearch } from "../../helper/PostData";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
 import OrderStatus from "../tableitems/CustomSelectCell";
 import UploadFile from "../tableitems/UploadFile";
-import { putImage, postData } from "../../helper/PostData";
+import { putImage, postData, removeImage } from "../../helper/PostData";
 import { getQueryParams } from "../../helper/getQueryParams";
 import { toastWarnNotify } from "../otheritems/ToastNotify";
 import ConstantTableCell from "../tableitems/ConstantTableCell";
@@ -352,6 +352,27 @@ function App({ history }) {
     } catch (error) {
       console.log("error", error);
       toastWarnNotify("Select Image!");
+    }
+  };
+
+  const removeFile = (e, id) => {
+    e.stopPropagation();
+    try {
+      // let path = `${BASE_URL_MAPPING}${id}/`;
+      let path = `${BASE_URL}etsy/mapping/${id}/destroy_image/`;
+      removeImage(path)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          getListFunc();
+        });
+    } catch (error) {
+      console.log("error", error);
+      toastWarnNotify("Image couldn't be removed!");
     }
   };
 
@@ -1389,6 +1410,7 @@ function App({ history }) {
                           fileSelectedHandler,
                           selectId,
                           selectedRowId,
+                          removeFile
                         }}
                       />
                     </td>

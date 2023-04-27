@@ -14,7 +14,7 @@ import {
   MenuItem,
   ListItemText,
 } from "@material-ui/core";
-import { putData, putImage, postData } from "../../../helper/PostData";
+import { putData, putImage, postData, removeImage } from "../../../helper/PostData";
 import SortableTableCell from "./SortableTableCell";
 
 import Typography from "@material-ui/core/Typography";
@@ -219,6 +219,27 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
     } catch (error) {
       console.log("error", error);
       toastWarnNotify("Select Image!");
+    }
+  };
+
+  const removeFile = (e, id) => {
+    e.stopPropagation();
+    try {
+      // let path = `${BASE_URL_MAPPING}${id}/`;
+      let path = `${BASE_URL}etsy/mapping/${id}/destroy_image/`;
+      removeImage(path)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          refreshSearch();
+        });
+    } catch (error) {
+      console.log("error", error);
+      toastWarnNotify("Image couldn't be removed!");
     }
   };
   const handlerFlagRepeatChange = (id, name, value) => {
@@ -1059,6 +1080,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                             fileSelectedHandler,
                             selectId,
                             selectedRowId,
+                            removeFile
                           }}
                         />
                       </td>
