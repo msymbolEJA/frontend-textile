@@ -72,6 +72,7 @@ export const notificationReplacer = (exp) => {
     ?.replace("explanation", "Açıklama")
     ?.replace("cancelled", "İptal Edildi")
     ?.replace("awaiting", "BEKLEYEN")
+    ?.replace("figma", "FİGMA")
     ?.replace("in_transit", "TRANSFER")
     ?.replace("length", "Uzunluk")
     ?.replace("width", "Genişlik")

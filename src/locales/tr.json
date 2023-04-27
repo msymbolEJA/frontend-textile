@@ -39,6 +39,7 @@
   "in_progress": "ISLEMDE",
   "in transit": "TRANSFER",
   "in_transit": "TRANSFER",
+  "figma": "FIGMA",
   "approved": "BEKLEYEN",
   "awaiting": "BEKLEYEN",
   "cancelled": "IPTAL",
