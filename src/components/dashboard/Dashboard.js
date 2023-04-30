@@ -61,8 +61,25 @@ const Dashboard = () => {
         (item) => Object.keys(item)[0] === "check"
       )?.[0]?.check;
 
+      if (process.env.REACT_APP_STORE_NAME_ORJ === "Belky") {
+        setHealthCheck(etsyCheck);
+      } else {
+        const isShopify = response.data.filter(
+          (item) => Object.keys(item)[0] === "check_shopify"
+        )?.length;
 
-      setHealthCheck(etsyCheck);
+        const shopifyCheck = response.data.filter(
+          (item) => Object.keys(item)[0] === "check_shopify"
+        )?.[0]?.check_shopify;
+
+        if (isShopify) {
+          setHealthCheck(shopifyCheck && etsyCheck);
+        } else {
+          setHealthCheck(etsyCheck);
+        }
+      }
+
+
 
       response.data[0].forEach((item) => {
         newResult.push({
