@@ -1115,8 +1115,10 @@ function App({ history }) {
                         (loading ||
                           row["status"] === "in_progress" ||
                           row["status"] === "ready") &&
-                          process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
-                          process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic"
+                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+                        process.env.REACT_APP_STORE_NAME_ORJ !==
+                          "Silveristic" &&
+                        !NON_SKU
                           ? "none"
                           : "auto",
                       backgroundColor:
