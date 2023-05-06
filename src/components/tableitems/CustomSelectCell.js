@@ -26,7 +26,7 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
     process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" && !NON_SKU &&
     (row[name] === "in_progress" || row[name] === "ready");
 
-  console.log("disabledForReadyNProgress", disabledForReadyNProgress)
+  // console.log("disabledForReadyNProgress", disabledForReadyNProgress)
 
   return (
     <div>
