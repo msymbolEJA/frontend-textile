@@ -23,8 +23,10 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
   let disabledForReadyNProgress =
     !localRole?.includes("workshop") &&
     process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
-    process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" &&
+    process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" && !NON_SKU &&
     (row[name] === "in_progress" || row[name] === "ready");
+
+  console.log("disabledForReadyNProgress", disabledForReadyNProgress)
 
   return (
     <div>
