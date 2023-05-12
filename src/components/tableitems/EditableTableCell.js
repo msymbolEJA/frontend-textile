@@ -6,6 +6,9 @@ import ContentEditable from "react-contenteditable";
 import FontPreview from "./FontPreview";
 import { repeatReplacerWithTR } from "../../helper/Functions";
 
+const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
+
+
 const useStyles = makeStyles(() => ({
   tableCell: {
     padding: 10,
@@ -66,16 +69,16 @@ const EditableTableCell = ({
       name === "explanation"
         ? repeatReplacerWithTR(row[name])
         : name === "variation_1_value"
-        ? row[name]
+          ? row[name]
             ?.replaceAll(" US women&#039;s letter", "")
             ?.replaceAll(" US women's letter", "") === "2X"
-          ? "2XL"
-          : row[name]
+            ? "2XL"
+            : row[name]
               ?.replaceAll(" US women&#039;s letter", "")
               ?.replaceAll(" US women's letter", "")
-        : row[name]
-        ? row[name]?.replaceAll("Linen_Dress_", "")?.replaceAll("Linen_", "")
-        : ""
+          : row[name]
+            ? row[name]?.replaceAll("Linen_Dress_", "")?.replaceAll("Linen_", "")
+            : ""
     );
   }, [row, name]);
 
@@ -86,16 +89,16 @@ const EditableTableCell = ({
     name === "explanation"
       ? row[name]?.replaceAll(",", ", ")
       : name === "variation_1_value"
-      ? row[name]
+        ? row[name]
           ?.replaceAll(" US women&#039;s letter", "")
           ?.replaceAll(" US women's letter", "") === "2X"
-        ? "2XL"
-        : row[name]
+          ? "2XL"
+          : row[name]
             ?.replaceAll(" US women&#039;s letter", "")
             ?.replaceAll(" US women's letter", "")
-      : row[name]
-      ? row[name]?.replaceAll("Linen_Dress_", "")?.replaceAll("Linen_", "")
-      : ""
+        : row[name]
+          ? row[name]?.replaceAll("Linen_Dress_", "")?.replaceAll("Linen_", "")
+          : ""
   );
 
   const handleContentChange = (e) => {
@@ -134,7 +137,7 @@ const EditableTableCell = ({
         minWidth: minWidth ?? "auto",
         backgroundColor:
           isDanger &&
-          (row[name] === " " || row[name] === "" || row[name] === null)
+            (row[name] === " " || row[name] === "" || row[name] === null)
             ? "#FF9494"
             : null,
         ...style,
@@ -149,8 +152,8 @@ const EditableTableCell = ({
           />
         </>
       ) : null}
-
-      {localRole?.includes("workshop") && name === "explanation" ? (
+      
+      {localRole?.includes("workshop") && name === "explanation" && NON_SKU ? (
         <p>{content}</p>
       ) : (
         <ContentEditable

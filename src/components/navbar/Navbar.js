@@ -33,6 +33,7 @@ import { getData, putData } from "../../helper/PostData";
 import Notification from "./Notification";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
+const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 const STORE_NAME = process.env.REACT_APP_STORE_NAME;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 
@@ -244,20 +245,19 @@ export default function MenuAppBar() {
 
   const newStatu =
     localRole === "admin" ||
-    localRole === "shop_manager" ||
-    localRole === "shop_packer"
+      localRole === "shop_manager" ||
+      localRole === "shop_packer"
       ? "pending"
       : localRole === "workshop_designer" || localRole === "workshop_designer2"
-      ? "in_progress"
-      : "awaiting";
+        ? "in_progress"
+        : "awaiting";
   // console.log("Navbar newStatu", newStatu);
 
   const handleClick = (e) => {
     // const newStatu = getFirstStatu();
     // console.log("newStatu", newStatu);
     history.push(
-      `/${e.currentTarget.id}?status=${newStatu}&limit=${
-        PAGE_ROW_NUMBER || 25
+      `/${e.currentTarget.id}?status=${newStatu}&limit=${PAGE_ROW_NUMBER || 25
       }&offset=0`
     );
     setAnchorEl(null);
@@ -316,11 +316,11 @@ export default function MenuAppBar() {
               </Typography>
             )}
           </IconButton>
-          {/* Only can see by workshop users. */}
+          {/* Only can see by workshop users without textfile (NON_SKU) workshop users */}
           {!isBeyazit &&
             localRole !== "workshop_designer" &&
             localRole !== "workshop_designer2" &&
-            userRole?.includes("workshop") && (
+            userRole?.includes("workshop") && !NON_SKU && (
               <>
                 <Badge
                   badgeContent={notification?.count}
@@ -365,8 +365,8 @@ export default function MenuAppBar() {
                     mobileView
                       ? classes.button2
                       : window.location.pathname.includes("orders")
-                      ? classes.activeButton
-                      : classes.button
+                        ? classes.activeButton
+                        : classes.button
                   }
                   startIcon={mobileView ? null : <ViewListIcon />}
                   onClick={handleClick}
@@ -375,9 +375,9 @@ export default function MenuAppBar() {
                 </Button>
               )}
               {!mobileView &&
-              (userRole === "admin" ||
-                userRole === "shop_manager" ||
-                userRole === "shop_packer") ? (
+                (userRole === "admin" ||
+                  userRole === "shop_manager" ||
+                  userRole === "shop_packer") ? (
                 <>
                   <Button
                     color="primary"
@@ -387,14 +387,13 @@ export default function MenuAppBar() {
                       mobileView
                         ? classes.button2
                         : window.location.pathname.includes("approval")
-                        ? classes.activeButton
-                        : classes.button
+                          ? classes.activeButton
+                          : classes.button
                     }
                     startIcon={mobileView ? null : <ThumbUpIcon />}
                     onClick={() =>
                       history.push(
-                        `/approval?&status=pending&limit=${
-                          PAGE_ROW_NUMBER || 25
+                        `/approval?&status=pending&limit=${PAGE_ROW_NUMBER || 25
                         }&offset=0`
                       )
                     }
@@ -404,8 +403,8 @@ export default function MenuAppBar() {
                 </>
               ) : null}
               {mobileView ||
-              localRole === "workshop_designer" ||
-              localRole === "workshop_designer2" ? null : (
+                localRole === "workshop_designer" ||
+                localRole === "workshop_designer2" ? null : (
                 <Button
                   color="primary"
                   variant="outlined"
@@ -414,8 +413,8 @@ export default function MenuAppBar() {
                     mobileView
                       ? classes.button2
                       : window.location.pathname.includes("cargo")
-                      ? classes.activeButton
-                      : classes.button
+                        ? classes.activeButton
+                        : classes.button
                   }
                   startIcon={mobileView ? null : <LocalShippingIcon />}
                   onClick={(e) => handleClick(e)}
@@ -427,9 +426,9 @@ export default function MenuAppBar() {
                 </Button>
               )}
               {!isBeyazit &&
-              localRole !== "workshop_designer" &&
-              localRole !== "workshop_designer2" &&
-              window?.location?.pathname !== "/search" ? (
+                localRole !== "workshop_designer" &&
+                localRole !== "workshop_designer2" &&
+                window?.location?.pathname !== "/search" ? (
                 <OutlinedInput
                   type="text"
                   defaultValue=""
@@ -614,33 +613,33 @@ export default function MenuAppBar() {
                 {(userRole === "admin" ||
                   userRole === "shop_manager" ||
                   userRole === "shop_packer") && (
-                  <div>
-                    <MenuItem
-                      id="favourites"
-                      onClick={(e) => handleDirClick(e)}
-                    >
-                      <FormattedMessage
+                    <div>
+                      <MenuItem
                         id="favourites"
-                        defaultMessage="Favourites"
-                      />
-                    </MenuItem>
-                    <MenuItem id="search" onClick={(e) => handleDirClick(e)}>
-                      <FormattedMessage id="search" defaultMessage="Search" />
-                    </MenuItem>
-                    <MenuItem id="new-order" onClick={(e) => handleDirClick(e)}>
-                      <FormattedMessage id="new" defaultMessage="New" />
-                    </MenuItem>
-                    <MenuItem
-                      id="stock-list"
-                      onClick={(e) => handleDirClick(e)}
-                    >
-                      <FormattedMessage
-                        id="stockList"
-                        defaultMessage="Stock List"
-                      />
-                    </MenuItem>
-                  </div>
-                )}
+                        onClick={(e) => handleDirClick(e)}
+                      >
+                        <FormattedMessage
+                          id="favourites"
+                          defaultMessage="Favourites"
+                        />
+                      </MenuItem>
+                      <MenuItem id="search" onClick={(e) => handleDirClick(e)}>
+                        <FormattedMessage id="search" defaultMessage="Search" />
+                      </MenuItem>
+                      <MenuItem id="new-order" onClick={(e) => handleDirClick(e)}>
+                        <FormattedMessage id="new" defaultMessage="New" />
+                      </MenuItem>
+                      <MenuItem
+                        id="stock-list"
+                        onClick={(e) => handleDirClick(e)}
+                      >
+                        <FormattedMessage
+                          id="stockList"
+                          defaultMessage="Stock List"
+                        />
+                      </MenuItem>
+                    </div>
+                  )}
                 <MenuItem id="account" onClick={handleDirClick}>
                   <FormattedMessage id="account" defaultMessage="Account" />
                 </MenuItem>

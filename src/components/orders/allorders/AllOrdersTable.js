@@ -801,12 +801,12 @@ function AllOrdersTable() {
                   <StyledTableCell align="center">
                     <FormattedMessage id="color" defaultMessage="Color" />
                   </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <FormattedMessage
-                      id="explanationMod"
-                      defaultMessage="Mod-Explanation"
-                    />
-                  </StyledTableCell>
+
+                  {localRole !== "workshop_manager" && <StyledTableCell align="center"><FormattedMessage
+                    id="explanationMod"
+                    defaultMessage="Mod-Explanation"
+                  /> </StyledTableCell>}
+
                 </>
               ) : (
                 <>
@@ -988,7 +988,7 @@ function AllOrdersTable() {
                               : "variation_2_value",
                         }}
                       />
-                      <EditableTableCell
+                      {localRole !== "workshop_manager" && <EditableTableCell
                         onClick={(e) => e.stopPropagation()}
                         {...{
                           row,
@@ -996,7 +996,7 @@ function AllOrdersTable() {
                           onChange,
                           minWidth: 250,
                         }}
-                      />
+                      />}
                     </>
                   ) : (
                     <>
