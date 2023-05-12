@@ -62,7 +62,7 @@ const EditableTableCell = ({
   minWidth = 40,
   style,
   disableCells,
-  setDisableCells = () => {},
+  setDisableCells = () => { },
 }) => {
   useEffect(() => {
     setContent(
@@ -152,8 +152,8 @@ const EditableTableCell = ({
           />
         </>
       ) : null}
-      
-      {localRole?.includes("workshop") && name === "explanation" && NON_SKU ? (
+
+      {localRole?.includes("workshop") && name === "explanation" && !NON_SKU ? (
         <p>{content}</p>
       ) : (
         <ContentEditable
