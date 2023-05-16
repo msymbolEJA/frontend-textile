@@ -180,7 +180,7 @@ const OrderDetails = ({ match }) => {
   const handleStockChange = (id, data) => {
     // putData(`${BASE_URL_MAPPING}${id}/`, data)
     putData(`${BASE_URL}etsy/mapping/${id}/`, data)
-      .then((response) => {})
+      .then((response) => { })
       .catch((error) => {
         console.log(error);
       })
@@ -235,8 +235,8 @@ const OrderDetails = ({ match }) => {
             />
           </Typography>
           {userRole === "admin" ||
-          userRole === "shop_manager" ||
-          userRole === "shop_packer" ? (
+            userRole === "shop_manager" ||
+            userRole === "shop_packer" ? (
             <>
               <div
                 style={{
@@ -302,8 +302,8 @@ const OrderDetails = ({ match }) => {
                   <FormattedMessage id="status" defaultMessage="Status" />
                 </StyledTableCell>
                 {userRole === "admin" ||
-                userRole === "shop_manager" ||
-                userRole === "shop_packer" ? (
+                  userRole === "shop_manager" ||
+                  userRole === "shop_packer" ? (
                   <>
                     <StyledTableCell align="center">
                       <FormattedMessage id="buyer" defaultMessage="Buyer" />
@@ -365,12 +365,14 @@ const OrderDetails = ({ match }) => {
                     defaultMessage="Explanation"
                   />
                 </StyledTableCell>
-                <StyledTableCell align="center">
-                  <FormattedMessage
-                    id="giftMessage"
-                    defaultMessage="Gift Message"
-                  />
-                </StyledTableCell>
+                {process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ?
+                  <StyledTableCell align="center">
+                    <FormattedMessage
+                      id="giftMessage"
+                      defaultMessage="Gift Message"
+                    />
+                  </StyledTableCell> : null}
+
                 <StyledTableCell align="center">
                   <FormattedMessage id="note" defaultMessage="Note" />
                 </StyledTableCell>
@@ -387,8 +389,8 @@ const OrderDetails = ({ match }) => {
                     <CustomTableCell {...{ row, name: "created_date" }} />
                     <CustomTableCell {...{ row, name: "status" }} />
                     {userRole === "admin" ||
-                    userRole === "shop_manager" ||
-                    userRole === "shop_packer" ? (
+                      userRole === "shop_manager" ||
+                      userRole === "shop_packer" ? (
                       <>
                         <CustomTableCell {...{ row, name: "buyer" }} />
                         <CustomTableCell {...{ row, name: "supplier" }} />
@@ -418,7 +420,8 @@ const OrderDetails = ({ match }) => {
                       </>
                     )}
                     <CustomTableCell {...{ row, name: "explanation" }} />
-                    <CustomTableCell {...{ row, name: "gift_message" }} />
+                    {process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? <CustomTableCell {...{ row, name: "gift_message" }} /> : null}
+
                     <CustomTableCell {...{ row, name: "note" }} />
                   </StyledTableRow>
                 ))
@@ -436,11 +439,11 @@ const OrderDetails = ({ match }) => {
           </Table>
           <div style={{ marginTop: "2rem" }}>
             {process.env.REACT_APP_INT_ACTIVE === "true" &&
-            rows[0]?.country_id !== "209" &&
-            (userRole === "admin" ||
-              userRole === "shop_manager" ||
-              localUser === "Kalanima" ||
-              localUser === "Umraniye") ? (
+              rows[0]?.country_id !== "209" &&
+              (userRole === "admin" ||
+                userRole === "shop_manager" ||
+                localUser === "Kalanima" ||
+                localUser === "Umraniye") ? (
               <>
                 <p>
                   Address: <b>{rows[0]?.formatted_address} </b>

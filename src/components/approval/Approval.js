@@ -1071,7 +1071,7 @@ function App({ history }) {
                 colName="customerNote"
                 setOrderBy={setOrderBy}
               />
-              {user !== "DrMel" ? (
+              {user !== "DrMel" && process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
                 <SortableTableCell
                   property="gift_message"
                   handleRequestSort={handleRequestSort}
@@ -1115,10 +1115,10 @@ function App({ history }) {
                         (loading ||
                           row["status"] === "in_progress" ||
                           row["status"] === "ready") &&
-                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
-                        process.env.REACT_APP_STORE_NAME_ORJ !==
+                          process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+                          process.env.REACT_APP_STORE_NAME_ORJ !==
                           "Silveristic" &&
-                        !NON_SKU
+                          !NON_SKU
                           ? "none"
                           : "auto",
                       backgroundColor:
@@ -1392,7 +1392,7 @@ function App({ history }) {
                             : 0,
                       }}
                     />
-                    {user !== "DrMel" ? (
+                    {user !== "DrMel" && process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
                       <EditableTableCell
                         {...{ row, name: "gift_message", onChange }}
                       />

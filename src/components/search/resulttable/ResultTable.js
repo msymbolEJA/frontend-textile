@@ -748,14 +748,14 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                   colName="customerNote"
                   setOrderBy={setOrderBy}
                 />
-                <SortableTableCell
+                {process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? <SortableTableCell
                   property="gift_message"
                   handleRequestSort={handleRequestSort}
                   order={order}
                   orderBy={orderBy}
                   colName="giftMessage"
                   setOrderBy={setOrderBy}
-                />
+                /> : null}
                 <SortableTableCell
                   property="note"
                   handleRequestSort={handleRequestSort}
@@ -1045,7 +1045,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                       <ConstantTableCell
                         {...{ row, name: "message_from_buyer", onChange }}
                       />
-                      <EditableTableCell
+                      {process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? <EditableTableCell
                         {...{
                           row,
                           name: "gift_message",
@@ -1053,7 +1053,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                           disableCells,
                           setDisableCells,
                         }}
-                      />
+                      /> : null}
                       <EditableTableCell
                         {...{
                           row,

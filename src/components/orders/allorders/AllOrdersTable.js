@@ -870,7 +870,7 @@ function AllOrdersTable() {
                   />
                 </StyledTableCell>
               ) : null}
-              {!isBeyazit &&
+              {!isBeyazit && process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
                 localRole !== "workshop_designer" &&
                 localRole !== "workshop_designer2" && (
                   <StyledTableCell
@@ -1074,7 +1074,7 @@ function AllOrdersTable() {
                       />
                     </td>
                   ) : null}
-                  {!isBeyazit &&
+                  {!isBeyazit && process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
                     localRole !== "workshop_designer" &&
                     localRole !== "workshop_designer2" && (
                       <CustomTableCell
