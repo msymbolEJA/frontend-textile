@@ -190,5 +190,8 @@
   "undo": "Geri Al",
   "confirm": "Onayla",
   "areYouSure": "Emin misiniz?",
-  "getLabel": "Etiket Getir"
+  "getLabel": "Etiket Getir",
+  "a": "a",
+  "s": "s",
+  "e": "e"
 }

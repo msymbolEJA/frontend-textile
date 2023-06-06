@@ -1,81 +1,101 @@
-import React, { useRef, useEffect, useState, useContext } from "react";
-import { AppContext } from "../../context/Context";
-import { makeStyles } from "@material-ui/core/styles";
-import { FormattedMessage } from "react-intl";
-import Paper from "@material-ui/core/Paper";
-import { getData } from "../../helper/PostData";
-import Button from "@material-ui/core/Button";
-import moment from "moment";
-import SellerTable from "./SellerTable";
-import CostGetter from "./CostGetter";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Card, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import moment from 'moment';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { AppContext } from '../../context/Context';
+import { getData } from '../../helper/PostData';
+import CostGetter from './CostGetter';
+import PlatformCard from './PlatformCard';
+import SellerTable from './SellerTable';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   top: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
   },
   paper: {
     padding: theme.spacing(1),
-    textAlign: "center",
+    textAlign: 'center',
     color: theme.palette.text.primary,
     // marginTop: 39,
-    margin: "auto",
-    width: "fit-content",
-    display: "flex",
-    flexDirection: "row",
+    margin: 'auto',
+    width: 'fit-content',
+    display: 'flex',
+    flexDirection: 'column',
     // justifyContent: "space-evenly",
-    alignItems: "center",
+    alignItems: 'center',
     // height: 400,
-    fontFamily: "Courier New",
-    border: "1px solid lightgrey",
-    borderRadius: "5px",
+    fontFamily: 'Courier New',
+    border: '1px solid lightgrey',
+    borderRadius: '5px',
   },
   btn: {
-    width: "175px",
-    margin: "5px",
+    width: '175px',
+    margin: '5px',
   },
   inputs: {
-    display: "flex",
-    flexDirection: "column",
-    margin: "10px",
+    display: 'flex',
+    flexDirection: 'column',
+    margin: '10px',
   },
   label: {
-    margin: "10px",
-    fontSize: "1.5rem",
+    margin: '10px',
+    fontSize: '1.5rem',
   },
   header: {
     margin: 10,
     marginTop: 75,
-    textAlign: "center",
-    fontSize: "2rem",
+    textAlign: 'center',
+    fontSize: '2rem',
   },
   getBtnDiv: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  missingTable: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    flexDirection: 'column',
+    marginTop: 20,
+  },
+  platformBtnWrapper: {
+    display: 'flex',
+    gap: 10,
+    borderBottom: '2px solid gray',
+    width: '100%',
+    justifyContent: 'center',
+    paddingBottom: 10,
+  },
+  platformCardWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  filterButtonsWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10,
   },
 }));
 
-function add(accumulator, a) {
-  return accumulator + a;
-}
-
-const groupByKey = (list, key) =>
-  list.reduce(
-    (hash, obj) => ({
-      ...hash,
-      [obj[key]]: (hash[obj[key]] || []).concat(obj),
-    }),
-    {}
-  );
-
 const DateGetter = () => {
   const { user } = useContext(AppContext);
-  const mobileView = useMediaQuery("(max-width:1024px)");
+  const mobileView = useMediaQuery('(max-width:1024px)');
 
-  let localRole = localStorage.getItem("localRole");
+  let localRole = localStorage.getItem('localRole');
 
   const userRole = user?.role || localRole;
   const classes = useStyles();
@@ -84,8 +104,10 @@ const DateGetter = () => {
   const [bestSeller, setBestSeller] = useState({
     bestRows: null,
     isLoading: false,
-    type: null,
   });
+  const [selectedPlatform, setSelectedPlatform] = useState('all');
+  const [filteredPlatform, setFilteredPlatform] = useState('all');
+
   const [quantity, setQuantity] = useState(0);
   const [calcCost, setCalcCost] = useState({
     totalCost: null,
@@ -93,58 +115,96 @@ const DateGetter = () => {
     isRepeatNumber: 0,
   });
 
+  const [platformsInfo, setPlatformsInfo] = useState(null);
+
+  const [missings, setMissings] = useState({
+    MISSING_TYPE: null,
+    MISSING_SILVER_TYPE_COST: null,
+    MISSING_SILVER_QTY_COST: null,
+    MISSING_GOLD_PRICES: null,
+  });
+
+  const platforms = {
+    e: 'Etsy',
+    a: 'Amzn',
+    s: 'Shopify',
+    all: 'All',
+  };
+
   const getCost = () => {
     setCalcCost({ ...calcCost, isLoading: true });
-    getData(
-      `${BASE_URL}etsy/cost/?order_date__iexact=&order_date__lte=${endDateRef.current.value}+00%3A00&order_date__gte=${beginnerDateRef.current.value}+00%3A00&limit=100000000000&offset=0`
-    ).then((response) => {
-      // console.log(response.data.results);
-      setQuantity(response.data.count);
+    setBestSeller({ ...bestSeller, isLoading: true });
 
-      let res =
-        response?.data?.results.length &&
-        response?.data?.results?.reduce(function (a, b) {
-          return { cost: Number(a.cost) + Number(b.cost) }; // returns object with property x
+    getData(
+      `${BASE_URL}etsy/calculate_cost/${beginnerDateRef.current.value}/${endDateRef.current.value}/${platforms[selectedPlatform]}/`,
+    )
+      .then(response => {
+        setQuantity(response.data.TOTAL_COST.total_count);
+
+        const {
+          MISSING_TYPE,
+          MISSING_SILVER_TYPE_COST,
+          MISSING_SILVER_QTY_COST,
+          MISSING_GOLD_PRICES,
+        } = response.data;
+
+        setMissings({
+          MISSING_GOLD_PRICES: MISSING_GOLD_PRICES?.count ? MISSING_GOLD_PRICES : null,
+          MISSING_SILVER_QTY_COST: MISSING_SILVER_QTY_COST?.count ? MISSING_SILVER_QTY_COST : null,
+          MISSING_TYPE: MISSING_TYPE?.count ? MISSING_TYPE : null,
+          MISSING_SILVER_TYPE_COST: MISSING_SILVER_TYPE_COST?.count
+            ? MISSING_SILVER_TYPE_COST
+            : null,
         });
 
-      let isRepeatRes =
-        response?.data?.results.length &&
-        response?.data?.results?.reduce(
-          (total, x) => (x.is_repeat === true ? total + 1 : total),
-          0
-        );
+        setPlatformsInfo(response.data.PLATFORM_TOTAL_COST);
 
-      setCalcCost({
-        ...calcCost,
-        totalCost: res?.cost ?? 0,
-        isLoading: false,
-        isRepeatNumber: isRepeatRes ?? 0,
+        setBestSeller({
+          ...bestSeller,
+          bestRows: response.data.PLATFORM_DETAIL,
+          isLoading: false,
+        });
+
+        setCalcCost({
+          ...calcCost,
+          totalCost: response.data.TOTAL_COST.total_cost,
+          isLoading: false,
+          isRepeatNumber: response.data.TOTAL_COST.is_repeat ?? 0,
+        });
+      })
+      .catch(() => {
+        setPlatformsInfo({});
       });
-    });
-    setBestSeller({ ...bestSeller, isLoading: true });
-    getData(
-      `${BASE_URL}etsy/type-color_number_list/?creation_tsz__iexact=&creation_tsz__lte=${endDateRef.current.value}+00%3A00%3A00&creation_tsz__gte=${beginnerDateRef.current.value}+00%3A00%3A00`
-    ).then((response) => {
-      const list = groupByKey(response.data.results, "type");
-      const totals = Object.keys(list).map((o) =>
-        list[o].map((c) => c.color_count).reduce(add, 0)
-      );
-      setBestSeller({
-        isLoading: false,
-        items: list,
-        typeColumn: Object.keys(list),
-        totals,
-        type: "topSeller",
-      });
-    });
   };
 
   useEffect(() => {
-    endDateRef.current.value = moment().format("YYYY-MM-DD");
-    beginnerDateRef.current.value = moment()
-      .subtract(1, "months")
-      .format("YYYY-MM-DD");
+    endDateRef.current.value = moment().format('YYYY-MM-DD');
+    beginnerDateRef.current.value = moment().subtract(1, 'months').format('YYYY-MM-DD');
   }, []);
+
+  const PlatformButton = ({ id, label }) => {
+    return (
+      <Button
+        variant="contained"
+        checked={selectedPlatform === id}
+        disabled={calcCost.isLoading}
+        onClick={e => setSelectedPlatform(id)}
+        style={{
+          backgroundColor: selectedPlatform === id ? '#3F51B5' : null,
+          color: selectedPlatform === id ? 'white' : null,
+        }}
+      >
+        <FormattedMessage id={id} defaultMessage={label} />
+      </Button>
+    );
+  };
+
+  const bestRows = bestSeller?.bestRows?.filter(
+    item =>
+      selectedPlatform !== 'all' ||
+      filteredPlatform === 'all' ||
+      item.shop === platforms[filteredPlatform],
+  );
 
   return (
     <div>
@@ -153,46 +213,57 @@ const DateGetter = () => {
       </h2>
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: mobileView ? "column" : "row",
+          display: 'flex',
+          alignItems: mobileView ? 'center' : 'flex-start',
+          justifyContent: 'center',
+          flexDirection: mobileView ? 'column' : 'row',
         }}
       >
         <div className={classes.top}>
-          <Paper
-            className={classes.paper}
-            style={{
-              display: mobileView ? "block" : "flex",
-            }}
-          >
-            <div className={classes.inputs}>
-              <label htmlFor="beginnerDate" className={classes.label}>
-                <FormattedMessage id="startDate" defaultMessage="Start Date" />:
-              </label>
-              (<FormattedMessage id="include" defaultMessage="Include" />)
-              <input ref={beginnerDateRef} type="date" />
+          <Paper className={classes.paper}>
+            <div className={classes.platformBtnWrapper}>
+              <PlatformButton label="E" id="e" />
+              <PlatformButton label="S" id="s" />
+              <PlatformButton label="A" id="a" />
+              <PlatformButton label="All" id="all" />
             </div>
-            <div className={classes.inputs}>
-              <label htmlFor="endDate" className={classes.label}>
-                <FormattedMessage id="endDate" defaultMessage="End Date" />:
-              </label>
-              (<FormattedMessage id="exclude" defaultMessage="Exclude" />)
-              <input ref={endDateRef} type="date" />
-            </div>
-            <div className={classes.getBtnDiv}>
-              <Button
-                variant="contained"
-                className={classes.btn}
-                color="primary"
-                onClick={getCost}
-              >
-                <FormattedMessage id="getTypes" defaultMessage="Get Types" />
-              </Button>
+
+            <div
+              style={{
+                display: mobileView ? 'block' : 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <div className={classes.inputs}>
+                <label htmlFor="beginnerDate" className={classes.label}>
+                  <FormattedMessage id="startDate" defaultMessage="Start Date" />:
+                </label>
+                (<FormattedMessage id="include" defaultMessage="Include" />)
+                <input ref={beginnerDateRef} type="date" />
+              </div>
+              <div className={classes.inputs}>
+                <label htmlFor="endDate" className={classes.label}>
+                  <FormattedMessage id="endDate" defaultMessage="End Date" />:
+                </label>
+                (<FormattedMessage id="exclude" defaultMessage="Exclude" />)
+                <input ref={endDateRef} type="date" />
+              </div>
+              <div className={classes.getBtnDiv}>
+                <Button
+                  variant="contained"
+                  className={classes.btn}
+                  color="primary"
+                  onClick={getCost}
+                  disabled={calcCost.isLoading || bestSeller.isLoading}
+                >
+                  <FormattedMessage id="getTypes" defaultMessage="Get Types" />
+                </Button>
+              </div>
             </div>
           </Paper>
         </div>
-        {quantity && userRole === "admin" ? (
+        {quantity && userRole === 'admin' ? (
           <CostGetter
             endDateRef={endDateRef}
             beginnerDateRef={beginnerDateRef}
@@ -201,7 +272,124 @@ const DateGetter = () => {
           />
         ) : null}
       </div>
-      {bestSeller && <SellerTable bestSeller={bestSeller} />}
+      {missings && (
+        <div className={classes.missingTable}>
+          {Object.keys(missings).map((item, i) => {
+            if (missings?.[item]?.count && missings?.[item]?.data?.length)
+              return (
+                <Card style={{ width: mobileView ? '90%' : 900 }} key={i}>
+                  <Table size="small">
+                    <TableBody>
+                      <TableRow>
+                        <TableCell colSpan={2} style={{ textAlign: 'center', background: 'red' }}>
+                          <h1 style={{ fontSize: 16, color: 'white' }}>
+                            {item.replaceAll('_', ' ')}
+                          </h1>
+                        </TableCell>
+
+                        <TableCell scope="row" style={{ wordBreak: 'break-all' }}>
+                          {missings?.[item]?.data.map((id, i) => {
+                            return (
+                              <>
+                                <a href={`order-details/${id}`} alt={id} key={id}>
+                                  {id}
+                                </a>
+                                {i === missings?.[item]?.data?.length - 1 ? '' : ','}
+                              </>
+                            );
+                          })}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </Card>
+              );
+            else return <></>;
+          })}
+        </div>
+      )}
+
+      <div
+        className={classes.platformCardWrapper}
+        style={{
+          flexDirection: mobileView ? 'column' : 'row',
+        }}
+      >
+        {userRole === 'admin' &&
+          platformsInfo &&
+          Object.keys(platformsInfo).map(name => {
+            const item = platformsInfo[name];
+            return (
+              <PlatformCard
+                name={name}
+                cost14K={item?.['14K_total_cost']}
+                qty14K={item?.['14K_total_count']}
+                silverCost={item?.['silver_total_cost']}
+                silverQty={item?.['silver_total_count']}
+                totalCost={item?.['total_cost']}
+                totalQty={item?.['total_count']}
+              />
+            );
+          })}
+      </div>
+
+      {selectedPlatform === 'all' && bestSeller.bestRows && (
+        <div className={classes.filterButtonsWrapper}>
+          <Button
+            variant="contained"
+            checked={filteredPlatform === 'e'}
+            disabled={calcCost.isLoading}
+            onClick={e => setFilteredPlatform('e')}
+            style={{
+              backgroundColor: filteredPlatform === 'e' ? '#3F51B5' : null,
+              color: filteredPlatform === 'e' ? 'white' : null,
+            }}
+          >
+            <FormattedMessage id={'e'} defaultMessage={'E'} />
+          </Button>
+
+          <Button
+            variant="contained"
+            checked={filteredPlatform === 's'}
+            disabled={calcCost.isLoading}
+            onClick={e => setFilteredPlatform('s')}
+            style={{
+              backgroundColor: filteredPlatform === 's' ? '#3F51B5' : null,
+              color: filteredPlatform === 's' ? 'white' : null,
+            }}
+          >
+            <FormattedMessage id={'s'} defaultMessage={'S'} />
+          </Button>
+
+          <Button
+            variant="contained"
+            checked={filteredPlatform === 'a'}
+            disabled={calcCost.isLoading}
+            onClick={e => setFilteredPlatform('a')}
+            style={{
+              backgroundColor: filteredPlatform === 'a' ? '#3F51B5' : null,
+              color: filteredPlatform === 'a' ? 'white' : null,
+            }}
+          >
+            <FormattedMessage id={'a'} defaultMessage={'A'} />
+          </Button>
+
+          <Button
+            variant="contained"
+            checked={filteredPlatform === 'all'}
+            disabled={calcCost.isLoading}
+            onClick={e => setFilteredPlatform('all')}
+            style={{
+              backgroundColor: filteredPlatform === 'all' ? '#3F51B5' : null,
+              color: filteredPlatform === 'all' ? 'white' : null,
+            }}
+          >
+            <FormattedMessage id={'all'} defaultMessage={'ALL'} />
+          </Button>
+        </div>
+      )}
+
+      {bestRows && <SellerTable bestRows={bestRows} />}
     </div>
   );
 };

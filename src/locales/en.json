@@ -34,7 +34,6 @@
   "wiewAll": "View All",
   "pending": "PENDING",
   "ready": "READY",
-  "followup": "FOLLOW UP",
   "in progress": "IN PROGRESS",
   "in transit": "IN TRANSIT",
   "figma": "FIGMA",
@@ -145,5 +144,8 @@
   "download": "Download",
   "undo": "Undo",
   "confirm": "Confirm",
-  "areYouSure": "Are you sure?"
+  "areYouSure": "Are you sure?",
+  "a": "a",
+  "s": "s",
+  "e": "e"
 }
