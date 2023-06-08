@@ -1,16 +1,16 @@
-import { Card, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import moment from 'moment';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { AppContext } from '../../context/Context';
-import { getData } from '../../helper/PostData';
-import CostGetter from './CostGetter';
-import PlatformCard from './PlatformCard';
-import SellerTable from './SellerTable';
+import { Card, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import moment from "moment";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { FormattedMessage } from "react-intl";
+import { AppContext } from "../../context/Context";
+import { getData } from "../../helper/PostData";
+import CostGetter from "./CostGetter";
+import PlatformCard from "./PlatformCard";
+import SellerTable from "./SellerTable";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -24,10 +24,10 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     color: theme.palette.text.primary,
     // marginTop: 39,
-    margin: 'auto',
-    width: 'fit-content',
-    display: 'flex',
-    flexDirection: 'column',
+    margin: "auto",
+    width: "fit-content",
+    display: "flex",
+    flexDirection: "column",
     // justifyContent: "space-evenly",
     alignItems: 'center',
     // height: 400,
@@ -55,38 +55,38 @@ const useStyles = makeStyles(theme => ({
     fontSize: '2rem',
   },
   getBtnDiv: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   missingTable: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 10,
-    flexDirection: 'column',
+    flexDirection: "column",
     marginTop: 20,
   },
   platformBtnWrapper: {
-    display: 'flex',
+    display: "flex",
     gap: 10,
-    borderBottom: '2px solid gray',
-    width: '100%',
-    justifyContent: 'center',
+    borderBottom: "2px solid gray",
+    width: "100%",
+    justifyContent: "center",
     paddingBottom: 10,
   },
   platformCardWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 10,
     marginTop: 20,
     marginBottom: 20,
   },
   filterButtonsWrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     gap: 10,
   },
 }));
@@ -105,8 +105,8 @@ const DateGetter = () => {
     bestRows: null,
     isLoading: false,
   });
-  const [selectedPlatform, setSelectedPlatform] = useState('all');
-  const [filteredPlatform, setFilteredPlatform] = useState('all');
+  const [selectedPlatform, setSelectedPlatform] = useState("all");
+  const [filteredPlatform, setFilteredPlatform] = useState("all");
 
   const [quantity, setQuantity] = useState(0);
   const [calcCost, setCalcCost] = useState({
@@ -125,10 +125,10 @@ const DateGetter = () => {
   });
 
   const platforms = {
-    e: 'Etsy',
-    a: 'Amzn',
-    s: 'Shopify',
-    all: 'All',
+    e: "Etsy",
+    a: "Amzn",
+    s: "Shopify",
+    all: "All",
   };
 
   const getCost = () => {
@@ -178,8 +178,8 @@ const DateGetter = () => {
   };
 
   useEffect(() => {
-    endDateRef.current.value = moment().format('YYYY-MM-DD');
-    beginnerDateRef.current.value = moment().subtract(1, 'months').format('YYYY-MM-DD');
+    endDateRef.current.value = moment().format("YYYY-MM-DD");
+    beginnerDateRef.current.value = moment().subtract(1, "months").format("YYYY-MM-DD");
   }, []);
 
   const PlatformButton = ({ id, label }) => {
@@ -190,8 +190,8 @@ const DateGetter = () => {
         disabled={calcCost.isLoading}
         onClick={e => setSelectedPlatform(id)}
         style={{
-          backgroundColor: selectedPlatform === id ? '#3F51B5' : null,
-          color: selectedPlatform === id ? 'white' : null,
+          backgroundColor: selectedPlatform === id ? "#3F51B5" : null,
+          color: selectedPlatform === id ? "white" : null,
         }}
       >
         <FormattedMessage id={id} defaultMessage={label} />
@@ -201,8 +201,8 @@ const DateGetter = () => {
 
   const bestRows = bestSeller?.bestRows?.filter(
     item =>
-      selectedPlatform !== 'all' ||
-      filteredPlatform === 'all' ||
+      selectedPlatform !== "all" ||
+      filteredPlatform === "all" ||
       item.shop === platforms[filteredPlatform],
   );
 
@@ -213,10 +213,10 @@ const DateGetter = () => {
       </h2>
       <div
         style={{
-          display: 'flex',
-          alignItems: mobileView ? 'center' : 'flex-start',
-          justifyContent: 'center',
-          flexDirection: mobileView ? 'column' : 'row',
+          display: "flex",
+          alignItems: mobileView ? "center" : "flex-start",
+          justifyContent: "center",
+          flexDirection: mobileView ? "column" : "row",
         }}
       >
         <div className={classes.top}>
@@ -230,9 +230,9 @@ const DateGetter = () => {
 
             <div
               style={{
-                display: mobileView ? 'block' : 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                display: mobileView ? "block" : "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <div className={classes.inputs}>
@@ -277,24 +277,27 @@ const DateGetter = () => {
           {Object.keys(missings).map((item, i) => {
             if (missings?.[item]?.count && missings?.[item]?.data?.length)
               return (
-                <Card style={{ width: mobileView ? '90%' : 900 }} key={i}>
+                <Card style={{ width: mobileView ? "90%" : 900 }} key={i}>
                   <Table size="small">
                     <TableBody>
                       <TableRow>
-                        <TableCell colSpan={2} style={{ textAlign: 'center', background: 'red' }}>
-                          <h1 style={{ fontSize: 16, color: 'white' }}>
-                            {item.replaceAll('_', ' ')}
+                        <TableCell colSpan={2} style={{ textAlign: "center", background: "red" }}>
+                          <h1 style={{ fontSize: 16, color: "white" }}>
+                            <FormattedMessage
+                              id={item.replaceAll("_", " ")}
+                              defaultMessage={item.replaceAll("_", " ")}
+                            />
                           </h1>
                         </TableCell>
 
-                        <TableCell scope="row" style={{ wordBreak: 'break-all' }}>
+                        <TableCell scope="row" style={{ wordBreak: "break-all" }}>
                           {missings?.[item]?.data.map((id, i) => {
                             return (
                               <>
                                 <a href={`order-details/${id}`} alt={id} key={id}>
                                   {id}
                                 </a>
-                                {i === missings?.[item]?.data?.length - 1 ? '' : ','}
+                                {i === missings?.[item]?.data?.length - 1 ? "" : ","}
                               </>
                             );
                           })}
@@ -312,84 +315,91 @@ const DateGetter = () => {
       <div
         className={classes.platformCardWrapper}
         style={{
-          flexDirection: mobileView ? 'column' : 'row',
+          flexDirection: mobileView ? "column" : "row",
         }}
       >
-        {userRole === 'admin' &&
+        {userRole === "admin" &&
           platformsInfo &&
           Object.keys(platformsInfo).map(name => {
             const item = platformsInfo[name];
             return (
               <PlatformCard
                 name={name}
-                cost14K={item?.['14K_total_cost']}
-                qty14K={item?.['14K_total_count']}
-                silverCost={item?.['silver_total_cost']}
-                silverQty={item?.['silver_total_count']}
-                totalCost={item?.['total_cost']}
-                totalQty={item?.['total_count']}
+                cost14K={item?.["14K_total_cost"]}
+                qty14K={item?.["14K_total_count"]}
+                silverCost={item?.["silver_total_cost"]}
+                silverQty={item?.["silver_total_count"]}
+                totalCost={item?.["total_cost"]}
+                totalQty={item?.["total_count"]}
               />
             );
           })}
       </div>
 
-      {selectedPlatform === 'all' && bestSeller.bestRows && (
+      {selectedPlatform === "all" && bestSeller.bestRows && (
         <div className={classes.filterButtonsWrapper}>
           <Button
             variant="contained"
-            checked={filteredPlatform === 'e'}
+            checked={filteredPlatform === "e"}
             disabled={calcCost.isLoading}
-            onClick={e => setFilteredPlatform('e')}
+            onClick={e => setFilteredPlatform("e")}
             style={{
-              backgroundColor: filteredPlatform === 'e' ? '#3F51B5' : null,
-              color: filteredPlatform === 'e' ? 'white' : null,
+              backgroundColor: filteredPlatform === "e" ? "#3F51B5" : null,
+              color: filteredPlatform === "e" ? "white" : null,
             }}
           >
-            <FormattedMessage id={'e'} defaultMessage={'E'} />
+            <FormattedMessage id={"e"} defaultMessage={"E"} />
           </Button>
 
           <Button
             variant="contained"
-            checked={filteredPlatform === 's'}
+            checked={filteredPlatform === "s"}
             disabled={calcCost.isLoading}
-            onClick={e => setFilteredPlatform('s')}
+            onClick={e => setFilteredPlatform("s")}
             style={{
-              backgroundColor: filteredPlatform === 's' ? '#3F51B5' : null,
-              color: filteredPlatform === 's' ? 'white' : null,
+              backgroundColor: filteredPlatform === "s" ? "#3F51B5" : null,
+              color: filteredPlatform === "s" ? "white" : null,
             }}
           >
-            <FormattedMessage id={'s'} defaultMessage={'S'} />
+            <FormattedMessage id={"s"} defaultMessage={"S"} />
           </Button>
 
           <Button
             variant="contained"
-            checked={filteredPlatform === 'a'}
+            checked={filteredPlatform === "a"}
             disabled={calcCost.isLoading}
-            onClick={e => setFilteredPlatform('a')}
+            onClick={e => setFilteredPlatform("a")}
             style={{
-              backgroundColor: filteredPlatform === 'a' ? '#3F51B5' : null,
-              color: filteredPlatform === 'a' ? 'white' : null,
+              backgroundColor: filteredPlatform === "a" ? "#3F51B5" : null,
+              color: filteredPlatform === "a" ? "white" : null,
             }}
           >
-            <FormattedMessage id={'a'} defaultMessage={'A'} />
+            <FormattedMessage id={"a"} defaultMessage={"A"} />
           </Button>
 
           <Button
             variant="contained"
-            checked={filteredPlatform === 'all'}
+            checked={filteredPlatform === "all"}
             disabled={calcCost.isLoading}
-            onClick={e => setFilteredPlatform('all')}
+            onClick={e => setFilteredPlatform("all")}
             style={{
-              backgroundColor: filteredPlatform === 'all' ? '#3F51B5' : null,
-              color: filteredPlatform === 'all' ? 'white' : null,
+              backgroundColor: filteredPlatform === "all" ? "#3F51B5" : null,
+              color: filteredPlatform === "all" ? "white" : null,
             }}
           >
-            <FormattedMessage id={'all'} defaultMessage={'ALL'} />
+            <FormattedMessage id={"all"} defaultMessage={"ALL"} />
           </Button>
         </div>
       )}
 
-      {bestRows && <SellerTable bestRows={bestRows} />}
+      <div style={{ marginBottom: "70px" }}>
+        {bestRows && bestRows?.length ? <SellerTable bestRows={bestRows} /> : null}
+        {bestRows?.length === 0 && (
+          <Typography variant="h5" style={{ marginTop: 10 }}>
+            <FormattedMessage id={"noBestSeller"} defaultMessage={"noBestSeller"} />
+          </Typography>
+        )}
+      </div>
     </div>
   );
 };

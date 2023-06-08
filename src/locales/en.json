@@ -147,5 +147,22 @@
   "areYouSure": "Are you sure?",
   "a": "a",
   "s": "s",
-  "e": "e"
+  "e": "e",
+  "noBestSeller": "No Best Seller",
+  "14K COST": "14K COST",
+  "14K QTY": "14K QTY",
+  "SILVER COST": "SILVER COST",
+  "SILVER QTY": "SILVER QTY",
+  "TOTAL COST": "TOTAL COST",
+  "TOTAL QTY": "TOTAL QTY",
+  "Type": "Type",
+  "Color": "Color",
+  "Total Cost": "Total Cost",
+  "Total Count": "Total Count",
+  "Labor Cost": "Labor Cost",
+  "GoldGr": "GoldGr",
+  "MISSING TYPE": "MISSING TYPE",
+  "MISSING GOLD PRICES": "MISSING GOLD PRICES",
+  "MISSING SILVER TYPE COST": "MISSING SILVER TYPE COST",
+  "MISSING SILVER QTY COST": "MISSING SILVER QTY COST"
 }

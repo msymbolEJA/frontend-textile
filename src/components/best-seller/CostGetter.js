@@ -1,7 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import BorderColorIcon from '@material-ui/icons/BorderColor';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from "@material-ui/core";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
+import BorderColorIcon from "@material-ui/icons/BorderColor";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 const CostGetter = ({ quantity, calcCost }) => {
   const classes = useStyles();
 
-  const mobileView = useMediaQuery('(max-width:1024px)');
+  const mobileView = useMediaQuery("(max-width:1024px)");
 
   return (
     <Paper className={classes.paper} style={{ marginTop: mobileView ? 20 : 0 }}>
@@ -44,9 +44,9 @@ const CostGetter = ({ quantity, calcCost }) => {
           <h3>Calculating...</h3>
         ) : (
           <>
-            <h3>{calcCost.totalCost && 'Total Cost : $' + calcCost.totalCost.toFixed(2)}</h3>
-            <h3>{calcCost.totalCost && 'Quantity : ' + quantity}</h3>
-            <h3>{calcCost.totalCost && 'Is Repeat : ' + calcCost.isRepeatNumber}</h3>
+            <h3>{calcCost.totalCost && "Total Cost : $" + calcCost.totalCost.toFixed(2)}</h3>
+            <h3>{calcCost.totalCost && "Quantity : " + quantity}</h3>
+            <h3>{calcCost.totalCost && "Is Repeat : " + calcCost.isRepeatNumber}</h3>
           </>
         )}
       </div>

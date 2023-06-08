@@ -193,5 +193,21 @@
   "getLabel": "Etiket Getir",
   "a": "a",
   "s": "s",
-  "e": "e"
+  "e": "e",
+  "noBestSeller": "Çok Satan Yok",
+  "14K COST": "14K MALİYETİ",
+  "14K QTY": "14K ADETİ",
+  "SILVER COST": "GÜMÜŞ MALİYETİ",
+  "SILVER QTY": "GÜMÜŞ ADETİ",
+  "TOTAL COST": "TOPLAM TUTAR",
+  "TOTAL QTY": "TOPLAM MİKTAR",
+  "Type": "Tür",
+  "Total Cost": "Toplam Maliyet",
+  "Total Count": "Toplam Adet",
+  "Labor Cost": "Labor Maliyet",
+  "GoldGr": "Altın GR",
+  "MISSING TYPE": "EKSİK TÜR",
+  "MISSING GOLD PRICES": "EKSİK ALTIN FİYAT",
+  "MISSING SILVER TYPE COST": "EKSİK GÜMÜŞ TÜR MALİYET",
+  "MISSING SILVER QTY COST": "EKSİK GÜMÜŞ ADET MALİYET"
 }

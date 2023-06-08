@@ -1,19 +1,17 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { FormattedMessage } from 'react-intl';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { bestSellerColumns, colorNumberColumns } from '../../helper/Constants';
-import { Paper } from '@material-ui/core';
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
+import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles(theme => ({
   tContainer: {
     padding: 1,
-    width: 'fit-content',
+    width: "fit-content",
     marginTop: 10,
   },
   rowWithNull: {
@@ -21,9 +19,9 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
   },
   tableCellHeader: {
-    color: 'black',
-    border: '1px white solid',
-    backgroundColor: 'lightblue',
+    color: "black",
+    border: "1px white solid",
+    backgroundColor: "lightblue",
     padding: 13,
   },
   darkTableRow: {
@@ -37,10 +35,11 @@ const useStyles = makeStyles(theme => ({
     padding: 13,
   },
   tablePaper: {
-    marginTop: '10px',
+    marginTop: "10px",
+    marginBottom: "10px",
     // border: '1px solid lightgrey',
-    borderRadius: '5px',
-    overflowX: 'auto',
+    borderRadius: "5px",
+    overflowX: "auto",
   },
   bottom: {
     display: 'flex',
@@ -56,6 +55,16 @@ const useStyles = makeStyles(theme => ({
   },
   centerCell: {
     textAlign: 'center',
+  },
+  boldText: {
+    fontWeight: "bold",
+  },
+  blackGround: {
+    backgroundColor: "black",
+    color: "white",
+  },
+  centerCell: {
+    textAlign: "center",
   },
 }));
 
@@ -98,10 +107,6 @@ const SellerTable = ({ bestRows }) => {
         result[key].labor_cost += labor_cost;
       }
 
-      if (index < items.length - 1 && items[index + 1].shop !== shop) {
-        result[key].nextShop = items[index + 1].shop;
-      }
-
       return result;
     }, {});
   };
@@ -119,19 +124,19 @@ const SellerTable = ({ bestRows }) => {
             className={typeIndex % 2 === 1 ? classes.darkTableRow : null}
           >
             <TableCell align="center" className={classes.boldText}>
-              {color !== null ? `${color}` : '-'}
+              {color !== null ? `${color}` : "-"}
             </TableCell>
             <TableCell align="center" className={classes.boldText}>
-              {colorTotalCost !== null ? `$${colorTotalCost.toFixed(2)}` : '-'}
+              {colorTotalCost !== null ? `$${colorTotalCost.toFixed(2)}` : "-"}
             </TableCell>
             <TableCell align="center" className={classes.boldText}>
-              {colorCount !== null ? `${colorCount}` : '-'}
+              {colorCount !== null ? `${colorCount}` : "-"}
             </TableCell>
             <TableCell align="center" className={classes.boldText}>
-              {labor_cost !== null ? `$${labor_cost.toFixed(2)}` : '-'}
+              {labor_cost !== null ? `$${labor_cost.toFixed(2)}` : "-"}
             </TableCell>
             <TableCell align="center" className={classes.boldText}>
-              {goldGr !== null ? goldGr.toFixed(2) : '-'}
+              {goldGr !== null ? goldGr.toFixed(2) : "-"}
             </TableCell>
           </TableRow>
         );
@@ -157,13 +162,6 @@ const SellerTable = ({ bestRows }) => {
             </>
           )}
           {colorRows}
-          {nextShop && (
-            <TableRow className={classes.blackGround}>
-              <TableCell colSpan={6} align="center">
-                <h1 style={{ fontSize: 20, color: 'white', padding: 0, margin: 0 }}>{nextShop}</h1>
-              </TableCell>
-            </TableRow>
-          )}
           {(rowSpanned = true)}
         </>
       );
@@ -182,58 +180,28 @@ const SellerTable = ({ bestRows }) => {
             <TableHead>
               <TableRow className={classes.tableCellHeader}>
                 <TableCell className={classes.boldText} align="center">
-                  Type
+                  <FormattedMessage id={"Type"} defaultMessage={"Type"} />
                 </TableCell>
                 <TableCell className={classes.boldText} align="center">
-                  Color
+                  <FormattedMessage id={"Color"} defaultMessage={"Color"} />
                 </TableCell>
                 <TableCell className={classes.boldText} align="center">
-                  Total Cost
+                  <FormattedMessage id={"Total Cost"} defaultMessage={"Total Cost"} />
                 </TableCell>
                 <TableCell className={classes.boldText} align="center">
-                  Total Count
+                  <FormattedMessage id={"Total Count"} defaultMessage={"Total Count"} />
                 </TableCell>
                 <TableCell className={classes.boldText} align="center">
-                  Labor Cost
+                  <FormattedMessage id={"Labor Cost"} defaultMessage={"Labor Cost"} />
                 </TableCell>
                 <TableCell className={classes.boldText} align="center">
-                  GoldGr
+                  <FormattedMessage id={"GoldGr"} defaultMessage={"GoldGr"} />
                 </TableCell>
               </TableRow>
             </TableHead>
             {Object.values(groupedByTypeAndColor)?.[0] && (
-              <TableBody>
-                <TableRow className={classes.blackGround}>
-                  <TableCell colSpan={6} align="center">
-                    <h1 style={{ fontSize: 20, color: 'white', padding: 0, margin: 0 }}>
-                      {Object.values(groupedByTypeAndColor)?.[0]?.shop}
-                    </h1>
-                  </TableCell>
-                </TableRow>
-                {renderTypeAndColorRows(groupedByTypeAndColor)}
-              </TableBody>
+              <TableBody>{renderTypeAndColorRows(groupedByTypeAndColor)}</TableBody>
             )}
-
-            {/* {typeColumn?.map((typeName, index) => {
-                return (
-                  typeName !== 'null' && (
-                    <TableRow key={index} className={index % 2 === 1 ? classes.darkTableRow : null}>
-                      <TableCell className={classes.tableCellHeader}>
-                        {typeName} ({totals[index]})
-                      </TableCell>
-                      {items[typeName]?.map((item, i) => (
-                        <>
-                          <TableCell key={i} className={classes.tableCell}>
-                            {item.color || '-'} ({item.color_count || 0} adet)
-                            <br />
-                            {item.goldGr_count || 0} gr Altın
-                          </TableCell>
-                        </>
-                      ))}
-                    </TableRow>
-                  )
-                );
-              })} */}
           </Table>
         </TableContainer>
       </div>
