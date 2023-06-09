@@ -2,26 +2,28 @@ import { Card, Table, TableBody, TableCell, TableRow, Typography } from "@materi
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import moment from "moment";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { AppContext } from "../../context/Context";
-import { getData } from "../../helper/PostData";
+import { getData, postData } from "../../helper/PostData";
 import CostGetter from "./CostGetter";
 import PlatformCard from "./PlatformCard";
 import SellerTable from "./SellerTable";
+import { toastErrorNotify, toastSuccessNotify } from "../otheritems/ToastNotify";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles(theme => ({
   top: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
   },
   paper: {
     padding: theme.spacing(1),
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.palette.text.primary,
     // marginTop: 39,
     margin: "auto",
@@ -29,30 +31,30 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     // justifyContent: "space-evenly",
-    alignItems: 'center',
+    alignItems: "center",
     // height: 400,
-    fontFamily: 'Courier New',
-    border: '1px solid lightgrey',
-    borderRadius: '5px',
+    fontFamily: "Courier New",
+    border: "1px solid lightgrey",
+    borderRadius: "5px",
   },
   btn: {
-    width: '175px',
-    margin: '5px',
+    width: "175px",
+    margin: "5px",
   },
   inputs: {
-    display: 'flex',
-    flexDirection: 'column',
-    margin: '10px',
+    display: "flex",
+    flexDirection: "column",
+    margin: "10px",
   },
   label: {
-    margin: '10px',
-    fontSize: '1.5rem',
+    margin: "10px",
+    fontSize: "1.5rem",
   },
   header: {
     margin: 10,
     marginTop: 75,
-    textAlign: 'center',
-    fontSize: '2rem',
+    textAlign: "center",
+    fontSize: "2rem",
   },
   getBtnDiv: {
     display: "flex",
@@ -89,13 +91,17 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     gap: 10,
   },
+  uploadButton: {
+    display: "inline-block",
+    cursor: "pointer",
+  },
 }));
 
 const DateGetter = () => {
   const { user } = useContext(AppContext);
-  const mobileView = useMediaQuery('(max-width:1024px)');
+  const mobileView = useMediaQuery("(max-width:1024px)");
 
-  let localRole = localStorage.getItem('localRole');
+  let localRole = localStorage.getItem("localRole");
 
   const userRole = user?.role || localRole;
   const classes = useStyles();
@@ -116,6 +122,8 @@ const DateGetter = () => {
   });
 
   const [platformsInfo, setPlatformsInfo] = useState(null);
+
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
 
   const [missings, setMissings] = useState({
     MISSING_TYPE: null,
@@ -181,6 +189,31 @@ const DateGetter = () => {
     endDateRef.current.value = moment().format("YYYY-MM-DD");
     beginnerDateRef.current.value = moment().subtract(1, "months").format("YYYY-MM-DD");
   }, []);
+
+  const handleFileUpload = e => {
+    e.stopPropagation();
+    let fs = e.target.files[0];
+    if (fs) {
+      setIsUploadingFile(true);
+
+      var data = new FormData();
+      data.append("file", fs);
+
+      let path = `${BASE_URL}etsy/gold_file_upload/`;
+      postData(path, data)
+        .then(res => {
+          console.log(res);
+          toastSuccessNotify("Success uploading file");
+        })
+        .catch(err => {
+          console.log(err.response);
+          toastErrorNotify("Error uploading file");
+        })
+        .finally(() => {
+          setIsUploadingFile(false);
+        });
+    }
+  };
 
   const PlatformButton = ({ id, label }) => {
     return (
@@ -259,11 +292,28 @@ const DateGetter = () => {
                 >
                   <FormattedMessage id="getTypes" defaultMessage="Get Types" />
                 </Button>
+                <Button
+                  variant="outlined"
+                  component="label"
+                  className={classes.btn}
+                  color="primary"
+                  disabled={calcCost.isLoading || bestSeller.isLoading || isUploadingFile}
+                  startIcon={<CloudUploadIcon />}
+                >
+                  <FormattedMessage id="uploadFile" defaultMessage="Upload File" />
+                  <input
+                    type="file"
+                    accept=".xls, .xlsx, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv"
+                    onChange={handleFileUpload}
+                    id="file-upload"
+                    hidden
+                  />
+                </Button>
               </div>
             </div>
           </Paper>
         </div>
-        {quantity && userRole === 'admin' ? (
+        {quantity && userRole === "admin" ? (
           <CostGetter
             endDateRef={endDateRef}
             beginnerDateRef={beginnerDateRef}
