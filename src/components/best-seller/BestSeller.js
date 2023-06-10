@@ -343,7 +343,8 @@ const DateGetter = () => {
                             <FormattedMessage
                               id={item.replaceAll("_", " ")}
                               defaultMessage={item.replaceAll("_", " ")}
-                            />
+                            />{" "}
+                            ({missings?.[item]?.count})
                           </h1>
                         </TableCell>
 
