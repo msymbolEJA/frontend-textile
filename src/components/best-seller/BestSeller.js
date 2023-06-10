@@ -118,7 +118,7 @@ const DateGetter = () => {
   const [calcCost, setCalcCost] = useState({
     totalCost: null,
     isLoading: false,
-    isRepeatNumber: 0,
+    repeat_count: 0,
   });
 
   const [platformsInfo, setPlatformsInfo] = useState(null);
@@ -126,10 +126,10 @@ const DateGetter = () => {
   const [isUploadingFile, setIsUploadingFile] = useState(false);
 
   const [missings, setMissings] = useState({
-    MISSING_TYPE: null,
-    MISSING_SILVER_TYPE_COST: null,
-    MISSING_SILVER_QTY_COST: null,
-    MISSING_GOLD_PRICES: null,
+    MISSING_TYPES: null,
+    MISSING_SILVER_COSTS: null,
+    MISSING_SILVER_QTY_COSTS: null,
+    MISSING_GOLD_COSTS: null,
   });
 
   const platforms = {
@@ -150,19 +150,19 @@ const DateGetter = () => {
         setQuantity(response.data.TOTAL_COST.total_count);
 
         const {
-          MISSING_TYPE,
-          MISSING_SILVER_TYPE_COST,
-          MISSING_SILVER_QTY_COST,
-          MISSING_GOLD_PRICES,
+          MISSING_TYPES,
+          MISSING_SILVER_COSTS,
+          MISSING_SILVER_QTY_COSTS,
+          MISSING_GOLD_COSTS,
         } = response.data;
 
         setMissings({
-          MISSING_GOLD_PRICES: MISSING_GOLD_PRICES?.count ? MISSING_GOLD_PRICES : null,
-          MISSING_SILVER_QTY_COST: MISSING_SILVER_QTY_COST?.count ? MISSING_SILVER_QTY_COST : null,
-          MISSING_TYPE: MISSING_TYPE?.count ? MISSING_TYPE : null,
-          MISSING_SILVER_TYPE_COST: MISSING_SILVER_TYPE_COST?.count
-            ? MISSING_SILVER_TYPE_COST
+          MISSING_GOLD_COSTS: MISSING_GOLD_COSTS?.count ? MISSING_GOLD_COSTS : null,
+          MISSING_SILVER_QTY_COSTS: MISSING_SILVER_QTY_COSTS?.count
+            ? MISSING_SILVER_QTY_COSTS
             : null,
+          MISSING_TYPES: MISSING_TYPES?.count ? MISSING_TYPES : null,
+          MISSING_SILVER_COSTS: MISSING_SILVER_COSTS?.count ? MISSING_SILVER_COSTS : null,
         });
 
         setPlatformsInfo(response.data.PLATFORM_TOTAL_COST);
@@ -177,7 +177,7 @@ const DateGetter = () => {
           ...calcCost,
           totalCost: response.data.TOTAL_COST.total_cost,
           isLoading: false,
-          isRepeatNumber: response.data.TOTAL_COST.is_repeat ?? 0,
+          repeat_count: response.data.TOTAL_COST.repeat_count ?? 0,
         });
       })
       .catch(() => {
@@ -327,10 +327,10 @@ const DateGetter = () => {
       {missings && (
         <div className={classes.missingTable}>
           {[
-            "MISSING_TYPE",
-            "MISSING_GOLD_PRICES",
-            "MISSING_SILVER_TYPE_COST",
-            "MISSING_SILVER_QTY_COST",
+            "MISSING_TYPES",
+            "MISSING_GOLD_COSTS",
+            "MISSING_SILVER_COSTS",
+            "MISSING_SILVER_QTY_COSTS",
           ].map((item, i) => {
             if (missings?.[item]?.count && missings?.[item]?.data?.length)
               return (

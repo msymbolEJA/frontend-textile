@@ -26,8 +26,8 @@ const ApexChart = ({ data }) => {
       {
         type: "pie",
         showInLegend: true,
-        indexLabel: "{name} - {y}",
-        yValueFormatString: "###'%' #",
+        indexLabel: " {name} - {y} ",
+        yValueFormatString: "'%' # ",
         dataPoints: sortedData,
       },
     ],
