@@ -2,18 +2,18 @@ import { Card, Table, TableBody, TableCell, TableRow, Typography } from "@materi
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import moment from "moment";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { AppContext } from "../../context/Context";
 import { getData, postData } from "../../helper/PostData";
+import { toastErrorNotify, toastSuccessNotify } from "../otheritems/ToastNotify";
+import ApexChart from "./ApexChart";
 import CostGetter from "./CostGetter";
 import PlatformCard from "./PlatformCard";
 import SellerTable from "./SellerTable";
-import { toastErrorNotify, toastSuccessNotify } from "../otheritems/ToastNotify";
-
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles(theme => ({
@@ -239,6 +239,8 @@ const DateGetter = () => {
       item.shop === platforms[filteredPlatform],
   );
 
+  console.log("bestRows", bestRows);
+
   return (
     <div>
       <h2 className={classes.header}>
@@ -324,7 +326,12 @@ const DateGetter = () => {
       </div>
       {missings && (
         <div className={classes.missingTable}>
-          {Object.keys(missings).map((item, i) => {
+          {[
+            "MISSING_TYPE",
+            "MISSING_GOLD_PRICES",
+            "MISSING_SILVER_TYPE_COST",
+            "MISSING_SILVER_QTY_COST",
+          ].map((item, i) => {
             if (missings?.[item]?.count && missings?.[item]?.data?.length)
               return (
                 <Card style={{ width: mobileView ? "90%" : 900 }} key={i}>
@@ -343,12 +350,12 @@ const DateGetter = () => {
                         <TableCell scope="row" style={{ wordBreak: "break-all" }}>
                           {missings?.[item]?.data.map((id, i) => {
                             return (
-                              <>
-                                <a href={`order-details/${id}`} alt={id} key={id}>
+                              <React.Fragment key={id}>
+                                <a href={`order-details/${id}`} alt={id}>
                                   {id}
                                 </a>
                                 {i === missings?.[item]?.data?.length - 1 ? "" : ","}
-                              </>
+                              </React.Fragment>
                             );
                           })}
                         </TableCell>
@@ -357,7 +364,7 @@ const DateGetter = () => {
                   </Table>
                 </Card>
               );
-            else return <></>;
+            else return <React.Fragment key={i} />;
           })}
         </div>
       )}
@@ -442,13 +449,21 @@ const DateGetter = () => {
         </div>
       )}
 
-      <div style={{ marginBottom: "70px" }}>
+      <div
+        style={{
+          marginBottom: "70px",
+          display: "flex",
+          flexDirection: "column-reverse",
+          justifyContent: "center",
+        }}
+      >
         {bestRows && bestRows?.length ? <SellerTable bestRows={bestRows} /> : null}
         {bestRows?.length === 0 && (
           <Typography variant="h5" style={{ marginTop: 10 }}>
             <FormattedMessage id={"noBestSeller"} defaultMessage={"noBestSeller"} />
           </Typography>
         )}
+        {bestRows && bestRows?.length ? <ApexChart data={bestRows} /> : null}
       </div>
     </div>
   );
