@@ -15,8 +15,8 @@ const useStyles = makeStyles(theme => ({
     marginTop: 10,
   },
   rowWithNull: {
-    backgroundColor: 'black',
-    color: 'white',
+    backgroundColor: "black",
+    color: "white",
   },
   tableCellHeader: {
     color: "black",
@@ -25,13 +25,13 @@ const useStyles = makeStyles(theme => ({
     padding: 13,
   },
   darkTableRow: {
-    backgroundColor: '#F2F2F2',
+    backgroundColor: "#F2F2F2",
   },
   tableCell: {
-    fontFamily: 'Courier New',
-    border: '1px solid gray',
-    borderBottom: '2px solid black',
-    borderTop: '2px solid black',
+    fontFamily: "Courier New",
+    border: "1px solid gray",
+    borderBottom: "2px solid black",
+    borderTop: "2px solid black",
     padding: 13,
   },
   tablePaper: {
@@ -42,19 +42,19 @@ const useStyles = makeStyles(theme => ({
     overflowX: "auto",
   },
   bottom: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
   },
   table: {},
   boldText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   blackGround: {
-    backgroundColor: 'black',
-    color: 'white',
+    backgroundColor: "black",
+    color: "white",
   },
   centerCell: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   boldText: {
     fontWeight: "bold",
@@ -92,20 +92,22 @@ const SellerTable = ({ bestRows }) => {
 
       result[key].total_cost += total_cost;
       result[key].count += count;
+      result[key].labor_cost += labor_cost ?? 0;
+      result[key].goldGr += goldGr ?? 0;
 
       if (!result[key].colors[color]) {
         result[key].colors[color] = {
           total_cost: 0,
           count: 0,
+          goldGr: 0,
+          labor_cost: 0,
         };
       }
 
       result[key].colors[color].total_cost += total_cost;
       result[key].colors[color].count += count;
-
-      if (labor_cost !== null) {
-        result[key].labor_cost += labor_cost;
-      }
+      result[key].colors[color].labor_cost += labor_cost ?? 0;
+      result[key].colors[color].goldGr += goldGr ?? 0;
 
       return result;
     }, {});
