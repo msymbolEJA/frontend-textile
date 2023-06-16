@@ -129,7 +129,7 @@ const DateGetter = () => {
     MISSING_TYPES: null,
     MISSING_SILVER_COSTS: null,
     MISSING_SILVER_QTY_COSTS: null,
-    MISSING_GOLD_COSTS: null,
+    MISSING_14K_COSTS: null,
   });
 
   const platforms = {
@@ -153,11 +153,11 @@ const DateGetter = () => {
           MISSING_TYPES,
           MISSING_SILVER_COSTS,
           MISSING_SILVER_QTY_COSTS,
-          MISSING_GOLD_COSTS,
+          MISSING_14K_COSTS,
         } = response.data;
 
         setMissings({
-          MISSING_GOLD_COSTS: MISSING_GOLD_COSTS?.count ? MISSING_GOLD_COSTS : null,
+          MISSING_14K_COSTS: MISSING_14K_COSTS?.count ? MISSING_14K_COSTS : null,
           MISSING_SILVER_QTY_COSTS: MISSING_SILVER_QTY_COSTS?.count
             ? MISSING_SILVER_QTY_COSTS
             : null,
@@ -328,7 +328,7 @@ const DateGetter = () => {
         <div className={classes.missingTable}>
           {[
             "MISSING_TYPES",
-            "MISSING_GOLD_COSTS",
+            "MISSING_14K_COSTS",
             "MISSING_SILVER_COSTS",
             "MISSING_SILVER_QTY_COSTS",
           ].map((item, i) => {
