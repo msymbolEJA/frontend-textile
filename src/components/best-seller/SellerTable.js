@@ -141,7 +141,7 @@ const SellerTable = ({ bestRows }) => {
                     : "-"}
                 </TableCell>
                 <TableCell align="center" className={classes.boldText}>
-                  {goldGr.length > 0 ? `$${goldGr.reduce((a, b) => a + b, 0).toFixed(2)}` : "-"}
+                  {goldGr.length > 0 ? `${goldGr.reduce((a, b) => a + b, 0).toFixed(2)} Gr` : "-"}
                 </TableCell>
               </TableRow>
             );
