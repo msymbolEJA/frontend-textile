@@ -31,6 +31,8 @@
   "behindOverallSchedule": "Behind Overall Schedule",
   "shipmentDueDate": "Shipment Due Date",
   "quantity": "Quantity",
+  "Quantity": "Quantity",
+  "Calculated Product": "Calculated Product",
   "wiewAll": "View All",
   "pending": "PENDING",
   "ready": "READY",
@@ -164,5 +166,18 @@
   "MISSING TYPES": "MISSING TYPES",
   "MISSING 14K COSTS": "MISSING 14K COSTS",
   "MISSING SILVER COSTS": "MISSING SILVER COSTS",
-  "MISSING SILVER QTY COSTS": "MISSING SILVER QTY COSTS"
+  "MISSING SILVER QTY COSTS": "MISSING SILVER QTY COSTS",
+  "calculateCost": "Calculate Cost",
+  "noData": "No Data",
+  "total_metrage": "Total Metrage",
+  "Depth": "Depth",
+  "dress": "Dress",
+  "approne": "Approne",
+  "apprones": "Apprones",
+  "stocking": "Stocking",
+  "couch": "Couch",
+  "curtain": "Curtain",
+  "fabric": "Fabric",
+  "pillow": "Pillow",
+  "calculator": "Calculator"
 }

@@ -8,7 +8,7 @@ import moment from "moment";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     padding: theme.spacing(1),
     textAlign: "center",
@@ -40,7 +40,7 @@ const CostGetter = () => {
   const endDateRef = useRef(null);
   const [quantity, setQuantity] = useState(0);
   const [calcCost, setCalcCost] = useState({
-    totalCost: null,
+    total_cost: null,
     isLoading: false,
     isRepeatNumber: 0,
   });
@@ -54,8 +54,8 @@ const CostGetter = () => {
   const getCost = () => {
     setCalcCost({ ...calcCost, isLoading: true });
     getData(
-      `${BASE_URL}etsy/cost/?order_date__iexact=&order_date__lte=${endDateRef.current.value}+00%3A00&order_date__gte=${beginnerDateRef.current.value}+00%3A00&limit=100000000000&offset=0`
-    ).then((response) => {
+      `${BASE_URL}etsy/cost/?order_date__iexact=&order_date__lte=${endDateRef.current.value}+00%3A00&order_date__gte=${beginnerDateRef.current.value}+00%3A00&limit=100000000000&offset=0`,
+    ).then(response => {
       // console.log(response.data.results);
       setQuantity(response.data.count);
 
@@ -65,12 +65,12 @@ const CostGetter = () => {
 
       let isRepeatRes = response.data.results.reduce(
         (total, x) => (x.is_repeat === true ? total + 1 : total),
-        0
+        0,
       );
 
       setCalcCost({
         ...calcCost,
-        totalCost: res.cost,
+        total_cost: res.cost,
         isLoading: false,
         isRepeatNumber: isRepeatRes,
       });
@@ -79,9 +79,7 @@ const CostGetter = () => {
 
   useEffect(() => {
     endDateRef.current.value = moment().format("YYYY-MM-DD");
-    beginnerDateRef.current.value = moment()
-      .subtract(1, "months")
-      .format("YYYY-MM-DD");
+    beginnerDateRef.current.value = moment().subtract(1, "months").format("YYYY-MM-DD");
   }, []);
 
   return (
@@ -94,11 +92,7 @@ const CostGetter = () => {
         <label htmlFor="beginnerDate" className={classes.paddingStyle}>
           Start Date:
         </label>
-        <input
-          ref={beginnerDateRef}
-          type="date"
-          className={classes.paddingStyle}
-        />
+        <input ref={beginnerDateRef} type="date" className={classes.paddingStyle} />
       </div>
       <div>
         <label htmlFor="endDate" className={classes.paddingStyle}>
@@ -114,13 +108,9 @@ const CostGetter = () => {
           <h3>Calculating...</h3>
         ) : (
           <>
-            <h3>
-              {calcCost.totalCost && "Total Cost : $" + calcCost.totalCost}
-            </h3>
-            <h3>{calcCost.totalCost && "Quantity : " + quantity}</h3>
-            <h3>
-              {calcCost.totalCost && "Is Repeat : " + calcCost.isRepeatNumber}
-            </h3>
+            <h3>{calcCost.total_cost && "Total Cost : $" + calcCost.total_cost}</h3>
+            <h3>{calcCost.total_cost && "Quantity : " + quantity}</h3>
+            <h3>{calcCost.total_cost && "Is Repeat : " + calcCost.isRepeatNumber}</h3>
           </>
         )}
       </div>

@@ -209,5 +209,22 @@
   "MISSING TYPES": "EKSİK TÜR",
   "MISSING 14K COSTS": "EKSİK 14K FİYAT",
   "MISSING SILVER COSTS": "EKSİK GÜMÜŞ FİYAT",
-  "MISSING SILVER QTY COSTS": "EKSİK GÜMÜŞ ADET FİYAT"
+  "MISSING SILVER QTY COSTS": "EKSİK GÜMÜŞ ADET FİYAT",
+  "calculateCost": "Maliyet Hesapla",
+  "noData": "Veri Yok",
+  "total_metrage": "Toplam Uzunluk",
+  "width": "Genişlik",
+  "Depth": "Derinlik",
+  "depth": "Derinlik",
+  "dress": "Kıyafet",
+  "approne": "Önlük",
+  "approns": "Önlük",
+  "stocking": "Çorap",
+  "couch": "Koltuk",
+  "curtain": "Perde",
+  "fabric": "Kumaş",
+  "pillow": "Yastık",
+  "Quantity": "Miktar",
+  "Calculated Product": "Hesaplanan Ürünler",
+  "calculator": "Hesaplayıcı"
 }

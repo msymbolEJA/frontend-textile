@@ -2,6 +2,7 @@ import { useMediaQuery } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
+import { FormattedMessage } from "react-intl";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -10,13 +11,13 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.primary,
     // marginTop: 39,
     marginLeft: 8,
-    width: 254,
+    width: 320,
+    height: 209,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly",
     alignItems: "center",
-    height: "fit-content",
-    lineHeight: "0.5rem",
+    lineHeight: "1.5rem",
     border: "1px solid lightgrey",
   },
   titleStyle: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CostGetter = ({ quantity, calcCost }) => {
+const CostGetter = ({ quantity, calcCost, title }) => {
   const classes = useStyles();
 
   const mobileView = useMediaQuery("(max-width:1024px)");
@@ -36,17 +37,29 @@ const CostGetter = ({ quantity, calcCost }) => {
   return (
     <Paper className={classes.paper} style={{ marginTop: mobileView ? 20 : 0 }}>
       <div className={classes.titleStyle}>
-        <BorderColorIcon style={{ color: "#3F51B5", fontSize: "2rem" }} />
-        <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>Calculator</h3>
+        <BorderColorIcon style={{ color: "#3F51B5", fontSize: "1.4rem", marginRight: 10 }} />
+        <h3 style={{ display: "inline", marginLeft: "0.5rem" }}>
+          <FormattedMessage id={title.toLowerCase()} defaultMessage={title} />
+        </h3>
       </div>
       <div>
         {calcCost.isLoading ? (
           <h3>Calculating...</h3>
         ) : (
           <>
-            <h3>{calcCost.totalCost && "Total Cost : $" + calcCost.totalCost.toFixed(2)}</h3>
-            <h3>{calcCost.totalCost && "Quantity : " + quantity}</h3>
-            <h3>{calcCost.totalCost && "Repeat Count : " + calcCost.repeat_count}</h3>
+            <h3>
+              {" "}
+              <FormattedMessage id="Total Cost" defaultMessage="Total Cost" />
+              {" : $" + calcCost.total_cost.toFixed(2)}
+            </h3>
+            <h3>
+              <FormattedMessage id="Quantity" defaultMessage="Quantity" />
+              {" : " + quantity}
+            </h3>
+            <h3>
+              <FormattedMessage id="Calculated Product" defaultMessage="Calculated Product" />
+              {" : " + calcCost.calculated_product}
+            </h3>
           </>
         )}
       </div>
