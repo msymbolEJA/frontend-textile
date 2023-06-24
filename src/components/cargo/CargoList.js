@@ -23,7 +23,7 @@ import DownloadFile from "@material-ui/icons/GetApp";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const StyledTableCell = withStyles((theme) => ({
+const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: "rgb(100, 149, 237)",
     color: theme.palette.common.black,
@@ -37,7 +37,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
+const StyledTableRow = withStyles(theme => ({
   root: {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -78,9 +78,7 @@ export default function CustomizedTables() {
     (localStorage.getItem("localRole") === "workshop_manager" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
-    !["asya", "umraniye"].includes(
-      localStorage.getItem("workshop")?.toLowerCase()
-    );
+    !["asya", "umraniye"].includes(localStorage.getItem("workshop")?.toLowerCase());
   const classes = useStyles();
   const [cargoList, setCargoList] = useState();
   const history = useHistory();
@@ -93,18 +91,18 @@ export default function CustomizedTables() {
   const userRole = user?.role || localRole;
 
   const getListFunc = useCallback(() => {
-    getData(`${BASE_URL}etsy/cargo_list/${getSupplier}`).then((response) => {
+    getData(`${BASE_URL}etsy/cargo_list/${getSupplier}`).then(response => {
       let dataObj = response.data;
       const formattedData = dataObj
-        ? Object.keys(dataObj).flatMap((key) => {
-            return Object.keys(dataObj[key]).map((key2) => ({
+        ? Object.keys(dataObj).flatMap(key => {
+            return Object.keys(dataObj[key]).map(key2 => ({
               ...dataObj[key][key2],
               refNumber: key2,
-              supplier: isBeyazit?"":key,
+              supplier: isBeyazit ? "" : key,
             }));
           })
         : [];
-       setCargoList(formattedData.sort((a, b) => b.id - a.id));
+      setCargoList(formattedData.sort((a, b) => b.id - a.id));
     });
   }, [getSupplier]);
 
@@ -123,11 +121,11 @@ export default function CustomizedTables() {
     }
   };
 
-  const handleRowClick = (id) => {
+  const handleRowClick = id => {
     history.push(`/cargo-content/${id}`);
   };
 
-  const handleSupplier = (e) => {
+  const handleSupplier = e => {
     if (e.currentTarget.id) {
       setGetSupplier(`?supplier=${e.currentTarget.id}`);
     } else {
@@ -139,15 +137,15 @@ export default function CustomizedTables() {
     (id, data) => {
       if (!data) return;
       putData(`${BASE_URL}etsy/shipments/${id}/`, data)
-        .then((response) => {
+        .then(response => {
           // console.log(response);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         })
         .finally(() => getListFunc());
     },
-    [getListFunc]
+    [getListFunc],
   );
 
   const onChange = (e, id, name) => {
@@ -162,18 +160,18 @@ export default function CustomizedTables() {
         ? `/etsy/cancelCargo/${selectedItem?.id}/`
         : null;
     api(url, "get")
-      .then((response) => {
+      .then(response => {
         toastSuccessNotify(response?.data);
         getListFunc();
       })
-      .catch((error) => console.log(error))
+      .catch(error => console.log(error))
       .finally(() => setSelectedItem(null));
   };
 
-  const printHandler = (id) => {
+  const printHandler = id => {
     if (id)
       getData(`${BASE_URL}dhl/createdhlBulkLabel_cargo/${id}/`)
-        .then((response) => {
+        .then(response => {
           window?.location.reload(false);
         })
         .catch(({ response }) => {
@@ -230,10 +228,7 @@ export default function CustomizedTables() {
                 <FormattedMessage id="id" defaultMessage="Id" />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage
-                  id="referenceNumber"
-                  defaultMessage="Reference Number"
-                />
+                <FormattedMessage id="referenceNumber" defaultMessage="Reference Number" />
               </StyledTableCell>
               <StyledTableCell align="center">
                 <FormattedMessage id="description" />
@@ -251,10 +246,7 @@ export default function CustomizedTables() {
                 <FormattedMessage id="shipmentDate" defaultMessage="Log Date" />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage
-                  id="trackingNumber"
-                  defaultMessage="Tracking Number"
-                />
+                <FormattedMessage id="trackingNumber" defaultMessage="Tracking Number" />
               </StyledTableCell>
               {process.env.REACT_APP_IS_DHL_ENABLED === "true" &&
               (userRole === "admin" ||
@@ -279,164 +271,122 @@ export default function CustomizedTables() {
               </tr>
             ) : (
               cargoList.map((row, i) => {
-                  return (
-                    <StyledTableRow
-                      key={i}
-                      onClick={() => handleRowClick(row.id)}
-                    >
-                      <StyledTableCell align="center">{row.id}<br />({ row.supplier})</StyledTableCell>
-                      <StyledTableCell
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        {row?.refNumber.split("**")[0]}
-                      </StyledTableCell>
-                      <StyledTableCell
-                        align="center"
-                        component="th"
-                        scope="row"
-                      >
-                        {row?.refNumber.split("**")[1]}
-                      </StyledTableCell>
-                      <EditableTableCell
-                        align="center"
-                        {...{
-                          row,
-                          name: "carrier",
-                          onChange,
-                        }}
-                      />
-                      <StyledTableCell
-                        align="center"
-                        className={classes.spanHref}
-                      >
-                        {row.content.map((key, i) => (
-                          <span
+                return (
+                  <StyledTableRow key={i} onClick={() => handleRowClick(row.id)}>
+                    <StyledTableCell align="center">
+                      {row.id}
+                      <br />({row.supplier})
+                    </StyledTableCell>
+                    <StyledTableCell align="center" component="th" scope="row">
+                      {row?.refNumber.split("**")[0]}
+                    </StyledTableCell>
+                    <StyledTableCell align="center" component="th" scope="row">
+                      {row?.refNumber.split("**")[1]}
+                    </StyledTableCell>
+                    <EditableTableCell
+                      align="center"
+                      {...{
+                        row,
+                        name: "carrier",
+                        onChange,
+                      }}
+                    />
+                    <StyledTableCell align="center" className={classes.spanHref}>
+                      {row.content.map((key, i) => (
+                        <span
+                          key={i}
+                          onClick={e => {
+                            e.stopPropagation();
+                          }}
+                        >
+                          <a
+                            href={`/order-details/${key.toString().split(",")[0]}/`}
                             key={i}
-                            onClick={(e) => {
+                            onClick={e => {
                               e.stopPropagation();
                             }}
+                            style={{
+                              color:
+                                key.toString().split(",")?.[2].trim() === "True"
+                                  ? "#ffc000"
+                                  : !key ||
+                                    key.toString().split(",")?.[1].includes("None") ||
+                                    key.toString().split(",")?.[1] === " 209" ||
+                                    key.toString().split(",")?.[1] === " US"
+                                  ? "black"
+                                  : "red",
+                            }}
                           >
-                            <a
-                              href={`/order-details/${
-                                key.toString().split(",")[0]
-                              }/`}
-                              key={i}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                              }}
-                              style={{
-                                color:
-                                  !key ||
-                                  key
-                                    .toString()
-                                    .split(",")[1]
-                                    .includes("None") ||
-                                  key.toString().split(",")[1] === " 209" ||
-                                  key.toString().split(",")[1] === " US"
-                                    ? "black"
-                                    : "red",
-                              }}
-                            >
-                              {key.toString().split(",")[0]}
-                            </a>
-                            {row?.content?.length === i + 1 ? (
-                              ""
-                            ) : (
-                              <span>&nbsp; {"|"} &nbsp;</span>
-                            )}
-                          </span>
-                        ))}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {row.content.length}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {moment
-                          .utc(row.shipment_date)
-                          .local()
-                          .format("MM-DD-YY HH:mm")}
-                      </StyledTableCell>
-                      <EditableTableCell
-                        align="center"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                        {...{
-                          row,
-                          name: "tracking_number",
-                          onChange,
-                          trackingNumber: tnFunc(
-                            row.tracking_number,
-                            row.carrier
-                          ),
-                        }}
-                      />
-                      {process.env.REACT_APP_IS_DHL_ENABLED === "true" &&
-                      (userRole === "admin" ||
-                        userRole === "shop_manager" ||
-                        userRole === "shop_packer") ? (
-                        <StyledTableCell
-                          align="center"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {!row?.is_label ? (
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              className={classes.print}
-                              onClick={() => printHandler(row.id)}
-                            >
-                              <FormattedMessage
-                                id="getLabel"
-                                defaultMessage="Get Label"
-                              />
-                            </Button>
-                          ) : (
-                            <a href={`${BASE_URL}media/dhl/${row.id}.zip`}>
-                              <DownloadFile />
-                            </a>
-                          )}
-                        </StyledTableCell>
-                      ) : null}
-
-                      {!isBeyazit && (
-                        <StyledTableCell
-                          align="center"
-                          onClick={(e) => e.stopPropagation()}
-                        >
+                            {console.log(key.toString().split(",")?.[2])}
+                            {key.toString().split(",")[0]}
+                          </a>
+                          {row?.content?.length === i + 1 ? "" : <span>&nbsp; {"|"} &nbsp;</span>}
+                        </span>
+                      ))}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{row.content.length}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {moment.utc(row.shipment_date).local().format("MM-DD-YY HH:mm")}
+                    </StyledTableCell>
+                    <EditableTableCell
+                      align="center"
+                      onClick={e => {
+                        e.stopPropagation();
+                      }}
+                      {...{
+                        row,
+                        name: "tracking_number",
+                        onChange,
+                        trackingNumber: tnFunc(row.tracking_number, row.carrier),
+                      }}
+                    />
+                    {process.env.REACT_APP_IS_DHL_ENABLED === "true" &&
+                    (userRole === "admin" ||
+                      userRole === "shop_manager" ||
+                      userRole === "shop_packer") ? (
+                      <StyledTableCell align="center" onClick={e => e.stopPropagation()}>
+                        {!row?.is_label ? (
                           <Button
                             variant="contained"
                             color="primary"
-                            size="small"
-                            onClick={(e) =>
-                              handleConfirmModal(e, row.id, "undo")
-                            }
+                            className={classes.print}
+                            onClick={() => printHandler(row.id)}
                           >
-                            <FormattedMessage id="undo" defaultMessage="Undo" />
+                            <FormattedMessage id="getLabel" defaultMessage="Get Label" />
                           </Button>
-                          <br />
-                          <br />
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            size="small"
-                            onClick={(e) =>
-                              handleConfirmModal(e, row.id, "delete")
-                            }
-                          >
-                            <FormattedMessage
-                              id="delete"
-                              defaultMessage="Delete"
-                            />
-                          </Button>
-                        </StyledTableCell>
-                      )}
-                    </StyledTableRow>
-                  );
-                }
-              )
+                        ) : (
+                          <a href={`${BASE_URL}media/dhl/${row.id}.zip`}>
+                            <DownloadFile />
+                          </a>
+                        )}
+                      </StyledTableCell>
+                    ) : null}
+
+                    {!isBeyazit && (
+                      <StyledTableCell align="center" onClick={e => e.stopPropagation()}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                          onClick={e => handleConfirmModal(e, row.id, "undo")}
+                        >
+                          <FormattedMessage id="undo" defaultMessage="Undo" />
+                        </Button>
+                        <br />
+                        <br />
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          size="small"
+                          onClick={e => handleConfirmModal(e, row.id, "delete")}
+                        >
+                          <FormattedMessage id="delete" defaultMessage="Delete" />
+                        </Button>
+                      </StyledTableCell>
+                    )}
+                  </StyledTableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>
