@@ -471,11 +471,11 @@ const DateGetter = () => {
 
                               const links = {
                                 fabric: `order-details/${_id}`,
-                                fabric_price: `${process.env.REACT_APP_BASE_URL}admin/COGS/meteriel/${_id}/change/`,
-                                man_hour: `${process.env.REACT_APP_BASE_URL}admin/COGS/${selectedPlatform}/${_id}/change/`,
+                                fabric_price: `${process.env.REACT_APP_BASE_URL}admin/COGS/fabric/${_id}/change/`,
+                                man_hour: `${process.env.REACT_APP_BASE_URL}admin/COGS/${selectedPlatform.replace("fabric",  "meterial")}/${_id}/change/`,
                                 size_or_sku_error: `order-details/${_id}`,
                                 sku_or_size_error: `order-details/${_id}`,
-                                unit_fabric: `${process.env.REACT_APP_BASE_URL}admin/COGS/${selectedPlatform}/${_id}/change/`,
+                                unit_fabric: `${process.env.REACT_APP_BASE_URL}admin/COGS/${selectedPlatform.replace("fabric",  "meterial")}/${_id}/change/`,
                                 color_code_error: `order-details/${_id}`,
                                 missing_color_code: `order-details/${_id}`,
                                 sku_or_wl_error: `order-details/${_id}`,
