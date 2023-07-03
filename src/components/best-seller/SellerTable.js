@@ -150,7 +150,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
           existingGroup.sku_count += sku_count;
 
           const color = variation_1_value !== null ? variation_1_value : "-";
-          const size = variation_2_value !== null ? variation_2_value?.split(" ")?.[0] : "-";
+          const size = variation_2_value !== null ? variation_2_value : "-";
 
           const existingColor = existingGroup.colors.find(colorObj => colorObj.color === color);
           if (existingColor) {
@@ -173,7 +173,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
           }
         } else {
           const color = variation_1_value !== null ? variation_1_value : "-";
-          const size = variation_2_value !== null ? variation_2_value?.split(" ")?.[0] : "-";
+          const size = variation_2_value !== null ? variation_2_value : "-";
 
           groupedItems.push({
             sku,

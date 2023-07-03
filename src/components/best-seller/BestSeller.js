@@ -1,20 +1,26 @@
-import { Card, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import {
+  Card,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import moment from "moment";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { AppContext } from "../../context/Context";
-import { getData, postData } from "../../helper/PostData";
-import { toastErrorNotify, toastSuccessNotify } from "../otheritems/ToastNotify";
+import { getData } from "../../helper/PostData";
+import { convertToTitleCase } from "../../helper/convertToTitleCase";
 import ApexChart from "./ApexChart";
 import CostGetter from "./CostGetter";
-import PlatformCard from "./PlatformCard";
 import SellerTable from "./SellerTable";
-import { convertToTitleCase } from "../../helper/convertToTitleCase";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles(theme => ({
@@ -99,6 +105,17 @@ const useStyles = makeStyles(theme => ({
     display: "inline-block",
     cursor: "pointer",
   },
+  boldText: {
+    fontWeight: "bold",
+  },
+  darkTableRow: {
+    backgroundColor: theme.palette.grey[100],
+  },
+  tContainer: {
+    marginBottom: theme.spacing(2),
+    width: "fit-content",
+    margin: "0 auto",
+  },
 }));
 
 const DateGetter = () => {
@@ -125,10 +142,6 @@ const DateGetter = () => {
     repeat_count: 0,
   });
 
-  const [platformsInfo, setPlatformsInfo] = useState(null);
-
-  const [isUploadingFile, setIsUploadingFile] = useState(false);
-
   const [missings, setMissings] = useState({
     size_or_sku_error: [],
     fabric: [],
@@ -144,19 +157,16 @@ const DateGetter = () => {
 
   const [categories, setCategories] = useState(null);
 
-  const platforms = {
-    e: "Etsy",
-    a: "Amzn",
-    s: "Shopify",
-    all: "All",
-  };
+  const [perSKU, setPerSKU] = useState(null);
 
   const getCost = () => {
     setCalcCost({ ...calcCost, isLoading: true });
     setBestSeller({ ...bestSeller, isLoading: true });
 
     getData(
-      `${BASE_URL}cogs/${selectedPlatform}/?start_date=${beginnerDateRef.current.value}&end_date=${endDateRef.current.value}`,
+      `${BASE_URL}cogs/${selectedPlatform.replace("sku", "all")}/?start_date=${
+        beginnerDateRef.current.value
+      }&end_date=${endDateRef.current.value}`,
     )
       .then(response => {
         if (selectedPlatform === "dress") {
@@ -179,6 +189,7 @@ const DateGetter = () => {
           });
           setMissings(response.data?.missing_data);
           setCategories(null);
+          setPerSKU(null);
         } else if (selectedPlatform === "approne") {
           setSearchedPlatform("approne");
           setCategoryVariationValues({
@@ -198,6 +209,7 @@ const DateGetter = () => {
           });
           setMissings(response.data?.missing_data);
           setCategories(null);
+          setPerSKU(null);
         } else if (selectedPlatform === "stocking") {
           setSearchedPlatform("stocking");
           setCategoryVariationValues({
@@ -218,6 +230,7 @@ const DateGetter = () => {
           });
           setMissings(response.data?.missing_data);
           setCategories(null);
+          setPerSKU(null);
         } else if (selectedPlatform === "couch") {
           setSearchedPlatform("couch");
           setCategoryVariationValues({
@@ -237,6 +250,7 @@ const DateGetter = () => {
           });
           setMissings(response.data?.missing_data);
           setCategories(null);
+          setPerSKU(null);
         } else if (selectedPlatform === "curtain") {
           setSearchedPlatform("curtain");
           setCategoryVariationValues({
@@ -258,6 +272,7 @@ const DateGetter = () => {
           });
           setMissings(response.data?.missing_data);
           setCategories(null);
+          setPerSKU(null);
         } else if (selectedPlatform === "fabric") {
           setSearchedPlatform("fabric");
           setCategoryVariationValues({
@@ -277,6 +292,7 @@ const DateGetter = () => {
           });
           setMissings(response.data?.missing_data);
           setCategories(null);
+          setPerSKU(null);
         } else if (selectedPlatform === "pillow") {
           setSearchedPlatform("pillow");
           setCategoryVariationValues({
@@ -296,8 +312,9 @@ const DateGetter = () => {
           });
           setMissings(response.data?.missing_data);
           setCategories(null);
-        } else if (selectedPlatform === "all") {
-          setSearchedPlatform("all");
+          setPerSKU(null);
+        } else if (selectedPlatform === "all" || selectedPlatform === "sku") {
+          setSearchedPlatform(selectedPlatform);
           setCategoryVariationValues({
             variation_1_value: "color",
             variation_2_value: "length",
@@ -314,6 +331,7 @@ const DateGetter = () => {
             bestRows: response.data?.per_color,
           });
           setCategories(response.data.categories);
+          setPerSKU(selectedPlatform === "sku" ? response.data.per_sku : null);
           setMissings({
             size_or_sku_error: [],
             fabric: [],
@@ -398,10 +416,7 @@ const DateGetter = () => {
               <PlatformButton label="Curtain" id="curtain" />
               <PlatformButton label="Fabric" id="fabric" />
               <PlatformButton label="Pillow" id="pillow" />
-
-              {/* <PlatformButton label="Approns" id="approns" />
-             
-              <PlatformButton label="Stocking" id="stocking" /> */}
+              <PlatformButton label="Sku" id="sku" />
               <PlatformButton label="All" id="all" />
             </div>
 
@@ -440,72 +455,89 @@ const DateGetter = () => {
             </div>
           </Paper>
         </div>
-        {quantity !== null && userRole === "admin" ? (
+        {!perSKU && quantity !== null && userRole === "admin" ? (
           <CostGetter calcCost={calcCost} quantity={quantity} title={"Calculator"} />
         ) : null}
       </div>
 
-      <div className={classes.missingTable}>
-        {Object.entries(missings).map(([key, value], i) => {
-          if (value.length) {
-            return (
-              <div className={classes.missingTable} key={i}>
-                <Card style={{ width: mobileView ? "90%" : 900 }}>
-                  <Table size="small">
-                    <TableBody>
-                      <TableRow>
-                        <TableCell colSpan={2} style={{ textAlign: "center", background: "red" }}>
-                          <h1 style={{ fontSize: 16, color: "white" }}>
-                            <FormattedMessage id={key} defaultMessage={convertToTitleCase(key)} /> (
-                            {value.length})
-                          </h1>
-                        </TableCell>
+      {!perSKU && (
+        <div className={classes.missingTable}>
+          {Object.entries(missings).map(([key, value], i) => {
+            if (value.length) {
+              return (
+                <div className={classes.missingTable} key={i}>
+                  <Card style={{ width: mobileView ? "90%" : 900 }}>
+                    <Table size="small">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell colSpan={2} style={{ textAlign: "center", background: "red" }}>
+                            <h1 style={{ fontSize: 16, color: "white" }}>
+                              <FormattedMessage id={key} defaultMessage={convertToTitleCase(key)} />{" "}
+                              ({value.length})
+                            </h1>
+                          </TableCell>
 
-                        <TableCell
-                          scope="row"
-                          style={{ wordBreak: "break-all", textAlign: "center" }}
-                        >
-                          {value.length ? (
-                            value.map((id, j) => {
-                              const _id = id.toString().split(" ")?.[0];
+                          <TableCell
+                            scope="row"
+                            style={{ wordBreak: "break-all", textAlign: "center" }}
+                          >
+                            {value.length ? (
+                              value.map((id, j) => {
+                                const _id = id.toString().split(" ")?.[0];
 
-                              const links = {
-                                fabric: `order-details/${_id}`,
-                                fabric_price: `${process.env.REACT_APP_BASE_URL}admin/COGS/fabric/${_id}/change/`,
-                                man_hour: `${process.env.REACT_APP_BASE_URL}admin/COGS/${selectedPlatform.replace("fabric",  "meterial")}/${_id}/change/`,
-                                size_or_sku_error: `order-details/${_id}`,
-                                sku_or_size_error: `order-details/${_id}`,
-                                unit_fabric: `${process.env.REACT_APP_BASE_URL}admin/COGS/${selectedPlatform.replace("fabric",  "meterial")}/${_id}/change/`,
-                                color_code_error: `order-details/${_id}`,
-                                missing_color_code: `order-details/${_id}`,
-                                sku_or_wl_error: `order-details/${_id}`,
-                                width_or_depth_error: `order-details/${_id}`,
-                                width_or_length_error: `order-details/${_id}`,
-                              };
+                                const links = {
+                                  fabric: `order-details/${_id}`,
+                                  fabric_price: `${process.env.REACT_APP_BASE_URL}admin/COGS/fabric/${_id}/change/`,
+                                  man_hour: `${
+                                    process.env.REACT_APP_BASE_URL
+                                  }admin/COGS/${selectedPlatform.replace(
+                                    "fabric",
+                                    "meterial",
+                                  )}/${_id}/change/`,
+                                  size_or_sku_error: `order-details/${_id}`,
+                                  sku_or_size_error: `order-details/${_id}`,
+                                  unit_fabric: `${
+                                    process.env.REACT_APP_BASE_URL
+                                  }admin/COGS/${selectedPlatform.replace(
+                                    "fabric",
+                                    "meterial",
+                                  )}/${_id}/change/`,
+                                  color_code_error: `order-details/${_id}`,
+                                  missing_color_code: `order-details/${_id}`,
+                                  sku_or_wl_error: `order-details/${_id}`,
+                                  width_or_depth_error: `order-details/${_id}`,
+                                  width_or_length_error: `order-details/${_id}`,
+                                };
 
-                              return (
-                                <React.Fragment key={id}>
-                                  <a href={links?.[key]} alt={id} target="_blank" rel="noreferrer">
-                                    {id}
-                                  </a>
-                                  {j === value.length - 1 ? "" : ","}
-                                </React.Fragment>
-                              );
-                            })
-                          ) : (
-                            <FormattedMessage id={"noData"} defaultMessage={"No Data"} />
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </Card>
-              </div>
-            );
-          }
-          return <></>;
-        })}
-      </div>
+                                return (
+                                  <React.Fragment key={id}>
+                                    <a
+                                      href={links?.[key]}
+                                      alt={id}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      {id}
+                                    </a>
+                                    {j === value.length - 1 ? "" : ","}
+                                  </React.Fragment>
+                                );
+                              })
+                            ) : (
+                              <FormattedMessage id={"noData"} defaultMessage={"No Data"} />
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </Card>
+                </div>
+              );
+            }
+            return <div key={i}></div>;
+          })}
+        </div>
+      )}
 
       {/* <div
         className={classes.platformCardWrapper}
@@ -547,59 +579,126 @@ const DateGetter = () => {
           </Button>
         </div>
       )} */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexWrap: "wrap",
-          margin: "0 auto",
-          width: "95%",
-          gap: 20,
-        }}
-      >
-        {categories &&
-          Object.entries(categories).map(([key, value], i) => {
-            return (
-              <CostGetter
-                calcCost={{
-                  total_cost: value.total_cost,
-                  calculated_product: value.calculated_product,
-                }}
-                quantity={value?.total_product}
-                title={convertToTitleCase(key)}
-              />
-            );
-          })}
-      </div>
-
-      <div
-        style={{
-          marginBottom: "70px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        {selectedPlatform === "all" && categories ? (
-          <ApexChart
-            data={Object.entries(categories).map(([key, value]) => {
-              return { type: convertToTitleCase(key), count: value?.total_product };
+      {!perSKU && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            margin: "0 auto",
+            width: "95%",
+            gap: 20,
+          }}
+        >
+          {categories &&
+            Object.entries(categories).map(([key, value], i) => {
+              return (
+                <CostGetter
+                  calcCost={{
+                    total_cost: value.total_cost,
+                    calculated_product: value.calculated_product,
+                  }}
+                  key={i}
+                  quantity={value?.total_product}
+                  title={convertToTitleCase(key)}
+                />
+              );
             })}
-          />
-        ) : null}
-        {bestRows && bestRows?.length ? (
-          <SellerTable
-            bestRows={bestRows}
-            selectedPlatform={searchedPlatform}
-            categoryVariationValues={categoryVariationValues}
-          />
-        ) : null}
-        {bestRows?.length === 0 && (
-          <Typography variant="h5" style={{ marginTop: 10 }}>
-            <FormattedMessage id={"noBestSeller"} defaultMessage={"noBestSeller"} />
-          </Typography>
-        )}
-      </div>
+        </div>
+      )}
+
+      {!perSKU && (
+        <div
+          style={{
+            marginBottom: "70px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          {selectedPlatform === "all" && categories ? (
+            <ApexChart
+              data={Object.entries(categories).map(([key, value]) => {
+                return { type: convertToTitleCase(key), count: value?.total_product };
+              })}
+            />
+          ) : null}
+          {bestRows && bestRows?.length ? (
+            <SellerTable
+              bestRows={bestRows}
+              selectedPlatform={searchedPlatform}
+              categoryVariationValues={categoryVariationValues}
+            />
+          ) : null}
+          {bestRows?.length === 0 && (
+            <Typography variant="h5" style={{ marginTop: 10 }}>
+              <FormattedMessage id={"noBestSeller"} defaultMessage={"noBestSeller"} />
+            </Typography>
+          )}
+        </div>
+      )}
+
+      {perSKU && (
+        <>
+          <div
+            style={{
+              marginBottom: "50px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <ApexChart
+              data={perSKU.map(item => {
+                return { type: item?.sku, count: item?.product_count };
+              })}
+            />
+          </div>
+
+          <div
+            style={{
+              marginBottom: "70px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <TableContainer className={classes.tContainer} component={Paper}>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow className={classes.tableCellHeader}>
+                    <TableCell className={classes.boldText} align="center">
+                      <FormattedMessage id="SKU" defaultMessage="SKU" />
+                    </TableCell>
+
+                    <TableCell className={classes.boldText} align="center">
+                      <FormattedMessage id="Product Count" defaultMessage="Total Count" />
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {perSKU?.map((item, skuIndex) => {
+                    return (
+                      <TableRow
+                        className={skuIndex % 2 === 1 ? classes.darkTableRow : null}
+                        key={skuIndex}
+                      >
+                        <TableCell align="center" className={classes.boldText}>
+                          {item.sku}
+                        </TableCell>
+
+                        <TableCell align="center" className={classes.boldText}>
+                          {item?.product_count}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        </>
+      )}
     </div>
   );
 };
