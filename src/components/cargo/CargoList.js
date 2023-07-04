@@ -292,7 +292,7 @@ export default function CustomizedTables() {
                       }}
                     />
                     <StyledTableCell align="center" className={classes.spanHref}>
-                      {row.content.map((key, i) => (
+                      {row?.content?.map((key, i) => (
                         <span
                           key={i}
                           onClick={e => {
@@ -300,25 +300,24 @@ export default function CustomizedTables() {
                           }}
                         >
                           <a
-                            href={`/order-details/${key.toString().split(",")[0]}/`}
+                            href={`/order-details/${key?.toString().split(",")[0]}/`}
                             key={i}
                             onClick={e => {
                               e.stopPropagation();
                             }}
                             style={{
                               color:
-                                key.toString().split(",")?.[2].trim() === "True"
+                                key?.toString()?.split(",")?.[2]?.trim() === "True"
                                   ? "#ffc000"
                                   : !key ||
-                                    key.toString().split(",")?.[1].includes("None") ||
-                                    key.toString().split(",")?.[1] === " 209" ||
-                                    key.toString().split(",")?.[1] === " US"
+                                    key?.toString().split(",")?.[1].includes("None") ||
+                                    key?.toString().split(",")?.[1] === " 209" ||
+                                    key?.toString().split(",")?.[1] === " US"
                                   ? "black"
                                   : "red",
                             }}
                           >
-                            {console.log(key.toString().split(",")?.[2])}
-                            {key.toString().split(",")[0]}
+                            {key?.toString()?.split(",")[0]}
                           </a>
                           {row?.content?.length === i + 1 ? "" : <span>&nbsp; {"|"} &nbsp;</span>}
                         </span>

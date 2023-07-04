@@ -1,5 +1,4 @@
-
-export const isStoreTextile = process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" || process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" || process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" || process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS"
+export const isStoreTextile = process.env.REACT_APP_NON_SKU === "true";
 
 export const tagsDataOther = [
   "pending",
@@ -13,15 +12,9 @@ export const tagsDataOther = [
   "shipped",
 ];
 
-export const tagsDataLinen = [
-  ...tagsDataOther.slice(0, 1),
-  "figma",
-  ...tagsDataOther.slice(1)
-];
+export const tagsDataLinen = [...tagsDataOther.slice(0, 1), "figma", ...tagsDataOther.slice(1)];
 
-
-export const tagsData = isStoreTextile ? tagsDataLinen : tagsDataOther
-
+export const tagsData = isStoreTextile ? tagsDataLinen : tagsDataOther;
 
 export const nonAdminTagsData = [
   "awaiting",
@@ -35,7 +28,6 @@ export const beyazitTagsData = ["awaiting", "in_progress", "ready"];
 
 export const statusDataOther = [
   "pending",
-  "figma",
   "awaiting",
   "in_progress",
   "ready",
@@ -49,13 +41,10 @@ export const statusDataOther = [
 export const statusDataLinen = [
   ...statusDataOther.slice(0, 1),
   "figma",
-  ...statusDataOther.slice(1)
+  ...statusDataOther.slice(1),
 ];
 
-export const statusData = isStoreTextile ? statusDataLinen : statusDataOther
-
-
-
+export const statusData = isStoreTextile ? statusDataLinen : statusDataOther;
 
 export const USER_TYPE = {
   ADMIN: "admin",
@@ -77,15 +66,13 @@ export const sortingArrayAdminOther = [
   "CANCELLED",
 ];
 
-
 export const sortingArrayAdminLinen = [
   ...sortingArrayAdminOther.slice(0, 1),
   "FIGMA",
-  ...sortingArrayAdminOther.slice(1)
+  ...sortingArrayAdminOther.slice(1),
 ];
 
-export const sortingArrayAdmin = isStoreTextile ? sortingArrayAdminLinen : sortingArrayAdminOther
-
+export const sortingArrayAdmin = isStoreTextile ? sortingArrayAdminLinen : sortingArrayAdminOther;
 
 export const sortingArrayUser = [
   "PENDING",
