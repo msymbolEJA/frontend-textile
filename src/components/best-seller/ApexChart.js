@@ -24,7 +24,7 @@ const ApexChart = ({ data }) => {
     animationEnabled: true,
     data: [
       {
-        type: "pie",
+        type: "pie", 
         showInLegend: true,
         indexLabel: " {name} - {y} ",
         yValueFormatString: "'%' # ",

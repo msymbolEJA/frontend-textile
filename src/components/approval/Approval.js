@@ -52,7 +52,7 @@ const NON_SKU = process.env.REACT_APP_NON_SKU === "true" || false;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 const STORE_ORJ = process.env.REACT_APP_STORE_NAME_ORJ;
 
-const StyledMenu = withStyles({})((props) => (
+const StyledMenu = withStyles({})(props => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
@@ -68,7 +68,7 @@ const StyledMenu = withStyles({})((props) => (
   />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
+const StyledMenuItem = withStyles(theme => ({
   root: {
     "&:focus": {
       backgroundColor: theme.palette.primary.main,
@@ -79,7 +79,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     marginTop: theme.spacing(3),
@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StyledTableRow = withStyles((theme) => ({
+const StyledTableRow = withStyles(theme => ({
   root: {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -116,7 +116,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const StyledTableCell = withStyles((theme) => ({
+const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: "rgb(100, 149, 237)",
     color: theme.palette.common.black,
@@ -152,28 +152,28 @@ function App({ history }) {
   const getListFunc = () => {
     setloading(true);
     getData(
-      `${BASE_URL}etsy/mapping/?${filters?.status ? `status=${filters?.status}` : ""
-      }&is_repeat=${filters?.is_repeat}&ordering=${filters?.ordering || "-id"
-      }&limit=${filters?.limit || 0}&offset=${filters?.offset}`
+      `${BASE_URL}etsy/mapping/?${filters?.status ? `status=${filters?.status}` : ""}&is_repeat=${
+        filters?.is_repeat
+      }&ordering=${filters?.ordering || "-id"}&limit=${filters?.limit || 0}&offset=${
+        filters?.offset
+      }`,
     )
-      .then((response) => {
-        const t = response?.data?.results?.length
-          ? response?.data?.results
-          : [];
+      .then(response => {
+        const t = response?.data?.results?.length ? response?.data?.results : [];
         localStorage.setItem(
           `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}`,
-          JSON.stringify(t)
+          JSON.stringify(t),
         );
         localStorage.setItem(
           `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
-          response?.data?.count || 0
+          response?.data?.count || 0,
         );
         setRows(t);
       })
-      .catch((error) => {
+      .catch(error => {
         localStorage.setItem(
           `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
-          null
+          null,
         );
         console.log("error", error);
       })
@@ -209,8 +209,8 @@ function App({ history }) {
       tmp =
         JSON.parse(
           localStorage.getItem(
-            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`
-          )
+            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`,
+          ),
         ) ?? [];
     } catch (error) {
       tmp = [];
@@ -248,10 +248,7 @@ function App({ history }) {
 
   const onChange = (e, id, name) => {
     if (!rows.length || !name) return;
-    if (
-      rows?.filter((item) => item.id === id)?.[0]?.[name] === e.target.innerText
-    )
-      return;
+    if (rows?.filter(item => item.id === id)?.[0]?.[name] === e.target.innerText) return;
     handleRowChange(id, { [name]: e.target.innerText });
   };
 
@@ -262,7 +259,7 @@ function App({ history }) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = event => {
     let rpp = +event.target.value;
     setPage(0);
     let currentUrlParams = new URLSearchParams(window.location.search);
@@ -273,21 +270,18 @@ function App({ history }) {
   const handleRowChange = (id, data) => {
     if (!Object.keys(data)[0]) return;
     if (
-      rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
-      Object.values(data)[0]
+      rows?.filter(item => item.id === id)?.[0]?.[Object.keys(data)[0]] === Object.values(data)[0]
     )
       return;
     setloading(true);
     putData(`${BASE_URL}etsy/mapping/${id}/`, data)
-      .then((response) => { })
-      .catch((error) => {
+      .then(response => {})
+      .catch(error => {
         console.log(error);
       })
       .finally(() => {
         if (filters?.search) {
-          history.push(
-            `/approval?search=${filters?.search}&limit=${25}&offset=${0}`
-          );
+          history.push(`/approval?search=${filters?.search}&limit=${25}&offset=${0}`);
         } else getListFunc();
         setloading(false);
         setRefreshTable(!refreshTable);
@@ -302,7 +296,7 @@ function App({ history }) {
       const resp = window?.confirm(
         `Beklenmedik durum değişikliği tespit edildi. 
       \n ${row["status"]} --> ${e.target.value}
-      \nDevam etmek isteğinize emin misiniz `
+      \nDevam etmek isteğinize emin misiniz `,
       );
       if (resp !== true) return;
     }
@@ -310,22 +304,14 @@ function App({ history }) {
     const value = e.target.value;
     const name = e.target.name;
     const { id } = row;
-    if (
-      (name === "status") &
-      (value === "pending") &
-      (row.is_repeat === true)
-    ) {
+    if ((name === "status") & (value === "pending") & (row.is_repeat === true)) {
       let data = { [name]: value, is_repeat: false };
       handleRowChange(id, data);
     }
     if ((name === "status") & (value === "pending") & (row.approved === true)) {
       let data = { [name]: value, approved: false };
       handleRowChange(id, data);
-    } else if (
-      (name === "status") &
-      (value === "awaiting") &
-      (row.approved === false)
-    ) {
+    } else if ((name === "status") & (value === "awaiting") & (row.approved === false)) {
       let data = { [name]: value, approved: true };
       handleRowChange(id, data);
     } else {
@@ -340,10 +326,10 @@ function App({ history }) {
       // let path = `${BASE_URL_MAPPING}${id}/`;
       let path = `${BASE_URL}etsy/mapping/${id}/`;
       putImage(path, imgFile, "image.png")
-        .then((res) => {
+        .then(res => {
           console.log(res);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         })
         .finally(() => {
@@ -361,10 +347,10 @@ function App({ history }) {
       // let path = `${BASE_URL_MAPPING}${id}/`;
       let path = `${BASE_URL}etsy/mapping/${id}/destroy_image/`;
       removeImage(path)
-        .then((res) => {
+        .then(res => {
           console.log(res);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         })
         .finally(() => {
@@ -420,12 +406,10 @@ function App({ history }) {
   const handleApproveSelected = () => {
     // postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
     postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
-      .then((res) => {
+      .then(res => {
         toastWarnNotify("Selected 'PENDING' orders are approved");
         if (filters?.search) {
-          history.push(
-            `/approval?search=${filters?.search}&limit=${25}&offset=${0}`
-          );
+          history.push(`/approval?search=${filters?.search}&limit=${25}&offset=${0}`);
         } else getListFunc();
         setSelected([]);
       })
@@ -434,7 +418,7 @@ function App({ history }) {
       });
   };
 
-  const handleTagChange = (e) => {
+  const handleTagChange = e => {
     if (e.currentTarget.id === filters?.status) return;
     setRows([]);
     const statu = e.currentTarget.id;
@@ -446,8 +430,9 @@ function App({ history }) {
         newUrl += `limit=${25}&offset=${0}`;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&ordering=-last_updated&limit=${PAGE_ROW_NUMBER || 25
-          }&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `is_repeat=true&ordering=-last_updated&limit=${
+          PAGE_ROW_NUMBER || 25
+        }&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
         break;
       case "shipped":
         newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
@@ -473,9 +458,9 @@ function App({ history }) {
     }
   };
 
-  const handleSelectAllClick = (event) => {
+  const handleSelectAllClick = event => {
     if (event.target.checked) {
-      const newSelecteds = rows?.map((row) => {
+      const newSelecteds = rows?.map(row => {
         if (NON_SKU) {
           if (
             !(
@@ -552,7 +537,7 @@ function App({ history }) {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       );
     }
     setSelected(newSelected);
@@ -562,14 +547,13 @@ function App({ history }) {
     if (filters?.search) {
       globalSearch(
         // `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
-        `${BASE_URL}etsy/mapping/?search=${filters?.search
-        }&limit=${25}&offset=${page * 25}`
+        `${BASE_URL}etsy/mapping/?search=${filters?.search}&limit=${25}&offset=${page * 25}`,
       )
-        .then((response) => {
+        .then(response => {
           setRows(response.data.results);
           setCount(response?.data?.count || 0);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
           setRows([]);
         });
@@ -615,13 +599,13 @@ function App({ history }) {
       };
       setRepeatMenuData(data);
     },
-    []
+    [],
   );
 
   // console.log("NON_SKU", NON_SKU);
 
   const repeatMenu = useCallback(
-    (row) => {
+    row => {
       return (
         <>
           <StyledMenu
@@ -634,19 +618,16 @@ function App({ history }) {
             {/* <hr/> */}
             <span />
             {STORE_ORJ === "Linenia" ||
-              STORE_ORJ === "DALLAS" ||
-              STORE_ORJ === "LinenByMN" ||
-              STORE_ORJ === "ShinyCustomized" ? (
+            STORE_ORJ === "DALLAS" ||
+            STORE_ORJ === "LinenByMN" ||
+            STORE_ORJ === "ShinyCustomized" ? (
               <div>
-                {repeatReasonsMenuItemsLinenia.map((reason) => (
+                {repeatReasonsMenuItemsLinenia.map(reason => (
                   <StyledMenuItem key={reason.id}>
                     <ListItemText
                       primary={reason.value}
                       id={reason.value}
-                      onClick={handleRepeatMenuItemClick(
-                        row,
-                        repeatReasonsLinen[reason.id]
-                      )}
+                      onClick={handleRepeatMenuItemClick(row, repeatReasonsLinen[reason.id])}
                     />
                   </StyledMenuItem>
                 ))}
@@ -657,157 +638,107 @@ function App({ history }) {
                   <ListItemText
                     primary={repeatReasons.LETTER_PATTERN_IS_WRONG}
                     id="Letter Pattern Is Wrong"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.LETTER_PATTERN_IS_WRONG
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.LETTER_PATTERN_IS_WRONG)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.WRONG_COLOR}
                     id="Wrong Color"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.WRONG_COLOR
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.WRONG_COLOR)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.NEW_COLOR}
                     id="Wrong Color"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.NEW_COLOR
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.NEW_COLOR)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.STONE_FALL}
                     id="Stone Fall"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.STONE_FALL
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.STONE_FALL)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.DIFFERENT_PRODUCT}
                     id="Different Product"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.DIFFERENT_PRODUCT
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.DIFFERENT_PRODUCT)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.NEW_LINE_UP}
                     id="Different Product"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.NEW_LINE_UP
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.NEW_LINE_UP)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.LONG_CHAIN}
                     id="Long Chain"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.LONG_CHAIN
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.LONG_CHAIN)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.SHORT_CHAIN}
                     id="Short Chain"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.SHORT_CHAIN
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.SHORT_CHAIN)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.DIFFERENT_FONT}
                     id="Different Font"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.DIFFERENT_FONT
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.DIFFERENT_FONT)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.DISCOLORATION}
                     id="discoloration"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.DISCOLORATION
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.DISCOLORATION)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.BREAK_OFF}
                     id="break off"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.BREAK_OFF
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.BREAK_OFF)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.BROKEN_LOCK}
                     id="break off"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.BROKEN_LOCK
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.BROKEN_LOCK)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.LOST_IN_MAIL}
                     id="lost in mail"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.LOST_IN_MAIL
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.LOST_IN_MAIL)}
                   />
                 </StyledMenuItem>
                 <StyledMenuItem>
                   <ListItemText
                     primary={repeatReasons.SECOND}
                     id="Second"
-                    onClick={handleRepeatMenuItemClick(
-                      row,
-                      repeatReasons.SECOND
-                    )}
+                    onClick={handleRepeatMenuItemClick(row, repeatReasons.SECOND)}
                   />
                 </StyledMenuItem>
               </div>
             )}
             <StyledMenuItem style={{ justifyContent: "space-around" }}>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={handleRepeatMenuClose}
-              >
+              <Button color="primary" variant="contained" onClick={handleRepeatMenuClose}>
                 Cancel
               </Button>
-              <Button
-                color="secondary"
-                variant="contained"
-                onClick={handleRepeatMenuConfirm}
-              >
+              <Button color="secondary" variant="contained" onClick={handleRepeatMenuConfirm}>
                 OK
               </Button>
             </StyledMenuItem>
@@ -815,12 +746,7 @@ function App({ history }) {
         </>
       );
     },
-    [
-      handleRepeatMenuClose,
-      handleRepeatMenuConfirm,
-      handleRepeatMenuItemClick,
-      repeatAnchorEl,
-    ]
+    [handleRepeatMenuClose, handleRepeatMenuConfirm, handleRepeatMenuItemClick, repeatAnchorEl],
   );
 
   return (
@@ -857,21 +783,23 @@ function App({ history }) {
             )}{" "}
             :{" "}
             {rows.length ===
-              Number(
-                localStorage.getItem(
-                  `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
-                )
-              )
+            Number(
+              localStorage.getItem(
+                `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
+              ),
+            )
               ? localStorage.getItem(
-                `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
-              ) ?? 0
-              : `${rows.length} 
-              ${selectedTag
-                ? ` /${localStorage.getItem(
-                  `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
                 ) ?? 0
-                }`
-                : ""
+              : `${rows.length} 
+              ${
+                selectedTag
+                  ? ` /${
+                      localStorage.getItem(
+                        `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
+                      ) ?? 0
+                    }`
+                  : ""
               }
                 `}
           </>
@@ -922,7 +850,10 @@ function App({ history }) {
                   setOrderBy={setOrderBy}
                 />
               ) : null}
-              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
+              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+              process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+              process.env.REACT_APP_STORE_NAME === "Mina" ||
+              process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                 <SortableTableCell
                   property="sku"
                   handleRequestSort={handleRequestSort}
@@ -1044,12 +975,8 @@ function App({ history }) {
                 </Button>
                 <br />
                 <Checkbox
-                  indeterminate={
-                    selected?.length > 0 && selected?.length < rows?.length
-                  }
-                  checked={
-                    rows?.length > 0 && selected?.length === rows?.length
-                  }
+                  indeterminate={selected?.length > 0 && selected?.length < rows?.length}
+                  checked={rows?.length > 0 && selected?.length === rows?.length}
                   color="primary"
                   onChange={handleSelectAllClick}
                   inputProps={{ "aria-label": "select all" }}
@@ -1071,7 +998,9 @@ function App({ history }) {
                 colName="customerNote"
                 setOrderBy={setOrderBy}
               />
-              {user !== "DrMel" && process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
+              {user !== "DrMel" &&
+              process.env.REACT_APP_STORE_NAME !== "Mina" &&
+              process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
                 <SortableTableCell
                   property="gift_message"
                   handleRequestSort={handleRequestSort}
@@ -1089,6 +1018,20 @@ function App({ history }) {
                 colName="internalNote"
                 setOrderBy={setOrderBy}
               />
+
+              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" &&
+              (localStorage.getItem("localRole") === "admin" ||
+                localStorage.getItem("localRole") === "shop_manager") ? (
+                <SortableTableCell
+                  property="color_code"
+                  handleRequestSort={handleRequestSort}
+                  order={order}
+                  orderBy={orderBy}
+                  colName="color_code"
+                  setOrderBy={setOrderBy}
+                />
+              ) : null}
+
               <SortableTableCell
                 property="image"
                 handleRequestSort={handleRequestSort}
@@ -1112,22 +1055,18 @@ function App({ history }) {
                     //onKeyDown={(e) => handleRowKeyDown(e, row.id)}
                     style={{
                       pointerEvents:
-                        (loading ||
-                          row["status"] === "in_progress" ||
-                          row["status"] === "ready") &&
-                          process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
-                          process.env.REACT_APP_STORE_NAME_ORJ !==
-                          "Silveristic" &&
-                          !NON_SKU
+                        (loading || row["status"] === "in_progress" || row["status"] === "ready") &&
+                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+                        process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" &&
+                        !NON_SKU
                           ? "none"
                           : "auto",
                       backgroundColor:
                         (row.status !== "pending") & (row.approved === false)
                           ? "#FF9494"
-                          : row["type"]?.includes("14K") ||
-                            row["explanation"]?.includes("14K")
-                            ? "#ffef8a"
-                            : null,
+                          : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
+                          ? "#ffef8a"
+                          : null,
                     }}
                   >
                     <FlagAndFavCell
@@ -1141,32 +1080,28 @@ function App({ history }) {
                       }}
                     />
                     <td
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                       }}
-                      onBlur={(e) => {
+                      onBlur={e => {
                         e.stopPropagation();
                       }}
                       style={{
                         padding: 5,
                       }}
                     >
-                      {row?.shop === "Shopify" ? (
-                        <ShoppingBasketIcon color="secondary" />
-                      ) : null}
+                      {row?.shop === "Shopify" ? <ShoppingBasketIcon color="secondary" /> : null}
                       <br />
-                      {(row["status"] === "in_progress" ||
-                        row["status"] === "ready") &&
-                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
-                        process.env.REACT_APP_STORE_NAME_ORJ !==
-                        "Silveristic" ? null : (
+                      {(row["status"] === "in_progress" || row["status"] === "ready") &&
+                      process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+                      process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" ? null : (
                         <>
                           <RepeatIcon
                             style={{
                               color: row["is_repeat"] ? "red" : "grey",
                               cursor: "pointer",
                             }}
-                            onClick={(e) => {
+                            onClick={e => {
                               e.stopPropagation();
                               handlerRepeatChange(e, row.id, row.is_repeat);
                             }}
@@ -1191,13 +1126,9 @@ function App({ history }) {
                           )
                         }
                       /> */}
-                      <OrderStatus
-                        {...{ row, name: "status", onSelectChange }}
-                      />
+                      <OrderStatus {...{ row, name: "status", onSelectChange }} />
                     </td>
-                    <ConstantTableCell
-                      {...{ row, name: "created_date", name3: "buyer" }}
-                    />
+                    <ConstantTableCell {...{ row, name: "created_date", name3: "buyer" }} />
                     {process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic" ? (
                       <EditableTableCell
                         {...{
@@ -1207,7 +1138,10 @@ function App({ history }) {
                         }}
                       />
                     ) : null}
-                    {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
+                    {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                    process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                    process.env.REACT_APP_STORE_NAME === "Mina" ||
+                    process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                       <EditableTableCell
                         style={{ fontWeight: "bold" }}
                         {...{
@@ -1307,7 +1241,10 @@ function App({ history }) {
                         name: "explanation",
                         onChange,
                         minWidth:
-                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                          process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                          process.env.REACT_APP_STORE_NAME === "Mina" ||
+                          process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
                             : 0,
                       }}
@@ -1319,18 +1256,18 @@ function App({ history }) {
                           process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic"
                             ? "auto"
                             : row.status === "pending"
-                              ? "auto"
-                              : "none",
+                            ? "auto"
+                            : "none",
                         minWidth: 90,
                       }}
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         handleCheckBoxClick(e, row.id, row);
                       }}
-                      onBlur={(e) => {
+                      onBlur={e => {
                         e.stopPropagation();
                       }}
-                      onChange={(e) => {
+                      onChange={e => {
                         e.stopPropagation();
                       }}
                     >
@@ -1339,32 +1276,25 @@ function App({ history }) {
                         disabled={
                           NON_SKU
                             ? !(
-                              (
-                                !!row?.variation_1_value?.replace(
-                                  /\s/g,
-                                  ""
-                                ) &&
-                                !!row?.variation_2_value?.replace(/\s/g, "")
+                                (
+                                  !!row?.variation_1_value?.replace(/\s/g, "") &&
+                                  !!row?.variation_2_value?.replace(/\s/g, "")
+                                )
+                                // &&
+                                // !!row?.variation_1_name?.replace(/\s/g, "") &&
+                                // !!row?.variation_2_name?.replace(/\s/g, "")
                               )
-                              // &&
-                              // !!row?.variation_1_name?.replace(/\s/g, "") &&
-                              // !!row?.variation_2_name?.replace(/\s/g, "")
-                            )
                             : !(
-                              !!row.supplier?.replace(/\s/g, "") &&
-                              !!row.type?.replace(/\s/g, "") &&
-                              !!row.color?.replace(/\s/g, "") &&
-                              !!row.length?.replace(/\s/g, "") &&
-                              !(
-                                row["type"]
-                                  ?.toLowerCase()
-                                  ?.includes("kolye") &&
-                                row["type"]
-                                  ?.toLowerCase()
-                                  ?.includes("imza") &&
-                                !row["image"]
+                                !!row.supplier?.replace(/\s/g, "") &&
+                                !!row.type?.replace(/\s/g, "") &&
+                                !!row.color?.replace(/\s/g, "") &&
+                                !!row.length?.replace(/\s/g, "") &&
+                                !(
+                                  row["type"]?.toLowerCase()?.includes("kolye") &&
+                                  row["type"]?.toLowerCase()?.includes("imza") &&
+                                  !row["image"]
+                                )
                               )
-                            )
                         }
                         color="primary"
                         inputProps={{ "aria-labelledby": labelId }}
@@ -1376,7 +1306,10 @@ function App({ history }) {
                         name: "personalization",
                         onChange,
                         minWidth:
-                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                          process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                          process.env.REACT_APP_STORE_NAME === "Mina" ||
+                          process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
                             : 0,
                       }}
@@ -1387,19 +1320,29 @@ function App({ history }) {
                         name: "message_from_buyer",
                         onChange,
                         minWidth:
-                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                          process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                          process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                          process.env.REACT_APP_STORE_NAME === "Mina" ||
+                          process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 150
                             : 0,
                       }}
                     />
-                    {user !== "DrMel" && process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
-                      <EditableTableCell
-                        {...{ row, name: "gift_message", onChange }}
-                      />
+                    {user !== "DrMel" &&
+                    process.env.REACT_APP_STORE_NAME !== "Mina" &&
+                    process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
+                      <EditableTableCell {...{ row, name: "gift_message", onChange }} />
                     ) : null}
                     <EditableTableCell {...{ row, name: "note", onChange }} />
+
+                    {process.env.REACT_APP_STORE_NAME === "Linen Serisi" &&
+                    (localStorage.getItem("localRole") === "admin" ||
+                      localStorage.getItem("localRole") === "shop_manager") ? (
+                      <EditableTableCell {...{ row, name: "color_code", onChange }} />
+                    ) : null}
+
                     <td
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                       }}
                       style={{ padding: 10 }}
@@ -1412,7 +1355,7 @@ function App({ history }) {
                           fileSelectedHandler,
                           selectId,
                           selectedRowId,
-                          removeFile
+                          removeFile,
                         }}
                       />
                     </td>
@@ -1424,15 +1367,11 @@ function App({ history }) {
           <TableFooter>
             <TableRow>
               <td>
-                <FormattedMessage
-                  id="totalRecord"
-                  defaultMessage="Total Record"
-                />
-                :
+                <FormattedMessage id="totalRecord" defaultMessage="Total Record" />:
               </td>
               <td>
                 {localStorage.getItem(
-                  `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
                 ) || 0}
               </td>
               <TablePagination
@@ -1440,8 +1379,8 @@ function App({ history }) {
                 colSpan={22}
                 count={Number(
                   localStorage.getItem(
-                    `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`
-                  ) ?? 0
+                    `${localStoragePrefix}-mapping-${selectedTag}-${filters.limit}-${filters.offset}-count`,
+                  ) ?? 0,
                 )}
                 rowsPerPage={Number(filters.limit)}
                 page={page}

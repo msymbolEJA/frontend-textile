@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
-const PlatformCard = ({ name, cost14K, qty14K, silverCost, silverQty, totalCost, totalQty }) => {
+const PlatformCard = ({ name, cost14K, qty14K, silverCost, silverQty, total_cost, totalQty }) => {
   return (
     <Card>
       <TableContainer component={Paper}>
@@ -64,7 +64,7 @@ const PlatformCard = ({ name, cost14K, qty14K, silverCost, silverQty, totalCost,
               </TableCell>
 
               <TableCell scope="row">
-                <h1 style={{ fontSize: 17, padding: 0, margin: 0 }}>${totalCost?.toFixed(2)}</h1>
+                <h1 style={{ fontSize: 17, padding: 0, margin: 0 }}>${total_cost?.toFixed(2)}</h1>
               </TableCell>
               <TableCell scope="row">
                 <FormattedMessage id={"TOTAL QTY"} defaultMessage={"TOTAL QTY"} />

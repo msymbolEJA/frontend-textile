@@ -1,5 +1,5 @@
 import React from "react";
-import { FormattedMessage } from "react-intl";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Table,
   TableBody,
@@ -8,151 +8,545 @@ import {
   TableHead,
   TableRow,
   Paper,
-  makeStyles,
 } from "@material-ui/core";
+import { FormattedMessage } from "react-intl";
+import { convertToTitleCase } from "../../helper/convertToTitleCase";
 
 const useStyles = makeStyles(theme => ({
-  tContainer: {
-    padding: 1,
-    width: "fit-content",
-    marginTop: 10,
-  },
-  rowWithNull: {
-    backgroundColor: "black",
-    color: "white",
-  },
-  tableCellHeader: {
-    color: "black",
-    border: "1px white solid",
-    backgroundColor: "lightblue",
-    padding: 13,
-  },
-  darkTableRow: {
-    backgroundColor: "#F2F2F2",
-  },
-  tableCell: {
-    fontFamily: "Courier New",
-    border: "1px solid gray",
-    borderBottom: "2px solid black",
-    borderTop: "2px solid black",
-    padding: 13,
-  },
-  tablePaper: {
-    marginTop: "10px",
-    marginBottom: "10px",
-    borderRadius: "5px",
-    overflowX: "auto",
-  },
-  bottom: {
-    display: "flex",
-    justifyContent: "center",
-  },
-  table: {},
   boldText: {
     fontWeight: "bold",
-  },
-  blackGround: {
-    backgroundColor: "black",
-    color: "white",
   },
   centerCell: {
     textAlign: "center",
   },
+  darkTableRow: {
+    backgroundColor: theme.palette.grey[100],
+  },
+  bottom: {
+    marginTop: theme.spacing(2),
+  },
+  tablePaper: {
+    padding: theme.spacing(2),
+  },
+  tContainer: {
+    marginBottom: theme.spacing(2),
+    width: "fit-content",
+    margin: "0 auto",
+  },
 }));
 
-const SellerTable = ({ bestRows }) => {
+const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) => {
   const classes = useStyles();
 
-  const groupByTypeAndColor = items => {
-    return items.reduce((result, item) => {
-      const { type, color, total_cost, labor_cost, count, goldGr } = item;
-      const key = `${type}`;
+  const groupBySkuAndColor = items => {
+    const groupedItems = [];
 
-      if (!result[key]) {
-        result[key] = {
-          total_cost: 0,
-          count: 0,
-          colors: {},
-        };
-      }
+    if (selectedPlatform === "dress" || selectedPlatform === "approne") {
+      groupedItems.length = 0;
+      items.forEach(item => {
+        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value } = item;
 
-      result[key].total_cost += total_cost;
-      result[key].count += count;
+        const existingGroup = groupedItems.find(group => group.sku === sku);
+        if (existingGroup) {
+          existingGroup.sku_cost += sku_cost;
+          existingGroup.sku_count += sku_count;
 
-      if (!result[key].colors[color]) {
-        result[key].colors[color] = {
-          total_cost: 0,
-          count: 0,
-          labor_cost: [],
-          goldGr: [],
-        };
-      }
+          const color = variation_2_value !== null ? variation_2_value : "-";
+          const size = variation_1_value !== null ? variation_1_value?.split(" ")?.[0] : "-";
 
-      result[key].colors[color].total_cost += total_cost;
-      result[key].colors[color].count += count;
-      result[key].colors[color].labor_cost.push(labor_cost);
-      result[key].colors[color].goldGr.push(goldGr);
+          const existingColor = existingGroup.colors.find(colorObj => colorObj.color === color);
+          if (existingColor) {
+            const existingSize = existingColor.sizes.find(sizeObj => sizeObj.size === size);
+            if (existingSize) {
+              existingSize.sku_cost += sku_cost;
+              existingSize.sku_count += sku_count;
+            } else {
+              existingColor.sizes.push({ size, sku_cost, sku_count });
+            }
+            existingColor.sku_cost += sku_cost;
+            existingColor.sku_count += sku_count;
+          } else {
+            existingGroup.colors.push({
+              color,
+              sizes: [{ size, sku_cost, sku_count }],
+              sku_cost,
+              sku_count,
+            });
+          }
+        } else {
+          const color = variation_2_value !== null ? variation_2_value : "-";
+          const size = variation_1_value !== null ? variation_1_value?.split(" ")?.[0] : "-";
 
-      return result;
-    }, {});
+          groupedItems.push({
+            sku,
+            sku_cost,
+            sku_count,
+            colors: [
+              {
+                color,
+                sizes: [{ size, sku_cost, sku_count }],
+                sku_cost,
+                sku_count,
+              },
+            ],
+          });
+        }
+      });
+      return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
+    } else if (selectedPlatform === "couch") {
+      groupedItems.length = 0;
+      items.forEach(item => {
+        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value } = item;
+
+        groupedItems.push({
+          sku,
+          sku_cost,
+          sku_count,
+          depth: variation_2_value,
+          width: variation_1_value,
+        });
+      });
+      return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
+    } else if (selectedPlatform === "stocking") {
+      groupedItems.length = 0;
+      return groupedItems;
+    } else if (selectedPlatform === "curtain") {
+      groupedItems.length = 0;
+      items.forEach(item => {
+        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value } = item;
+
+        groupedItems.push({
+          sku,
+          sku_cost,
+          sku_count,
+          length: variation_2_value,
+          width: variation_1_value,
+        });
+      });
+      return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
+    } else if (selectedPlatform === "fabric") {
+      groupedItems.length = 0;
+      items.forEach(item => {
+        const { sku, sku_cost, total_metrage, variation_1_value } = item;
+
+        groupedItems.push({
+          sku,
+          sku_cost,
+          total_metrage,
+          color: variation_1_value,
+        });
+      });
+      return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
+    } else if (selectedPlatform === "pillow") {
+      groupedItems.length = 0;
+
+      groupedItems.length = 0;
+      items.forEach(item => {
+        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value } = item;
+
+        const existingGroup = groupedItems.find(group => group.sku === sku);
+        if (existingGroup) {
+          existingGroup.sku_cost += sku_cost;
+          existingGroup.sku_count += sku_count;
+
+          const color = variation_1_value !== null ? variation_1_value : "-";
+          const size = variation_2_value !== null ? variation_2_value : "-";
+
+          const existingColor = existingGroup.colors.find(colorObj => colorObj.color === color);
+          if (existingColor) {
+            const existingSize = existingColor.sizes.find(sizeObj => sizeObj.size === size);
+            if (existingSize) {
+              existingSize.sku_cost += sku_cost;
+              existingSize.sku_count += sku_count;
+            } else {
+              existingColor.sizes.push({ size, sku_cost, sku_count });
+            }
+            existingColor.sku_cost += sku_cost;
+            existingColor.sku_count += sku_count;
+          } else {
+            existingGroup.colors.push({
+              color,
+              sizes: [{ size, sku_cost, sku_count }],
+              sku_cost,
+              sku_count,
+            });
+          }
+        } else {
+          const color = variation_1_value !== null ? variation_1_value : "-";
+          const size = variation_2_value !== null ? variation_2_value : "-";
+
+          groupedItems.push({
+            sku,
+            sku_cost,
+            sku_count,
+            colors: [
+              {
+                color,
+                sizes: [{ size, sku_cost, sku_count }],
+                sku_cost,
+                sku_count,
+              },
+            ],
+          });
+        }
+      });
+      return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
+
+      // items.forEach(item => {
+      //   const { sku, variation_2_value, sku_cost, sku_count, variation_1_value } = item;
+
+      //   groupedItems.push({
+      //     sku,
+      //     sku_cost,
+      //     sku_count,
+      //     size: variation_2_value,
+      //     color: variation_1_value,
+      //   });
+      // });
+      // return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
+    } else if (selectedPlatform === "all") {
+      groupedItems.length = 0;
+      items.forEach(item => {
+        const { color, metrage } = item;
+
+        groupedItems.push({
+          color,
+          metrage,
+        });
+      });
+      return groupedItems.sort((a, b) => b.metrage - a.metrage);
+    }
+
+    return groupedItems;
   };
 
-  const renderTypeAndColorRows = groupedItems => {
-    return Object.keys(groupedItems).map((type, i) => {
-      const { total_cost, count, colors } = groupedItems[type];
+  const renderSkuAndColorRows = groupedItems => {
+    return groupedItems.map((group, index) => {
+      const {
+        sku,
+        sku_cost,
+        sku_count,
+        colors,
+        depth,
+        width,
+        color,
+        total_metrage,
+        length,
+        size,
+        metrage,
+      } = group;
 
+      //  <TableRow>
+      //    <TableCell
+      //      className={`${classes.boldText} ${classes.centerCell} ${
+      //        i % 2 === 1 ? classes.darkTableRow : ""
+      //      }`}
+      //      align="center"
+      //    >
+      //      {sku} <br />
+      //      {`(Total Count: ${sku_count}, Total Cost: $${sku_cost.toFixed(2)})`}
+      //    </TableCell>
+      //  </TableRow>;
       return (
-        <React.Fragment key={type}>
-          <TableRow className={i % 2 === 1 ? classes.darkTableRow : null}>
-            <TableCell
-              rowSpan={Object.keys(colors).length + 1}
-              className={`${classes.boldText} ${classes.centerCell}`}
-              align="center"
-            >
-              {type} <br />
-              {` (Total Count: ${count}, Total Cost: $${total_cost.toFixed(2)})`}
-            </TableCell>
-          </TableRow>
-          {Object.keys(colors).map(color => {
-            const {
-              total_cost: colorTotalCost,
-              count: colorCount,
-              labor_cost,
-              goldGr,
-            } = colors[color];
-
-            return (
-              <TableRow
-                key={`${type}-${color}`}
-                className={i % 2 === 1 ? classes.darkTableRow : null}
-              >
-                <TableCell align="center" className={classes.boldText}>
-                  {color !== null ? `${color}` : "-"}
-                </TableCell>
-                <TableCell align="center" className={classes.boldText}>
-                  {colorTotalCost !== null ? `$${colorTotalCost.toFixed(2)}` : "-"}
-                </TableCell>
-                <TableCell align="center" className={classes.boldText}>
-                  {colorCount !== null ? `${colorCount}` : "-"}
-                </TableCell>
-                <TableCell align="center" className={classes.boldText}>
-                  {labor_cost.length > 0
-                    ? `$${labor_cost.reduce((a, b) => a + b, 0).toFixed(2)}`
-                    : "-"}
-                </TableCell>
-                <TableCell align="center" className={classes.boldText}>
-                  {goldGr.length > 0 ? `$${goldGr.reduce((a, b) => a + b, 0).toFixed(2)}` : "-"}
-                </TableCell>
-              </TableRow>
-            );
+        <React.Fragment>
+          {renderColorRows({
+            colors,
+            index,
+            sku,
+            sku_cost,
+            sku_count,
+            depth,
+            width,
+            color,
+            total_metrage,
+            length,
+            size,
+            metrage,
           })}
         </React.Fragment>
       );
     });
   };
 
-  const sortedItems = bestRows.sort((a, b) => a.shop.localeCompare(b.shop));
-  const groupedByTypeAndColor = groupByTypeAndColor(sortedItems);
+  const renderColorRows = ({
+    colors,
+    index: skuIndex,
+    sku,
+    sku_cost: SKU_COST,
+    sku_count: SKU_COUNT,
+    depth,
+    width,
+    color,
+    total_metrage,
+    length,
+    size,
+    metrage,
+  }) => {
+    // let rowCount = 0;
+    let rows = [];
+
+    if (
+      selectedPlatform === "dress" ||
+      selectedPlatform === "approne" ||
+      selectedPlatform === "pillow"
+    ) {
+      rows.length = 0;
+      colors.forEach(colorObj => {
+        const { color, sizes, sku_count, sku_cost } = colorObj;
+        const sizeCount = sizes.length;
+
+        sizes.forEach((sizeObj, i) => {
+          const { size, sku_cost: sizeSkuCost, sku_count: sizeSkuCount } = sizeObj;
+
+          rows.push(
+            <TableRow className={skuIndex % 2 === 1 ? classes.darkTableRow : null}>
+              {i === 0 ? (
+                <>
+                  <TableCell
+                    className={`${classes.boldText} ${classes.centerCell} ${
+                      i % 2 === 1 ? classes.darkTableRow : ""
+                    }`}
+                    rowSpan={sizeCount}
+                    align="center"
+                  >
+                    {sku} <br />
+                    {`(Total Count: ${SKU_COUNT}, Total Cost: $${SKU_COST.toFixed(2)})`}
+                  </TableCell>
+                  <TableCell rowSpan={sizeCount} align="center" className={classes.boldText}>
+                    {color !== "-" ? (
+                      <>
+                        {color}
+                        <br /> {`(Total Count: ${sku_count}, Total Cost: $${sku_cost.toFixed(2)})`}
+                      </>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                </>
+              ) : null}
+              <TableCell
+                align="center"
+                className={classes.boldText}
+                style={{
+                  backgroundColor: sizeSkuCost ? "" : "#eee685",
+                }}
+              >
+                {size}
+              </TableCell>
+              <TableCell
+                align="center"
+                className={classes.boldText}
+                style={{
+                  backgroundColor: sizeSkuCost ? "" : "#eee685",
+                }}
+              >
+                {sizeSkuCost !== null ? `$${sizeSkuCost.toFixed(2)}` : "-"}
+              </TableCell>
+              <TableCell
+                align="center"
+                className={classes.boldText}
+                style={{
+                  backgroundColor: sizeSkuCost ? "" : "#eee685",
+                }}
+              >
+                {sizeSkuCount !== null ? `${sizeSkuCount}` : "-"}
+              </TableCell>
+            </TableRow>,
+          );
+        });
+
+        // rowCount += sizeCount;
+      });
+    } else if (selectedPlatform === "couch") {
+      rows.length = 0;
+      rows.push(
+        <TableRow className={skuIndex % 2 === 1 ? classes.darkTableRow : null}>
+          <TableCell
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+            align="center"
+          >
+            {sku}
+          </TableCell>
+
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {depth}
+          </TableCell>
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {width}
+          </TableCell>
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {SKU_COST !== null ? `$${SKU_COST.toFixed(2)}` : "-"}
+          </TableCell>
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {SKU_COUNT !== null ? `${SKU_COUNT}` : "-"}
+          </TableCell>
+        </TableRow>,
+      );
+
+      // rowCount += sizeCount;
+    } else if (selectedPlatform === "curtain") {
+      rows.length = 0;
+
+      rows.push(
+        <TableRow className={skuIndex % 2 === 1 ? classes.darkTableRow : null}>
+          <TableCell
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+            align="center"
+          >
+            {sku}
+          </TableCell>
+
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {length}
+          </TableCell>
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {width}
+          </TableCell>
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {SKU_COST !== null ? `$${SKU_COST.toFixed(2)}` : "-"}
+          </TableCell>
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {SKU_COUNT !== null ? `${SKU_COUNT}` : "-"}
+          </TableCell>
+        </TableRow>,
+      );
+
+      // rowCount += sizeCount;
+    } else if (selectedPlatform === "fabric") {
+      rows.length = 0;
+
+      return (
+        <TableRow className={skuIndex % 2 === 1 ? classes.darkTableRow : null}>
+          <TableCell
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+            align="center"
+          >
+            {sku}
+          </TableCell>
+
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {color}
+          </TableCell>
+
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {total_metrage?.toFixed(2)} m
+          </TableCell>
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {SKU_COST !== null ? `$${SKU_COST.toFixed(2)}` : "-"}
+          </TableCell>
+        </TableRow>
+      );
+
+      // rowCount += sizeCount;
+    } else if (selectedPlatform === "stocking") {
+      rows.length = 0;
+    } else if (selectedPlatform === "all") {
+      rows.length = 0;
+
+      rows.push(
+        <TableRow className={skuIndex % 2 === 1 ? classes.darkTableRow : null}>
+          <TableCell align="center" className={classes.boldText}>
+            {color}
+          </TableCell>
+
+          <TableCell align="center" className={classes.boldText}>
+            {metrage?.toFixed(2)} m
+          </TableCell>
+        </TableRow>,
+      );
+
+      // rowCount += sizeCount;
+    }
+
+    return rows;
+  };
+
+  // const getTotalColorSizeCount = colors => {
+  //   let count = 0;
+
+  //   colors.forEach(colorObj => {
+  //     count += colorObj.sizes.length;
+  //   });
+
+  //   return count;
+  // };
+
+  const groupedBySkuAndColor = groupBySkuAndColor(bestRows);
 
   return (
     <div className={classes.bottom}>
@@ -160,28 +554,66 @@ const SellerTable = ({ bestRows }) => {
         <TableContainer className={classes.tContainer} component={Paper}>
           <Table className={classes.table}>
             <TableHead>
-              <TableRow className={classes.tableCellHeader}>
-                <TableCell className={classes.boldText} align="center">
-                  <FormattedMessage id="Type" defaultMessage="Type" />
-                </TableCell>
-                <TableCell className={classes.boldText} align="center">
-                  <FormattedMessage id="Color" defaultMessage="Color" />
-                </TableCell>
-                <TableCell className={classes.boldText} align="center">
-                  <FormattedMessage id="Total Cost" defaultMessage="Total Cost" />
-                </TableCell>
-                <TableCell className={classes.boldText} align="center">
-                  <FormattedMessage id="Total Count" defaultMessage="Total Count" />
-                </TableCell>
-                <TableCell className={classes.boldText} align="center">
-                  <FormattedMessage id="Labor Cost" defaultMessage="Labor Cost" />
-                </TableCell>
-                <TableCell className={classes.boldText} align="center">
-                  <FormattedMessage id="GoldGr" defaultMessage="GoldGr" />
-                </TableCell>
-              </TableRow>
+              {selectedPlatform !== "all" ? (
+                <TableRow className={classes.tableCellHeader}>
+                  <TableCell className={classes.boldText} align="center">
+                    <FormattedMessage id="SKU" defaultMessage="SKU" />
+                  </TableCell>
+                  {categoryVariationValues.variation_2_value && selectedPlatform !== "fabric" && (
+                    <TableCell className={classes.boldText} align="center">
+                      <FormattedMessage
+                        id={categoryVariationValues.variation_2_value}
+                        defaultMessage={convertToTitleCase(
+                          categoryVariationValues.variation_2_value,
+                        )}
+                      />
+                    </TableCell>
+                  )}
+
+                  {categoryVariationValues.variation_1_value && (
+                    <TableCell className={classes.boldText} align="center">
+                      <FormattedMessage
+                        id={categoryVariationValues.variation_1_value}
+                        defaultMessage={convertToTitleCase(
+                          categoryVariationValues.variation_1_value,
+                        )}
+                      />
+                    </TableCell>
+                  )}
+                  {selectedPlatform === "fabric" && (
+                    <TableCell className={classes.boldText} align="center">
+                      <FormattedMessage
+                        id={"total_metrage"}
+                        defaultMessage={convertToTitleCase("total_metrage")}
+                      />
+                    </TableCell>
+                  )}
+
+                  <TableCell className={classes.boldText} align="center">
+                    <FormattedMessage id="Total Cost" defaultMessage="Total Cost" />
+                  </TableCell>
+                  {selectedPlatform !== "fabric" && (
+                    <TableCell className={classes.boldText} align="center">
+                      <FormattedMessage id="Total Count" defaultMessage="Total Count" />
+                    </TableCell>
+                  )}
+                </TableRow>
+              ) : (
+                <TableRow className={classes.tableCellHeader}>
+                  <TableCell className={classes.boldText} align="center">
+                    <FormattedMessage id="color" defaultMessage="Color" />
+                  </TableCell>
+
+                  <TableCell className={classes.boldText} align="center">
+                    <FormattedMessage
+                      id={"total_metrage"}
+                      defaultMessage={convertToTitleCase("total_metrage")}
+                    />
+                  </TableCell>
+                </TableRow>
+              )}
             </TableHead>
-            <TableBody>{renderTypeAndColorRows(groupedByTypeAndColor)}</TableBody>
+            <TableBody>{renderSkuAndColorRows(groupedBySkuAndColor)}</TableBody>
           </Table>
         </TableContainer>
       </div>

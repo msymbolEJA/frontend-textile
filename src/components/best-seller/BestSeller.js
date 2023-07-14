@@ -1,18 +1,25 @@
-import { Card, Table, TableBody, TableCell, TableRow, Typography } from "@material-ui/core";
+import {
+  Card,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import moment from "moment";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { AppContext } from "../../context/Context";
-import { getData, postData } from "../../helper/PostData";
-import { toastErrorNotify, toastSuccessNotify } from "../otheritems/ToastNotify";
+import { getData } from "../../helper/PostData";
+import { convertToTitleCase } from "../../helper/convertToTitleCase";
 import ApexChart from "./ApexChart";
 import CostGetter from "./CostGetter";
-import PlatformCard from "./PlatformCard";
 import SellerTable from "./SellerTable";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -70,7 +77,10 @@ const useStyles = makeStyles(theme => ({
     marginTop: 20,
   },
   platformBtnWrapper: {
+    maxWidth: 600,
     display: "flex",
+    flexWrap: "wrap",
+
     gap: 10,
     borderBottom: "2px solid gray",
     width: "100%",
@@ -95,6 +105,17 @@ const useStyles = makeStyles(theme => ({
     display: "inline-block",
     cursor: "pointer",
   },
+  boldText: {
+    fontWeight: "bold",
+  },
+  darkTableRow: {
+    backgroundColor: theme.palette.grey[100],
+  },
+  tContainer: {
+    marginBottom: theme.spacing(2),
+    width: "fit-content",
+    margin: "0 auto",
+  },
 }));
 
 const DateGetter = () => {
@@ -112,76 +133,239 @@ const DateGetter = () => {
     isLoading: false,
   });
   const [selectedPlatform, setSelectedPlatform] = useState("all");
-  const [filteredPlatform, setFilteredPlatform] = useState("all");
+  const [searchedPlatform, setSearchedPlatform] = useState("");
 
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(null);
   const [calcCost, setCalcCost] = useState({
-    totalCost: null,
+    total_cost: null,
     isLoading: false,
     repeat_count: 0,
   });
 
-  const [platformsInfo, setPlatformsInfo] = useState(null);
-
-  const [isUploadingFile, setIsUploadingFile] = useState(false);
-
   const [missings, setMissings] = useState({
-    MISSING_TYPES: null,
-    MISSING_SILVER_COSTS: null,
-    MISSING_SILVER_QTY_COSTS: null,
-    MISSING_14K_COSTS: null,
+    size_or_sku_error: [],
+    fabric: [],
+    unit_fabric: [],
+    fabric_price: [],
+    man_hour: [],
   });
 
-  const platforms = {
-    e: "Etsy",
-    a: "Amzn",
-    s: "Shopify",
-    all: "All",
-  };
+  const [categoryVariationValues, setCategoryVariationValues] = useState({
+    variation_1_value: null,
+    variation_2_value: null,
+  });
+
+  const [categories, setCategories] = useState(null);
+
+  const [perSKU, setPerSKU] = useState(null);
 
   const getCost = () => {
     setCalcCost({ ...calcCost, isLoading: true });
     setBestSeller({ ...bestSeller, isLoading: true });
 
     getData(
-      `${BASE_URL}etsy/calculate_cost/${beginnerDateRef.current.value}/${endDateRef.current.value}/${platforms[selectedPlatform]}/`,
+      `${BASE_URL}cogs/${selectedPlatform.replace("sku", "all")}/?start_date=${
+        beginnerDateRef.current.value
+      }&end_date=${endDateRef.current.value}`,
     )
       .then(response => {
-        setQuantity(response.data.TOTAL_COST.total_count);
+        if (selectedPlatform === "dress") {
+          setSearchedPlatform("dress");
+          setCategoryVariationValues({
+            variation_1_value: "size",
+            variation_2_value: "color",
+          });
+          setQuantity(response.data?.product_cost?.total_product);
+          setBestSeller(response.data);
+          setCalcCost({
+            ...calcCost,
+            total_cost: response.data?.product_cost?.total_cost,
+            isLoading: false,
+            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
+          });
+          setBestSeller({
+            ...bestSeller,
+            bestRows: response.data?.per_sku_size_color,
+          });
+          setMissings(response.data?.missing_data);
+          setCategories(null);
+          setPerSKU(null);
+        } else if (selectedPlatform === "approne") {
+          setSearchedPlatform("approne");
+          setCategoryVariationValues({
+            variation_1_value: "size",
+            variation_2_value: "type",
+          });
+          setQuantity(response.data?.product_cost?.total_product);
+          setCalcCost({
+            ...calcCost,
+            total_cost: response.data?.product_cost?.total_cost,
+            isLoading: false,
+            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
+          });
+          setBestSeller({
+            ...bestSeller,
+            bestRows: response.data?.per_type,
+          });
+          setMissings(response.data?.missing_data);
+          setCategories(null);
+          setPerSKU(null);
+        } else if (selectedPlatform === "stocking") {
+          setSearchedPlatform("stocking");
+          setCategoryVariationValues({
+            variation_1_value: null,
+            variation_2_value: null,
+          });
 
-        const {
-          MISSING_TYPES,
-          MISSING_SILVER_COSTS,
-          MISSING_SILVER_QTY_COSTS,
-          MISSING_14K_COSTS,
-        } = response.data;
-
-        setMissings({
-          MISSING_14K_COSTS: MISSING_14K_COSTS?.count ? MISSING_14K_COSTS : null,
-          MISSING_SILVER_QTY_COSTS: MISSING_SILVER_QTY_COSTS?.count
-            ? MISSING_SILVER_QTY_COSTS
-            : null,
-          MISSING_TYPES: MISSING_TYPES?.count ? MISSING_TYPES : null,
-          MISSING_SILVER_COSTS: MISSING_SILVER_COSTS?.count ? MISSING_SILVER_COSTS : null,
-        });
-
-        setPlatformsInfo(response.data.PLATFORM_TOTAL_COST);
-
-        setBestSeller({
-          ...bestSeller,
-          bestRows: response.data.PLATFORM_DETAIL,
-          isLoading: false,
-        });
-
-        setCalcCost({
-          ...calcCost,
-          totalCost: response.data.TOTAL_COST.total_cost,
-          isLoading: false,
-          repeat_count: response.data.TOTAL_COST.repeat_count ?? 0,
-        });
+          setQuantity(response.data?.product_cost?.total_product);
+          setCalcCost({
+            ...calcCost,
+            total_cost: response.data?.product_cost?.total_cost,
+            isLoading: false,
+            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
+          });
+          setBestSeller({
+            ...bestSeller,
+            bestRows: null,
+          });
+          setMissings(response.data?.missing_data);
+          setCategories(null);
+          setPerSKU(null);
+        } else if (selectedPlatform === "couch") {
+          setSearchedPlatform("couch");
+          setCategoryVariationValues({
+            variation_1_value: "width",
+            variation_2_value: "depth",
+          });
+          setQuantity(response.data?.product_cost?.total_product);
+          setCalcCost({
+            ...calcCost,
+            total_cost: response.data?.product_cost?.total_cost,
+            isLoading: false,
+            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
+          });
+          setBestSeller({
+            ...bestSeller,
+            bestRows: response.data?.per_type,
+          });
+          setMissings(response.data?.missing_data);
+          setCategories(null);
+          setPerSKU(null);
+        } else if (selectedPlatform === "curtain") {
+          setSearchedPlatform("curtain");
+          setCategoryVariationValues({
+            variation_1_value: "width",
+            variation_2_value: "length",
+          });
+          setQuantity(response.data?.product_cost?.total_product);
+          setCalcCost({
+            ...calcCost,
+            total_cost: response.data?.product_cost?.total_cost,
+            isLoading: false,
+            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
+          });
+          setBestSeller({
+            ...bestSeller,
+            bestRows: response.data?.per_type.map(item => {
+              return { ...item, sku: "Curtain" };
+            }),
+          });
+          setMissings(response.data?.missing_data);
+          setCategories(null);
+          setPerSKU(null);
+        } else if (selectedPlatform === "fabric") {
+          setSearchedPlatform("fabric");
+          setCategoryVariationValues({
+            variation_1_value: "color",
+            variation_2_value: null,
+          });
+          setQuantity(response.data?.product_cost?.total_product);
+          setCalcCost({
+            ...calcCost,
+            total_cost: response.data?.product_cost?.total_cost,
+            isLoading: false,
+            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
+          });
+          setBestSeller({
+            ...bestSeller,
+            bestRows: response.data?.per_sku_size_color,
+          });
+          setMissings(response.data?.missing_data);
+          setCategories(null);
+          setPerSKU(null);
+        } else if (selectedPlatform === "pillow") {
+          setSearchedPlatform("pillow");
+          setCategoryVariationValues({
+            variation_1_value: "size",
+            variation_2_value: "color",
+          });
+          setQuantity(response.data?.product_cost?.total_product);
+          setCalcCost({
+            ...calcCost,
+            total_cost: response.data?.product_cost?.total_cost,
+            isLoading: false,
+            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
+          });
+          setBestSeller({
+            ...bestSeller,
+            bestRows: response.data?.per_sku_size_color,
+          });
+          setMissings(response.data?.missing_data);
+          setCategories(null);
+          setPerSKU(null);
+        } else if (selectedPlatform === "all" || selectedPlatform === "sku") {
+          setSearchedPlatform(selectedPlatform);
+          setCategoryVariationValues({
+            variation_1_value: "color",
+            variation_2_value: "length",
+          });
+          setQuantity(response.data?.total_product);
+          setCalcCost({
+            ...calcCost,
+            total_cost: response.data?.total_cost,
+            isLoading: false,
+            calculated_product: response.data?.calculated_product ?? 0,
+          });
+          setBestSeller({
+            ...bestSeller,
+            bestRows: response.data?.per_color,
+          });
+          setCategories(response.data.categories);
+          setPerSKU(selectedPlatform === "sku" ? response.data.per_sku : null);
+          setMissings({
+            size_or_sku_error: [],
+            fabric: [],
+            unit_fabric: [],
+            fabric_price: [],
+            man_hour: [],
+          });
+        }
+        // setQuantity(response.data?.TOTAL_COST?.total_count);
+        // const { MISSING_TYPES, MISSING_SILVER_COSTS, MISSING_SILVER_QTY_COSTS, MISSING_14K_COSTS } =
+        //   response.data;
+        // setMissings({
+        //   MISSING_14K_COSTS: MISSING_14K_COSTS?.count ? MISSING_14K_COSTS : null,
+        //   MISSING_SILVER_QTY_COSTS: MISSING_SILVER_QTY_COSTS?.count
+        //     ? MISSING_SILVER_QTY_COSTS
+        //     : null,
+        //   MISSING_TYPES: MISSING_TYPES?.count ? MISSING_TYPES : null,
+        //   MISSING_SILVER_COSTS: MISSING_SILVER_COSTS?.count ? MISSING_SILVER_COSTS : null,
+        // });
+        // setPlatformsInfo(response.data?.PLATFORM_TOTAL_COST?.;
+        // setBestSeller({
+        //   ...bestSeller,
+        //   bestRows: response.data?.PLATFORM_DETAIL?.
+        //   isLoading: false,
+        // });
+        // setCalcCost({
+        //   ...calcCost,
+        //   total_cost: response.data?.TOTAL_COST?.total_cost,
+        //   isLoading: false,
+        //   repeat_count: response.data?.TOTAL_COST?.repeat_count ?? 0,
+        // });
       })
       .catch(() => {
-        setPlatformsInfo({});
+        // setPlatformsInfo({});
       });
   };
 
@@ -189,31 +373,6 @@ const DateGetter = () => {
     endDateRef.current.value = moment().format("YYYY-MM-DD");
     beginnerDateRef.current.value = moment().subtract(1, "months").format("YYYY-MM-DD");
   }, []);
-
-  const handleFileUpload = e => {
-    e.stopPropagation();
-    let fs = e.target.files[0];
-    if (fs) {
-      setIsUploadingFile(true);
-
-      var data = new FormData();
-      data.append("file", fs);
-
-      let path = `${BASE_URL}etsy/gold_file_upload/`;
-      postData(path, data)
-        .then(res => {
-          console.log(res);
-          toastSuccessNotify("Success uploading file");
-        })
-        .catch(err => {
-          console.log(err.response);
-          toastErrorNotify("Error uploading file");
-        })
-        .finally(() => {
-          setIsUploadingFile(false);
-        });
-    }
-  };
 
   const PlatformButton = ({ id, label }) => {
     return (
@@ -232,14 +391,7 @@ const DateGetter = () => {
     );
   };
 
-  const bestRows = bestSeller?.bestRows?.filter(
-    item =>
-      selectedPlatform !== "all" ||
-      filteredPlatform === "all" ||
-      item.shop === platforms[filteredPlatform],
-  );
-
-  console.log("bestRows", bestRows);
+  const bestRows = bestSeller?.bestRows;
 
   return (
     <div>
@@ -257,9 +409,14 @@ const DateGetter = () => {
         <div className={classes.top}>
           <Paper className={classes.paper}>
             <div className={classes.platformBtnWrapper}>
-              <PlatformButton label="E" id="e" />
-              <PlatformButton label="S" id="s" />
-              <PlatformButton label="A" id="a" />
+              <PlatformButton label="Dress" id="dress" />
+              <PlatformButton label="Approne" id="approne" />
+              <PlatformButton label="Stocking" id="stocking" />
+              <PlatformButton label="Couch" id="couch" />
+              <PlatformButton label="Curtain" id="curtain" />
+              <PlatformButton label="Fabric" id="fabric" />
+              <PlatformButton label="Pillow" id="pillow" />
+              <PlatformButton label="Sku" id="sku" />
               <PlatformButton label="All" id="all" />
             </div>
 
@@ -290,87 +447,99 @@ const DateGetter = () => {
                   className={classes.btn}
                   color="primary"
                   onClick={getCost}
-                  disabled={calcCost.isLoading || bestSeller.isLoading}
+                  disabled={calcCost.isLoading}
                 >
-                  <FormattedMessage id="getTypes" defaultMessage="Get Types" />
-                </Button>
-                <Button
-                  variant="outlined"
-                  component="label"
-                  className={classes.btn}
-                  color="primary"
-                  disabled={calcCost.isLoading || bestSeller.isLoading || isUploadingFile}
-                  startIcon={<CloudUploadIcon />}
-                >
-                  <FormattedMessage id="uploadFile" defaultMessage="Upload File" />
-                  <input
-                    type="file"
-                    accept=".xls, .xlsx, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .csv"
-                    onChange={handleFileUpload}
-                    id="file-upload"
-                    hidden
-                  />
+                  <FormattedMessage id="calculateCost" defaultMessage="Calculate Cost" />
                 </Button>
               </div>
             </div>
           </Paper>
         </div>
-        {quantity && userRole === "admin" ? (
-          <CostGetter
-            endDateRef={endDateRef}
-            beginnerDateRef={beginnerDateRef}
-            calcCost={calcCost}
-            quantity={quantity}
-          />
+        {!perSKU && quantity !== null && userRole === "admin" ? (
+          <CostGetter calcCost={calcCost} quantity={quantity} title={"Calculator"} />
         ) : null}
       </div>
-      {missings && (
-        <div className={classes.missingTable}>
-          {[
-            "MISSING_TYPES",
-            "MISSING_14K_COSTS",
-            "MISSING_SILVER_COSTS",
-            "MISSING_SILVER_QTY_COSTS",
-          ].map((item, i) => {
-            if (missings?.[item]?.count && missings?.[item]?.data?.length)
-              return (
-                <Card style={{ width: mobileView ? "90%" : 900 }} key={i}>
-                  <Table size="small">
-                    <TableBody>
-                      <TableRow>
-                        <TableCell colSpan={2} style={{ textAlign: "center", background: "red" }}>
-                          <h1 style={{ fontSize: 16, color: "white" }}>
-                            <FormattedMessage
-                              id={item.replaceAll("_", " ")}
-                              defaultMessage={item.replaceAll("_", " ")}
-                            />{" "}
-                            ({missings?.[item]?.count})
-                          </h1>
-                        </TableCell>
 
-                        <TableCell scope="row" style={{ wordBreak: "break-all" }}>
-                          {missings?.[item]?.data.map((id, i) => {
-                            return (
-                              <React.Fragment key={id}>
-                                <a href={`order-details/${id}`} alt={id}>
-                                  {id}
-                                </a>
-                                {i === missings?.[item]?.data?.length - 1 ? "" : ","}
-                              </React.Fragment>
-                            );
-                          })}
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </Card>
+      {!perSKU && (
+        <div className={classes.missingTable}>
+          {Object.entries(missings).map(([key, value], i) => {
+            if (value.length) {
+              return (
+                <div className={classes.missingTable} key={i}>
+                  <Card style={{ width: mobileView ? "90%" : 900 }}>
+                    <Table size="small">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell colSpan={2} style={{ textAlign: "center", background: "red" }}>
+                            <h1 style={{ fontSize: 16, color: "white" }}>
+                              <FormattedMessage id={key} defaultMessage={convertToTitleCase(key)} />{" "}
+                              ({value.length})
+                            </h1>
+                          </TableCell>
+
+                          <TableCell
+                            scope="row"
+                            style={{ wordBreak: "break-all", textAlign: "center" }}
+                          >
+                            {value.length ? (
+                              value.map((id, j) => {
+                                const _id = id.toString().split(" ")?.[0];
+
+                                const links = {
+                                  fabric: `order-details/${_id}`,
+                                  fabric_price: `${process.env.REACT_APP_BASE_URL}admin/COGS/fabric/${_id}/change/`,
+                                  man_hour: `${
+                                    process.env.REACT_APP_BASE_URL
+                                  }admin/COGS/${selectedPlatform.replace(
+                                    "fabric",
+                                    "meterial",
+                                  )}/${_id}/change/`,
+                                  size_or_sku_error: `order-details/${_id}`,
+                                  sku_or_size_error: `order-details/${_id}`,
+                                  unit_fabric: `${
+                                    process.env.REACT_APP_BASE_URL
+                                  }admin/COGS/${selectedPlatform.replace(
+                                    "fabric",
+                                    "meterial",
+                                  )}/${_id}/change/`,
+                                  color_code_error: `order-details/${_id}`,
+                                  missing_color_code: `order-details/${_id}`,
+                                  sku_or_wl_error: `order-details/${_id}`,
+                                  width_or_depth_error: `order-details/${_id}`,
+                                  width_or_length_error: `order-details/${_id}`,
+                                };
+
+                                return (
+                                  <React.Fragment key={id}>
+                                    <a
+                                      href={links?.[key]}
+                                      alt={id}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      {id}
+                                    </a>
+                                    {j === value.length - 1 ? "" : ","}
+                                  </React.Fragment>
+                                );
+                              })
+                            ) : (
+                              <FormattedMessage id={"noData"} defaultMessage={"No Data"} />
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </Card>
+                </div>
               );
-            else return <React.Fragment key={i} />;
+            }
+            return <div key={i}></div>;
           })}
         </div>
       )}
 
-      <div
+      {/* <div
         className={classes.platformCardWrapper}
         style={{
           flexDirection: mobileView ? "column" : "row",
@@ -387,85 +556,149 @@ const DateGetter = () => {
                 qty14K={item?.["14K_total_count"]}
                 silverCost={item?.["silver_total_cost"]}
                 silverQty={item?.["silver_total_count"]}
-                totalCost={item?.["total_cost"]}
+                total_cost={item?.["total_cost"]}
                 totalQty={item?.["total_count"]}
               />
             );
           })}
-      </div>
-
+      </div> */}
+      {/* 
       {selectedPlatform === "all" && bestSeller.bestRows && (
         <div className={classes.filterButtonsWrapper}>
           <Button
             variant="contained"
-            checked={filteredPlatform === "e"}
+            checked={filteredPlatform === "dress"}
             disabled={calcCost.isLoading}
-            onClick={e => setFilteredPlatform("e")}
+            onClick={e => setFilteredPlatform("dress")}
             style={{
-              backgroundColor: filteredPlatform === "e" ? "#3F51B5" : null,
-              color: filteredPlatform === "e" ? "white" : null,
+              backgroundColor: filteredPlatform === "dress" ? "#3F51B5" : null,
+              color: filteredPlatform === "dress" ? "white" : null,
             }}
           >
-            <FormattedMessage id={"e"} defaultMessage={"E"} />
+            <FormattedMessage id={"dress"} defaultMessage={"Dress"} />
           </Button>
-
-          <Button
-            variant="contained"
-            checked={filteredPlatform === "s"}
-            disabled={calcCost.isLoading}
-            onClick={e => setFilteredPlatform("s")}
-            style={{
-              backgroundColor: filteredPlatform === "s" ? "#3F51B5" : null,
-              color: filteredPlatform === "s" ? "white" : null,
-            }}
-          >
-            <FormattedMessage id={"s"} defaultMessage={"S"} />
-          </Button>
-
-          <Button
-            variant="contained"
-            checked={filteredPlatform === "a"}
-            disabled={calcCost.isLoading}
-            onClick={e => setFilteredPlatform("a")}
-            style={{
-              backgroundColor: filteredPlatform === "a" ? "#3F51B5" : null,
-              color: filteredPlatform === "a" ? "white" : null,
-            }}
-          >
-            <FormattedMessage id={"a"} defaultMessage={"A"} />
-          </Button>
-
-          <Button
-            variant="contained"
-            checked={filteredPlatform === "all"}
-            disabled={calcCost.isLoading}
-            onClick={e => setFilteredPlatform("all")}
-            style={{
-              backgroundColor: filteredPlatform === "all" ? "#3F51B5" : null,
-              color: filteredPlatform === "all" ? "white" : null,
-            }}
-          >
-            <FormattedMessage id={"all"} defaultMessage={"ALL"} />
-          </Button>
+        </div>
+      )} */}
+      {!perSKU && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            margin: "0 auto",
+            width: "95%",
+            gap: 20,
+          }}
+        >
+          {categories &&
+            Object.entries(categories).map(([key, value], i) => {
+              return (
+                <CostGetter
+                  calcCost={{
+                    total_cost: value.total_cost,
+                    calculated_product: value.calculated_product,
+                  }}
+                  key={i}
+                  quantity={value?.total_product}
+                  title={convertToTitleCase(key)}
+                />
+              );
+            })}
         </div>
       )}
 
-      <div
-        style={{
-          marginBottom: "70px",
-          display: "flex",
-          flexDirection: "column-reverse",
-          justifyContent: "center",
-        }}
-      >
-        {bestRows && bestRows?.length ? <SellerTable bestRows={bestRows} /> : null}
-        {bestRows?.length === 0 && (
-          <Typography variant="h5" style={{ marginTop: 10 }}>
-            <FormattedMessage id={"noBestSeller"} defaultMessage={"noBestSeller"} />
-          </Typography>
-        )}
-        {bestRows && bestRows?.length ? <ApexChart data={bestRows} /> : null}
-      </div>
+      {!perSKU && (
+        <div
+          style={{
+            marginBottom: "70px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          {selectedPlatform === "all" && categories ? (
+            <ApexChart
+              data={Object.entries(categories).map(([key, value]) => {
+                return { type: convertToTitleCase(key), count: value?.total_product };
+              })}
+            />
+          ) : null}
+          {bestRows && bestRows?.length ? (
+            <SellerTable
+              bestRows={bestRows}
+              selectedPlatform={searchedPlatform}
+              categoryVariationValues={categoryVariationValues}
+            />
+          ) : null}
+          {bestRows?.length === 0 && (
+            <Typography variant="h5" style={{ marginTop: 10 }}>
+              <FormattedMessage id={"noBestSeller"} defaultMessage={"noBestSeller"} />
+            </Typography>
+          )}
+        </div>
+      )}
+
+      {perSKU && (
+        <>
+          <div
+            style={{
+              marginBottom: "50px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <ApexChart
+              data={perSKU.map(item => {
+                return { type: item?.sku, count: item?.product_count };
+              })}
+            />
+          </div>
+
+          <div
+            style={{
+              marginBottom: "70px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <TableContainer className={classes.tContainer} component={Paper}>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow className={classes.tableCellHeader}>
+                    <TableCell className={classes.boldText} align="center">
+                      <FormattedMessage id="SKU" defaultMessage="SKU" />
+                    </TableCell>
+
+                    <TableCell className={classes.boldText} align="center">
+                      <FormattedMessage id="Product Count" defaultMessage="Total Count" />
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {perSKU?.map((item, skuIndex) => {
+                    return (
+                      <TableRow
+                        className={skuIndex % 2 === 1 ? classes.darkTableRow : null}
+                        key={skuIndex}
+                      >
+                        <TableCell align="center" className={classes.boldText}>
+                          {item.sku}
+                        </TableCell>
+
+                        <TableCell align="center" className={classes.boldText}>
+                          {item?.product_count}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        </>
+      )}
     </div>
   );
 };
