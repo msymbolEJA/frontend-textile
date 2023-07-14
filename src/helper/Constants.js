@@ -35,7 +35,6 @@ export const beyazitTagsData = ["awaiting", "in_progress", "ready"];
 
 export const statusDataOther = [
   "pending",
-  "figma",
   "awaiting",
   "in_progress",
   "ready",
