@@ -564,8 +564,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
       {rows && (
         <TableContainer className={classes.container}>
           <Typography className={classes.header}>
-            <FormattedMessage id="resultTable" defaultMessage="Result Table" />(
-            {rows.length})
+            <FormattedMessage id="resultTable" defaultMessage="Result Table" />({rows.length})
           </Typography>
           {disableCells ? "SAVING..." : ""}
           <Table
@@ -611,7 +610,11 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                   colName="supplier"
                   setOrderBy={setOrderBy}
                 />
-                {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
+                {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                process.env.REACT_APP_STORE_NAME === "Mina" ||
+                process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                   <SortableTableCell
                     property="sku"
                     handleRequestSort={handleRequestSort}
@@ -748,14 +751,17 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                   colName="customerNote"
                   setOrderBy={setOrderBy}
                 />
-                {process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? <SortableTableCell
-                  property="gift_message"
-                  handleRequestSort={handleRequestSort}
-                  order={order}
-                  orderBy={orderBy}
-                  colName="giftMessage"
-                  setOrderBy={setOrderBy}
-                /> : null}
+                {process.env.REACT_APP_STORE_NAME !== "Mina" &&
+                process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
+                  <SortableTableCell
+                    property="gift_message"
+                    handleRequestSort={handleRequestSort}
+                    order={order}
+                    orderBy={orderBy}
+                    colName="giftMessage"
+                    setOrderBy={setOrderBy}
+                  />
+                ) : null}
                 <SortableTableCell
                   property="note"
                   handleRequestSort={handleRequestSort}
@@ -790,18 +796,16 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                       style={{
                         pointerEvents:
                           loading ||
-                            (localRole !== "workshop_manager" &&
-                              (row["status"] === "in_progress" ||
-                                row["status"] === "ready"))
+                          (localRole !== "workshop_manager" &&
+                            (row["status"] === "in_progress" || row["status"] === "ready"))
                             ? "none"
                             : "auto",
                         backgroundColor:
                           (row.status !== "pending") & (row.approved === false)
                             ? "#FF9494"
-                            : row["type"]?.includes("14K") ||
-                              row["explanation"]?.includes("14K")
-                              ? "#ffef8a"
-                              : null,
+                            : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
+                            ? "#ffef8a"
+                            : null,
                       }}
                     >
                       <FlagAndFavCell
@@ -816,10 +820,10 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                         }}
                       />
                       <td
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                         }}
-                        onBlur={(e) => {
+                        onBlur={e => {
                           e.stopPropagation();
                         }}
                         style={{
@@ -834,22 +838,17 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                             cursor: "pointer",
                           }}
                           onClick={() =>
-                            handlerFlagRepeatChange(
-                              row.id,
-                              "is_followup",
-                              row["is_followup"]
-                            )
+                            handlerFlagRepeatChange(row.id, "is_followup", row["is_followup"])
                           }
                         />
-                        {row["status"] === "in_progress" ||
-                          row["status"] === "ready" ? null : (
+                        {row["status"] === "in_progress" || row["status"] === "ready" ? null : (
                           <>
                             <RepeatIcon
                               style={{
                                 color: row["is_repeat"] ? "red" : "grey",
                                 cursor: "pointer",
                               }}
-                              onClick={(e) => {
+                              onClick={e => {
                                 e.stopPropagation();
                                 handlerRepeatChange(e, row.id, row.is_repeat);
                               }}
@@ -860,13 +859,9 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                         {Boolean(repeatAnchorEl) && row.id === rowIdToRepeat
                           ? repeatMenu(row)
                           : null}
-                        <OrderStatus
-                          {...{ row, name: "status", onSelectChange }}
-                        />
+                        <OrderStatus {...{ row, name: "status", onSelectChange }} />
                       </td>
-                      <ConstantTableCell
-                        {...{ row, name: "created_date", name3: "buyer" }}
-                      />
+                      <ConstantTableCell {...{ row, name: "created_date", name3: "buyer" }} />
                       <EditableTableCell
                         {...{
                           row,
@@ -876,7 +871,11 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                           setDisableCells,
                         }}
                       />
-                      {process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Kadife-1" || process.env.REACT_APP_STORE_NAME === "Mina" || process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
+                      {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                      process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                      process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                      process.env.REACT_APP_STORE_NAME === "Mina" ||
+                      process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                         <EditableTableCell
                           {...{
                             row,
@@ -987,19 +986,18 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                         style={{
                           padding: 10,
                           borderBottom: "1px solid #e0e0e0",
-                          pointerEvents:
-                            row.status === "pending" ? "auto" : "none",
+                          pointerEvents: row.status === "pending" ? "auto" : "none",
                           borderRight: "0.5px solid #E0E0E0",
                           minWidth: 90,
                         }}
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           handleCheckBoxClick(e, row.id, row);
                         }}
-                        onBlur={(e) => {
+                        onBlur={e => {
                           e.stopPropagation();
                         }}
-                        onChange={(e) => {
+                        onChange={e => {
                           e.stopPropagation();
                         }}
                       >
@@ -1008,52 +1006,44 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                           disabled={
                             NON_SKU
                               ? !(
-                                (
-                                  !!row?.variation_1_value?.replace(
-                                    /\s/g,
-                                    ""
-                                  ) &&
-                                  !!row?.variation_2_value?.replace(/\s/g, "")
+                                  (
+                                    !!row?.variation_1_value?.replace(/\s/g, "") &&
+                                    !!row?.variation_2_value?.replace(/\s/g, "")
+                                  )
+                                  // &&
+                                  // !!row?.variation_1_name?.replace(/\s/g, "") &&
+                                  // !!row?.variation_2_name?.replace(/\s/g, "")
                                 )
-                                // &&
-                                // !!row?.variation_1_name?.replace(/\s/g, "") &&
-                                // !!row?.variation_2_name?.replace(/\s/g, "")
-                              )
                               : !(
-                                !!row.supplier?.replace(/\s/g, "") &&
-                                !!row.type?.replace(/\s/g, "") &&
-                                !!row.color?.replace(/\s/g, "") &&
-                                !!row.length?.replace(/\s/g, "") &&
-                                !(
-                                  row["type"]
-                                    ?.toLowerCase()
-                                    ?.includes("kolye") &&
-                                  row["type"]
-                                    ?.toLowerCase()
-                                    ?.includes("imza") &&
-                                  !row["image"]
+                                  !!row.supplier?.replace(/\s/g, "") &&
+                                  !!row.type?.replace(/\s/g, "") &&
+                                  !!row.color?.replace(/\s/g, "") &&
+                                  !!row.length?.replace(/\s/g, "") &&
+                                  !(
+                                    row["type"]?.toLowerCase()?.includes("kolye") &&
+                                    row["type"]?.toLowerCase()?.includes("imza") &&
+                                    !row["image"]
+                                  )
                                 )
-                              )
                           }
                           color="primary"
                           inputProps={{ "aria-labelledby": labelId }}
                         />
                       </td>
-                      <ConstantTableCell
-                        {...{ row, name: "personalization", onChange }}
-                      />
-                      <ConstantTableCell
-                        {...{ row, name: "message_from_buyer", onChange }}
-                      />
-                      {process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? <EditableTableCell
-                        {...{
-                          row,
-                          name: "gift_message",
-                          onChange,
-                          disableCells,
-                          setDisableCells,
-                        }}
-                      /> : null}
+                      <ConstantTableCell {...{ row, name: "personalization", onChange }} />
+                      <ConstantTableCell {...{ row, name: "message_from_buyer", onChange }} />
+                      {process.env.REACT_APP_STORE_NAME !== "Mina" &&
+                      process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
+                        <EditableTableCell
+                          {...{
+                            row,
+                            name: "gift_message",
+                            onChange,
+                            disableCells,
+                            setDisableCells,
+                          }}
+                        />
+                      ) : null}
                       <EditableTableCell
                         {...{
                           row,
@@ -1064,7 +1054,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                         }}
                       />
                       <td
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                         }}
                         style={{
@@ -1080,7 +1070,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                             fileSelectedHandler,
                             selectId,
                             selectedRowId,
-                            removeFile
+                            removeFile,
                           }}
                         />
                       </td>

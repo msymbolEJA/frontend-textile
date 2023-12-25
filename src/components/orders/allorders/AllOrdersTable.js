@@ -740,49 +740,35 @@ function AllOrdersTable() {
   const AllTable = React.memo(
     () => (
       <TableContainer className={NON_SKU ? classes.container : ""}>
-        <Table
-          className={classes.table}
-          stickyHeader
-          aria-label="sticky table"
-          size="small"
-        >
+        <Table className={classes.table} stickyHeader aria-label="sticky table" size="small">
           <TableHead>
             <TableRow>
               {filters?.status === "ready" ? (
                 <StyledTableCell align="center">
                   <Checkbox
-                    indeterminate={
-                      selected?.length > 0 && selected?.length < rows?.length
-                    }
-                    checked={
-                      rows?.length > 0 && selected?.length === rows?.length
-                    }
+                    indeterminate={selected?.length > 0 && selected?.length < rows?.length}
+                    checked={rows?.length > 0 && selected?.length === rows?.length}
                     style={{ color: "white" }}
                     onChange={handleSelectAllClick}
                   />
                 </StyledTableCell>
               ) : null}
               <StyledTableCell align="center">
-                <FormattedMessage id="receiptId" defaultMessage="Receipt Id" />{" "}
-                /
+                <FormattedMessage id="receiptId" defaultMessage="Receipt Id" /> /
                 <FormattedMessage id="id" defaultMessage="Id" /> /
                 <FormattedMessage id="index" defaultMessage="Index" />
               </StyledTableCell>
               <StyledTableCell align="center">
                 <FormattedMessage id="createdTSZ" defaultMessage="Created" />
                 {" / "}
-                <FormattedMessage
-                  id="ready_date"
-                  defaultMessage="Approval Date"
-                />
+                <FormattedMessage id="ready_date" defaultMessage="Approval Date" />
               </StyledTableCell>
 
-              {localRole !== "workshop_designer" &&
-                localRole !== "workshop_designer2" && (
-                  <StyledTableCell align="center">
-                    <FormattedMessage id="buyer" defaultMessage="Buyer" />
-                  </StyledTableCell>
-                )}
+              {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                <StyledTableCell align="center">
+                  <FormattedMessage id="buyer" defaultMessage="Buyer" />
+                </StyledTableCell>
+              )}
               {/*                   <StyledTableCell align="center">
                     <FormattedMessage id="supplier" defaultMessage="Supplier" />
                   </StyledTableCell> */}
@@ -802,75 +788,67 @@ function AllOrdersTable() {
                     <FormattedMessage id="color" defaultMessage="Color" />
                   </StyledTableCell>
 
-                  {localRole !== "workshop_manager" && <StyledTableCell align="center"><FormattedMessage
-                    id="explanationMod"
-                    defaultMessage="Mod-Explanation"
-                  /> </StyledTableCell>}
-
+                  {localRole !== "workshop_manager" && (
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="explanationMod" defaultMessage="Mod-Explanation" />{" "}
+                    </StyledTableCell>
+                  )}
                 </>
               ) : (
                 <>
                   <StyledTableCell align="center">
                     <FormattedMessage id="type" defaultMessage="Type" />
                   </StyledTableCell>
-                  {localRole !== "workshop_designer" &&
-                    localRole !== "workshop_designer2" && (
-                      <StyledTableCell align="center">
-                        <FormattedMessage id="var1" />
-                      </StyledTableCell>
-                    )}
-                  {localRole !== "workshop_designer" &&
-                    localRole !== "workshop_designer2" && (
-                      <StyledTableCell align="center">
-                        <FormattedMessage id="var2" />
-                      </StyledTableCell>
-                    )}
-                  {localRole !== "workshop_designer" &&
-                    localRole !== "workshop_designer2" && (
-                      <StyledTableCell align="center">
-                        <FormattedMessage id="var3" />
-                      </StyledTableCell>
-                    )}
+                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="var1" />
+                    </StyledTableCell>
+                  )}
+                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="var2" />
+                    </StyledTableCell>
+                  )}
+                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="var3" />
+                    </StyledTableCell>
+                  )}
                   <StyledTableCell align="center">
                     <FormattedMessage id="var4" />
                   </StyledTableCell>
-                  {localRole !== "workshop_designer" &&
-                    localRole !== "workshop_designer2" && (
-                      <StyledTableCell align="center">
-                        <FormattedMessage id="var5" />
-                      </StyledTableCell>
-                    )}
+                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="var5" />
+                    </StyledTableCell>
+                  )}
 
-                  {localRole !== "workshop_designer" &&
-                    localRole !== "workshop_designer2" && (
-                      <StyledTableCell align="center">
-                        <FormattedMessage id="var6" />
-                      </StyledTableCell>
-                    )}
+                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="var6" />
+                    </StyledTableCell>
+                  )}
                   {/*          <StyledTableCell align="center">
                     <FormattedMessage id="goldGr" />
                   </StyledTableCell> */}
                 </>
               )}
               <StyledTableCell align="center">
-                <FormattedMessage
-                  id="explanation"
-                  defaultMessage="Explanation"
-                />
+                <FormattedMessage id="explanation" defaultMessage="Explanation" />
               </StyledTableCell>
               {selectedTag === "in_progress" &&
-                (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
-                  process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
-                  process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
-                  process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
+              (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+                process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
+                process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
+                process.env.REACT_APP_STORE_NAME_ORJ === "myra" ||
+                process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                 <StyledTableCell align="center">
-                  <FormattedMessage
-                    id="showInGoogleSheet"
-                    defaultMessage="Google Sheet?"
-                  />
+                  <FormattedMessage id="showInGoogleSheet" defaultMessage="Google Sheet?" />
                 </StyledTableCell>
               ) : null}
-              {!isBeyazit && process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
+              {!isBeyazit &&
+                process.env.REACT_APP_STORE_NAME !== "Mina" &&
+                process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
                 localRole !== "workshop_designer" &&
                 localRole !== "workshop_designer2" && (
                   <StyledTableCell
@@ -878,10 +856,7 @@ function AllOrdersTable() {
                     onClick={() => sortByGiftMessages()}
                     style={{ cursor: "pointer" }}
                   >
-                    <FormattedMessage
-                      id="giftMessage"
-                      defaultMessage="Gift Message"
-                    />
+                    <FormattedMessage id="giftMessage" defaultMessage="Gift Message" />
                   </StyledTableCell>
                 )}
               <StyledTableCell align="center">
@@ -896,7 +871,7 @@ function AllOrdersTable() {
           </TableHead>
           {rows?.length ? (
             <TableBody>
-              {rows.map((row) => (
+              {rows.map(row => (
                 <StyledTableRow
                   className={classes.rowStyle}
                   key={row.id}
@@ -905,30 +880,27 @@ function AllOrdersTable() {
                   style={{
                     backgroundColor:
                       process.env.REACT_APP_STORE_NAME === "Yildiz Serisi"
-                        ? !["209", "79", "US", "CA"].includes(
-                          row["country_id"]
-                        ) && row["shop"] === "Shopify"
+                        ? !["209", "79", "US", "CA"].includes(row["country_id"]) &&
+                          row["shop"] === "Shopify"
                           ? "#dad0d4"
-                          : row["type"]?.includes("14K") ||
-                            row["explanation"]?.includes("14K")
-                            ? "#ffef8a"
-                            : null
-                        : row["type"]?.includes("14K") ||
-                          row["explanation"]?.includes("14K")
+                          : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
                           ? "#ffef8a"
-                          : null,
+                          : null
+                        : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
+                        ? "#ffef8a"
+                        : null,
                   }}
                 >
                   {filters?.status === "ready" ? (
                     <td
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         handleCheckBoxClick(row?.id);
                       }}
-                      onBlur={(e) => {
+                      onBlur={e => {
                         e.stopPropagation();
                       }}
-                      onChange={(e) => {
+                      onChange={e => {
                         e.stopPropagation();
                       }}
                     >
@@ -955,19 +927,15 @@ function AllOrdersTable() {
                   />
                   {/*   <CustomTableCell {...{ row, name: "ready_date" }} /> */}
 
-                  {localRole !== "workshop_designer" &&
-                    localRole !== "workshop_designer2" && (
-                      <CustomTableCell {...{ row, name: "buyer" }} />
-                    )}
+                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                    <CustomTableCell {...{ row, name: "buyer" }} />
+                  )}
                   {/*   <CustomTableCell {...{ row, name: "supplier" }} /> */}
 
                   {/*    <CustomTableCell {...{ row, name: "status" }} /> */}
                   {NON_SKU ? (
                     <>
-                      <CustomTableCell
-                        style={{ fontWeight: "bold" }}
-                        {...{ row, name: "sku" }}
-                      />
+                      <CustomTableCell style={{ fontWeight: "bold" }} {...{ row, name: "sku" }} />
                       <CustomTableCell
                         style={{ fontWeight: "bold" }}
                         {...{
@@ -988,42 +956,39 @@ function AllOrdersTable() {
                               : "variation_2_value",
                         }}
                       />
-                      {localRole !== "workshop_manager" && <EditableTableCell
-                        onClick={(e) => e.stopPropagation()}
-                        {...{
-                          row,
-                          name: "explanation_mod",
-                          onChange,
-                          minWidth: 250,
-                        }}
-                      />}
+                      {localRole !== "workshop_manager" && (
+                        <EditableTableCell
+                          onClick={e => e.stopPropagation()}
+                          {...{
+                            row,
+                            name: "explanation_mod",
+                            onChange,
+                            minWidth: 250,
+                          }}
+                        />
+                      )}
                     </>
                   ) : (
                     <>
                       <CustomTableCell {...{ row, name: "type" }} />
                       {/* This wil change with shopify */}
-                      {localRole !== "workshop_designer" &&
-                        localRole !== "workshop_designer2" && (
-                          <CustomTableCell {...{ row, name: "length" }} />
-                        )}
-                      {localRole !== "workshop_designer" &&
-                        localRole !== "workshop_designer2" && (
-                          <CustomTableCell {...{ row, name: "color" }} />
-                        )}
-                      {localRole !== "workshop_designer" &&
-                        localRole !== "workshop_designer2" && (
-                          <CustomTableCell {...{ row, name: "qty" }} />
-                        )}
+                      {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                        <CustomTableCell {...{ row, name: "length" }} />
+                      )}
+                      {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                        <CustomTableCell {...{ row, name: "color" }} />
+                      )}
+                      {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                        <CustomTableCell {...{ row, name: "qty" }} />
+                      )}
                       <CustomTableCell {...{ row, name: "size" }} />
-                      {localRole !== "workshop_designer" &&
-                        localRole !== "workshop_designer2" && (
-                          <CustomTableCell {...{ row, name: "start" }} />
-                        )}
+                      {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                        <CustomTableCell {...{ row, name: "start" }} />
+                      )}
                       {/* --------------------------- */}
-                      {localRole !== "workshop_designer" &&
-                        localRole !== "workshop_designer2" && (
-                          <CustomTableCell {...{ row, name: "space" }} />
-                        )}
+                      {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                        <CustomTableCell {...{ row, name: "space" }} />
+                      )}
                       {/*   <EditableTableCell
                         onClick={(e) => e.stopPropagation()}
                         {...{
@@ -1036,7 +1001,7 @@ function AllOrdersTable() {
                     </>
                   )}
                   <EditableTableCell
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={e => e.stopPropagation()}
                     {...{
                       row,
                       name: "explanation",
@@ -1046,45 +1011,45 @@ function AllOrdersTable() {
                     }}
                   />
                   {selectedTag === "in_progress" &&
-                    (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
-                      process.env.REACT_APP_STORE_NAME_ORJ ===
-                      "ShinyCustomized" || process.env.REACT_APP_STORE_NAME_ORJ ===
-                      "LinenByMN" ||
-                      process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
+                  (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+                    process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
+                    process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
+                    process.env.REACT_APP_STORE_NAME_ORJ === "myra" ||
+                    process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                     <td
                       style={{
                         padding: 10,
                       }}
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                       }}
-                      onBlur={(e) => {
+                      onBlur={e => {
                         e.stopPropagation();
                       }}
-                      onChange={(e) => {
+                      onChange={e => {
                         e.stopPropagation();
                       }}
                     >
                       <Checkbox
                         checked={row.is_ready}
-                        onChange={(e) =>
-                          changeGoogleSheetReadyStatus(row.id, e.target.checked)
-                        }
+                        onChange={e => changeGoogleSheetReadyStatus(row.id, e.target.checked)}
                         color="primary"
                       />
                     </td>
                   ) : null}
-                  {!isBeyazit && process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
+                  {!isBeyazit &&
+                    process.env.REACT_APP_STORE_NAME !== "Mina" &&
+                    process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
                     localRole !== "workshop_designer" &&
                     localRole !== "workshop_designer2" && (
                       <CustomTableCell
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                         }}
-                        onBlur={(e) => {
+                        onBlur={e => {
                           e.stopPropagation();
                         }}
-                        onChange={(e) => {
+                        onChange={e => {
                           e.stopPropagation();
                         }}
                         {...{
@@ -1094,9 +1059,7 @@ function AllOrdersTable() {
                         }}
                       />
                     )}
-                  <td
-                    style={{ padding: 10, borderBottom: "1px solid #e0e0e0" }}
-                  >
+                  <td style={{ padding: 10, borderBottom: "1px solid #e0e0e0" }}>
                     {row?.image ? (
                       <ViewImageFile {...{ row, name: "image" }} />
                     ) : (
@@ -1111,7 +1074,7 @@ function AllOrdersTable() {
                         variant="contained"
                         color="secondary"
                         className={classes.print}
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           removeFunc(row.id);
                         }}
@@ -1128,15 +1091,11 @@ function AllOrdersTable() {
           <TableFooter>
             <TableRow>
               <td>
-                <FormattedMessage
-                  id="totalRecord"
-                  defaultMessage="Total Record"
-                />
-                :
+                <FormattedMessage id="totalRecord" defaultMessage="Total Record" />:
               </td>
               <td>
                 {localStorage.getItem(
-                  `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                  `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
                 ) || 0}
               </td>
               <TablePagination
@@ -1144,8 +1103,8 @@ function AllOrdersTable() {
                 colSpan={22}
                 count={Number(
                   localStorage.getItem(
-                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
-                  ) || 0
+                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
+                  ) || 0,
                 )}
                 rowsPerPage={Number(filters.limit)}
                 page={page}
@@ -1162,7 +1121,7 @@ function AllOrdersTable() {
         </Table>
       </TableContainer>
     ),
-    [selected, rows]
+    [selected, rows],
   );
 
   return (
@@ -1204,9 +1163,7 @@ function AllOrdersTable() {
             </div>
           </div>
         ) : null}
-        <div
-          style={{ display: filters?.status === "ready" ? "block" : "none" }}
-        >
+        <div style={{ display: filters?.status === "ready" ? "block" : "none" }}>
           <hr />
           <div
             style={{
@@ -1217,8 +1174,7 @@ function AllOrdersTable() {
               marginLeft: 16,
             }}
           >
-            <FormattedMessage id="totalScanned" />:{" "}
-            {currentBarcodeList?.length || 0}
+            <FormattedMessage id="totalScanned" />: {currentBarcodeList?.length || 0}
           </div>
           <div style={{ display: "flex", textAlign: "left" }}>
             <div style={{ display: "inline-block", marginLeft: 16 }}>
@@ -1231,39 +1187,39 @@ function AllOrdersTable() {
             </div>
             <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
               {currentBarcodeList?.length
-                ? currentBarcodeList?.map((item) => (
-                  <p
-                    key={item}
-                    style={{
-                      border: "1px blue solid",
-                      borderRadius: 4,
-                      color: "blue",
-                      margin: "0 5px",
-                      padding: "0 5px",
-                      fontWeight: "bold",
-                      height: "23px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => removeItemfromBarcodeList(item)}
-                  >
-                    {item}
-                    {currentSiblingList
-                      .filter((cs) => cs?.id?.toString() === item?.toString())
-                      .map((s) =>
-                        s.siblings.map((m, index) => (
-                          <span
-                            style={{
-                              color: "black",
-                              fontStyle: "italic",
-                              fontSize: "0.8rem",
-                            }}
-                          >
-                            {`-${m}`}
-                          </span>
-                        ))
-                      )}
-                  </p>
-                ))
+                ? currentBarcodeList?.map(item => (
+                    <p
+                      key={item}
+                      style={{
+                        border: "1px blue solid",
+                        borderRadius: 4,
+                        color: "blue",
+                        margin: "0 5px",
+                        padding: "0 5px",
+                        fontWeight: "bold",
+                        height: "23px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => removeItemfromBarcodeList(item)}
+                    >
+                      {item}
+                      {currentSiblingList
+                        .filter(cs => cs?.id?.toString() === item?.toString())
+                        .map(s =>
+                          s.siblings.map((m, index) => (
+                            <span
+                              style={{
+                                color: "black",
+                                fontStyle: "italic",
+                                fontSize: "0.8rem",
+                              }}
+                            >
+                              {`-${m}`}
+                            </span>
+                          )),
+                        )}
+                    </p>
+                  ))
                 : null}
             </div>
           </div>
@@ -1302,10 +1258,11 @@ function AllOrdersTable() {
           style={{
             display:
               process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
-                process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-                process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                process.env.REACT_APP_STORE_NAME === "Mina" ||
-                process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+              process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+              process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+              process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+              process.env.REACT_APP_STORE_NAME === "Mina" ||
+              process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                 ? "flex"
                 : "none",
             color: "#001A33",
@@ -1358,41 +1315,40 @@ function AllOrdersTable() {
             }}
           >
             {localRole === "workshop_designer" ||
-              localRole === "workshop_designer2" ? null : loading ? (
-                <FormattedMessage id="updating" />
-              ) : (
+            localRole === "workshop_designer2" ? null : loading ? (
+              <FormattedMessage id="updating" />
+            ) : (
               <>
                 <FormattedMessage id="total" defaultMessage="Total" />{" "}
                 <FormattedMessage
                   id={filters?.status || "result"}
-                  defaultMessage={
-                    filters?.status?.toUpperCase() || "Result".toUpperCase()
-                  }
+                  defaultMessage={filters?.status?.toUpperCase() || "Result".toUpperCase()}
                 />{" "}
                 :{" "}
                 {rows?.length ===
-                  Number(
-                    localStorage.getItem(
-                      `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
-                    )
-                  )
+                Number(
+                  localStorage.getItem(
+                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
+                  ),
+                )
                   ? localStorage.getItem(
-                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
-                  ) ?? 0
-                  : `${rows.length} 
-                    ${selectedTag
-                    ? `/${localStorage.getItem(
-                      `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
+                      `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
                     ) ?? 0
-                    }`
-                    : ""
-                  }
+                  : `${rows.length} 
+                    ${
+                      selectedTag
+                        ? `/${
+                            localStorage.getItem(
+                              `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
+                            ) ?? 0
+                          }`
+                        : ""
+                    }
                       `}
                 {selectedTag === "in_progress" && (
                   <>
                     {" ("}
-                    <FormattedMessage id="totalScanned" />:{" "}
-                    {currentBarcodeList?.length || 0}
+                    <FormattedMessage id="totalScanned" />: {currentBarcodeList?.length || 0}
                     {")"}{" "}
                   </>
                 )}
@@ -1401,17 +1357,12 @@ function AllOrdersTable() {
           </div>
           {selectedTag === "shipped" ? (
             <>
-              <Button
-                color="secondary"
-                onClick={() => uploadLabelRef.current.click()}
-              >
-                <FormattedMessage
-                  id={isUploadingFile ? "loading" : "uploadLabel"}
-                />
+              <Button color="secondary" onClick={() => uploadLabelRef.current.click()}>
+                <FormattedMessage id={isUploadingFile ? "loading" : "uploadLabel"} />
               </Button>
               <input
-                onChange={(e) => handleLabelUpload(e)}
-                onClick={(event) => event.stopPropagation()}
+                onChange={e => handleLabelUpload(e)}
+                onClick={event => event.stopPropagation()}
                 id="myInput"
                 style={{ display: "none" }}
                 type={"file"}
@@ -1440,21 +1391,14 @@ function AllOrdersTable() {
           {allPdf ? (
             allPdf?.map((pdf, index) => (
               <div key={`${index}${pdf}`}>
-                <a
-                  href={`${BASE_URL}media/pdf/bulk/${pdf}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href={`${BASE_URL}media/pdf/bulk/${pdf}`} target="_blank" rel="noreferrer">
                   {pdf}
                 </a>
               </div>
             ))
           ) : (
             <h2>
-              <FormattedMessage
-                id="dontHaveAnyLabel"
-                defaultMessage="Dont have any label!"
-              />
+              <FormattedMessage id="dontHaveAnyLabel" defaultMessage="Dont have any label!" />
             </h2>
           )}
         </>
@@ -1467,11 +1411,7 @@ function AllOrdersTable() {
           ids={selected}
         />
       ) : null}
-      <CustomDialog
-        open={dialog?.open}
-        handleDialogClose={handleDialogClose}
-        dialog={dialog}
-      />
+      <CustomDialog open={dialog?.open} handleDialogClose={handleDialogClose} dialog={dialog} />
     </div>
   );
 }

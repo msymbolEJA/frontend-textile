@@ -1,5 +1,10 @@
 
-export const isStoreTextile = process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" || process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" || process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" || process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS"
+export const isStoreTextile =
+  process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+  process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
+  process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
+  process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS" ||
+  process.env.REACT_APP_STORE_NAME_ORJ === "myra";
 
 export const tagsDataOther = [
   "pending",

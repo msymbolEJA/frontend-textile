@@ -619,6 +619,7 @@ function App({ history }) {
             <span />
             {STORE_ORJ === "Linenia" ||
             STORE_ORJ === "DALLAS" ||
+            STORE_ORJ === "myra" ||
             STORE_ORJ === "LinenByMN" ||
             STORE_ORJ === "ShinyCustomized" ? (
               <div>
@@ -852,6 +853,7 @@ function App({ history }) {
               ) : null}
               {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
               process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+              process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
               process.env.REACT_APP_STORE_NAME === "Mina" ||
               process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                 <SortableTableCell
@@ -1140,6 +1142,7 @@ function App({ history }) {
                     ) : null}
                     {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                     process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                    process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
                     process.env.REACT_APP_STORE_NAME === "Mina" ||
                     process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                       <EditableTableCell
@@ -1243,6 +1246,7 @@ function App({ history }) {
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                           process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                          process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
                           process.env.REACT_APP_STORE_NAME === "Mina" ||
                           process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
@@ -1308,6 +1312,7 @@ function App({ history }) {
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                           process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                          process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
                           process.env.REACT_APP_STORE_NAME === "Mina" ||
                           process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
@@ -1322,6 +1327,7 @@ function App({ history }) {
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                           process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                          process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
                           process.env.REACT_APP_STORE_NAME === "Mina" ||
                           process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 150
