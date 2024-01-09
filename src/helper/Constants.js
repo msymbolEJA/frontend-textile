@@ -20,7 +20,7 @@ export const tagsDataOther = [
 
 export const tagsDataLinen = [
   ...tagsDataOther.slice(0, 1),
-  "figma",
+  // "figma",
   ...tagsDataOther.slice(1)
 ];
 
@@ -52,7 +52,7 @@ export const statusDataOther = [
 
 export const statusDataLinen = [
   ...statusDataOther.slice(0, 1),
-  "figma",
+  // "figma",
   ...statusDataOther.slice(1)
 ];
 
@@ -84,7 +84,7 @@ export const sortingArrayAdminOther = [
 
 export const sortingArrayAdminLinen = [
   ...sortingArrayAdminOther.slice(0, 1),
-  "FIGMA",
+  // "FIGMA",
   ...sortingArrayAdminOther.slice(1)
 ];
 
