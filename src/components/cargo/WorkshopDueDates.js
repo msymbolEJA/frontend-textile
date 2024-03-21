@@ -11,10 +11,11 @@ import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import { getData } from "../../helper/PostData";
 import { FormattedMessage } from "react-intl";
 import { AppContext } from "../../context/Context";
+import { Button } from "@material-ui/core";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const StyledTableCell = withStyles((theme) => ({
+const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
@@ -24,13 +25,13 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
+const StyledTableRow = withStyles(theme => ({
   root: {
     marginTop: 30,
   },
 }))(TableRow);
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   table: {
     //width: 300,
   },
@@ -58,10 +59,22 @@ export default function CustomizedTables() {
   const [cargoList, setCargoList] = useState({});
 
   useEffect(() => {
-    getData(`${BASE_URL}etsy/due_dates/`).then((response) => {
+    getData(`${BASE_URL}etsy/due_dates/`).then(response => {
       setCargoList(response.data);
     });
   }, []);
+
+  const handleDownload = () => {
+    const items = [];
+
+    Object.keys(cargoList).forEach((item, index) => {
+      if (cargoList[item].is_late) {
+        items.push(...cargoList[item].values);
+      }
+    });
+
+    window.open(`${BASE_URL}etsy/due-dates-excell/?items=${items?.join(",")}`, "_blank");
+  };
 
   return (
     <Grid item xs={12} md={12} className={classes.root}>
@@ -75,12 +88,12 @@ export default function CustomizedTables() {
             }}
           >
             <LocalShippingIcon className={classes.icon} color="primary" />
-            <h1 style={{ display: "inline", marginLeft: "0.5rem" }}>
-              <FormattedMessage
-                id="workshopDueDate"
-                defaultMessage="Workshop Due Dates"
-              />
+            <h1 style={{ display: "inline", marginLeft: "0.5rem", marginRight: "0.5rem" }}>
+              <FormattedMessage id="workshopDueDate" defaultMessage="Workshop Due Dates" />
             </h1>
+            <Button onClick={handleDownload} color="primary" variant="contained">
+              Excel
+            </Button>
           </div>
         </div>
         <Table className={classes.table} aria-label="customized table">
@@ -101,9 +114,7 @@ export default function CustomizedTables() {
             {Object.keys(cargoList).map((item, index) => (
               <StyledTableRow
                 style={{
-                  backgroundColor: cargoList[item].is_late
-                    ? "#FF9494"
-                    : "white",
+                  backgroundColor: cargoList[item].is_late ? "#FF9494" : "white",
                 }}
                 key={index}
               >
@@ -113,9 +124,7 @@ export default function CustomizedTables() {
                 {/* <StyledTableCell align="left">
                   {cargoList[item].is_late}
                 </StyledTableCell> */}
-                <StyledTableCell align="center">
-                  {cargoList[item].values.length}
-                </StyledTableCell>
+                <StyledTableCell align="center">{cargoList[item].values.length}</StyledTableCell>
                 <StyledTableCell align="center">
                   {cargoList[item].values.map((key, i) => (
                     <span key={i}>
