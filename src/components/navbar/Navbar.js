@@ -257,8 +257,7 @@ export default function MenuAppBar() {
     // const newStatu = getFirstStatu();
     // console.log("newStatu", newStatu);
     history.push(
-      `/${e.currentTarget.id}?status=${newStatu}&limit=${PAGE_ROW_NUMBER || 25
-      }&offset=0`
+      `/${e.currentTarget.id}?status=${newStatu}`
     );
     setAnchorEl(null);
   };
@@ -393,8 +392,7 @@ export default function MenuAppBar() {
                     startIcon={mobileView ? null : <ThumbUpIcon />}
                     onClick={() =>
                       history.push(
-                        `/approval?&status=pending&limit=${PAGE_ROW_NUMBER || 25
-                        }&offset=0`
+                        `/approval?&status=pending`
                       )
                     }
                   >
@@ -564,7 +562,7 @@ export default function MenuAppBar() {
                     <MenuItem>
                       <a
                         className={classes.hrefStyle}
-                        href={`/all-orders?status=pending&limit=2500&offset=0/`}
+                        href={`/all-orders?status=pending`}
                       >
                         Orders
                       </a>
@@ -572,7 +570,7 @@ export default function MenuAppBar() {
                     <MenuItem>
                       <a
                         className={classes.hrefStyle}
-                        href={`/approval?status=pending&limit=2500&offset=0/`}
+                        href={`/approval?status=pending`}
                       >
                         Admin
                       </a>
@@ -580,7 +578,7 @@ export default function MenuAppBar() {
                     <MenuItem>
                       <a
                         className={classes.hrefStyle}
-                        href={`/cargo-list?status=pending&limit=2500&offset=0/`}
+                        href={`/cargo-list?status=pending`}
                       >
                         Cargo List
                       </a>

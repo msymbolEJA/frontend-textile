@@ -134,9 +134,7 @@ export default function Login() {
               response?.data?.role === "workshop_designer2"
             ) {
               history.push(
-                `/all-orders?&status=in_progress&limit=${
-                  PAGE_ROW_NUMBER || 25
-                }&offset=0`
+                `/all-orders?&status=in_progress`
               );
             } else {
               history.push("/");

@@ -23,21 +23,12 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 import TablePaginationActions from "./TablePaginationActions";
 import CustomTableCell from "./CustomTableCell";
 import { tagsData, nonAdminTagsData } from "../../../helper/Constants";
-import {
-  getData,
-  putData,
-  getAllPdf,
-  postData,
-  globalSearch,
-} from "../../../helper/PostData";
+import { getData, putData, getAllPdf, postData, globalSearch } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
 import CargoPage from "../../otheritems/CargoPage";
 import BarcodeInput from "../../otheritems/BarcodeInput";
 import ViewImageFile from "./ViewImageFile";
-import {
-  toastErrorNotify,
-  toastSuccessNotify,
-} from "../../otheritems/ToastNotify";
+import { toastErrorNotify, toastSuccessNotify } from "../../otheritems/ToastNotify";
 import { getQueryParams } from "../../../helper/getQueryParams";
 import CustomDialog from "./CustomDialog";
 import EditableTableCell from "../../tableitems/EditableTableCell";
@@ -48,7 +39,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
-const StyledTableCell = withStyles((theme) => ({
+const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: "rgb(100, 149, 237)",
     color: theme.palette.common.black,
@@ -59,7 +50,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
+const StyledTableRow = withStyles(theme => ({
   root: {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -72,11 +63,10 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     marginTop: 10,
-    overflowX: "auto",
   },
   container: {
     maxHeight: "83vh",
@@ -112,26 +102,23 @@ function AllOrdersTable() {
   const [rows, setRows] = useState([]);
   const [sortedRows, setSortedRows] = useState([]);
   const [currentBarcodeList, setCurrentBarcodeList] = useState(
-    JSON.parse(
-      localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]"
-    )
+    JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]"),
   );
   const [currentSiblingList, setCurrentSiblingList] = useState(
-    JSON.parse(
-      localStorage.getItem(`${localStoragePrefix}-sibling_list`) || "[]"
-    )
+    JSON.parse(localStorage.getItem(`${localStoragePrefix}-sibling_list`) || "[]"),
   );
   const isBeyazit =
     (localStorage.getItem("localRole") === "workshop_manager" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
-    !["asya", "umraniye"].includes(
-      localStorage.getItem("workshop")?.toLowerCase()
-    );
+    !["asya", "umraniye"].includes(localStorage.getItem("workshop")?.toLowerCase());
   const [selected, setSelected] = useState([]);
   const [countryFilter, setCountryFilter] = useState("all");
   const { user } = useContext(AppContext);
-  const filters = getQueryParams();
+
+  const paramsQuery = getQueryParams();
+  const filters = { ...paramsQuery, limit: 150, offset: 0, status: paramsQuery?.status };
+
   const barcodeInputRef = useRef();
   const uploadLabelRef = useRef();
   const { formatMessage } = useIntl();
@@ -142,9 +129,7 @@ function AllOrdersTable() {
   const [printError, setPrintError] = useState(false);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [barcodeInput, setBarcodeInput] = useState();
-  const [url, setUrl] = useState(
-    `${BASE_URL}etsy/orders/?status=${filters?.status}`
-  );
+  const [url, setUrl] = useState(`${BASE_URL}etsy/orders/?status=${filters?.status}`);
   const history = useHistory();
   const [allPdf, setAllPdf] = useState();
   const [refreshTable, setRefreshTable] = useState(false);
@@ -154,156 +139,134 @@ function AllOrdersTable() {
 
   const localRole = localStorage.getItem("localRole");
 
+  const [inProggressItems, setInProggressItems] = useState([]);
   const userRole = user?.role || localRole;
 
-  const getOrdersInProgress = (bypass) => {
-    getData(`${BASE_URL}etsy/get_mapping_update_date/`)
-      .then((response) => {
-        const l = localStorage.getItem(
-          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 2500
-          }-0-last_updated`
-        );
-        if (response.data.last_updated !== l || bypass) {
-          getData(
-            `${BASE_URL}etsy/orders/?status=in_progress&limit=${2500}&offset=0`
-          )
-            .then((response) => {
-              const o = response?.data?.results?.length
-                ? response?.data?.results
-                : [];
-              localStorage.setItem(
-                `${localStoragePrefix}-in_progress-${2500}-0`,
-                JSON.stringify(o)
-              );
-              localStorage.setItem(
-                `${localStoragePrefix}-in_progress-${2500}-0-last_updated`,
-                response.data.last_updated
-              );
-              localStorage.setItem(
-                `${localStoragePrefix}-in_progress-${2500}-0-count`,
-                response?.data?.results?.length
-              );
-            })
-            .catch((error) => {
-              console.log("error", error);
-            });
-        }
+  const [lastResponse, setLastResponse] = useState(null);
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
+
+  const getOrdersInProgress = () => {
+    getData(`${BASE_URL}etsy/orders/?status=in_progress&limit=${2500}&offset=0`)
+      .then(response => {
+        const o = response?.data?.results?.length ? response?.data?.results : [];
+        setInProggressItems(o);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("error", error);
-      })
-      .finally(() => { });
+      });
   };
 
-  const getLastUpdateDate = () => {
-    getData(`${BASE_URL}etsy/get_mapping_update_date/`)
-      .then((response) => {
-        const l = localStorage.getItem(
-          `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`
-        );
-        if (response.data.last_updated !== l) {
-          localStorage.setItem(
-            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
-            response.data.last_updated
-          );
-          if (!filters?.search) getListFunc();
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!hasScrolledToBottom) {
+        const scrollThreshold = 0.7; // Set your threshold (70% in this example)
+
+        const scrollPosition = window.innerHeight + window.scrollY;
+        const scrollableHeight = document.body.offsetHeight;
+        const scrollableThreshold = scrollableHeight * scrollThreshold;
+
+        if (scrollPosition >= scrollableThreshold && lastResponse?.next) {
+          setHasScrolledToBottom(true);
+          loadMore(lastResponse.next);
         }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      })
-      .finally(() => { });
-  };
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasScrolledToBottom, lastResponse]);
 
   const getListFunc = () => {
     setloading(true);
     if (!searchWord) {
       if (filters?.status === "shipped" || filters?.status === "ready") {
-        filters.ordering = '-last_updated';
+        filters.ordering = "-last_updated";
       } else filters.ordering = "-id";
-      const url = `${BASE_URL}etsy/orders/?${`status=${filters?.status || "awaiting"
-        }`}&is_repeat=${filters?.is_repeat}&is_followup=${filters?.is_followup
-        }&ordering=${filters?.ordering}&limit=${filters?.limit || 0}&offset=${filters?.offset
-        }`;
 
-      getData(url)
-        .then((response) => {
-          const t = response?.data?.results?.length
-            ? response?.data?.results
-            : [];
+      getData(
+        `${BASE_URL}etsy/orders/?${`status=${filters?.status || "awaiting"}`}&is_repeat=${
+          filters?.is_repeat
+        }&is_followup=${filters?.is_followup}&country_filter=${
+          countryFilter === "all" ? "" : countryFilter
+        }&ordering=${filters?.ordering}&limit=${filters?.limit || 0}&offset=${filters?.offset}`,
+      )
+        .then(response => {
+          const t = response?.data?.results?.length ? response?.data?.results : [];
 
-          localStorage.setItem(
-            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`,
-            JSON.stringify(t)
-          );
+          const resultFilteredByCountry =
+            countryFilter === "all"
+              ? t
+              : t.filter(item =>
+                  countryFilter === "usa" ? item.country_id === "209" : item.country_id !== "209",
+                );
 
-          localStorage.setItem(
-            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
-            response?.data?.count || 0
-          );
-
-          let ft =
+          const ft =
             filters?.status === "in_progress"
-              ? t.filter((item) => !currentBarcodeList.includes(item.id))
-              : t;
+              ? resultFilteredByCountry.filter(
+                  item => !currentBarcodeList.includes(item.id.toString()),
+                )
+              : resultFilteredByCountry;
+
           setRows(ft);
+          setCount(response?.data?.count || 0);
+          setLastResponse(response?.data);
+
+          setHasScrolledToBottom(false);
         })
-        .catch((error) => {
-          localStorage.setItem(
-            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-last_updated`,
-            null
-          );
+        .catch(error => {
           console.log("error", error);
         })
         .finally(() => {
-          getLastUpdateDate();
-          getOrdersInProgress();
           setloading(false);
         });
     }
   };
 
+  const loadMore = link => {
+    setloading(true);
+
+    getData(link)
+      .then(response => {
+        const t = response?.data?.results?.length ? response?.data?.results : [];
+
+        const copyRows = [...rows];
+
+        const resultFilteredByCountry =
+          countryFilter === "all"
+            ? t
+            : t.filter(item =>
+                countryFilter === "usa" ? item.country_id === "209" : item.country_id !== "209",
+              );
+
+        const ft =
+          filters?.status === "in_progress"
+            ? resultFilteredByCountry.filter(
+                item => !currentBarcodeList.includes(item.id.toString()),
+              )
+            : resultFilteredByCountry;
+
+        const concatted = copyRows.concat(ft);
+
+        setRows(concatted);
+        setLastResponse(response?.data);
+
+        setHasScrolledToBottom(false);
+      })
+      .catch(error => {
+        console.log("error", error);
+      })
+      .finally(() => {
+        setloading(false);
+      });
+  };
+
   useEffect(() => {
-    if (!filters?.status) {
-      history.push("/all-orders?limit=2500&offset=0");
-      return;
-    }
-    if (filters?.search) return;
-    getLastUpdateDate();
     if (filters?.status === "awaiting") getAllPdfFunc();
     if (filters?.status === "ready") getOrdersInProgress();
-    let tmp;
-    try {
-      tmp =
-        JSON.parse(
-          localStorage.getItem(
-            `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`
-          )
-        ) ?? [];
-    } catch (error) {
-      tmp = [];
-    }
-    if (!tmp) {
-      getListFunc();
-    }
-    if (tmp?.length) {
-      const resultFilteredByCountry =
-        countryFilter === "all"
-          ? tmp
-          : tmp.filter((item) =>
-            countryFilter === "usa"
-              ? item.country_id === "209"
-              : item.country_id !== "209"
-          );
+    getListFunc();
 
-      const ft =
-        filters?.status === "in_progress"
-          ? resultFilteredByCountry.filter(
-            (item) => !currentBarcodeList.includes(item.id.toString())
-          )
-          : resultFilteredByCountry;
-      setRows(ft);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.ordering,
@@ -323,21 +286,14 @@ function AllOrdersTable() {
   }, [filters?.status]);
 
   const handleChangePage = (event, newPage) => {
-    let currentUrlParams = new URLSearchParams(window.location.search);
-    currentUrlParams.set("offset", newPage * filters?.limit || 0);
-    history.push(history.location.pathname + "?" + currentUrlParams.toString());
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    let rpp = +event.target.value;
+  const handleChangeRowsPerPage = event => {
     setPage(0);
-    let currentUrlParams = new URLSearchParams(window.location.search);
-    currentUrlParams.set("limit", rpp || 0);
-    history.push(history.location.pathname + "?" + currentUrlParams.toString());
   };
 
-  const handleTagChange = (e) => {
+  const handleTagChange = e => {
     setSearchWord("");
     if (e.currentTarget.id === filters?.status) return;
     setRows([]);
@@ -347,31 +303,31 @@ function AllOrdersTable() {
     let newUrl = "";
     switch (statu) {
       case "all_orders":
-        newUrl += `limit=${25}&offset=${0}`;
+        newUrl += ``;
         break;
       case "repeat":
-        newUrl += `is_repeat=true&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `?&is_repeat=true`;
         break;
       case "followUp":
-        newUrl += `is_followup=true&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `?&is_followup=true`;
         break;
       case "shipped":
-        newUrl += `status=${statu}&limit=${25}&offset=${0}`; //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
+        newUrl += `?&status=${statu}&`;
         break;
-      default: //&limit=${rowsPerPage}&offset=${page * rowsPerPage}
-        newUrl += `status=${statu}&limit=${PAGE_ROW_NUMBER || 25}&offset=${0}`;
+      default:
+        newUrl += `?&status=${statu}`;
         break;
     }
-    history.push(`/all-orders?&${newUrl}`);
+    history.push(`/all-orders${newUrl}`);
     setPage(0);
   };
 
   const getAllPdfFunc = () => {
     getAllPdf(`${BASE_URL}etsy/all_pdf/`)
-      .then((response) => {
+      .then(response => {
         setAllPdf(response.data.a);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
@@ -381,12 +337,12 @@ function AllOrdersTable() {
     let urlPrint;
     if (countryFilter === "usa") {
       urlPrint = `${BASE_URL}etsy/print_all/?type=us`;
-    } else if (countryFilter === "int") {
+    } else if (countryFilter === "international") {
       urlPrint = `${BASE_URL}etsy/print_all/?type=int`;
     } else urlPrint = `${BASE_URL}etsy/print_all/`;
 
     getData(urlPrint, data)
-      .then((data) => {
+      .then(data => {
         // Open pdf after get
         const link = document.createElement("a");
         link.href = `${data.data.url}`;
@@ -424,89 +380,74 @@ function AllOrdersTable() {
 
   const changeGoogleSheetReadyStatus = (id, is_ready) => {
     putData(`${BASE_URL}etsy/mapping/${id}/`, { is_ready })
-      .then((response) => {
-        console.log("response", response);
-        localStorage.removeItem(
-          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 2500
-          }-0-last_updated`
-        );
+      .then(response => {
         getOrdersInProgress();
         setRefreshTable(!refreshTable);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("error", error);
         console.log(error.response);
       });
   };
   const changeOrderStatus = (id, status) => {
     putData(`${BASE_URL}etsy/mapping/${id}/`, { status })
-      .then((response) => {
+      .then(response => {
         const pdfUrl = `${BASE_URL}${response.data[1]}`;
-        console.log("pfdUrl", pdfUrl);
         if (Array.isArray(response.data)) {
           printJS(pdfUrl);
         }
         getData(url);
         setRefreshTable(!refreshTable);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("error", error);
         console.log(error.response);
       });
   };
 
-  const getSiblings = async (id) => {
-    const ordersInProgressLS = JSON.parse(
-      localStorage.getItem(
-        `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 25}-0`
-      )
-    );
+  const getSiblings = async id => {
+    const ordersInProgressLS = [...inProggressItems];
     const currentOrder =
       ordersInProgressLS?.length > 0
-        ? ordersInProgressLS.filter((item) => item.id.toString() === id)?.[0]
+        ? ordersInProgressLS.filter(item => item.id.toString() === id)?.[0]
         : null;
     let currentReceiptId = currentOrder?.receipt_id;
     if (currentOrder?.item_index === "1/1") return null;
     let siblings = [];
 
-    await globalSearch(
-      `${BASE_URL}etsy/mapping/?receipt__receipt_id=${currentReceiptId}`
-    ).then((response) => {
-      if (response?.data?.results?.length)
-        siblings = response?.data?.results
-          .map((item) => item.id)
-          .filter((item) => item.toString() !== id.toString());
-      localStorage.setItem(
-        `${localStoragePrefix}-sibling_list`,
-        JSON.stringify([
+    await globalSearch(`${BASE_URL}etsy/mapping/?receipt__receipt_id=${currentReceiptId}`).then(
+      response => {
+        if (response?.data?.results?.length)
+          siblings = response?.data?.results
+            .map(item => item.id)
+            .filter(item => item.toString() !== id.toString());
+        localStorage.setItem(
+          `${localStoragePrefix}-sibling_list`,
+          JSON.stringify([
+            ...currentSiblingList,
+            {
+              id,
+              siblings,
+            },
+          ]),
+        );
+        setCurrentSiblingList([
           ...currentSiblingList,
           {
             id,
             siblings,
           },
-        ])
-      );
-      setCurrentSiblingList([
-        ...currentSiblingList,
-        {
-          id,
-          siblings,
-        },
-      ]);
-    });
+        ]);
+      },
+    );
   };
 
-  const checkOrderIfInProgress = (id) => {
+  const checkOrderIfInProgress = id => {
     let isInProgress = false;
-    const ordersInProgressLS = JSON.parse(
-      localStorage.getItem(
-        `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER || 25}-0`
-      )
-    );
+    const ordersInProgressLS = [...inProggressItems];
     isInProgress =
       (ordersInProgressLS?.length > 0 &&
-        ordersInProgressLS.filter((item) => item.id.toString() === id)
-          ?.length &&
+        ordersInProgressLS.filter(item => item.id.toString() === id)?.length &&
         !currentBarcodeList.includes(id)) ||
       false;
     if (selectedTag === "shipped") {
@@ -515,13 +456,13 @@ function AllOrdersTable() {
       getSiblings(id);
       localStorage.setItem(
         `${localStoragePrefix}-barcode_list`,
-        JSON.stringify([...currentBarcodeList, id])
+        JSON.stringify([...currentBarcodeList, id]),
       );
       setCurrentBarcodeList([...currentBarcodeList, id]);
       // changeOrderStatus(id, "ready");
     } else {
       getData(`${BASE_URL}etsy/orders/${id}/`)
-        .then((response) => {
+        .then(response => {
           setDialog({
             ...dialog,
             statu: response?.data?.status,
@@ -529,7 +470,7 @@ function AllOrdersTable() {
             open: true,
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log("error", error);
         });
     }
@@ -547,43 +488,31 @@ function AllOrdersTable() {
     setCurrentBarcodeList([]);
   };
 
-  const removeItemfromBarcodeList = (id) => {
-    const fb = currentBarcodeList.filter((i) => i !== id.toString());
-    localStorage.setItem(
-      `${localStoragePrefix}-barcode_list`,
-      JSON.stringify(fb)
-    );
+  const removeItemfromBarcodeList = id => {
+    const fb = currentBarcodeList.filter(i => i !== id.toString());
+    localStorage.setItem(`${localStoragePrefix}-barcode_list`, JSON.stringify(fb));
     setCurrentBarcodeList(fb);
   };
 
   const handleSaveScanned = () => {
     postData(`${BASE_URL}etsy/approved_all_ready/`, { ids: currentBarcodeList })
-      .then((res) => {
+      .then(res => {
         toastSuccessNotify("Saved!");
-        /*         localStorage.removeItem(`${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0`);
-        localStorage.removeItem(
-          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-last_updated`
-        );
-        localStorage.removeItem(
-          `${localStoragePrefix}-in_progress-${PAGE_ROW_NUMBER}-0-count`
-        ); */
+
         localStorage.setItem(`${localStoragePrefix}-barcode_list`, []);
         localStorage.setItem(`${localStoragePrefix}-sibling_list`, []);
-        localStorage.removeItem(
-          `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}`
-        );
-        localStorage.removeItem(
-          `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`
-        );
+
         setCurrentBarcodeList([]);
         setCurrentSiblingList([]);
       })
       .catch(({ response }) => {
         console.log("response", response);
+        getOrdersInProgress();
       })
       .finally(() => {
-        getLastUpdateDate();
-        getOrdersInProgress(true);
+        getOrdersInProgress();
+        getAllPdfFunc();
+        getListFunc();
       });
   };
 
@@ -595,12 +524,12 @@ function AllOrdersTable() {
     setDialog({ ...dialog, open: false, id: "", statu: "" });
   };
 
-  const handleScan = (data) => {
+  const handleScan = data => {
     setBarcodeInput(data);
     barcodeInputRef.current.value = data;
   };
 
-  const handleBarcodeInputKeyDown = (e) => {
+  const handleBarcodeInputKeyDown = e => {
     if (e.keyCode === 13) setBarcodeInput(barcodeInputRef.current.value);
   };
 
@@ -613,47 +542,41 @@ function AllOrdersTable() {
   const handleRowChange = (id, data) => {
     if (!data) return;
     if (
-      rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
-      Object.values(data)[0]
+      rows?.filter(item => item.id === id)?.[0]?.[Object.keys(data)[0]] === Object.values(data)[0]
     )
       return;
     putData(`${BASE_URL}etsy/mapping/${id}/`, data)
-      .then((response) => { })
-      .catch((error) => {
+      .then(response => {
+        toastSuccessNotify("Item updated successfully");
+      })
+      .catch(error => {
         console.log(error);
+        toastErrorNotify("Error, Please try again after refresh the page");
       })
       .finally(() => {
         if (filters?.search) {
-          history.push(
-            `/all-orders?search=${filters?.search}&limit=${25}&offset=${0}`
-          );
-        } else getListFunc();
+          history.push(`/all-orders?search=${filters?.search}`);
+        }
         setloading(false);
         setRefreshTable(!refreshTable);
       });
   };
-
   const onChange = (e, id, name) => {
     if (!rows?.length || !name || !e?.target?.innerText) return;
-    if (
-      rows?.filter((item) => item.id === id)?.[0]?.[name] === e.target.innerText
-    )
-      return;
+    if (rows?.filter(item => item.id === id)?.[0]?.[name] === e.target.innerText) return;
     handleRowChange(id, { [name]: e.target.innerText });
   };
 
   useEffect(() => {
     if (filters?.search) {
       globalSearch(
-        // `${BASE_URL_MAPPING}?search=${filters?.search}&limit=${25}&offset=${
-        `${BASE_URL}etsy/mapping/?search=${filters?.search
-        }&limit=${25}&offset=${page * 25}`
+        `${BASE_URL}etsy/mapping/?search=${filters?.search}&limit=${25}&offset=${page * 25}`,
       )
-        .then((response) => {
+        .then(response => {
           setRows(response.data.results);
           setCount(response?.data?.count || 0);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
           setRows([]);
         });
@@ -663,20 +586,20 @@ function AllOrdersTable() {
 
   const searchHandler = (value, keyCode) => {
     if (keyCode === 13 && value) {
-      history.push(`/all-orders?search=${value}&limit=${25}&offset=${0}`);
+      history.push(`/all-orders?search=${value}`);
     }
   };
 
-  const handleError = (err) => {
+  const handleError = err => {
     console.error(err);
   };
 
-  const removeFunc = (id) => {
+  const removeFunc = id => {
     changeOrderStatus(id, "in_progress");
     getOrdersInProgress();
   };
 
-  const handleLabelUpload = (e) => {
+  const handleLabelUpload = e => {
     e.stopPropagation();
     let fs = e.target.files[0];
     setIsUploadingFile(true);
@@ -686,11 +609,11 @@ function AllOrdersTable() {
 
     let path = `${BASE_URL}etsy/UploadShipment/`;
     postData(path, data)
-      .then((res) => {
+      .then(res => {
         console.log(res);
         toastSuccessNotify("Success uploading file");
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err.response);
         toastErrorNotify("Error uploading file");
       })
@@ -700,10 +623,10 @@ function AllOrdersTable() {
       });
   };
 
-  const handleCheckBoxClick = (id) => {
+  const handleCheckBoxClick = id => {
     let tempArr;
     if (selected.includes(id)) {
-      tempArr = selected.filter((item) => id?.toString() !== item?.toString());
+      tempArr = selected.filter(item => id?.toString() !== item?.toString());
       setSelected(tempArr);
     } else {
       setSelected([...selected, id]);
@@ -713,7 +636,7 @@ function AllOrdersTable() {
   const handleSelectAllClick = () => {
     const tempArr = [];
     if (!selected?.length) {
-      rows.forEach((row) => {
+      rows.forEach(row => {
         tempArr.push(row.id);
       });
     }
@@ -764,7 +687,7 @@ function AllOrdersTable() {
                 <FormattedMessage id="ready_date" defaultMessage="Approval Date" />
               </StyledTableCell>
 
-              {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+              {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                 <StyledTableCell align="center">
                   <FormattedMessage id="buyer" defaultMessage="Buyer" />
                 </StyledTableCell>
@@ -788,7 +711,7 @@ function AllOrdersTable() {
                     <FormattedMessage id="color" defaultMessage="Color" />
                   </StyledTableCell>
 
-                  {localRole !== "workshop_manager" && (
+                  {userRole !== "workshop_manager" && (
                     <StyledTableCell align="center">
                       <FormattedMessage id="explanationMod" defaultMessage="Mod-Explanation" />{" "}
                     </StyledTableCell>
@@ -799,17 +722,17 @@ function AllOrdersTable() {
                   <StyledTableCell align="center">
                     <FormattedMessage id="type" defaultMessage="Type" />
                   </StyledTableCell>
-                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                  {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                     <StyledTableCell align="center">
                       <FormattedMessage id="var1" />
                     </StyledTableCell>
                   )}
-                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                  {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                     <StyledTableCell align="center">
                       <FormattedMessage id="var2" />
                     </StyledTableCell>
                   )}
-                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                  {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                     <StyledTableCell align="center">
                       <FormattedMessage id="var3" />
                     </StyledTableCell>
@@ -817,13 +740,13 @@ function AllOrdersTable() {
                   <StyledTableCell align="center">
                     <FormattedMessage id="var4" />
                   </StyledTableCell>
-                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                  {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                     <StyledTableCell align="center">
                       <FormattedMessage id="var5" />
                     </StyledTableCell>
                   )}
 
-                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                  {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                     <StyledTableCell align="center">
                       <FormattedMessage id="var6" />
                     </StyledTableCell>
@@ -849,8 +772,8 @@ function AllOrdersTable() {
               {!isBeyazit &&
                 process.env.REACT_APP_STORE_NAME !== "Mina" &&
                 process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
-                localRole !== "workshop_designer" &&
-                localRole !== "workshop_designer2" && (
+                userRole !== "workshop_designer" &&
+                userRole !== "workshop_designer2" && (
                   <StyledTableCell
                     align="center"
                     onClick={() => sortByGiftMessages()}
@@ -927,7 +850,7 @@ function AllOrdersTable() {
                   />
                   {/*   <CustomTableCell {...{ row, name: "ready_date" }} /> */}
 
-                  {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                  {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                     <CustomTableCell {...{ row, name: "buyer" }} />
                   )}
                   {/*   <CustomTableCell {...{ row, name: "supplier" }} /> */}
@@ -956,7 +879,7 @@ function AllOrdersTable() {
                               : "variation_2_value",
                         }}
                       />
-                      {localRole !== "workshop_manager" && (
+                      {userRole !== "workshop_manager" && (
                         <EditableTableCell
                           onClick={e => e.stopPropagation()}
                           {...{
@@ -972,21 +895,21 @@ function AllOrdersTable() {
                     <>
                       <CustomTableCell {...{ row, name: "type" }} />
                       {/* This wil change with shopify */}
-                      {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                      {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                         <CustomTableCell {...{ row, name: "length" }} />
                       )}
-                      {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                      {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                         <CustomTableCell {...{ row, name: "color" }} />
                       )}
-                      {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                      {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                         <CustomTableCell {...{ row, name: "qty" }} />
                       )}
                       <CustomTableCell {...{ row, name: "size" }} />
-                      {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                      {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                         <CustomTableCell {...{ row, name: "start" }} />
                       )}
                       {/* --------------------------- */}
-                      {localRole !== "workshop_designer" && localRole !== "workshop_designer2" && (
+                      {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                         <CustomTableCell {...{ row, name: "space" }} />
                       )}
                       {/*   <EditableTableCell
@@ -1040,8 +963,8 @@ function AllOrdersTable() {
                   {!isBeyazit &&
                     process.env.REACT_APP_STORE_NAME !== "Mina" &&
                     process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
-                    localRole !== "workshop_designer" &&
-                    localRole !== "workshop_designer2" && (
+                    userRole !== "workshop_designer" &&
+                    userRole !== "workshop_designer2" && (
                       <CustomTableCell
                         onClick={e => {
                           e.stopPropagation();
@@ -1093,21 +1016,13 @@ function AllOrdersTable() {
               <td>
                 <FormattedMessage id="totalRecord" defaultMessage="Total Record" />:
               </td>
-              <td>
-                {localStorage.getItem(
-                  `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
-                ) || 0}
-              </td>
+              <td>{count}</td>
               <TablePagination
-                rowsPerPageOptions={[25, 50, 100, 250, 500, 2500]}
+                rowsPerPageOptions={[150]}
                 colSpan={22}
-                count={Number(
-                  localStorage.getItem(
-                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
-                  ) || 0,
-                )}
-                rowsPerPage={Number(filters.limit)}
-                page={page}
+                count={count}
+                rowsPerPage={count}
+                page={1}
                 SelectProps={{
                   inputProps: { "aria-label": "rows per page" },
                   native: true,
@@ -1125,294 +1040,276 @@ function AllOrdersTable() {
   );
 
   return (
-    <div>
-      <Paper className={classes.root}>
-        <CustomButtonGroup
-          selectedTag={filters?.status}
-          handleTagChange={handleTagChange}
-          tagsData={tagsData}
-          nonAdminTagsData={nonAdminTagsData}
-          searchHandler={searchHandler}
-          loading={loading}
-        />
-        {selectedTag === "ready" || selectedTag === "shipped" ? (
-          <div className={classes.barcodeBox}>
-            <div style={{ marginRight: "0.5rem" }}>
-              <BarcodeInput onError={handleError} onScan={handleScan} />
-              <p>
-                <FormattedMessage id="barcode" defaultMessage="Barcode" /> :{" "}
-                {barcodeInput ||
-                  formatMessage({
-                    id: "noResult",
-                    defaultMessage: "-",
+    <>
+      <div>
+        <Paper className={classes.root}>
+          <CustomButtonGroup
+            selectedTag={filters?.status}
+            handleTagChange={handleTagChange}
+            tagsData={tagsData}
+            nonAdminTagsData={nonAdminTagsData}
+            searchHandler={searchHandler}
+            loading={loading}
+          />
+          {selectedTag === "ready" || selectedTag === "shipped" ? (
+            <div className={classes.barcodeBox}>
+              <div style={{ marginRight: "0.5rem" }}>
+                <BarcodeInput onError={handleError} onScan={handleScan} />
+                <p>
+                  <FormattedMessage id="barcode" defaultMessage="Barcode" /> :{" "}
+                  {barcodeInput ||
+                    formatMessage({
+                      id: "noResult",
+                      defaultMessage: "-",
+                    })}
+                </p>
+              </div>
+              <div className={classes.print}>
+                <TextField
+                  label={formatMessage({
+                    id: "barcode",
+                    defaultMessage: "Barcode",
                   })}
-              </p>
+                  inputRef={barcodeInputRef}
+                  id="outlined-size-small"
+                  variant="outlined"
+                  size="small"
+                  onKeyDown={handleBarcodeInputKeyDown}
+                />
+              </div>
             </div>
-            <div className={classes.print}>
-              <TextField
-                label={formatMessage({
-                  id: "barcode",
-                  defaultMessage: "Barcode",
-                })}
-                inputRef={barcodeInputRef}
-                id="outlined-size-small"
-                variant="outlined"
-                size="small"
-                onKeyDown={handleBarcodeInputKeyDown}
-              />
-            </div>
-          </div>
-        ) : null}
-        <div style={{ display: filters?.status === "ready" ? "block" : "none" }}>
-          <hr />
-          <div
-            style={{
-              display: "flex",
-              color: "#001A33",
-              marginBottom: 16,
-              fontSize: "2rem",
-              marginLeft: 16,
-            }}
-          >
-            <FormattedMessage id="totalScanned" />: {currentBarcodeList?.length || 0}
-          </div>
-          <div style={{ display: "flex", textAlign: "left" }}>
-            <div style={{ display: "inline-block", marginLeft: 16 }}>
-              <p style={{ margin: 0 }}>
-                <FormattedMessage id="lastScannedOrder" />
-              </p>
-              <Button color="primary" onClick={handleClearBarcodeList}>
-                <FormattedMessage id="clear" />
-              </Button>
-            </div>
-            <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
-              {currentBarcodeList?.length
-                ? currentBarcodeList?.map(item => (
-                    <p
-                      key={item}
-                      style={{
-                        border: "1px blue solid",
-                        borderRadius: 4,
-                        color: "blue",
-                        margin: "0 5px",
-                        padding: "0 5px",
-                        fontWeight: "bold",
-                        height: "23px",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => removeItemfromBarcodeList(item)}
-                    >
-                      {item}
-                      {currentSiblingList
-                        .filter(cs => cs?.id?.toString() === item?.toString())
-                        .map(s =>
-                          s.siblings.map((m, index) => (
-                            <span
-                              style={{
-                                color: "black",
-                                fontStyle: "italic",
-                                fontSize: "0.8rem",
-                              }}
-                            >
-                              {`-${m}`}
-                            </span>
-                          )),
-                        )}
-                    </p>
-                  ))
-                : null}
-            </div>
-          </div>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={handleSaveScanned}
-          >
-            <FormattedMessage id="saveScanned" />
-          </Button>
-        </div>
-        <hr />
-        {selectedTag === "in_progress" &&
-          localRole !== "workshop_designer" &&
-          localRole !== "workshop_designer2" &&
-          process.env.REACT_APP_GOOGLE_SHEET_LINK && (
+          ) : null}
+          <div style={{ display: filters?.status === "ready" ? "block" : "none" }}>
+            <hr />
             <div
               style={{
-                marginRight: "10px",
-                textAlign: "right",
+                display: "flex",
+                color: "#001A33",
+                marginBottom: 16,
+                fontSize: "2rem",
+                marginLeft: 16,
               }}
             >
-              <a
-                style={{ fontSize: "1rem", marginTop: "10px" }}
-                href={process.env.REACT_APP_GOOGLE_SHEET_LINK}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Open Google Sheet
-              </a>
+              <FormattedMessage id="totalScanned" />: {currentBarcodeList?.length || 0}
             </div>
-          )}
-        <div
-          style={{
-            display:
-              process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
-              process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-              process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-              process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
-              process.env.REACT_APP_STORE_NAME === "Mina" ||
-              process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
-                ? "flex"
-                : "none",
-            color: "#001A33",
-            marginBottom: 16,
-            marginLeft: 16,
-            fontSize: "2rem",
-            justifyContent: "space-between",
-          }}
-        >
-          <div>
+            <div style={{ display: "flex", textAlign: "left" }}>
+              <div style={{ display: "inline-block", marginLeft: 16 }}>
+                <p style={{ margin: 0 }}>
+                  <FormattedMessage id="lastScannedOrder" />
+                </p>
+                <Button color="primary" onClick={handleClearBarcodeList}>
+                  <FormattedMessage id="clear" />
+                </Button>
+              </div>
+              <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
+                {currentBarcodeList?.length
+                  ? currentBarcodeList?.map(item => (
+                      <p
+                        key={item}
+                        style={{
+                          border: "1px blue solid",
+                          borderRadius: 4,
+                          color: "blue",
+                          margin: "0 5px",
+                          padding: "0 5px",
+                          fontWeight: "bold",
+                          height: "23px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => removeItemfromBarcodeList(item)}
+                      >
+                        {item}
+                        {currentSiblingList
+                          .filter(cs => cs?.id?.toString() === item?.toString())
+                          .map(s =>
+                            s.siblings.map((m, index) => (
+                              <span
+                                style={{
+                                  color: "black",
+                                  fontStyle: "italic",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                {`-${m}`}
+                              </span>
+                            )),
+                          )}
+                      </p>
+                    ))
+                  : null}
+              </div>
+            </div>
             <Button
+              type="submit"
               variant="contained"
-              color={countryFilter === "all" ? "primary" : "default"}
-              className={classes.countryFilter}
-              onClick={() => setCountryFilter("all")}
+              color="primary"
+              className={classes.submit}
+              onClick={handleSaveScanned}
             >
-              <FormattedMessage id="all" defaultMessage="All" />
-            </Button>
-            <Button
-              variant="contained"
-              color={countryFilter === "usa" ? "primary" : "default"}
-              className={classes.countryFilter}
-              onClick={() => setCountryFilter("usa")}
-            >
-              <FormattedMessage id="usa" defaultMessage="USA" />
-            </Button>
-            <Button
-              variant="contained"
-              color={countryFilter === "int" ? "primary" : "default"}
-              className={classes.countryFilter}
-              onClick={() => setCountryFilter("int")}
-            >
-              <FormattedMessage id="int" defaultMessage="International" />
+              <FormattedMessage id="saveScanned" />
             </Button>
           </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
+          <hr />
+          {selectedTag === "in_progress" &&
+            userRole !== "workshop_designer" &&
+            userRole !== "workshop_designer2" &&
+            process.env.REACT_APP_GOOGLE_SHEET_LINK && (
+              <div
+                style={{
+                  marginRight: "10px",
+                  textAlign: "right",
+                }}
+              >
+                <a
+                  style={{ fontSize: "1rem", marginTop: "10px" }}
+                  href={process.env.REACT_APP_GOOGLE_SHEET_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open Google Sheet
+                </a>
+              </div>
+            )}
+          <div
+            style={{
+              display:
+                process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
+                process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                process.env.REACT_APP_STORE_NAME === "Mina" ||
+                process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                  ? "flex"
+                  : "none",
+              color: "#001A33",
+              marginBottom: 16,
+              marginLeft: 16,
+              fontSize: "2rem",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <Button
+                variant="contained"
+                color={countryFilter === "all" ? "primary" : "default"}
+                className={classes.countryFilter}
+                onClick={() => setCountryFilter("all")}
+              >
+                <FormattedMessage id="all" defaultMessage="All" />
+              </Button>
+              <Button
+                variant="contained"
+                color={countryFilter === "usa" ? "primary" : "default"}
+                className={classes.countryFilter}
+                onClick={() => setCountryFilter("usa")}
+              >
+                <FormattedMessage id="usa" defaultMessage="USA" />
+              </Button>
+              <Button
+                variant="contained"
+                color={countryFilter === "international" ? "primary" : "default"}
+                className={classes.countryFilter}
+                onClick={() => setCountryFilter("international")}
+              >
+                <FormattedMessage id="international" defaultMessage="International" />
+              </Button>
+            </div>
+          </div>
           <div
             style={{
               display: "flex",
-              color: "#001A33",
-              marginBottom: 16,
-              fontSize: "2rem",
-              marginLeft: 16,
+              justifyContent: "space-between",
             }}
           >
-            {localRole === "workshop_designer" ||
-            localRole === "workshop_designer2" ? null : loading ? (
-              <FormattedMessage id="updating" />
-            ) : (
+            <div
+              style={{
+                display: "flex",
+                color: "#001A33",
+                marginBottom: 16,
+                fontSize: "2rem",
+                marginLeft: 16,
+              }}
+            >
+              {userRole === "workshop_designer" ||
+              userRole === "workshop_designer2" ? null : loading ? (
+                <FormattedMessage id="updating" />
+              ) : (
+                <>
+                  <FormattedMessage id="total" defaultMessage="Total" />{" "}
+                  <FormattedMessage
+                    id={filters?.status || "result"}
+                    defaultMessage={filters?.status?.toUpperCase() || "Result".toUpperCase()}
+                  />{" "}
+                  : {count}
+                  {selectedTag === "in_progress" && (
+                    <>
+                      {" ("}
+                      <FormattedMessage id="totalScanned" />: {currentBarcodeList?.length || 0}
+                      {")"}{" "}
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+            {selectedTag === "shipped" ? (
               <>
-                <FormattedMessage id="total" defaultMessage="Total" />{" "}
-                <FormattedMessage
-                  id={filters?.status || "result"}
-                  defaultMessage={filters?.status?.toUpperCase() || "Result".toUpperCase()}
-                />{" "}
-                :{" "}
-                {rows?.length ===
-                Number(
-                  localStorage.getItem(
-                    `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
-                  ),
-                )
-                  ? localStorage.getItem(
-                      `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
-                    ) ?? 0
-                  : `${rows.length} 
-                    ${
-                      selectedTag
-                        ? `/${
-                            localStorage.getItem(
-                              `${localStoragePrefix}-${selectedTag}-${filters.limit}-${filters.offset}-count`,
-                            ) ?? 0
-                          }`
-                        : ""
-                    }
-                      `}
-                {selectedTag === "in_progress" && (
-                  <>
-                    {" ("}
-                    <FormattedMessage id="totalScanned" />: {currentBarcodeList?.length || 0}
-                    {")"}{" "}
-                  </>
-                )}
+                <Button color="secondary" onClick={() => uploadLabelRef.current.click()}>
+                  <FormattedMessage id={isUploadingFile ? "loading" : "uploadLabel"} />
+                </Button>
+                <input
+                  onChange={e => handleLabelUpload(e)}
+                  onClick={event => event.stopPropagation()}
+                  id="myInput"
+                  style={{ display: "none" }}
+                  type={"file"}
+                  accept="application/pdf"
+                  ref={uploadLabelRef}
+                />
               </>
-            )}
+            ) : null}
           </div>
-          {selectedTag === "shipped" ? (
-            <>
-              <Button color="secondary" onClick={() => uploadLabelRef.current.click()}>
-                <FormattedMessage id={isUploadingFile ? "loading" : "uploadLabel"} />
-              </Button>
-              <input
-                onChange={e => handleLabelUpload(e)}
-                onClick={event => event.stopPropagation()}
-                id="myInput"
-                style={{ display: "none" }}
-                type={"file"}
-                accept="application/pdf"
-                ref={uploadLabelRef}
-              />
-            </>
-          ) : null}
-        </div>
-        <AllTable />
-      </Paper>
-      {printError ? <h1>{printError}</h1> : null}
-      {filters?.status === "awaiting" ? (
-        <>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.print}
-            onClick={printHandler}
-          >
-            <FormattedMessage id="print" defaultMessage="Print" />
-          </Button>
-          <h1>
-            <FormattedMessage id="labels" defaultMessage="Labels" />
-          </h1>
-          {allPdf ? (
-            allPdf?.map((pdf, index) => (
-              <div key={`${index}${pdf}`}>
-                <a href={`${BASE_URL}media/pdf/bulk/${pdf}`} target="_blank" rel="noreferrer">
-                  {pdf}
-                </a>
-              </div>
-            ))
-          ) : (
-            <h2>
-              <FormattedMessage id="dontHaveAnyLabel" defaultMessage="Dont have any label!" />
-            </h2>
-          )}
-        </>
-      ) : null}
-      {filters?.status === "ready" ? (
-        <CargoPage
-          getListFunc={getListFunc}
-          setRefreshTable={setRefreshTable}
-          countryFilter={countryFilter}
-          ids={selected}
-        />
-      ) : null}
-      <CustomDialog open={dialog?.open} handleDialogClose={handleDialogClose} dialog={dialog} />
-    </div>
+          <AllTable />
+        </Paper>
+        {printError ? <h1>{printError}</h1> : null}
+        {filters?.status === "awaiting" ? (
+          <>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.print}
+              onClick={printHandler}
+            >
+              <FormattedMessage id="print" defaultMessage="Print" />
+            </Button>
+            <h1>
+              <FormattedMessage id="labels" defaultMessage="Labels" />
+            </h1>
+            {allPdf ? (
+              allPdf?.map((pdf, index) => (
+                <div key={`${index}${pdf}`}>
+                  <a href={`${BASE_URL}media/pdf/bulk/${pdf}`} target="_blank" rel="noreferrer">
+                    {pdf}
+                  </a>
+                </div>
+              ))
+            ) : (
+              <h2>
+                <FormattedMessage id="dontHaveAnyLabel" defaultMessage="Dont have any label!" />
+              </h2>
+            )}
+          </>
+        ) : null}
+        {filters?.status === "ready" ? (
+          <CargoPage
+            getListFunc={getListFunc}
+            setRefreshTable={setRefreshTable}
+            countryFilter={countryFilter}
+            ids={selected}
+          />
+        ) : null}
+        <CustomDialog open={dialog?.open} handleDialogClose={handleDialogClose} dialog={dialog} />
+      </div>
+    </>
   );
 }
 

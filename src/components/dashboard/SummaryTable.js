@@ -143,9 +143,7 @@ export default function SummaryTable({
                           ? history.push(
                               `/all-orders?&status=${item.cell1
                                 .toLowerCase()
-                                .replace(" ", "_")}&limit=${
-                                PAGE_ROW_NUMBER || 25
-                              }&offset=0`
+                                .replace(" ", "_")}`
                             )
                           : null
                       }
