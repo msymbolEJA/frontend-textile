@@ -69,7 +69,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: 10,
   },
   container: {
-    maxHeight: "83vh",
     overflowX: "initial",
   },
   table: {
@@ -1271,6 +1270,16 @@ function AllOrdersTable() {
           <AllTable />
         </Paper>
         {printError ? <h1>{printError}</h1> : null}
+
+        {filters?.status === "ready" ? (
+          <CargoPage
+            getListFunc={getListFunc}
+            setRefreshTable={setRefreshTable}
+            countryFilter={countryFilter}
+            ids={selected}
+          />
+        ) : null}
+        <CustomDialog open={dialog?.open} handleDialogClose={handleDialogClose} dialog={dialog} />
         {filters?.status === "awaiting" ? (
           <>
             <Button
@@ -1299,15 +1308,6 @@ function AllOrdersTable() {
             )}
           </>
         ) : null}
-        {filters?.status === "ready" ? (
-          <CargoPage
-            getListFunc={getListFunc}
-            setRefreshTable={setRefreshTable}
-            countryFilter={countryFilter}
-            ids={selected}
-          />
-        ) : null}
-        <CustomDialog open={dialog?.open} handleDialogClose={handleDialogClose} dialog={dialog} />
       </div>
     </>
   );
