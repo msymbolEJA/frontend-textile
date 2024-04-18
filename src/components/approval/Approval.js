@@ -85,7 +85,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3),
   },
   container: {
-    maxHeight: "83vh",
     overflowX: "initial",
   },
   table: {
@@ -270,7 +269,6 @@ function App({ history }) {
     setloading(true);
     putData(`${BASE_URL}etsy/mapping/${id}/`, data)
       .then(response => {
-        toastSuccessNotify("Item updated successfully");
         if (data?.status) {
           const copyRows = [...rows];
           const newRows = copyRows?.filter(item => item?.id != id);
@@ -335,7 +333,6 @@ function App({ history }) {
          if (itemInRows) itemInRows.image = res?.data?.image;
 
          setRows(copyRows);
-         toastSuccessNotify("Image uploaded successfully");
        })
        .catch(err => {
          console.log(err);
@@ -358,7 +355,6 @@ function App({ history }) {
          const itemInRows = copyRows?.find(item => item?.id == id);
          if (itemInRows) itemInRows.image = null;
          setRows(copyRows);
-         toastSuccessNotify("Image removed successfully");
        })
        .catch(err => {
          console.log(err);
