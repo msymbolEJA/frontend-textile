@@ -44,7 +44,8 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
     if (selectedPlatform === "dress" || selectedPlatform === "approne") {
       groupedItems.length = 0;
       items.forEach(item => {
-        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value } = item;
+        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value, total_fabric } =
+          item;
 
         const existingGroup = groupedItems.find(group => group.sku === sku);
         if (existingGroup) {
@@ -68,7 +69,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
           } else {
             existingGroup.colors.push({
               color,
-              sizes: [{ size, sku_cost, sku_count }],
+              sizes: [{ size, sku_cost, sku_count, total_fabric }],
               sku_cost,
               sku_count,
             });
@@ -84,7 +85,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
             colors: [
               {
                 color,
-                sizes: [{ size, sku_cost, sku_count }],
+                sizes: [{ size, sku_cost, sku_count, total_fabric }],
                 sku_cost,
                 sku_count,
               },
@@ -92,11 +93,13 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
           });
         }
       });
+     
       return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
     } else if (selectedPlatform === "couch") {
       groupedItems.length = 0;
       items.forEach(item => {
-        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value } = item;
+        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value, total_fabric } =
+          item;
 
         groupedItems.push({
           sku,
@@ -104,6 +107,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
           sku_count,
           depth: variation_2_value,
           width: variation_1_value,
+          total_fabric,
         });
       });
       return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
@@ -113,7 +117,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
     } else if (selectedPlatform === "curtain") {
       groupedItems.length = 0;
       items.forEach(item => {
-        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value } = item;
+        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value, total_fabric } = item;
 
         groupedItems.push({
           sku,
@@ -121,6 +125,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
           sku_count,
           length: variation_2_value,
           width: variation_1_value,
+          total_fabric,
         });
       });
       return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
@@ -142,7 +147,8 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
 
       groupedItems.length = 0;
       items.forEach(item => {
-        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value } = item;
+        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value, total_fabric } =
+          item;
 
         const existingGroup = groupedItems.find(group => group.sku === sku);
         if (existingGroup) {
@@ -159,14 +165,14 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
               existingSize.sku_cost += sku_cost;
               existingSize.sku_count += sku_count;
             } else {
-              existingColor.sizes.push({ size, sku_cost, sku_count });
+              existingColor.sizes.push({ size, sku_cost, sku_count , total_fabric});
             }
             existingColor.sku_cost += sku_cost;
             existingColor.sku_count += sku_count;
           } else {
             existingGroup.colors.push({
               color,
-              sizes: [{ size, sku_cost, sku_count }],
+              sizes: [{ size, sku_cost, sku_count , total_fabric}],
               sku_cost,
               sku_count,
             });
@@ -182,7 +188,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
             colors: [
               {
                 color,
-                sizes: [{ size, sku_cost, sku_count }],
+                sizes: [{ size, sku_cost, sku_count, total_fabric }],
                 sku_cost,
                 sku_count,
               },
@@ -234,6 +240,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
         length,
         size,
         metrage,
+        total_fabric,
       } = group;
 
       //  <TableRow>
@@ -262,6 +269,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
             length,
             size,
             metrage,
+            total_fabric
           })}
         </React.Fragment>
       );
@@ -281,6 +289,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
     length,
     size,
     metrage,
+    total_fabric: total_fabric2
   }) => {
     // let rowCount = 0;
     let rows = [];
@@ -296,7 +305,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
         const sizeCount = sizes.length;
 
         sizes.forEach((sizeObj, i) => {
-          const { size, sku_cost: sizeSkuCost, sku_count: sizeSkuCount } = sizeObj;
+          const { size, sku_cost: sizeSkuCost, sku_count: sizeSkuCount , total_fabric} = sizeObj;
 
           rows.push(
             <TableRow className={skuIndex % 2 === 1 ? classes.darkTableRow : null}>
@@ -351,12 +360,23 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
               >
                 {sizeSkuCount !== null ? `${sizeSkuCount}` : "-"}
               </TableCell>
+              <TableCell
+                align="center"
+                className={classes.boldText}
+                style={{
+                  backgroundColor: sizeSkuCost ? "" : "#eee685",
+                }}
+              >
+                {total_fabric !== null && total_fabric !== undefined ? `${total_fabric}m` : ""}
+              </TableCell>
             </TableRow>,
           );
         });
 
         // rowCount += sizeCount;
       });
+
+      // console.log(rows);
     } else if (selectedPlatform === "couch") {
       rows.length = 0;
       rows.push(
@@ -406,6 +426,15 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
             }}
           >
             {SKU_COUNT !== null ? `${SKU_COUNT}` : "-"}
+          </TableCell>
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {total_fabric2 !== null && total_fabric2 !== undefined ? `${total_fabric2}m` : ""}
           </TableCell>
         </TableRow>,
       );
@@ -461,6 +490,15 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
             }}
           >
             {SKU_COUNT !== null ? `${SKU_COUNT}` : "-"}
+          </TableCell>
+          <TableCell
+            align="center"
+            className={classes.boldText}
+            style={{
+              backgroundColor: SKU_COST ? "" : "#eee685",
+            }}
+          >
+            {total_fabric2 !== null && total_fabric2 !== undefined ? `${total_fabric2}m` : ""}
           </TableCell>
         </TableRow>,
       );
@@ -593,9 +631,14 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
                     <FormattedMessage id="Total Cost" defaultMessage="Total Cost" />
                   </TableCell>
                   {selectedPlatform !== "fabric" && (
-                    <TableCell className={classes.boldText} align="center">
-                      <FormattedMessage id="Total Count" defaultMessage="Total Count" />
-                    </TableCell>
+                    <>
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage id="Total Count" defaultMessage="Total Count" />
+                      </TableCell>
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage id="Total Fabric (m)" defaultMessage="Total Fabric (m)" />
+                      </TableCell>
+                    </>
                   )}
                 </TableRow>
               ) : (
