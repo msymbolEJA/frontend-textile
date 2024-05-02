@@ -62,7 +62,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
               existingSize.sku_cost += sku_cost;
               existingSize.sku_count += sku_count;
             } else {
-              existingColor.sizes.push({ size, sku_cost, sku_count });
+              existingColor.sizes.push({ size, sku_cost, sku_count, total_fabric });
             }
             existingColor.sku_cost += sku_cost;
             existingColor.sku_count += sku_count;
@@ -93,7 +93,11 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
           });
         }
       });
-     
+
+      console.log(
+        "groupedItems.sort((a, b) => b.sku_count - a.sku_count)",
+        groupedItems.sort((a, b) => b.sku_count - a.sku_count),
+      );
       return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
     } else if (selectedPlatform === "couch") {
       groupedItems.length = 0;
@@ -117,7 +121,8 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
     } else if (selectedPlatform === "curtain") {
       groupedItems.length = 0;
       items.forEach(item => {
-        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value, total_fabric } = item;
+        const { sku, variation_2_value, sku_cost, sku_count, variation_1_value, total_fabric } =
+          item;
 
         groupedItems.push({
           sku,
@@ -165,14 +170,14 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
               existingSize.sku_cost += sku_cost;
               existingSize.sku_count += sku_count;
             } else {
-              existingColor.sizes.push({ size, sku_cost, sku_count , total_fabric});
+              existingColor.sizes.push({ size, sku_cost, sku_count, total_fabric });
             }
             existingColor.sku_cost += sku_cost;
             existingColor.sku_count += sku_count;
           } else {
             existingGroup.colors.push({
               color,
-              sizes: [{ size, sku_cost, sku_count , total_fabric}],
+              sizes: [{ size, sku_cost, sku_count, total_fabric }],
               sku_cost,
               sku_count,
             });
@@ -269,7 +274,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
             length,
             size,
             metrage,
-            total_fabric
+            total_fabric,
           })}
         </React.Fragment>
       );
@@ -289,7 +294,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
     length,
     size,
     metrage,
-    total_fabric: total_fabric2
+    total_fabric: total_fabric2,
   }) => {
     // let rowCount = 0;
     let rows = [];
@@ -305,7 +310,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
         const sizeCount = sizes.length;
 
         sizes.forEach((sizeObj, i) => {
-          const { size, sku_cost: sizeSkuCost, sku_count: sizeSkuCount , total_fabric} = sizeObj;
+          const { size, sku_cost: sizeSkuCost, sku_count: sizeSkuCount, total_fabric } = sizeObj;
 
           rows.push(
             <TableRow className={skuIndex % 2 === 1 ? classes.darkTableRow : null}>
