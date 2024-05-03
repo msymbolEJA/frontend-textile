@@ -455,7 +455,9 @@ const DateGetter = () => {
             </div>
           </Paper>
         </div>
-        {!perSKU && quantity !== null && userRole === "admin" ? (
+        {!perSKU &&
+        quantity !== null &&
+        (userRole === "admin" || userRole === "workshop_manager") ? (
           <CostGetter calcCost={calcCost} quantity={quantity} title={"Calculator"} />
         ) : null}
       </div>
