@@ -124,6 +124,7 @@ const DateGetter = () => {
 
   let localRole = localStorage.getItem("localRole");
 
+  console.log("user", user);
 
   const userRole = user?.role || localRole;
   const classes = useStyles();
@@ -458,7 +459,7 @@ const DateGetter = () => {
         </div>
         {!perSKU &&
         quantity !== null &&
-        (userRole === "admin" || user?.user === "Umraniye" || user?.user === "Muhasebe") ? (
+        (userRole === "admin" || user === "Umraniye" || user === "Muhasebe") ? (
           <CostGetter calcCost={calcCost} quantity={quantity} title={"Calculator"} />
         ) : null}
       </div>
