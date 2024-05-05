@@ -13,8 +13,13 @@ body {
 td {
   border: 0.5px #E0E0E0 solid !important;
 }
+
+.seller-table td {
+  border: 0.3px #000 solid !important;
+}
+
 .MuiTableCell-body {
-  color: #000! important;
+  color: #000 ! important;
 }
 
 .cp {
@@ -24,26 +29,28 @@ td {
 .m-10 {
   margin: 10px;
 }
-.MuiTableCell-root {
-  font-size: 1rem !important;   
- }
- .MuiButton-label {
-  font-size: 1rem !important;   
- }
 
-@media only screen and (min-width: 1200px) {  
-   select {
-     height: 1.75rem !important;
-     font-size: 0.85rem !important;   
-     padding: 0;
-   }
+.MuiTableCell-root {
+  font-size: 1rem !important;
+}
+
+.MuiButton-label {
+  font-size: 1rem !important;
+}
+
+@media only screen and (min-width: 1200px) {
+  select {
+    height: 1.75rem !important;
+    font-size: 0.85rem !important;
+    padding: 0;
+  }
 }
 
 @media only screen and (max-width: 768px) {
 
-   select {
-     height: 1.5rem !important;
-     font-size: 0.75rem !important;   
-     padding: 0;
-   }
+  select {
+    height: 1.5rem !important;
+    font-size: 0.75rem !important;
+    padding: 0;
+  }
 }

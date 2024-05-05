@@ -66,12 +66,14 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
             }
             existingColor.sku_cost += sku_cost;
             existingColor.sku_count += sku_count;
+            existingColor.total_fabric += total_fabric;
           } else {
             existingGroup.colors.push({
               color,
               sizes: [{ size, sku_cost, sku_count, total_fabric }],
               sku_cost,
               sku_count,
+              total_fabric
             });
           }
         } else {
@@ -88,16 +90,14 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
                 sizes: [{ size, sku_cost, sku_count, total_fabric }],
                 sku_cost,
                 sku_count,
+                total_fabric,
               },
             ],
           });
         }
       });
 
-      console.log(
-        "groupedItems.sort((a, b) => b.sku_count - a.sku_count)",
-        groupedItems.sort((a, b) => b.sku_count - a.sku_count),
-      );
+   
       return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
     } else if (selectedPlatform === "couch") {
       groupedItems.length = 0;
@@ -174,12 +174,14 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
             }
             existingColor.sku_cost += sku_cost;
             existingColor.sku_count += sku_count;
+            existingColor.total_fabric += total_fabric;
           } else {
             existingGroup.colors.push({
               color,
               sizes: [{ size, sku_cost, sku_count, total_fabric }],
               sku_cost,
               sku_count,
+              total_fabric,
             });
           }
         } else {
@@ -196,6 +198,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
                 sizes: [{ size, sku_cost, sku_count, total_fabric }],
                 sku_cost,
                 sku_count,
+                total_fabric,
               },
             ],
           });
@@ -306,7 +309,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
     ) {
       rows.length = 0;
       colors.forEach(colorObj => {
-        const { color, sizes, sku_count, sku_cost } = colorObj;
+        const { color, sizes, sku_count, sku_cost , total_fabric: color_total_fabric} = colorObj;
         const sizeCount = sizes.length;
 
         sizes.forEach((sizeObj, i) => {
@@ -323,14 +326,24 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
                     rowSpan={sizeCount}
                     align="center"
                   >
-                    {sku} <br />
-                    {`(Total Count: ${SKU_COUNT}, Total Cost: $${SKU_COST.toFixed(2)})`}
+                    {sku}
+                    <span style={{ fontWeight: "normal" }}>
+                      <br /> {`Total Count: ${SKU_COUNT}`}
+                      <br />
+                      {`Total Cost: $${SKU_COST.toFixed(2)}`}
+                    </span>
                   </TableCell>
                   <TableCell rowSpan={sizeCount} align="center" className={classes.boldText}>
                     {color !== "-" ? (
                       <>
                         {color}
-                        <br /> {`(Total Count: ${sku_count}, Total Cost: $${sku_cost.toFixed(2)})`}
+                        <span style={{ fontWeight: "normal" }}>
+                          <br /> {`Total Count: ${sku_count}`}
+                          <br />
+                          {`Total Cost: $${sku_cost.toFixed(2)}`}
+                          <br />
+                          {`Total Fabric: ${color_total_fabric.toFixed(2)}m`}
+                        </span>
                       </>
                     ) : (
                       "-"
@@ -372,7 +385,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
                   backgroundColor: sizeSkuCost ? "" : "#eee685",
                 }}
               >
-                {total_fabric !== null && total_fabric !== undefined ? `${total_fabric}m` : ""}
+                {total_fabric !== null && total_fabric !== undefined ? `${total_fabric?.toFixed(2)}m` : ""}
               </TableCell>
             </TableRow>,
           );
@@ -592,78 +605,83 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
   const groupedBySkuAndColor = groupBySkuAndColor(bestRows);
 
   return (
-    <div className={classes.bottom}>
-      <div className={classes.tablePaper}>
-        <TableContainer className={classes.tContainer} component={Paper}>
-          <Table className={classes.table}>
-            <TableHead>
-              {selectedPlatform !== "all" ? (
-                <TableRow className={classes.tableCellHeader}>
-                  <TableCell className={classes.boldText} align="center">
-                    <FormattedMessage id="SKU" defaultMessage="SKU" />
-                  </TableCell>
-                  {categoryVariationValues.variation_2_value && selectedPlatform !== "fabric" && (
+    <div className="seller-table">
+      <div className={classes.bottom}>
+        <div className={classes.tablePaper}>
+          <TableContainer className={classes.tContainer} component={Paper}>
+            <Table className={classes.table}>
+              <TableHead>
+                {selectedPlatform !== "all" ? (
+                  <TableRow className={classes.tableCellHeader}>
                     <TableCell className={classes.boldText} align="center">
-                      <FormattedMessage
-                        id={categoryVariationValues.variation_2_value}
-                        defaultMessage={convertToTitleCase(
-                          categoryVariationValues.variation_2_value,
-                        )}
-                      />
+                      <FormattedMessage id="SKU" defaultMessage="SKU" />
                     </TableCell>
-                  )}
+                    {categoryVariationValues.variation_2_value && selectedPlatform !== "fabric" && (
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage
+                          id={categoryVariationValues.variation_2_value}
+                          defaultMessage={convertToTitleCase(
+                            categoryVariationValues.variation_2_value,
+                          )}
+                        />
+                      </TableCell>
+                    )}
 
-                  {categoryVariationValues.variation_1_value && (
+                    {categoryVariationValues.variation_1_value && (
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage
+                          id={categoryVariationValues.variation_1_value}
+                          defaultMessage={convertToTitleCase(
+                            categoryVariationValues.variation_1_value,
+                          )}
+                        />
+                      </TableCell>
+                    )}
+                    {selectedPlatform === "fabric" && (
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage
+                          id={"total_metrage"}
+                          defaultMessage={convertToTitleCase("total_metrage")}
+                        />
+                      </TableCell>
+                    )}
+
                     <TableCell className={classes.boldText} align="center">
-                      <FormattedMessage
-                        id={categoryVariationValues.variation_1_value}
-                        defaultMessage={convertToTitleCase(
-                          categoryVariationValues.variation_1_value,
-                        )}
-                      />
+                      <FormattedMessage id="Total Cost" defaultMessage="Total Cost" />
                     </TableCell>
-                  )}
-                  {selectedPlatform === "fabric" && (
+                    {selectedPlatform !== "fabric" && (
+                      <>
+                        <TableCell className={classes.boldText} align="center">
+                          <FormattedMessage id="Total Count" defaultMessage="Total Count" />
+                        </TableCell>
+                        <TableCell className={classes.boldText} align="center">
+                          <FormattedMessage
+                            id="Total Fabric (m)"
+                            defaultMessage="Total Fabric (m)"
+                          />
+                        </TableCell>
+                      </>
+                    )}
+                  </TableRow>
+                ) : (
+                  <TableRow className={classes.tableCellHeader}>
+                    <TableCell className={classes.boldText} align="center">
+                      <FormattedMessage id="color" defaultMessage="Color" />
+                    </TableCell>
+
                     <TableCell className={classes.boldText} align="center">
                       <FormattedMessage
                         id={"total_metrage"}
                         defaultMessage={convertToTitleCase("total_metrage")}
                       />
                     </TableCell>
-                  )}
-
-                  <TableCell className={classes.boldText} align="center">
-                    <FormattedMessage id="Total Cost" defaultMessage="Total Cost" />
-                  </TableCell>
-                  {selectedPlatform !== "fabric" && (
-                    <>
-                      <TableCell className={classes.boldText} align="center">
-                        <FormattedMessage id="Total Count" defaultMessage="Total Count" />
-                      </TableCell>
-                      <TableCell className={classes.boldText} align="center">
-                        <FormattedMessage id="Total Fabric (m)" defaultMessage="Total Fabric (m)" />
-                      </TableCell>
-                    </>
-                  )}
-                </TableRow>
-              ) : (
-                <TableRow className={classes.tableCellHeader}>
-                  <TableCell className={classes.boldText} align="center">
-                    <FormattedMessage id="color" defaultMessage="Color" />
-                  </TableCell>
-
-                  <TableCell className={classes.boldText} align="center">
-                    <FormattedMessage
-                      id={"total_metrage"}
-                      defaultMessage={convertToTitleCase("total_metrage")}
-                    />
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableHead>
-            <TableBody>{renderSkuAndColorRows(groupedBySkuAndColor)}</TableBody>
-          </Table>
-        </TableContainer>
+                  </TableRow>
+                )}
+              </TableHead>
+              <TableBody>{renderSkuAndColorRows(groupedBySkuAndColor)}</TableBody>
+            </Table>
+          </TableContainer>
+        </div>
       </div>
     </div>
   );
