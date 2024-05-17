@@ -37,7 +37,7 @@ const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 const STORE_NAME = process.env.REACT_APP_STORE_NAME;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     marginTop: 80,
@@ -168,10 +168,10 @@ export default function MenuAppBar() {
   const myInputRef = useRef(null);
   //console.log(user?.role);
 
-  const handleMenu = (event) => {
+  const handleMenu = event => {
     setAnchorEl(event.currentTarget);
   };
-  const handleDirClick = (e) => {
+  const handleDirClick = e => {
     history.push(`/${e.target.id}`);
     setAnchorEl(null);
   };
@@ -180,7 +180,7 @@ export default function MenuAppBar() {
   };
 
   const getNotification = async () => {
-    getData(`${BASE_URL}etsy/notification/`).then((response) => {
+    getData(`${BASE_URL}etsy/notification/`).then(response => {
       setNotification(response.data);
     });
   };
@@ -191,7 +191,7 @@ export default function MenuAppBar() {
 
   let localRole = localStorage.getItem("localRole");
   const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ + "-";
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     history.push({
       pathname: "/search",
       state: {
@@ -201,10 +201,7 @@ export default function MenuAppBar() {
   };
 
   const handleMainPage = () => {
-    if (
-      localRole === "workshop_designer" ||
-      localRole === "workshop_designer2"
-    ) {
+    if (localRole === "workshop_designer" || localRole === "workshop_designer2") {
       return null;
     } else {
       history.push("/");
@@ -230,13 +227,11 @@ export default function MenuAppBar() {
     (localStorage.getItem("localRole") === "workshop_manager" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
-    !["asya", "umraniye"].includes(
-      localStorage.getItem("workshop")?.toLowerCase()
-    );
+    !["asya", "umraniye"].includes(localStorage.getItem("workshop")?.toLowerCase());
 
   const userRole = user?.role || localRole;
 
-  const handleLangChange = (e) => {
+  const handleLangChange = e => {
     setLang(e.target.value);
   };
 
@@ -244,25 +239,24 @@ export default function MenuAppBar() {
   // console.log(localUser === "admin");
 
   const newStatu =
-    localRole === "admin" ||
-      localRole === "shop_manager" ||
-      localRole === "shop_packer"
+    localRole === "admin" || localRole === "shop_manager" || localRole === "shop_packer"
       ? "pending"
       : localRole === "workshop_designer" || localRole === "workshop_designer2"
-        ? "in_progress"
-        : "awaiting";
+      ? "in_progress"
+      : "awaiting";
   // console.log("Navbar newStatu", newStatu);
 
-  const handleClick = (e) => {
+  const handleClick = e => {
     // const newStatu = getFirstStatu();
     // console.log("newStatu", newStatu);
+
     history.push(
-      `/${e.currentTarget.id}?status=${newStatu}`
+      `/${e.currentTarget.id}?status=${localRole === "workshop_istasyon_a" ? "ready" : newStatu}`,
     );
     setAnchorEl(null);
   };
 
-  const toggleDrawer = (open) => {
+  const toggleDrawer = open => {
     setNotification({ ...notification, drawer: open });
     !open && getNotification();
   };
@@ -272,10 +266,10 @@ export default function MenuAppBar() {
       isRead: e.target.checked,
       mapping_id: item.mapping_id,
     })
-      .then((response) => {
+      .then(response => {
         console.log("response", response);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("error", error);
       });
   };
@@ -319,7 +313,8 @@ export default function MenuAppBar() {
           {!isBeyazit &&
             localRole !== "workshop_designer" &&
             localRole !== "workshop_designer2" &&
-            userRole?.includes("workshop") && !NON_SKU && (
+            userRole?.includes("workshop") &&
+            !NON_SKU && (
               <>
                 <Badge
                   badgeContent={notification?.count}
@@ -328,11 +323,7 @@ export default function MenuAppBar() {
                   children={<NotificationsIcon />}
                   onClick={() => toggleDrawer(true)}
                 />
-                <Drawer
-                  anchor="top"
-                  open={notification.drawer}
-                  onClose={() => toggleDrawer(false)}
-                >
+                <Drawer anchor="top" open={notification.drawer} onClose={() => toggleDrawer(false)}>
                   <Notification
                     toggleDrawer={toggleDrawer}
                     notification={notification}
@@ -355,17 +346,13 @@ export default function MenuAppBar() {
                   color="primary"
                   variant="outlined"
                   id="all-orders"
-                  disabled={
-                    userRole?.includes("workshop") &&
-                    !isBeyazit &&
-                    notification?.count
-                  }
+                  disabled={userRole?.includes("workshop") && !isBeyazit && notification?.count}
                   className={
                     mobileView
                       ? classes.button2
                       : window.location.pathname.includes("orders")
-                        ? classes.activeButton
-                        : classes.button
+                      ? classes.activeButton
+                      : classes.button
                   }
                   startIcon={mobileView ? null : <ViewListIcon />}
                   onClick={handleClick}
@@ -374,9 +361,9 @@ export default function MenuAppBar() {
                 </Button>
               )}
               {!mobileView &&
-                (userRole === "admin" ||
-                  userRole === "shop_manager" ||
-                  userRole === "shop_packer") ? (
+              (userRole === "admin" ||
+                userRole === "shop_manager" ||
+                userRole === "shop_packer") ? (
                 <>
                   <Button
                     color="primary"
@@ -386,23 +373,20 @@ export default function MenuAppBar() {
                       mobileView
                         ? classes.button2
                         : window.location.pathname.includes("approval")
-                          ? classes.activeButton
-                          : classes.button
+                        ? classes.activeButton
+                        : classes.button
                     }
                     startIcon={mobileView ? null : <ThumbUpIcon />}
-                    onClick={() =>
-                      history.push(
-                        `/approval?&status=pending`
-                      )
-                    }
+                    onClick={() => history.push(`/approval?&status=pending`)}
                   >
                     <FormattedMessage id="admin" defaultMessage="Admin" />
                   </Button>
                 </>
               ) : null}
               {mobileView ||
-                localRole === "workshop_designer" ||
-                localRole === "workshop_designer2" ? null : (
+              localRole === "workshop_designer" ||
+              localRole === "workshop_designer2" ||
+              localRole === "workshop_istasyon_a" ? null : (
                 <Button
                   color="primary"
                   variant="outlined"
@@ -411,31 +395,27 @@ export default function MenuAppBar() {
                     mobileView
                       ? classes.button2
                       : window.location.pathname.includes("cargo")
-                        ? classes.activeButton
-                        : classes.button
+                      ? classes.activeButton
+                      : classes.button
                   }
                   startIcon={mobileView ? null : <LocalShippingIcon />}
-                  onClick={(e) => handleClick(e)}
+                  onClick={e => handleClick(e)}
                 >
-                  <FormattedMessage
-                    id="cargoList"
-                    defaultMessage="Cargo List"
-                  />
+                  <FormattedMessage id="cargoList" defaultMessage="Cargo List" />
                 </Button>
               )}
               {!isBeyazit &&
-                localRole !== "workshop_designer" &&
-                localRole !== "workshop_designer2" &&
-                window?.location?.pathname !== "/search" ? (
+              localRole !== "workshop_designer" &&
+              localRole !== "workshop_designer2" &&
+              localRole !== "workshop_istasyon_a" &&
+              window?.location?.pathname !== "/search" ? (
                 <OutlinedInput
                   type="text"
                   defaultValue=""
-                  onChange={(e) => setSearchText(e.target.value)}
-                  onKeyDown={(e) => e.keyCode === 13 && handleSearch()}
+                  onChange={e => setSearchText(e.target.value)}
+                  onKeyDown={e => e.keyCode === 13 && handleSearch()}
                   ref={myInputRef}
-                  className={
-                    mobileView ? classes.textFieldMobil : classes.textField
-                  }
+                  className={mobileView ? classes.textFieldMobil : classes.textField}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton onClick={handleSearch} edge="end">
@@ -449,10 +429,7 @@ export default function MenuAppBar() {
             </div>
           </div>
           <Tooltip title={"Reset All"} placement="bottom-start">
-            <Replay
-              style={{ cursor: "pointer", margin: "0 1rem" }}
-              onClick={manualRefresh}
-            />
+            <Replay style={{ cursor: "pointer", margin: "0 1rem" }} onClick={manualRefresh} />
           </Tooltip>
 
           {isBeyazit || mobileView ? null : (
@@ -560,84 +537,52 @@ export default function MenuAppBar() {
                 {localRole === "admin" && (
                   <div>
                     <MenuItem>
-                      <a
-                        className={classes.hrefStyle}
-                        href={`/all-orders?status=pending`}
-                      >
+                      <a className={classes.hrefStyle} href={`/all-orders?status=pending`}>
                         Orders
                       </a>
                     </MenuItem>
                     <MenuItem>
-                      <a
-                        className={classes.hrefStyle}
-                        href={`/approval?status=pending`}
-                      >
+                      <a className={classes.hrefStyle} href={`/approval?status=pending`}>
                         Admin
                       </a>
                     </MenuItem>
                     <MenuItem>
-                      <a
-                        className={classes.hrefStyle}
-                        href={`/cargo-list?status=pending`}
-                      >
+                      <a className={classes.hrefStyle} href={`/cargo-list?status=pending`}>
                         Cargo List
                       </a>
                     </MenuItem>
-                    <MenuItem
-                      id="cost-table"
-                      onClick={(e) => handleDirClick(e)}
-                    >
-                      <FormattedMessage
-                        id="costTable"
-                        defaultMessage="Cost Table"
-                      />
+                    <MenuItem id="cost-table" onClick={e => handleDirClick(e)}>
+                      <FormattedMessage id="costTable" defaultMessage="Cost Table" />
                     </MenuItem>
                   </div>
                 )}
 
                 {localRole !== "workshop_designer" &&
-                  localRole !== "workshop_designer2" && (
-                    <MenuItem
-                      id="best-seller"
-                      onClick={(e) => handleDirClick(e)}
-                    >
-                      <FormattedMessage
-                        id="statistics"
-                        defaultMessage="Statistics"
-                      />
+                  localRole !== "workshop_designer2" &&
+                  localRole !== "workshop_istasyon_a" && (
+                    <MenuItem id="best-seller" onClick={e => handleDirClick(e)}>
+                      <FormattedMessage id="statistics" defaultMessage="Statistics" />
                     </MenuItem>
                   )}
 
                 {(userRole === "admin" ||
                   userRole === "shop_manager" ||
                   userRole === "shop_packer") && (
-                    <div>
-                      <MenuItem
-                        id="favourites"
-                        onClick={(e) => handleDirClick(e)}
-                      >
-                        <FormattedMessage
-                          id="favourites"
-                          defaultMessage="Favourites"
-                        />
-                      </MenuItem>
-                      <MenuItem id="search" onClick={(e) => handleDirClick(e)}>
-                        <FormattedMessage id="search" defaultMessage="Search" />
-                      </MenuItem>
-                      <MenuItem id="new-order" onClick={(e) => handleDirClick(e)}>
-                        <FormattedMessage id="new" defaultMessage="New" />
-                      </MenuItem>
-                      <MenuItem
-                        id="stock-list"
-                        onClick={(e) => handleDirClick(e)}
-                      >
-                        <FormattedMessage
-                          id="stockList"
-                          defaultMessage="Stock List"
-                        />
-                      </MenuItem>
-                    </div>
-                  )}
+                  <div>
+                    <MenuItem id="favourites" onClick={e => handleDirClick(e)}>
+                      <FormattedMessage id="favourites" defaultMessage="Favourites" />
+                    </MenuItem>
+                    <MenuItem id="search" onClick={e => handleDirClick(e)}>
+                      <FormattedMessage id="search" defaultMessage="Search" />
+                    </MenuItem>
+                    <MenuItem id="new-order" onClick={e => handleDirClick(e)}>
+                      <FormattedMessage id="new" defaultMessage="New" />
+                    </MenuItem>
+                    <MenuItem id="stock-list" onClick={e => handleDirClick(e)}>
+                      <FormattedMessage id="stockList" defaultMessage="Stock List" />
+                    </MenuItem>
+                  </div>
+                )}
                 <MenuItem id="account" onClick={handleDirClick}>
                   <FormattedMessage id="account" defaultMessage="Account" />
                 </MenuItem>

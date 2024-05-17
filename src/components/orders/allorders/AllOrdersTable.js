@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext, useMemo } from "react";
 
 import {
   Button,
@@ -33,6 +33,8 @@ import { getQueryParams } from "../../../helper/getQueryParams";
 import CustomDialog from "./CustomDialog";
 import EditableTableCell from "../../tableitems/EditableTableCell";
 import ShopifyColumns, { ShopifyColumnValues } from "./ShopifyColumns";
+import { Html5QrcodeScanner } from "html5-qrcode";
+import Html5QrcodePlugin from "../../otheritems/Html5QrcodePlugin";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 // const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
@@ -470,11 +472,14 @@ function AllOrdersTable() {
           });
         })
         .catch(error => {
-          console.log("error", error);
+          console.log("error", error?.response?.data?.detail);
+          toastErrorNotify(error?.response?.data?.detail || "Error");
         });
     }
-    barcodeInputRef.current.value = null;
-    setBarcodeInput(null);
+    if (barcodeInputRef.current) {
+      barcodeInputRef.current.value = "";
+      setBarcodeInput(null);
+    }
   };
 
   useEffect(() => {
@@ -525,11 +530,12 @@ function AllOrdersTable() {
 
   const handleScan = data => {
     setBarcodeInput(data);
-    barcodeInputRef.current.value = data;
+    if (barcodeInputRef.current) barcodeInputRef.current.value = data;
   };
 
   const handleBarcodeInputKeyDown = e => {
-    if (e.keyCode === 13) setBarcodeInput(barcodeInputRef.current.value);
+    if (e.keyCode === 13)
+      setBarcodeInput(barcodeInputRef.current ? barcodeInputRef.current.value : "");
   };
 
   // const handleRowClick = (id) => {
@@ -545,8 +551,7 @@ function AllOrdersTable() {
     )
       return;
     putData(`${BASE_URL}etsy/mapping/${id}/`, data)
-      .then(response => {
-      })
+      .then(response => {})
       .catch(error => {
         console.log(error);
         toastErrorNotify("Error, Please try again after refresh the page");
@@ -1037,19 +1042,49 @@ function AllOrdersTable() {
     [selected, rows],
   );
 
+  const onNewScanResult = (decodedText, decodedResult) => {
+    // handle decoded results here
+    console.log("decodedText", decodedText);
+    console.log("decodedResult", decodedResult);
+    // toastSuccessNotify("Scanning QR Code is successfully");
+    setBarcodeInput(decodedText);
+  };
+
+  const renderBarcode = useMemo(() => {
+    return (
+      <>
+        <Html5QrcodePlugin
+          fps={20}
+          qrbox={300}
+          disableFlip={false}
+          qrCodeSuccessCallback={onNewScanResult}
+        />
+      </>
+    );
+  }, []);
+
   return (
     <>
       <div>
         <Paper className={classes.root}>
-          <CustomButtonGroup
-            selectedTag={filters?.status}
-            handleTagChange={handleTagChange}
-            tagsData={tagsData}
-            nonAdminTagsData={nonAdminTagsData}
-            searchHandler={searchHandler}
-            loading={loading}
-          />
-          {selectedTag === "ready" || selectedTag === "shipped" ? (
+          {localRole === "workshop_istasyon_a" ? null : (
+            <CustomButtonGroup
+              selectedTag={filters?.status}
+              handleTagChange={handleTagChange}
+              tagsData={tagsData}
+              nonAdminTagsData={nonAdminTagsData}
+              searchHandler={searchHandler}
+              loading={loading}
+            />
+          )}
+
+          {localRole === "workshop_istasyon_a" ? (
+            <>
+              {renderBarcode}
+              {console.log("barcodeInput", barcodeInput)}
+              <h3>{barcodeInput}</h3>
+            </>
+          ) : selectedTag === "ready" || selectedTag === "shipped" ? (
             <div className={classes.barcodeBox}>
               <div style={{ marginRight: "0.5rem" }}>
                 <BarcodeInput onError={handleError} onScan={handleScan} />
@@ -1077,6 +1112,7 @@ function AllOrdersTable() {
               </div>
             </div>
           ) : null}
+
           <div style={{ display: filters?.status === "ready" ? "block" : "none" }}>
             <hr />
             <div
@@ -1270,7 +1306,7 @@ function AllOrdersTable() {
         </Paper>
         {printError ? <h1>{printError}</h1> : null}
 
-        {filters?.status === "ready" ? (
+        {filters?.status === "ready" && localRole !== "workshop_istasyon_a" ? (
           <CargoPage
             getListFunc={getListFunc}
             setRefreshTable={setRefreshTable}

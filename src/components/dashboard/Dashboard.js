@@ -17,11 +17,12 @@ import { getData } from "../../helper/PostData";
 import { sortingArrayAdmin, sortingArrayUser } from "../../helper/Constants";
 import FloatingMenu from "./FloatingMenu";
 // import CostGetter from "./CostGetter";
+import { Redirect } from "react-router-dom";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     marginTop: 20,
     marginRight: 50,
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = () => {
+const Dashboard = ({ history }) => {
   const classes = useStyles();
   const { user } = useContext(AppContext);
   const { formatMessage } = useIntl();
@@ -48,28 +49,28 @@ const Dashboard = () => {
   const [shipmentDueDates, setShipmentDueDates] = useState();
   const [lastDateOfOrder, setlastDateOfOrder] = useState();
   const [healthCheck, setHealthCheck] = useState(false);
+  const localUser = localStorage.getItem("localUser");
 
   let localRole = localStorage.getItem("localRole");
 
   const userRole = user?.role || localRole;
 
   const getListFunc = () => {
-    getData(`${BASE_URL}etsy/summary_order/`).then((response) => {
+    getData(`${BASE_URL}etsy/summary_order/`).then(response => {
       const newResult = [];
       setlastDateOfOrder(response.data[2]);
-      const etsyCheck = response.data.filter(
-        (item) => Object.keys(item)[0] === "check"
-      )?.[0]?.check;
+      const etsyCheck = response.data.filter(item => item && Object.keys(item)[0] === "check")?.[0]
+        ?.check;
 
       if (process.env.REACT_APP_STORE_NAME_ORJ === "Belky") {
         setHealthCheck(etsyCheck);
       } else {
         const isShopify = response.data.filter(
-          (item) => Object.keys(item)[0] === "check_shopify"
+          item => item && Object.keys(item)[0] === "check_shopify",
         )?.length;
 
         const shopifyCheck = response.data.filter(
-          (item) => Object.keys(item)[0] === "check_shopify"
+          item => item && Object.keys(item)[0] === "check_shopify",
         )?.[0]?.check_shopify;
 
         if (isShopify) {
@@ -79,30 +80,22 @@ const Dashboard = () => {
         }
       }
 
-
-
-      response.data[0].forEach((item) => {
+      response.data[0].forEach(item => {
         newResult.push({
-          cell1: item.status
-            ?.replace("_", " ")
-            ?.replace("-", " ")
-            .toUpperCase(),
+          cell1: item.status?.replace("_", " ")?.replace("-", " ").toUpperCase(),
           cell2: item.status_count,
         });
       });
-      response.data[1].forEach((item) => {
-        if (item.is_repeat)
-          newResult.push({ cell1: "REPEAT", cell2: item.status_count });
+      response.data[1].forEach(item => {
+        if (item.is_repeat) newResult.push({ cell1: "REPEAT", cell2: item.status_count });
       });
 
       const currentSortingArray =
-        userRole === "admin" ||
-          userRole === "shop_manager" ||
-          userRole === "shop_packer"
+        userRole === "admin" || userRole === "shop_manager" || userRole === "shop_packer"
           ? sortingArrayAdmin
           : sortingArrayUser;
       const newResult2 = currentSortingArray.map((object, i) => {
-        let currentObject = newResult.find((x) => x.cell1 === object);
+        let currentObject = newResult.find(x => x.cell1 === object);
         if (!currentObject) currentObject = { cell1: object, cell2: 0 };
         return currentObject;
       });
@@ -117,32 +110,30 @@ const Dashboard = () => {
 
   useEffect(() => {
     getData(`${BASE_URL}etsy/due_dates/`)
-      .then((response) => {
+      .then(response => {
         const newResult = [];
         const obj = response.data;
         Object.keys(obj).map((key, value) => {
-          if (obj[key].is_late)
-            newResult.push({ cell1: key, cell2: obj[key].values.length });
+          if (obj[key].is_late) newResult.push({ cell1: key, cell2: obj[key].values.length });
         });
         setWorkshopDueDates(newResult.length ? newResult : "noOrders");
       })
-      .catch((err) => {
+      .catch(err => {
         setWorkshopDueDates("noOrders");
       });
   }, []);
 
   useEffect(() => {
     getData(`${BASE_URL}etsy/shipment_due_dates/`)
-      .then((response) => {
+      .then(response => {
         const newResult = [];
         const obj = response.data;
         Object.keys(obj).map((key, value) => {
-          if (obj[key].is_late)
-            newResult.push({ cell1: key, cell2: obj[key].values.length });
+          if (obj[key].is_late) newResult.push({ cell1: key, cell2: obj[key].values.length });
         });
         setShipmentDueDates(newResult.length ? newResult : "noOrders");
       })
-      .catch((err) => {
+      .catch(err => {
         setShipmentDueDates("noOrders");
       });
   }, []);
@@ -150,23 +141,22 @@ const Dashboard = () => {
   // console.log("localUser", localUser);
   // console.log(localUser === "admin");
   const newStatu =
-    localRole === "admin" ||
-      localRole === "shop_manager" ||
-      localRole === "shop_packer"
+    localRole === "admin" || localRole === "shop_manager" || localRole === "shop_packer"
       ? "pending"
-      : (localRole === "workshop_designer" || localRole === "workshop_designer2")
-        ? "in_progress"
-        : "awaiting";
+      : localRole === "workshop_designer" || localRole === "workshop_designer2"
+      ? "in_progress"
+      : "awaiting";
   // console.log({ localRole });
   // console.log({ newStatu });
 
+  if (localRole === "workshop_istasyon_a") {
+    history.push(`/all-orders?status=ready`);
+  }
+  
   return (
     <div className={classes.root}>
       <div className={classes.boxes}>
-        <FloatingMenu
-          lastDateOfOrder={lastDateOfOrder}
-          healthCheck={healthCheck}
-        />
+        <FloatingMenu lastDateOfOrder={lastDateOfOrder} healthCheck={healthCheck} />
         <Grid container spacing={2} style={{ justifyContent: "center" }}>
           <SummaryTable
             title="orders"
@@ -188,9 +178,7 @@ const Dashboard = () => {
             title="behindSchedule"
             total={0}
             next="/workshop-due-dates"
-            icon={
-              <LocalShippingIcon className={classes.icon} color="primary" />
-            }
+            icon={<LocalShippingIcon className={classes.icon} color="primary" />}
             header1={formatMessage({
               id: "workshopDueDate",
               defaultMessage: "WORKSHOP DUE DATE",
@@ -201,16 +189,12 @@ const Dashboard = () => {
             }).toUpperCase()}
             data={workshopDueDates}
           />
-          {userRole === "admin" ||
-            userRole === "shop_manager" ||
-            userRole === "shop_packer" ? (
+          {userRole === "admin" || userRole === "shop_manager" || userRole === "shop_packer" ? (
             <SummaryTable
               title="behindOverallSchedule"
               total={0}
               next="/shipment-due-dates"
-              icon={
-                <CardGiftcardIcon className={classes.icon} color="primary" />
-              }
+              icon={<CardGiftcardIcon className={classes.icon} color="primary" />}
               header1={formatMessage({
                 id: "shipmentDueDate",
                 defaultMessage: "SHIPMENT DUE DATE",
@@ -221,9 +205,7 @@ const Dashboard = () => {
               }).toUpperCase()}
               data={
                 shipmentDueDates?.length > 10
-                  ? shipmentDueDates?.slice(
-                    Math.max(shipmentDueDates?.length - 10, 0)
-                  )
+                  ? shipmentDueDates?.slice(Math.max(shipmentDueDates?.length - 10, 0))
                   : shipmentDueDates
               }
             />
