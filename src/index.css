@@ -14,7 +14,8 @@ td {
   border: 0.5px #E0E0E0 solid !important;
 }
 
-.seller-table td {
+.seller-table
+ td {
   border: 0.3px #000 solid !important;
 }
 

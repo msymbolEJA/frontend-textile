@@ -1,40 +1,40 @@
-import React, { useState, useEffect, useRef, useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   Button,
+  Checkbox,
+  Paper,
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableRow,
-  TableFooter,
-  Paper,
-  TablePagination,
   TableContainer,
+  TableFooter,
+  TableHead,
+  TablePagination,
+  TableRow,
   TextField,
-  Checkbox,
 } from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import FormData from "form-data";
 import printJS from "print-js";
-import { AppContext } from "../../../context/Context";
 import { FormattedMessage, useIntl } from "react-intl";
-import CustomButtonGroup from "./CustomButtonGroup";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import TablePaginationActions from "./TablePaginationActions";
-import CustomTableCell from "./CustomTableCell";
-import { tagsData, nonAdminTagsData } from "../../../helper/Constants";
-import { getData, putData, getAllPdf, postData, globalSearch } from "../../../helper/PostData";
 import { useHistory } from "react-router-dom";
-import CargoPage from "../../otheritems/CargoPage";
-import BarcodeInput from "../../otheritems/BarcodeInput";
-import ViewImageFile from "./ViewImageFile";
-import { toastErrorNotify, toastSuccessNotify } from "../../otheritems/ToastNotify";
+import { AppContext } from "../../../context/Context";
+import { nonAdminTagsData, tagsData } from "../../../helper/Constants";
+import { getAllPdf, getData, globalSearch, postData, putData } from "../../../helper/PostData";
 import { getQueryParams } from "../../../helper/getQueryParams";
-import CustomDialog from "./CustomDialog";
+import BarcodeInput from "../../otheritems/BarcodeInput";
+import CargoPage from "../../otheritems/CargoPage";
+import { toastErrorNotify, toastSuccessNotify } from "../../otheritems/ToastNotify";
 import EditableTableCell from "../../tableitems/EditableTableCell";
-import ShopifyColumns, { ShopifyColumnValues } from "./ShopifyColumns";
-import { Html5QrcodeScanner } from "html5-qrcode";
-import Html5QrcodePlugin from "../../otheritems/Html5QrcodePlugin";
+import CustomButtonGroup from "./CustomButtonGroup";
+import CustomDialog from "./CustomDialog";
+import CustomTableCell from "./CustomTableCell";
+import TablePaginationActions from "./TablePaginationActions";
+import ViewImageFile from "./ViewImageFile";
+// import { BarcodeDetector, setZXingModuleOverrides } from "barcode-detector/pure";
+// import "barcode-detector/side-effects";
+// const { BarcodeDetector } = require("barcode-detector/pure");
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 // const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
@@ -120,6 +120,7 @@ function AllOrdersTable() {
   const paramsQuery = getQueryParams();
   const filters = { ...paramsQuery, limit: 150, offset: 0, status: paramsQuery?.status };
 
+  const [scannedBarcodes, setScannedBarcodes] = useState([]);
   const barcodeInputRef = useRef();
   const uploadLabelRef = useRef();
   const { formatMessage } = useIntl();
@@ -206,7 +207,10 @@ function AllOrdersTable() {
           const ft =
             filters?.status === "in_progress"
               ? resultFilteredByCountry.filter(
-                  item => !currentBarcodeList.includes(item.id.toString()),
+                  item =>
+                    !JSON.parse(
+                      localStorage.getItem(`${localStoragePrefix}-barcode_list`),
+                    ).includes(item.id.toString()),
                 )
               : resultFilteredByCountry;
 
@@ -244,7 +248,10 @@ function AllOrdersTable() {
         const ft =
           filters?.status === "in_progress"
             ? resultFilteredByCountry.filter(
-                item => !currentBarcodeList.includes(item.id.toString()),
+                item =>
+                  !JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)).includes(
+                    item.id.toString(),
+                  ),
               )
             : resultFilteredByCountry;
 
@@ -449,7 +456,7 @@ function AllOrdersTable() {
     isInProgress =
       (ordersInProgressLS?.length > 0 &&
         ordersInProgressLS.filter(item => item.id.toString() === id)?.length &&
-        !currentBarcodeList.includes(id)) ||
+        !JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)).includes(id)) ||
       false;
     if (selectedTag === "shipped") {
       changeOrderStatus(id, "shipped");
@@ -457,9 +464,15 @@ function AllOrdersTable() {
       getSiblings(id);
       localStorage.setItem(
         `${localStoragePrefix}-barcode_list`,
-        JSON.stringify([...currentBarcodeList, id]),
+        JSON.stringify([
+          ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
+          id,
+        ]),
       );
-      setCurrentBarcodeList([...currentBarcodeList, id]);
+      setCurrentBarcodeList([
+        ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
+        id,
+      ]);
       // changeOrderStatus(id, "ready");
     } else {
       getData(`${BASE_URL}etsy/orders/${id}/`)
@@ -493,13 +506,17 @@ function AllOrdersTable() {
   };
 
   const removeItemfromBarcodeList = id => {
-    const fb = currentBarcodeList.filter(i => i !== id.toString());
+    const fb = JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)).filter(
+      i => i !== id.toString(),
+    );
     localStorage.setItem(`${localStoragePrefix}-barcode_list`, JSON.stringify(fb));
     setCurrentBarcodeList(fb);
   };
 
   const handleSaveScanned = () => {
-    postData(`${BASE_URL}etsy/approved_all_ready/`, { ids: currentBarcodeList })
+    postData(`${BASE_URL}etsy/approved_all_ready/`, {
+      ids: JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
+    })
       .then(res => {
         toastSuccessNotify("Saved!");
 
@@ -1041,27 +1058,86 @@ function AllOrdersTable() {
     ),
     [selected, rows],
   );
+  const videoRef = useRef();
+  const canvasRef = useRef();
+  const isMounted = useRef(false);
 
-  const onNewScanResult = (decodedText, decodedResult) => {
-    // handle decoded results here
-    console.log("decodedText", decodedText);
-    console.log("decodedResult", decodedResult);
-    // toastSuccessNotify("Scanning QR Code is successfully");
-    setBarcodeInput(decodedText);
-  };
+  useEffect(() => {
+    if (canvasRef.current) {
+      isMounted.current = true;
+      const startVideo = async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: 1280, height: 720 },
+          });
+          const capturer = new ImageCapture(stream.getVideoTracks()[0]);
+          captureFrame(capturer);
+        } catch (error) {
+          alert("Error accessing media devices.", error);
+        }
+      };
+
+      const captureFrame = async capturer => {
+        try {
+          const bitmap = await capturer.grabFrame();
+          const ctx = canvasRef.current.getContext("2d");
+          ctx.drawImage(
+            bitmap,
+            0,
+            0,
+            bitmap.width,
+            bitmap.height,
+            0,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height,
+          );
+
+          const barcodeDetector = new window.BarcodeDetector({ formats: ["ean_13", "code_128"] });
+          const barcodes = await barcodeDetector.detect(bitmap);
+
+          if (barcodes?.length) {
+            setScannedBarcodes(prevBarcodes => {
+              const newBarcodes = barcodes.reduce((acc, b) => {
+                if (!prevBarcodes.includes(b.rawValue)) {
+                  acc.push(b.rawValue);
+                  checkOrderIfInProgress(b.rawValue);
+                }
+                return acc;
+              }, []);
+              const updatedBarcodes = [...prevBarcodes, ...newBarcodes];
+              return updatedBarcodes;
+            });
+          }
+
+          if (isMounted.current) {
+            requestAnimationFrame(() => captureFrame(capturer));
+          }
+        } catch (error) {
+          console.error("Error during frame capture or barcode detection.", error);
+          if (isMounted.current) {
+            requestAnimationFrame(() => captureFrame(capturer));
+          }
+        }
+      };
+
+      startVideo();
+
+      return () => {
+        isMounted.current = false;
+      };
+    }
+  }, []);
 
   const renderBarcode = useMemo(() => {
     return (
       <>
-        <Html5QrcodePlugin
-          fps={20}
-          qrbox={300}
-          disableFlip={false}
-          qrCodeSuccessCallback={onNewScanResult}
-        />
+        <video ref={videoRef} autoPlay muted hidden />
+        <canvas ref={canvasRef} height={500} width={720} />
+        <div>Scanned Barcodes: {scannedBarcodes?.join("-")}</div>
       </>
     );
-  }, []);
+  }, [scannedBarcodes]);
 
   return (
     <>
@@ -1081,7 +1157,6 @@ function AllOrdersTable() {
           {localRole === "workshop_istasyon_a" ? (
             <>
               {renderBarcode}
-              {console.log("barcodeInput", barcodeInput)}
               <h3>{barcodeInput}</h3>
             </>
           ) : selectedTag === "ready" || selectedTag === "shipped" ? (
@@ -1124,7 +1199,8 @@ function AllOrdersTable() {
                 marginLeft: 16,
               }}
             >
-              <FormattedMessage id="totalScanned" />: {currentBarcodeList?.length || 0}
+              <FormattedMessage id="totalScanned" />:{" "}
+              {JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`))?.length || 0}
             </div>
             <div style={{ display: "flex", textAlign: "left" }}>
               <div style={{ display: "inline-block", marginLeft: 16 }}>
@@ -1136,40 +1212,42 @@ function AllOrdersTable() {
                 </Button>
               </div>
               <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
-                {currentBarcodeList?.length
-                  ? currentBarcodeList?.map(item => (
-                      <p
-                        key={item}
-                        style={{
-                          border: "1px blue solid",
-                          borderRadius: 4,
-                          color: "blue",
-                          margin: "0 5px",
-                          padding: "0 5px",
-                          fontWeight: "bold",
-                          height: "23px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => removeItemfromBarcodeList(item)}
-                      >
-                        {item}
-                        {currentSiblingList
-                          .filter(cs => cs?.id?.toString() === item?.toString())
-                          .map(s =>
-                            s.siblings.map((m, index) => (
-                              <span
-                                style={{
-                                  color: "black",
-                                  fontStyle: "italic",
-                                  fontSize: "0.8rem",
-                                }}
-                              >
-                                {`-${m}`}
-                              </span>
-                            )),
-                          )}
-                      </p>
-                    ))
+                {JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`))?.length
+                  ? JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`))?.map(
+                      item => (
+                        <p
+                          key={item}
+                          style={{
+                            border: "1px blue solid",
+                            borderRadius: 4,
+                            color: "blue",
+                            margin: "0 5px",
+                            padding: "0 5px",
+                            fontWeight: "bold",
+                            height: "23px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => removeItemfromBarcodeList(item)}
+                        >
+                          {item}
+                          {currentSiblingList
+                            .filter(cs => cs?.id?.toString() === item?.toString())
+                            .map(s =>
+                              s.siblings.map((m, index) => (
+                                <span
+                                  style={{
+                                    color: "black",
+                                    fontStyle: "italic",
+                                    fontSize: "0.8rem",
+                                  }}
+                                >
+                                  {`-${m}`}
+                                </span>
+                              )),
+                            )}
+                        </p>
+                      ),
+                    )
                   : null}
               </div>
             </div>
@@ -1278,7 +1356,9 @@ function AllOrdersTable() {
                   {selectedTag === "in_progress" && (
                     <>
                       {" ("}
-                      <FormattedMessage id="totalScanned" />: {currentBarcodeList?.length || 0}
+                      <FormattedMessage id="totalScanned" />:{" "}
+                      {JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`))
+                        ?.length || 0}
                       {")"}{" "}
                     </>
                   )}
