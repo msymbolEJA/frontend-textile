@@ -395,6 +395,13 @@ const DateGetter = () => {
 
   const bestRows = bestSeller?.bestRows;
 
+  const downloadExcel = () => {
+    window.open(
+      `${BASE_URL}cogs/excel/?type=${selectedPlatform}&start_date=${beginnerDateRef.current.value}&end_date=${endDateRef.current.value}`,
+      "_blank",
+    );
+  };
+
   return (
     <div>
       <h2 className={classes.header}>
@@ -454,15 +461,15 @@ const DateGetter = () => {
                   <FormattedMessage id="calculateCost" defaultMessage="Calculate Cost" />
                 </Button>
 
-                 <Button
+                <Button
                   variant="contained"
                   className={classes.btn}
-                  color="default"
-                  disabled={true}
+                  color="primary"
+                  disabled={calcCost.isLoading || selectedPlatform === "all"}
+                  onClick={downloadExcel}
                 >
                   Excell
                 </Button>
-
               </div>
             </div>
           </Paper>
