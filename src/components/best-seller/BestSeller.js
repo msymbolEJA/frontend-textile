@@ -465,7 +465,9 @@ const DateGetter = () => {
                   variant="contained"
                   className={classes.btn}
                   color="primary"
-                  disabled={calcCost.isLoading || selectedPlatform === "all"}
+                  disabled={
+                    calcCost.isLoading || selectedPlatform === "all" || selectedPlatform === "sku"
+                  }
                   onClick={downloadExcel}
                 >
                   Excell
