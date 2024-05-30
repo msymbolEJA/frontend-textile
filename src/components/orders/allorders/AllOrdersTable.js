@@ -199,24 +199,7 @@ function AllOrdersTable() {
         .then(response => {
           const t = response?.data?.results?.length ? response?.data?.results : [];
 
-          const resultFilteredByCountry =
-            countryFilter === "all"
-              ? t
-              : t.filter(item =>
-                  countryFilter === "usa" ? item.country_id === "209" : item.country_id !== "209",
-                );
-
-          const ft =
-            filters?.status === "in_progress"
-              ? resultFilteredByCountry.filter(
-                  item =>
-                    !JSON.parse(
-                      localStorage.getItem(`${localStoragePrefix}-barcode_list`),
-                    ).includes(item.id.toString()),
-                )
-              : resultFilteredByCountry;
-
-          setRows(ft);
+          setRows(t);
           setCount(response?.data?.count || 0);
           setLastResponse(response?.data);
 
@@ -240,24 +223,7 @@ function AllOrdersTable() {
 
         const copyRows = [...rows];
 
-        const resultFilteredByCountry =
-          countryFilter === "all"
-            ? t
-            : t.filter(item =>
-                countryFilter === "usa" ? item.country_id === "209" : item.country_id !== "209",
-              );
-
-        const ft =
-          filters?.status === "in_progress"
-            ? resultFilteredByCountry.filter(
-                item =>
-                  !JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)).includes(
-                    item.id.toString(),
-                  ),
-              )
-            : resultFilteredByCountry;
-
-        const concatted = copyRows.concat(ft);
+        const concatted = copyRows.concat(t);
 
         setRows(concatted);
         setLastResponse(response?.data);
