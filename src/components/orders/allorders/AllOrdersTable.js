@@ -32,7 +32,7 @@ import CustomDialog from "./CustomDialog";
 import CustomTableCell from "./CustomTableCell";
 import TablePaginationActions from "./TablePaginationActions";
 import ViewImageFile from "./ViewImageFile";
-import YouTube from "react-youtube";
+// import YouTube from "react-youtube";
 
 // import { BarcodeDetector, setZXingModuleOverrides } from "barcode-detector/pure";
 // import "barcode-detector/side-effects";
@@ -102,22 +102,6 @@ const useStyles = makeStyles(theme => ({
 const localStoragePrefix = process.env.REACT_APP_STORE_NAME_ORJ;
 
 function AllOrdersTable() {
-  const playerRef = useRef(null);
-
-  const buttonRef = useRef(null);
-  const onReady = event => {
-    playerRef.current = event.target;
-  };
-
-  const playVideoForOneSecond = () => {
-    if (playerRef.current) {
-      playerRef.current.seekTo(0); // Videoyu başa al
-      playerRef.current.playVideo();
-      setTimeout(() => {
-        playerRef.current.pauseVideo();
-      }, 1000); // 1 saniye sonra durdur
-    }
-  };
   const [rows, setRows] = useState([]);
   const [sortedRows, setSortedRows] = useState([]);
   const [currentBarcodeList, setCurrentBarcodeList] = useState(
@@ -1120,8 +1104,6 @@ function AllOrdersTable() {
                 if (!prevBarcodes.includes(b.rawValue)) {
                   acc.push(b.rawValue);
                   checkOrderIfInProgress(b.rawValue);
-                  // playVideoForOneSecond();
-                  buttonRef.current.click();
                 }
                 return acc;
               }, []);
@@ -1444,10 +1426,6 @@ function AllOrdersTable() {
           </>
         ) : null}
       </div>
-      <YouTube videoId="AGZXC5LhXnY" onReady={onReady} />
-      <button ref={buttonRef} onClick={playVideoForOneSecond}>
-        Play for 1 second
-      </button>
     </>
   );
 }
