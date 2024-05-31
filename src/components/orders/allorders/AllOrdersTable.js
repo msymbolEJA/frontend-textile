@@ -1166,9 +1166,9 @@ function AllOrdersTable() {
     <>
       <div>
         <Paper className={classes.root}>
-          {localRole === "workshop_istasyon_a" ||
-          localRole === "workshop_istasyon_b" ||
-          localRole === "workshop_istasyon_c" ? null : (
+          {localRole === "workshop_istasyon_1" ||
+          localRole === "workshop_istasyon_2" ||
+          localRole === "workshop_istasyon_3" ? null : (
             <CustomButtonGroup
               selectedTag={filters?.status}
               handleTagChange={handleTagChange}
@@ -1179,9 +1179,9 @@ function AllOrdersTable() {
             />
           )}
 
-          {localRole === "workshop_istasyon_a" ||
-          localRole === "workshop_istasyon_b" ||
-          localRole === "workshop_istasyon_c" ? (
+          {localRole === "workshop_istasyon_1" ||
+          localRole === "workshop_istasyon_2" ||
+          localRole === "workshop_istasyon_3" ? (
             <>
               {renderBarcode}
               <h3>{barcodeInput}</h3>
@@ -1219,9 +1219,9 @@ function AllOrdersTable() {
             style={{
               display:
                 filters?.status === "ready" &&
-                localRole !== "workshop_istasyon_a" &&
-                localRole !== "workshop_istasyon_b" &&
-                localRole !== "workshop_istasyon_c"
+                localRole !== "workshop_istasyon_1" &&
+                localRole !== "workshop_istasyon_2" &&
+                localRole !== "workshop_istasyon_3"
                   ? "block"
                   : "none",
             }}
@@ -1424,9 +1424,9 @@ function AllOrdersTable() {
         {printError ? <h1>{printError}</h1> : null}
 
         {filters?.status === "ready" &&
-        localRole !== "workshop_istasyon_a" &&
-        localRole !== "workshop_istasyon_b" &&
-        localRole !== "workshop_istasyon_c" ? (
+        localRole !== "workshop_istasyon_1" &&
+        localRole !== "workshop_istasyon_2" &&
+        localRole !== "workshop_istasyon_3" ? (
           <CargoPage
             getListFunc={getListFunc}
             setRefreshTable={setRefreshTable}
