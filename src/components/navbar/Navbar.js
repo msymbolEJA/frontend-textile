@@ -251,7 +251,13 @@ export default function MenuAppBar() {
     // console.log("newStatu", newStatu);
 
     history.push(
-      `/${e.currentTarget.id}?status=${localRole === "workshop_istasyon_a" ? "ready" : newStatu}`,
+      `/${e.currentTarget.id}?status=${
+        localRole === "workshop_istasyon_a" ||
+        localRole === "workshop_istasyon_b" ||
+        localRole === "workshop_istasyon_c"
+          ? "ready"
+          : newStatu
+      }`,
     );
     setAnchorEl(null);
   };
@@ -386,7 +392,9 @@ export default function MenuAppBar() {
               {mobileView ||
               localRole === "workshop_designer" ||
               localRole === "workshop_designer2" ||
-              localRole === "workshop_istasyon_a" ? null : (
+              localRole === "workshop_istasyon_a" ||
+              localRole === "workshop_istasyon_b" ||
+              localRole === "workshop_istasyon_c" ? null : (
                 <Button
                   color="primary"
                   variant="outlined"
@@ -408,6 +416,8 @@ export default function MenuAppBar() {
               localRole !== "workshop_designer" &&
               localRole !== "workshop_designer2" &&
               localRole !== "workshop_istasyon_a" &&
+              localRole !== "workshop_istasyon_b" &&
+              localRole !== "workshop_istasyon_c" &&
               window?.location?.pathname !== "/search" ? (
                 <OutlinedInput
                   type="text"
@@ -559,7 +569,9 @@ export default function MenuAppBar() {
 
                 {localRole !== "workshop_designer" &&
                   localRole !== "workshop_designer2" &&
-                  localRole !== "workshop_istasyon_a" && (
+                  localRole !== "workshop_istasyon_a" &&
+                  localRole !== "workshop_istasyon_b" &&
+                  localRole !== "workshop_istasyon_c" && (
                     <MenuItem id="best-seller" onClick={e => handleDirClick(e)}>
                       <FormattedMessage id="statistics" defaultMessage="Statistics" />
                     </MenuItem>

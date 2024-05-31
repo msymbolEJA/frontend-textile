@@ -418,7 +418,7 @@ function AllOrdersTable() {
     );
   };
 
-  const checkOrderIfInProgress = id => {
+  const checkOrderIfInProgress = (id, scanned = false) => {
     let isInProgress = false;
     const ordersInProgressLS = [...inProggressItems];
     isInProgress =
@@ -429,19 +429,22 @@ function AllOrdersTable() {
     if (selectedTag === "shipped") {
       changeOrderStatus(id, "shipped");
     } else if (isInProgress) {
-      getSiblings(id);
-      localStorage.setItem(
-        `${localStoragePrefix}-barcode_list`,
-        JSON.stringify([
+      if (scanned) {
+        handleSendScanned(id);
+      } else {
+        getSiblings(id);
+        localStorage.setItem(
+          `${localStoragePrefix}-barcode_list`,
+          JSON.stringify([
+            ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
+            id,
+          ]),
+        );
+        setCurrentBarcodeList([
           ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
           id,
-        ]),
-      );
-      setCurrentBarcodeList([
-        ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
-        id,
-      ]);
-      // changeOrderStatus(id, "ready");
+        ]);
+      }
     } else {
       getData(`${BASE_URL}etsy/orders/${id}/`)
         .then(response => {
@@ -1030,18 +1033,45 @@ function AllOrdersTable() {
   const canvasRef = useRef();
   const isMounted = useRef(false);
 
+  const handleSendScanned = async id => {
+    getData(`${BASE_URL}etsy/scanned_order/${id}/`)
+      .then(response => {
+        toastSuccessNotify("Item is scanned successfully");
+      })
+      .catch(error => {
+        console.log("error", error);
+        toastErrorNotify("Scanning item is unsuccessfully");
+      });
+  };
+
   useEffect(() => {
     if (canvasRef.current) {
       isMounted.current = true;
       const startVideo = async () => {
+        const startFrontCamera = async () => {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+              video: { width: 1280, height: 720 },
+            });
+            const capturer = new ImageCapture(
+              stream.getVideoTracks()[stream.getVideoTracks()?.length - 1],
+            );
+            captureFrame(capturer);
+          } catch (error) {
+            alert("Error accessing media devices.", error);
+          }
+        };
+
         try {
           const stream = await navigator.mediaDevices.getUserMedia({
-            video: { width: 1280, height: 720 },
+            video: { width: 1280, height: 720, facingMode: { exact: "environment" } },
           });
-          const capturer = new ImageCapture(stream.getVideoTracks()[0]);
+          const capturer = new ImageCapture(
+            stream.getVideoTracks()[stream.getVideoTracks()?.length - 1],
+          );
           captureFrame(capturer);
         } catch (error) {
-          alert("Error accessing media devices.", error);
+          startFrontCamera();
         }
       };
 
@@ -1069,7 +1099,7 @@ function AllOrdersTable() {
               const newBarcodes = barcodes.reduce((acc, b) => {
                 if (!prevBarcodes.includes(b.rawValue)) {
                   acc.push(b.rawValue);
-                  checkOrderIfInProgress(b.rawValue);
+                  checkOrderIfInProgress(b.rawValue, true);
                 }
                 return acc;
               }, []);
@@ -1097,21 +1127,48 @@ function AllOrdersTable() {
     }
   }, []);
 
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const renderBarcode = useMemo(() => {
     return (
       <>
         <video ref={videoRef} autoPlay muted hidden />
-        <canvas ref={canvasRef} height={500} width={720} />
+        <canvas
+          ref={canvasRef}
+          width={screenSize.width > 1280 ? 1280 / 2 : 1280 / 4}
+          height={screenSize.width > 1280 ? 720 / 2 : 720 / 4}
+        />
         <div>Scanned Barcodes: {scannedBarcodes?.join("-")}</div>
       </>
     );
-  }, [scannedBarcodes]);
+  }, [scannedBarcodes, screenSize.width]);
 
   return (
     <>
       <div>
         <Paper className={classes.root}>
-          {localRole === "workshop_istasyon_a" ? null : (
+          {localRole === "workshop_istasyon_a" ||
+          localRole === "workshop_istasyon_b" ||
+          localRole === "workshop_istasyon_c" ? null : (
             <CustomButtonGroup
               selectedTag={filters?.status}
               handleTagChange={handleTagChange}
@@ -1122,7 +1179,9 @@ function AllOrdersTable() {
             />
           )}
 
-          {localRole === "workshop_istasyon_a" ? (
+          {localRole === "workshop_istasyon_a" ||
+          localRole === "workshop_istasyon_b" ||
+          localRole === "workshop_istasyon_c" ? (
             <>
               {renderBarcode}
               <h3>{barcodeInput}</h3>
@@ -1156,7 +1215,17 @@ function AllOrdersTable() {
             </div>
           ) : null}
 
-          <div style={{ display: filters?.status === "ready" ? "block" : "none" }}>
+          <div
+            style={{
+              display:
+                filters?.status === "ready" &&
+                localRole !== "workshop_istasyon_a" &&
+                localRole !== "workshop_istasyon_b" &&
+                localRole !== "workshop_istasyon_c"
+                  ? "block"
+                  : "none",
+            }}
+          >
             <hr />
             <div
               style={{
@@ -1354,7 +1423,10 @@ function AllOrdersTable() {
         </Paper>
         {printError ? <h1>{printError}</h1> : null}
 
-        {filters?.status === "ready" && localRole !== "workshop_istasyon_a" ? (
+        {filters?.status === "ready" &&
+        localRole !== "workshop_istasyon_a" &&
+        localRole !== "workshop_istasyon_b" &&
+        localRole !== "workshop_istasyon_c" ? (
           <CargoPage
             getListFunc={getListFunc}
             setRefreshTable={setRefreshTable}
