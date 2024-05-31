@@ -678,6 +678,10 @@ function AllOrdersTable() {
                 <FormattedMessage id="ready_date" defaultMessage="Approval Date" />
               </StyledTableCell>
 
+              <StyledTableCell align="center">
+                <FormattedMessage id="stationStatus" defaultMessage="Station Status" />
+              </StyledTableCell>
+
               {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                 <StyledTableCell align="center">
                   <FormattedMessage id="buyer" defaultMessage="Buyer" />
@@ -839,6 +843,45 @@ function AllOrdersTable() {
                       style: { width: 140, maxWidth: 140 },
                     }}
                   />
+
+                  <td>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 3,
+                        padding: "0 10px",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <FormattedMessage id="cutting" defaultMessage="Cutting" />
+                      <Checkbox disabled checked={row?.station_1} />
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 3,
+                        padding: "0 10px",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <FormattedMessage id="sewing" defaultMessage="Sewing" />
+                      <Checkbox disabled checked={row?.station_2} />
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 3,
+                        padding: "0 10px",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <FormattedMessage id="package" defaultMessage="Package" />
+                      <Checkbox disabled checked={row?.station_3} />
+                    </div>
+                  </td>
                   {/*   <CustomTableCell {...{ row, name: "ready_date" }} /> */}
 
                   {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (

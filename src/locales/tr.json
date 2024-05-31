@@ -228,5 +228,11 @@
   "Quantity": "Miktar",
   "Calculated Product": "Hesaplanan Ürünler",
   "calculator": "Hesaplayıcı",
-  "color_code": "Renk Kodu"
+  "color_code": "Renk Kodu",
+  "stationStatus": "İstasyon Durumu",
+  "cutting": "Kesim",
+  "sewing": "Dikim",
+  "package": "Paket",
+  "receipt_id": "Makbuz Id",
+  "buyer_name": "Alıcı Adı"
 }

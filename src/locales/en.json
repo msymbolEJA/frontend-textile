@@ -181,5 +181,11 @@
   "fabric": "Fabric",
   "pillow": "Pillow",
   "calculator": "Calculator",
-  "color_code": "Color Code"
+  "color_code": "Color Code",
+  "stationStatus": "Station Status",
+  "cutting": "Cutting",
+  "sewing": "Sewing",
+  "package": "Package",
+  "receipt_id": "Receipt Id",
+  "buyer_name": "Buyer Name"
 }

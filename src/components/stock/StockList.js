@@ -291,7 +291,7 @@ const StockList = () => {
             type="text"
             id="globalSearch"
             style={{ maxHeight: "30px", margin: "1rem", width: 130 }}
-            onChange={(e) => setSearchKey(e.target.value)}
+            onChange={e => setSearchKey(e.target.value)}
             onKeyPress={searchKeyPress}
             value={searchKey}
           />
@@ -339,28 +339,22 @@ const StockList = () => {
                 <FormattedMessage id="id" defaultMessage="Id" />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage
-                  id="nameOfStore"
-                  defaultMessage="Name of Store"
-                />
+                <FormattedMessage id="receipt_id" defaultMessage="Receipt Id" />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage id="mappingId" defaultMessage="Mapping Id" />
+                <FormattedMessage id="buyer_name" defaultMessage="Buyer Name" />
               </StyledTableCell>
               <StyledTableCell align="center">
                 <FormattedMessage id="type" defaultMessage="Type" />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage id="length" defaultMessage="Length" />
-              </StyledTableCell>
-              <StyledTableCell align="center">
                 <FormattedMessage id="color" defaultMessage="Color" />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage
-                  id="explanation"
-                  defaultMessage="Explanation"
-                />
+                <FormattedMessage id="size" defaultMessage="size" />
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <FormattedMessage id="explanation" defaultMessage="Explanation" />
               </StyledTableCell>
               <StyledTableCell align="center">
                 <FormattedMessage id="delete" defaultMessage="Delete" />
@@ -378,27 +372,21 @@ const StockList = () => {
                 return (
                   <StyledTableRow
                     key={index}
-                    onClick={(e) => handleRowClick(item.id)}
-                    onBlur={(e) => handleRowBlur(e, item.id, item)}
-                    onKeyDown={(e) => handleRowKeyDown(e, item.id, item)}
+                    onClick={e => handleRowClick(item.id)}
+                    onBlur={e => handleRowBlur(e, item.id, item)}
+                    onKeyDown={e => handleRowKeyDown(e, item.id, item)}
                   >
                     <StyledTableCell align="center">{item.id}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.store}
-                    </StyledTableCell>
+                    <StyledTableCell align="center">{item.store}</StyledTableCell>
                     <StyledTableCell align="center">
                       {item.mapping_id === 0 ? "-" : item.mapping_id}
                     </StyledTableCell>
                     <EditableTableCell {...{ item, name: "type", onChange }} />
-                    <EditableTableCell
-                      {...{ item, name: "length", onChange }}
-                    />
+                    <EditableTableCell {...{ item, name: "length", onChange }} />
                     <EditableTableCell {...{ item, name: "color", onChange }} />
-                    <EditableTableCell
-                      {...{ item, name: "explanation", onChange }}
-                    />
+                    <EditableTableCell {...{ item, name: "explanation", onChange }} />
                     <td
-                      onClick={(event) => {
+                      onClick={event => {
                         event.stopPropagation();
                       }}
                     >
