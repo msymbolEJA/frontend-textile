@@ -371,8 +371,8 @@ const StockList = () => {
 
                     <StyledTableCell align="center">{item?.type}</StyledTableCell>
 
-                    <StyledTableCell align="center">{item?.color}</StyledTableCell>
-                    <StyledTableCell align="center">{item?.size}</StyledTableCell>
+                    <StyledTableCell align="center">{item?.variation_1_value}</StyledTableCell>
+                    <StyledTableCell align="center">{item?.variation_2_value}</StyledTableCell>
                     <StyledTableCell align="center">{item?.explanation}</StyledTableCell>
 
                     <td

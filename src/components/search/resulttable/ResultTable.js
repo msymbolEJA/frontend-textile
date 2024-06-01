@@ -14,13 +14,17 @@ import {
   MenuItem,
   ListItemText,
 } from "@material-ui/core";
-import { putData, putImage, postData, removeImage } from "../../../helper/PostData";
+import { putData, putImage, postData, removeImage, getData } from "../../../helper/PostData";
 import SortableTableCell from "./SortableTableCell";
 
 import Typography from "@material-ui/core/Typography";
 import { FormattedMessage } from "react-intl";
 import { statusData } from "../../../helper/Constants";
-import { toastWarnNotify } from "../../otheritems/ToastNotify";
+import {
+  toastErrorNotify,
+  toastSuccessNotify,
+  toastWarnNotify,
+} from "../../otheritems/ToastNotify";
 import FlagAndFavCell from "./FlagAndFavCell";
 import {
   Flag as FlagIcon,
@@ -33,14 +37,14 @@ import OrderStatus from "../../tableitems/CustomSelectCell";
 import UploadFile from "../../tableitems/UploadFile";
 import ConstantTableCell from "../../tableitems/ConstantTableCell";
 
-const StyledTableCell = withStyles((theme) => ({
+const StyledTableCell = withStyles(theme => ({
   head: {},
   body: {
     fontSize: 14,
   },
 }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
+const StyledTableRow = withStyles(theme => ({
   root: {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -52,7 +56,7 @@ const StyledMenu = withStyles({
   paper: {
     border: "1px solid #d3d4d5",
   },
-})((props) => (
+})(props => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
@@ -68,7 +72,7 @@ const StyledMenu = withStyles({
   />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
+const StyledMenuItem = withStyles(theme => ({
   root: {
     "&:focus": {
       backgroundColor: theme.palette.primary.main,
@@ -79,7 +83,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     marginTop: theme.spacing(3),
@@ -131,10 +135,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
 
   const onChange = (e, id, name) => {
     if (!rows.length || !name) return;
-    if (
-      rows?.filter((item) => item.id === id)?.[0]?.[name] === e.target.innerText
-    )
-      return;
+    if (rows?.filter(item => item.id === id)?.[0]?.[name] === e.target.innerText) return;
     handleRowChange(id, { [name]: e.target.innerText });
   };
 
@@ -142,20 +143,18 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
     if (!Object.keys(data)[0]) return;
 
     if (
-      rows?.filter((item) => item.id === id)?.[0]?.[Object.keys(data)[0]] ===
-      Object.values(data)[0]
+      rows?.filter(item => item.id === id)?.[0]?.[Object.keys(data)[0]] === Object.values(data)[0]
     )
       return;
     setLoading(true);
     putData(`${BASE_URL}etsy/mapping/${id}/`, data)
-      .then((response) => {
+      .then(response => {
         refreshSearch();
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error?.response?.data);
         toastWarnNotify(
-          error?.response?.data[Object.keys(error?.response?.data)[0]][0] ||
-          "Save error!"
+          error?.response?.data[Object.keys(error?.response?.data)[0]][0] || "Save error!",
         );
       })
       .finally(() => setTimeout(() => setDisableCells(false), 1000));
@@ -169,7 +168,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
       const resp = window?.confirm(
         `Beklenmedik durum değişikliği tespit edildi. 
       \n ${row["status"]} --> ${e.target.value}
-      \nDevam etmek isteğinize emin misiniz `
+      \nDevam etmek isteğinize emin misiniz `,
       );
       if (resp !== true) return;
     }
@@ -177,22 +176,14 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
     const value = e.target.value;
     const name = e.target.name;
     const { id } = row;
-    if (
-      (name === "status") &
-      (value === "pending") &
-      (row.is_repeat === true)
-    ) {
+    if ((name === "status") & (value === "pending") & (row.is_repeat === true)) {
       let data = { [name]: value, is_repeat: false };
       handleRowChange(id, data);
     }
     if ((name === "status") & (value === "pending") & (row.approved === true)) {
       let data = { [name]: value, approved: false };
       handleRowChange(id, data);
-    } else if (
-      (name === "status") &
-      (value === "awaiting") &
-      (row.approved === false)
-    ) {
+    } else if ((name === "status") & (value === "awaiting") & (row.approved === false)) {
       let data = { [name]: value, approved: true };
       handleRowChange(id, data);
     } else {
@@ -207,10 +198,10 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
       // let path = `${BASE_URL_MAPPING}${id}/`;
       let path = `${BASE_URL}etsy/mapping/${id}/`;
       putImage(path, imgFile, "image.png")
-        .then((res) => {
+        .then(res => {
           console.log(res);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         })
         .finally(() => {
@@ -228,10 +219,10 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
       // let path = `${BASE_URL_MAPPING}${id}/`;
       let path = `${BASE_URL}etsy/mapping/${id}/destroy_image/`;
       removeImage(path)
-        .then((res) => {
+        .then(res => {
           console.log(res);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         })
         .finally(() => {
@@ -290,7 +281,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
     setRepeatMenuData(data);
   };
 
-  const repeatMenu = (row) => {
+  const repeatMenu = row => {
     return (
       <>
         <StyledMenu
@@ -307,30 +298,21 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
             <ListItemText
               primary={repeatReasons.LETTER_PATTERN_IS_WRONG}
               id="Letter Pattern Is Wrong"
-              onClick={handleRepeatMenuItemClick(
-                row,
-                repeatReasons.LETTER_PATTERN_IS_WRONG
-              )}
+              onClick={handleRepeatMenuItemClick(row, repeatReasons.LETTER_PATTERN_IS_WRONG)}
             />
           </StyledMenuItem>
           <StyledMenuItem>
             <ListItemText
               primary={repeatReasons.WRONG_COLOR}
               id="Wrong Color"
-              onClick={handleRepeatMenuItemClick(
-                row,
-                repeatReasons.WRONG_COLOR
-              )}
+              onClick={handleRepeatMenuItemClick(row, repeatReasons.WRONG_COLOR)}
             />
           </StyledMenuItem>
           <StyledMenuItem>
             <ListItemText
               primary={repeatReasons.NEW_COLOR}
               id="Wrong Color"
-              onClick={handleRepeatMenuItemClick(
-                row,
-                repeatReasons.NEW_COLOR
-              )}
+              onClick={handleRepeatMenuItemClick(row, repeatReasons.NEW_COLOR)}
             />
           </StyledMenuItem>
           <StyledMenuItem>
@@ -344,20 +326,14 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
             <ListItemText
               primary={repeatReasons.DIFFERENT_PRODUCT}
               id="Different Product"
-              onClick={handleRepeatMenuItemClick(
-                row,
-                repeatReasons.DIFFERENT_PRODUCT
-              )}
+              onClick={handleRepeatMenuItemClick(row, repeatReasons.DIFFERENT_PRODUCT)}
             />
           </StyledMenuItem>
           <StyledMenuItem>
             <ListItemText
               primary={repeatReasons.NEW_LINE_UP}
               id="Different Product"
-              onClick={handleRepeatMenuItemClick(
-                row,
-                repeatReasons.NEW_LINE_UP
-              )}
+              onClick={handleRepeatMenuItemClick(row, repeatReasons.NEW_LINE_UP)}
             />
           </StyledMenuItem>
           <StyledMenuItem>
@@ -371,30 +347,21 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
             <ListItemText
               primary={repeatReasons.SHORT_CHAIN}
               id="Short Chain"
-              onClick={handleRepeatMenuItemClick(
-                row,
-                repeatReasons.SHORT_CHAIN
-              )}
+              onClick={handleRepeatMenuItemClick(row, repeatReasons.SHORT_CHAIN)}
             />
           </StyledMenuItem>
           <StyledMenuItem>
             <ListItemText
               primary={repeatReasons.DIFFERENT_FONT}
               id="Different Font"
-              onClick={handleRepeatMenuItemClick(
-                row,
-                repeatReasons.DIFFERENT_FONT
-              )}
+              onClick={handleRepeatMenuItemClick(row, repeatReasons.DIFFERENT_FONT)}
             />
           </StyledMenuItem>
           <StyledMenuItem>
             <ListItemText
               primary={repeatReasons.DISCOLORATION}
               id="discoloration"
-              onClick={handleRepeatMenuItemClick(
-                row,
-                repeatReasons.DISCOLORATION
-              )}
+              onClick={handleRepeatMenuItemClick(row, repeatReasons.DISCOLORATION)}
             />
           </StyledMenuItem>
           <StyledMenuItem>
@@ -415,10 +382,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
             <ListItemText
               primary={repeatReasons.LOST_IN_MAIL}
               id="lost in mail"
-              onClick={handleRepeatMenuItemClick(
-                row,
-                repeatReasons.LOST_IN_MAIL
-              )}
+              onClick={handleRepeatMenuItemClick(row, repeatReasons.LOST_IN_MAIL)}
             />
           </StyledMenuItem>
           <StyledMenuItem>
@@ -429,18 +393,10 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
             />
           </StyledMenuItem>
           <StyledMenuItem style={{ justifyContent: "space-around" }}>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={handleRepeatMenuClose}
-            >
+            <Button color="primary" variant="contained" onClick={handleRepeatMenuClose}>
               Cancel
             </Button>
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={handleRepeatMenuConfirm}
-            >
+            <Button color="secondary" variant="contained" onClick={handleRepeatMenuConfirm}>
               OK
             </Button>
           </StyledMenuItem>
@@ -451,7 +407,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
 
   const handleApproveSelected = () => {
     postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
-      .then((res) => {
+      .then(res => {
         toastWarnNotify("Selected 'PENDING' orders are approved");
         setSelected([]);
         refreshSearch();
@@ -553,10 +509,25 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       );
     }
     setSelected(newSelected);
+  };
+
+  const handleSendToStock = async id => {
+    // handlerRepeatChange(e, row.id, row.is_repeat);
+    getData(`${BASE_URL}etsy/send_to_stock/${id}/`)
+      .then(response => {
+        toastSuccessNotify("Item is sent to stock");
+        const copyRows = [...rows];
+        const newRows = copyRows?.filter(item => item?.id != id);
+        setRows(newRows);
+      })
+      .catch(error => {
+        console.log("error", error);
+        toastErrorNotify("Sending item to stock is not successfull");
+      });
   };
 
   return (
@@ -832,6 +803,20 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                           borderRight: "0.5px solid #E0E0E0",
                         }}
                       >
+                        <Button
+                          size="small"
+                          onClick={e => {
+                            e.stopPropagation();
+                            handleSendToStock(row.id);
+                          }}
+                          color="primary"
+                          variant="contained"
+                          style={{ marginBottom: 4 }}
+                        >
+                          <FormattedMessage id="sendToStock2" defaultMessage="Send to Stock" />
+                        </Button>
+                        <br />
+
                         <FlagIcon
                           style={{
                             color: row["is_followup"] ? "red" : "grey",
