@@ -120,8 +120,8 @@ const StockList = () => {
   const getListFunc = () => {
     getData(`${BASE_URL}etsy/stock_list/?limit=${rowsPerPage || 0}&offset=${page * rowsPerPage}`)
       .then(res => {
-        setListCount(res.data.count);
-        setStockListArr(res.data.results);
+        setListCount(res?.data?.length);
+        setStockListArr(res?.data);
         setIsLoaded(true);
       })
       .catch(err => {

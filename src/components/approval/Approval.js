@@ -207,7 +207,6 @@ function App({ history }) {
         const copyRows = [...rows];
         const concatted = copyRows.concat(t);
 
-        console.log("concatted", concatted);
         setRows(concatted);
         setLastResponse(response?.data);
 
@@ -272,6 +271,7 @@ function App({ history }) {
           const copyRows = [...rows];
           const newRows = copyRows?.filter(item => item?.id != id);
           setRows(newRows);
+          setCount(count - 1);
         }
       })
       .catch(error => {
@@ -610,6 +610,7 @@ function App({ history }) {
         const copyRows = [...rows];
         const newRows = copyRows?.filter(item => item?.id != id);
         setRows(newRows);
+        setCount(count - 1);
       })
       .catch(error => {
         console.log("error", error);
@@ -1107,6 +1108,7 @@ function App({ history }) {
                         color="primary"
                         variant="contained"
                         style={{ marginBottom: 4 }}
+                        disabled={selectedTag === "shipped"}
                       >
                         <FormattedMessage id="sendToStock2" defaultMessage="Send to Stock" />
                       </Button>
