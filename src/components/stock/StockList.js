@@ -18,17 +18,14 @@ import { useHistory } from "react-router-dom";
 import { getQueryParams } from "../../helper/getQueryParams";
 import TablePaginationActions from "./TablePaginationActions";
 import EditableTableCell from "./EditableTableCell";
-import {
-  toastErrorNotify,
-  toastSuccessNotify,
-} from "../otheritems/ToastNotify";
+import { toastErrorNotify, toastSuccessNotify } from "../otheritems/ToastNotify";
 import TextField from "@material-ui/core/TextField";
 import { globalSearch } from "../../helper/PostData";
 import { FormattedMessage, useIntl } from "react-intl";
 
-const BELKY_STOCK_BASE_URL = process.env.REACT_APP_BELKY_STOCK_BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-const StyledTableCell = withStyles((theme) => ({
+const StyledTableCell = withStyles(theme => ({
   head: {
     backgroundColor: "rgb(100, 149, 237)",
     color: theme.palette.common.black,
@@ -38,7 +35,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
+const StyledTableRow = withStyles(theme => ({
   root: {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
@@ -58,13 +55,13 @@ const useStyles = makeStyles({
   root: {
     margin: "1rem",
     minWidth: "500px",
-    minHeight: "250px",
+    minHeight: "200px",
     marginTop: 40,
     width: "95%",
   },
   header: {
-    marginLeft: "1rem",
-    marginTop: "1rem",
+    margin: "1rem auto",
+    textAlign: "center",
   },
   btn: {
     margin: "0.3rem",
@@ -95,54 +92,50 @@ const StockList = () => {
 
   const { isAdmin } = useContext(AppContext);
 
-  const getStoreNames = () => {
-    getData(`${BELKY_STOCK_BASE_URL}`)
-      .then((res) => {
-        console.log(res.data);
+  // const getStoreNames = () => {
+  //   getData(`${BASE_URL}etsy/stock_list/`)
+  //     .then(res => {
+  //       console.log(res.data);
 
-        function groupBy(objectArray, property) {
-          if (!objectArray.length) return () => {};
-          return objectArray.reduce(function (acc, obj) {
-            let key = obj[property].toUpperCase();
-            if (!acc[key]) {
-              acc[key] = [];
-            }
-            acc[key].push(obj);
-            return acc;
-          }, {});
-        }
-        console.log(groupBy(res?.data, "store"));
-        setStoreNameArr(() => groupBy(res?.data, "store"));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  //       function groupBy(objectArray, property) {
+  //         if (!objectArray.length) return () => {};
+  //         return objectArray.reduce(function (acc, obj) {
+  //           let key = obj[property].toUpperCase();
+  //           if (!acc[key]) {
+  //             acc[key] = [];
+  //           }
+  //           acc[key].push(obj);
+  //           return acc;
+  //         }, {});
+  //       }
+  //       console.log(groupBy(res?.data, "store"));
+  //       setStoreNameArr(() => groupBy(res?.data, "store"));
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
 
   // eslint-disable-next-line
   const getListFunc = () => {
-    getData(
-      `${BELKY_STOCK_BASE_URL}?store=${store}&limit=${
-        rowsPerPage || 0
-      }&offset=${page * rowsPerPage}`
-    )
-      .then((res) => {
+    getData(`${BASE_URL}etsy/stock_list/?limit=${rowsPerPage || 0}&offset=${page * rowsPerPage}`)
+      .then(res => {
         setListCount(res.data.count);
         setStockListArr(res.data.results);
         setIsLoaded(true);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   };
 
   useEffect(() => {
-    getStoreNames();
+    // getStoreNames();
     getListFunc();
     // eslint-disable-next-line
   }, [page, rowsPerPage, store]);
 
-  const handleSupplier = (e) => {
+  const handleSupplier = e => {
     setStore(e.currentTarget.id);
     setPage(0);
   };
@@ -154,7 +147,7 @@ const StockList = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = event => {
     setRowsPerPage(+event.target.value);
     let rpp = +event.target.value;
     setPage(0);
@@ -165,29 +158,29 @@ const StockList = () => {
 
   const handleRowChange = useCallback(
     (id, data) => {
-      putData(`${BELKY_STOCK_BASE_URL}${id}/`, data)
-        .then((response) => {})
-        .catch((error) => {
+      putData(`${BASE_URL}/etsy/stock/${id}/`, data)
+        .then(response => {})
+        .catch(error => {
           console.log(error);
         })
         .finally(() => getListFunc());
     },
-    [getListFunc]
+    [getListFunc],
   );
 
   const handleRowClick = useCallback(
-    (id) => {
-      const currentRow = stockListArr.find((row) => row.id === id);
+    id => {
+      const currentRow = stockListArr.find(row => row.id === id);
       if (currentRow) {
         if (!currentRow.isEditMode) {
-          const newRows = stockListArr?.map((row) => {
+          const newRows = stockListArr?.map(row => {
             return { ...row, isEditMode: row.id === id };
           });
           setStockListArr(newRows);
         }
       }
     },
-    [stockListArr]
+    [stockListArr],
   );
 
   const handleRowBlur = useCallback(
@@ -199,7 +192,7 @@ const StockList = () => {
       };
       handleRowChange(id, data);
     },
-    [handleRowChange]
+    [handleRowChange],
   );
 
   const handleRowKeyDown = useCallback(
@@ -213,18 +206,18 @@ const StockList = () => {
         handleRowChange(id, data);
       }
     },
-    [handleRowChange]
+    [handleRowChange],
   );
 
   const onChange = useCallback(
     (e, row) => {
       if (!previous[row.id]) {
-        setPrevious((state) => ({ ...state, [row.id]: row }));
+        setPrevious(state => ({ ...state, [row.id]: row }));
       }
       const value = e.target.value;
       const name = e.target.name;
       const { id } = row;
-      const newRows = stockListArr?.map((row) => {
+      const newRows = stockListArr?.map(row => {
         if (row.id === id) {
           return { ...row, [name]: value };
         }
@@ -232,7 +225,7 @@ const StockList = () => {
       });
       setStockListArr(newRows);
     },
-    [previous, stockListArr]
+    [previous, stockListArr],
   );
 
   const handleNewStock = () => {
@@ -240,34 +233,30 @@ const StockList = () => {
     history.push(`/new-stock`);
   };
 
-  const handleDeleteButton = (id) => {
-    console.log("HANDLEDELETEBUTTON");
-    console.log(id);
-    console.log(BELKY_STOCK_BASE_URL + id);
-    deleteProduct(`${BELKY_STOCK_BASE_URL}${id}/`)
-      .then((response) => {
+  const handleDeleteButton = id => {
+    deleteProduct(`${BASE_URL}etsy/stock_used/${id}/`)
+      .then(response => {
         console.log(response);
         getListFunc();
         toastSuccessNotify("Deleted Succesfully!");
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         toastErrorNotify("Something went wrong!");
       });
   };
 
-  const searchKeyPress = (event) => {
+  const searchKeyPress = event => {
     if (!(searchKey === "") && event.key === "Enter") {
-      console.log(searchKey);
-      globalSearch(`${BELKY_STOCK_BASE_URL}?search=${searchKey}`)
-        .then((response) => {
+      globalSearch(`${BASE_URL}etsy/stock?search=${searchKey}`)
+        .then(response => {
           console.log(response.data.length);
           console.log(response.data);
           setListCount(response.data.length);
           setStockListArr(response.data?.results || []);
           //setList(response.data);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
           //setList([]);
         });
@@ -278,7 +267,7 @@ const StockList = () => {
     <div className={classes.tableDiv}>
       <TableContainer component={Paper} className={classes.root}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <TextField
+          {/* <TextField
             className={classes.item}
             variant="outlined"
             margin="dense"
@@ -294,20 +283,20 @@ const StockList = () => {
             onChange={e => setSearchKey(e.target.value)}
             onKeyPress={searchKeyPress}
             value={searchKey}
-          />
+          /> */}
           <Typography className={classes.header} variant="h3">
             <FormattedMessage id="stockList" defaultMessage="Stock List" />
           </Typography>
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             style={{ margin: "1rem" }}
             onClick={handleNewStock}
           >
             <FormattedMessage id="newStock" defaultMessage="New Stock" />
-          </Button>
+          </Button> */}
         </div>
-        {isAdmin ? (
+        {/* {isAdmin ? (
           <div>
             <Button
               className={classes.btn}
@@ -331,7 +320,7 @@ const StockList = () => {
               </Button>
             ))}
           </div>
-        ) : null}
+        ) : null} */}
         <Table className={classes.table} aria-label="customized table">
           <TableHead>
             <TableRow>
@@ -365,26 +354,27 @@ const StockList = () => {
           <TableBody>
             {!isLoaded ? null : !stockListArr?.length ? (
               <tr>
-                <td colSpan="7">No Item!</td>
+                <td colSpan="8">No Item!</td>
               </tr>
             ) : (
               stockListArr.map((item, index) => {
                 return (
                   <StyledTableRow
                     key={index}
-                    onClick={e => handleRowClick(item.id)}
-                    onBlur={e => handleRowBlur(e, item.id, item)}
-                    onKeyDown={e => handleRowKeyDown(e, item.id, item)}
+                    // onClick={e => handleRowClick(item.id)}
+                    // onBlur={e => handleRowBlur(e, item.id, item)}
+                    // onKeyDown={e => handleRowKeyDown(e, item.id, item)}
                   >
-                    <StyledTableCell align="center">{item.id}</StyledTableCell>
-                    <StyledTableCell align="center">{item.store}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      {item.mapping_id === 0 ? "-" : item.mapping_id}
-                    </StyledTableCell>
-                    <EditableTableCell {...{ item, name: "type", onChange }} />
-                    <EditableTableCell {...{ item, name: "length", onChange }} />
-                    <EditableTableCell {...{ item, name: "color", onChange }} />
-                    <EditableTableCell {...{ item, name: "explanation", onChange }} />
+                    <StyledTableCell align="center">{item?.id}</StyledTableCell>
+                    <StyledTableCell align="center">{item?.receipt_id}</StyledTableCell>
+                    <StyledTableCell align="center">{item?.buyer}</StyledTableCell>
+
+                    <StyledTableCell align="center">{item?.type}</StyledTableCell>
+
+                    <StyledTableCell align="center">{item?.color}</StyledTableCell>
+                    <StyledTableCell align="center">{item?.size}</StyledTableCell>
+                    <StyledTableCell align="center">{item?.explanation}</StyledTableCell>
+
                     <td
                       onClick={event => {
                         event.stopPropagation();
