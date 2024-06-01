@@ -252,8 +252,8 @@ export default function MenuAppBar() {
 
     history.push(
       `/${e.currentTarget.id}?status=${
-        localRole === "workshop_istasyon_1" ||
-        localRole === "workshop_istasyon_2" ||
+        localRole === "workshop_istasyon_a" ||
+        localRole === "workshop_istasyon_b" ||
         localRole === "workshop_istasyon_3"
           ? "ready"
           : newStatu
@@ -392,8 +392,8 @@ export default function MenuAppBar() {
               {mobileView ||
               localRole === "workshop_designer" ||
               localRole === "workshop_designer2" ||
-              localRole === "workshop_istasyon_1" ||
-              localRole === "workshop_istasyon_2" ||
+              localRole === "workshop_istasyon_a" ||
+              localRole === "workshop_istasyon_b" ||
               localRole === "workshop_istasyon_3" ? null : (
                 <Button
                   color="primary"
@@ -415,8 +415,8 @@ export default function MenuAppBar() {
               {!isBeyazit &&
               localRole !== "workshop_designer" &&
               localRole !== "workshop_designer2" &&
-              localRole !== "workshop_istasyon_1" &&
-              localRole !== "workshop_istasyon_2" &&
+              localRole !== "workshop_istasyon_a" &&
+              localRole !== "workshop_istasyon_b" &&
               localRole !== "workshop_istasyon_3" &&
               window?.location?.pathname !== "/search" ? (
                 <OutlinedInput
@@ -569,8 +569,8 @@ export default function MenuAppBar() {
 
                 {localRole !== "workshop_designer" &&
                   localRole !== "workshop_designer2" &&
-                  localRole !== "workshop_istasyon_1" &&
-                  localRole !== "workshop_istasyon_2" &&
+                  localRole !== "workshop_istasyon_a" &&
+                  localRole !== "workshop_istasyon_b" &&
                   localRole !== "workshop_istasyon_3" && (
                     <MenuItem id="best-seller" onClick={e => handleDirClick(e)}>
                       <FormattedMessage id="statistics" defaultMessage="Statistics" />

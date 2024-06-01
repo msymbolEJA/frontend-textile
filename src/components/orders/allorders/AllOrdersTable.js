@@ -418,7 +418,7 @@ function AllOrdersTable() {
     );
   };
 
-  const checkOrderIfInProgress = (id, scanned = false) => {
+  const checkOrderIfInProgress = id => {
     let isInProgress = false;
     const ordersInProgressLS = [...inProggressItems];
     isInProgress =
@@ -429,22 +429,18 @@ function AllOrdersTable() {
     if (selectedTag === "shipped") {
       changeOrderStatus(id, "shipped");
     } else if (isInProgress) {
-      if (scanned) {
-        handleSendScanned(id);
-      } else {
-        getSiblings(id);
-        localStorage.setItem(
-          `${localStoragePrefix}-barcode_list`,
-          JSON.stringify([
-            ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
-            id,
-          ]),
-        );
-        setCurrentBarcodeList([
+      getSiblings(id);
+      localStorage.setItem(
+        `${localStoragePrefix}-barcode_list`,
+        JSON.stringify([
           ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
           id,
-        ]);
-      }
+        ]),
+      );
+      setCurrentBarcodeList([
+        ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
+        id,
+      ]);
     } else {
       getData(`${BASE_URL}etsy/orders/${id}/`)
         .then(response => {
@@ -1142,7 +1138,7 @@ function AllOrdersTable() {
               const newBarcodes = barcodes.reduce((acc, b) => {
                 if (!prevBarcodes.includes(b.rawValue)) {
                   acc.push(b.rawValue);
-                  checkOrderIfInProgress(b.rawValue, true);
+                  handleSendScanned(b.rawValue);
                 }
                 return acc;
               }, []);
@@ -1209,9 +1205,9 @@ function AllOrdersTable() {
     <>
       <div>
         <Paper className={classes.root}>
-          {localRole === "workshop_istasyon_1" ||
-          localRole === "workshop_istasyon_2" ||
-          localRole === "workshop_istasyon_3" ? null : (
+          {localRole === "workshop_istasyon_a" ||
+          localRole === "workshop_istasyon_b" ||
+          localRole === "workshop_istasyon_c" ? null : (
             <CustomButtonGroup
               selectedTag={filters?.status}
               handleTagChange={handleTagChange}
@@ -1222,9 +1218,9 @@ function AllOrdersTable() {
             />
           )}
 
-          {localRole === "workshop_istasyon_1" ||
-          localRole === "workshop_istasyon_2" ||
-          localRole === "workshop_istasyon_3" ? (
+          {localRole === "workshop_istasyon_a" ||
+          localRole === "workshop_istasyon_b" ||
+          localRole === "workshop_istasyon_c" ? (
             <>
               {renderBarcode}
               <h3>{barcodeInput}</h3>
@@ -1262,9 +1258,9 @@ function AllOrdersTable() {
             style={{
               display:
                 filters?.status === "ready" &&
-                localRole !== "workshop_istasyon_1" &&
-                localRole !== "workshop_istasyon_2" &&
-                localRole !== "workshop_istasyon_3"
+                localRole !== "workshop_istasyon_a" &&
+                localRole !== "workshop_istasyon_b" &&
+                localRole !== "workshop_istasyon_c"
                   ? "block"
                   : "none",
             }}
@@ -1467,9 +1463,9 @@ function AllOrdersTable() {
         {printError ? <h1>{printError}</h1> : null}
 
         {filters?.status === "ready" &&
-        localRole !== "workshop_istasyon_1" &&
-        localRole !== "workshop_istasyon_2" &&
-        localRole !== "workshop_istasyon_3" ? (
+        localRole !== "workshop_istasyon_a" &&
+        localRole !== "workshop_istasyon_b" &&
+        localRole !== "workshop_istasyon_c" ? (
           <CargoPage
             getListFunc={getListFunc}
             setRefreshTable={setRefreshTable}

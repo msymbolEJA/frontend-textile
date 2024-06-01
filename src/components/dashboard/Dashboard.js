@@ -150,8 +150,8 @@ const Dashboard = ({ history }) => {
   // console.log({ newStatu });
 
   if (
-    localRole === "workshop_istasyon_1" ||
-    localRole === "workshop_istasyon_2" ||
+    localRole === "workshop_istasyon_a" ||
+    localRole === "workshop_istasyon_b" ||
     localRole === "workshop_istasyon_3"
   ) {
     history.push(`/all-orders?status=ready`);
