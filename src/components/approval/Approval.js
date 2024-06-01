@@ -1068,12 +1068,13 @@ function App({ history }) {
                         !NON_SKU
                           ? "none"
                           : "auto",
-                      backgroundColor:
-                        (row.status !== "pending") & (row.approved === false)
-                          ? "#FF9494"
-                          : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
-                          ? "#ffef8a"
-                          : null,
+                      backgroundColor: row?.get_in_stock
+                        ? "#B99470"
+                        : (row.status !== "pending") & (row.approved === false)
+                        ? "#FF9494"
+                        : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
+                        ? "#ffef8a"
+                        : null,
                     }}
                   >
                     <FlagAndFavCell
@@ -1277,7 +1278,7 @@ function App({ history }) {
                         minWidth: 60,
                       }}
                     >
-                      {row?.get_in_stock ? <Checkbox checked disabled /> : "-"}
+                      {row?.get_in_stock || "-"}
                     </td>
 
                     <td
