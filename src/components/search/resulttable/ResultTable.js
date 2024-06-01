@@ -687,6 +687,16 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                   style={{
                     padding: 10,
                     borderRight: "0.5px solid #E0E0E0",
+                  }}
+                >
+                  <FormattedMessage id="in_stock" defaultMessage="In Stock" />
+                </StyledTableCell>
+
+                <StyledTableCell
+                  align="center"
+                  style={{
+                    padding: 10,
+                    borderRight: "0.5px solid #E0E0E0",
                     background: "rgb(100, 149, 237)",
                   }}
                 >
@@ -966,6 +976,15 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                           setDisableCells,
                         }}
                       />
+
+                      <td
+                        style={{
+                          padding: 10,
+                          minWidth: 60,
+                        }}
+                      >
+                        {row?.get_in_stock ? <Checkbox checked disabled /> : "-"}
+                      </td>
 
                       <td
                         style={{

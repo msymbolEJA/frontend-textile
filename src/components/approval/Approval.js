@@ -951,6 +951,16 @@ function App({ history }) {
                 align="center"
                 style={{
                   padding: 10,
+                  borderRight: "0.5px solid #E0E0E0",
+                }}
+              >
+                <FormattedMessage id="in_stock" defaultMessage="In Stock" />
+              </StyledTableCell>
+
+              <StyledTableCell
+                align="center"
+                style={{
+                  padding: 10,
                   pointerEvents: selectedTag === "pending" ? "auto" : "none",
                   borderRight: "0.5px solid #E0E0E0",
                 }}
@@ -1260,6 +1270,16 @@ function App({ history }) {
                             : 0,
                       }}
                     />
+
+                    <td
+                      style={{
+                        padding: 10,
+                        minWidth: 60,
+                      }}
+                    >
+                      {row?.get_in_stock ? <Checkbox checked disabled /> : "-"}
+                    </td>
+
                     <td
                       style={{
                         padding: 10,

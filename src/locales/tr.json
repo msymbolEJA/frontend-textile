@@ -235,5 +235,6 @@
   "package": "Paket",
   "receipt_id": "Makbuz Id",
   "buyer_name": "Alıcı Adı",
-  "sendToStock2": "Stok"
+  "sendToStock2": "Stok",
+  "in_stock": "Stok Durum"
 }
