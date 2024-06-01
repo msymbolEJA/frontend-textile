@@ -234,5 +234,6 @@
   "sewing": "Dikim",
   "package": "Paket",
   "receipt_id": "Makbuz Id",
-  "buyer_name": "Alıcı Adı"
+  "buyer_name": "Alıcı Adı",
+  "sendToStock2": "Stok"
 }

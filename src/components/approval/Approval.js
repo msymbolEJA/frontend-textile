@@ -149,32 +149,32 @@ function App({ history }) {
   const [refreshTable, setRefreshTable] = useState(false);
   const { user } = useContext(AppContext);
 
-   const [lastResponse, setLastResponse] = useState(null);
-   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
+  const [lastResponse, setLastResponse] = useState(null);
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
 
-   useEffect(() => {
-     const handleScroll = () => {
-       if (!hasScrolledToBottom) {
-         const scrollThreshold = 0.7; // Set your threshold (70% in this example)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!hasScrolledToBottom) {
+        const scrollThreshold = 0.7; // Set your threshold (70% in this example)
 
-         const scrollPosition = window.innerHeight + window.scrollY;
-         const scrollableHeight = document.body.offsetHeight;
-         const scrollableThreshold = scrollableHeight * scrollThreshold;
+        const scrollPosition = window.innerHeight + window.scrollY;
+        const scrollableHeight = document.body.offsetHeight;
+        const scrollableThreshold = scrollableHeight * scrollThreshold;
 
-         if (scrollPosition >= scrollableThreshold && lastResponse?.next) {
-           setHasScrolledToBottom(true);
-           loadMore(lastResponse.next);
+        if (scrollPosition >= scrollableThreshold && lastResponse?.next) {
+          setHasScrolledToBottom(true);
+          loadMore(lastResponse.next);
 
-           // Set the flag to true to ensure it only triggers once
-         }
-       }
-     };
-     window.addEventListener("scroll", handleScroll);
+          // Set the flag to true to ensure it only triggers once
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
 
-     return () => {
-       window.removeEventListener("scroll", handleScroll);
-     };
-   }, [hasScrolledToBottom, lastResponse]);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasScrolledToBottom, lastResponse]);
 
   const getListFunc = () => {
     setloading(true);
@@ -186,21 +186,20 @@ function App({ history }) {
       }`,
     )
       .then(response => {
-         const t = response?.data?.results?.length ? response?.data?.results : [];
-         setRows(t);
-         setCount(response?.data?.count || 0);
-         setLastResponse(response?.data);
+        const t = response?.data?.results?.length ? response?.data?.results : [];
+        setRows(t);
+        setCount(response?.data?.count || 0);
+        setLastResponse(response?.data);
 
-         setHasScrolledToBottom(false);
+        setHasScrolledToBottom(false);
       })
       .catch(error => {
-      
         console.log("error", error);
       })
       .finally(() => setloading(false));
   };
 
-    const loadMore = link => {
+  const loadMore = link => {
     setloading(true);
     getData(link)
       .then(response => {
@@ -220,20 +219,20 @@ function App({ history }) {
       .finally(() => setloading(false));
   };
 
- useEffect(() => {
-   getListFunc();
+  useEffect(() => {
+    getListFunc();
 
-   // eslint-disable-next-line react-hooks/exhaustive-deps
- }, [
-   filters.ordering,
-   filters.status,
-   filters.is_repeat,
-   filters.limit,
-   filters.offset,
-   filters.search,
-   count,
-   selectedTag,
- ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    filters.ordering,
+    filters.status,
+    filters.is_repeat,
+    filters.limit,
+    filters.offset,
+    filters.search,
+    count,
+    selectedTag,
+  ]);
 
   useEffect(() => {
     setSelectedTag(filters?.status);
@@ -288,7 +287,6 @@ function App({ history }) {
       });
   };
 
-
   const onSelectChange = (e, row) => {
     e.preventDefault();
     const a = statusData?.indexOf(row["status"]);
@@ -321,50 +319,50 @@ function App({ history }) {
     }
   };
 
- const uploadFile = (e, id, imgFile) => {
-   e.stopPropagation();
-   try {
-     // let path = `${BASE_URL_MAPPING}${id}/`;
-     let path = `${BASE_URL}etsy/mapping/${id}/`;
-     putImage(path, imgFile, "image.png")
-       .then(res => {
-         const copyRows = [...rows];
-         const itemInRows = copyRows?.find(item => item?.id == id);
-         if (itemInRows) itemInRows.image = res?.data?.image;
+  const uploadFile = (e, id, imgFile) => {
+    e.stopPropagation();
+    try {
+      // let path = `${BASE_URL_MAPPING}${id}/`;
+      let path = `${BASE_URL}etsy/mapping/${id}/`;
+      putImage(path, imgFile, "image.png")
+        .then(res => {
+          const copyRows = [...rows];
+          const itemInRows = copyRows?.find(item => item?.id == id);
+          if (itemInRows) itemInRows.image = res?.data?.image;
 
-         setRows(copyRows);
-       })
-       .catch(err => {
-         console.log(err);
-         toastErrorNotify("Error, Please try again after refresh the page");
-       });
-   } catch (error) {
-     console.log("error", error);
-     toastWarnNotify("Select Image!");
-   }
- };
+          setRows(copyRows);
+        })
+        .catch(err => {
+          console.log(err);
+          toastErrorNotify("Error, Please try again after refresh the page");
+        });
+    } catch (error) {
+      console.log("error", error);
+      toastWarnNotify("Select Image!");
+    }
+  };
 
- const removeFile = (e, id) => {
-   e.stopPropagation();
-   try {
-     // let path = `${BASE_URL_MAPPING}${id}/`;
-     let path = `${BASE_URL}etsy/mapping/${id}/destroy_image/`;
-     removeImage(path)
-       .then(res => {
-         const copyRows = [...rows];
-         const itemInRows = copyRows?.find(item => item?.id == id);
-         if (itemInRows) itemInRows.image = null;
-         setRows(copyRows);
-       })
-       .catch(err => {
-         console.log(err);
-         toastErrorNotify("Image couldn't be removed!");
-       });
-   } catch (error) {
-     console.log("error", error);
-     toastWarnNotify("Image couldn't be removed!");
-   }
- };
+  const removeFile = (e, id) => {
+    e.stopPropagation();
+    try {
+      // let path = `${BASE_URL_MAPPING}${id}/`;
+      let path = `${BASE_URL}etsy/mapping/${id}/destroy_image/`;
+      removeImage(path)
+        .then(res => {
+          const copyRows = [...rows];
+          const itemInRows = copyRows?.find(item => item?.id == id);
+          if (itemInRows) itemInRows.image = null;
+          setRows(copyRows);
+        })
+        .catch(err => {
+          console.log(err);
+          toastErrorNotify("Image couldn't be removed!");
+        });
+    } catch (error) {
+      console.log("error", error);
+      toastWarnNotify("Image couldn't be removed!");
+    }
+  };
 
   const fileSelectedHandler = (e, id) => {
     e.stopPropagation();
@@ -603,6 +601,21 @@ function App({ history }) {
     },
     [],
   );
+
+  const handleSendToStock = async id => {
+    // handlerRepeatChange(e, row.id, row.is_repeat);
+    getData(`${BASE_URL}etsy/send_to_stock/${id}/`)
+      .then(response => {
+        toastSuccessNotify("Item is sent to stock");
+        const copyRows = [...rows];
+        const newRows = copyRows?.filter(item => item?.id != id);
+        setRows(newRows);
+      })
+      .catch(error => {
+        console.log("error", error);
+        toastErrorNotify("Sending item to stock is not successfull");
+      });
+  };
 
   // console.log("NON_SKU", NON_SKU);
 
@@ -1074,6 +1087,18 @@ function App({ history }) {
                         padding: 5,
                       }}
                     >
+                      <Button
+                        size="small"
+                        onClick={e => {
+                          e.stopPropagation();
+                          handleSendToStock(row.id);
+                        }}
+                        color="primary"
+                        variant="contained"
+                        style={{ marginBottom: 4 }}
+                      >
+                        <FormattedMessage id="sendToStock2" defaultMessage="Send to Stock" />
+                      </Button>
                       {row?.shop === "Shopify" ? <ShoppingBasketIcon color="secondary" /> : null}
                       <br />
                       {(row["status"] === "in_progress" || row["status"] === "ready") &&

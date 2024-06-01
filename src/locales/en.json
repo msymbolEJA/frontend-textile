@@ -187,5 +187,6 @@
   "sewing": "Sewing",
   "package": "Package",
   "receipt_id": "Receipt Id",
-  "buyer_name": "Buyer Name"
+  "buyer_name": "Buyer Name",
+  "sendToStock2": "Stock"
 }
