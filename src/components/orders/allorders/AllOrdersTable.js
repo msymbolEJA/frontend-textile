@@ -25,7 +25,11 @@ import { getAllPdf, getData, globalSearch, postData, putData } from "../../../he
 import { getQueryParams } from "../../../helper/getQueryParams";
 import BarcodeInput from "../../otheritems/BarcodeInput";
 import CargoPage from "../../otheritems/CargoPage";
-import { toastErrorNotify, toastSuccessNotify } from "../../otheritems/ToastNotify";
+import {
+  toastErrorNotify,
+  toastSuccessNotify,
+  toastWarnNotify,
+} from "../../otheritems/ToastNotify";
 import EditableTableCell from "../../tableitems/EditableTableCell";
 import CustomButtonGroup from "./CustomButtonGroup";
 import CustomDialog from "./CustomDialog";
@@ -140,6 +144,8 @@ function AllOrdersTable() {
   const [loading, setloading] = useState(false);
   const [searchWord, setSearchWord] = useState("");
   const [dialog, setDialog] = useState({ statu: "", id: "", open: false });
+  const [scannedRows, setScannedRows] = useState([]);
+  const [scannedRowsCount, setScannedRowsCount] = useState(0);
 
   const localRole = localStorage.getItem("localRole");
 
@@ -773,19 +779,31 @@ function AllOrdersTable() {
                     <FormattedMessage id="giftMessage" defaultMessage="Gift Message" />
                   </StyledTableCell>
                 )}
-              <StyledTableCell align="center">
-                <FormattedMessage id="image" defaultMessage="Image" />
-              </StyledTableCell>
-              {selectedTag === "ready" ? (
-                <StyledTableCell align="center">
-                  <FormattedMessage id="remove" defaultMessage="Remove" />
-                </StyledTableCell>
-              ) : null}
+
+              {localRole === "workshop_istasyon_a" ||
+              localRole === "workshop_istasyon_b" ||
+              localRole === "workshop_istasyon_c" ? null : (
+                <>
+                  <StyledTableCell align="center">
+                    <FormattedMessage id="image" defaultMessage="Image" />
+                  </StyledTableCell>
+                  {selectedTag === "ready" ? (
+                    <StyledTableCell align="center">
+                      <FormattedMessage id="remove" defaultMessage="Remove" />
+                    </StyledTableCell>
+                  ) : null}
+                </>
+              )}
             </TableRow>
           </TableHead>
-          {rows?.length ? (
+          {rows?.length || scannedRows?.length ? (
             <TableBody>
-              {rows.map(row => (
+              {(localRole === "workshop_istasyon_a" ||
+              localRole === "workshop_istasyon_b" ||
+              localRole === "workshop_istasyon_c"
+                ? scannedRows
+                : rows
+              ).map(row => (
                 <StyledTableRow
                   className={classes.rowStyle}
                   key={row.id}
@@ -1012,31 +1030,38 @@ function AllOrdersTable() {
                         }}
                       />
                     )}
-                  <td style={{ padding: 10, borderBottom: "1px solid #e0e0e0" }}>
-                    {row?.image ? (
-                      <ViewImageFile {...{ row, name: "image" }} />
-                    ) : (
-                      <p>
-                        <FormattedMessage id="noFile" defaultMessage="-" />
-                      </p>
-                    )}
-                  </td>
-                  {selectedTag === "ready" ? (
-                    <td>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.print}
-                        onClick={e => {
-                          e.stopPropagation();
-                          removeFunc(row.id);
-                        }}
-                        size="small"
-                      >
-                        <FormattedMessage id="remove" defaultMessage="Remove" />
-                      </Button>
-                    </td>
-                  ) : null}
+
+                  {localRole === "workshop_istasyon_a" ||
+                  localRole === "workshop_istasyon_b" ||
+                  localRole === "workshop_istasyon_c" ? null : (
+                    <>
+                      <td style={{ padding: 10, borderBottom: "1px solid #e0e0e0" }}>
+                        {row?.image ? (
+                          <ViewImageFile {...{ row, name: "image" }} />
+                        ) : (
+                          <p>
+                            <FormattedMessage id="noFile" defaultMessage="-" />
+                          </p>
+                        )}
+                      </td>
+                      {selectedTag === "ready" ? (
+                        <td>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            className={classes.print}
+                            onClick={e => {
+                              e.stopPropagation();
+                              removeFunc(row.id);
+                            }}
+                            size="small"
+                          >
+                            <FormattedMessage id="remove" defaultMessage="Remove" />
+                          </Button>
+                        </td>
+                      ) : null}
+                    </>
+                  )}
                 </StyledTableRow>
               ))}
             </TableBody>
@@ -1046,12 +1071,30 @@ function AllOrdersTable() {
               <td>
                 <FormattedMessage id="totalRecord" defaultMessage="Total Record" />:
               </td>
-              <td>{count}</td>
+              <td>
+                {localRole === "workshop_istasyon_a" ||
+                localRole === "workshop_istasyon_b" ||
+                localRole === "workshop_istasyon_c"
+                  ? scannedRowsCount
+                  : count}
+              </td>
               <TablePagination
                 rowsPerPageOptions={[150]}
                 colSpan={22}
-                count={count}
-                rowsPerPage={count}
+                count={
+                  localRole === "workshop_istasyon_a" ||
+                  localRole === "workshop_istasyon_b" ||
+                  localRole === "workshop_istasyon_c"
+                    ? scannedRowsCount
+                    : count
+                }
+                rowsPerPage={
+                  localRole === "workshop_istasyon_a" ||
+                  localRole === "workshop_istasyon_b" ||
+                  localRole === "workshop_istasyon_c"
+                    ? scannedRowsCount
+                    : count
+                }
                 page={1}
                 SelectProps={{
                   inputProps: { "aria-label": "rows per page" },
@@ -1075,11 +1118,22 @@ function AllOrdersTable() {
   const handleSendScanned = async id => {
     getData(`${BASE_URL}etsy/scanned_order/${id}/`)
       .then(response => {
-        toastSuccessNotify("Item is scanned successfully");
+        if (response?.data?.message || response?.data?.success) {
+          toastWarnNotify(response?.data?.message || response?.data?.success);
+        } else {
+          toastSuccessNotify("Item is scanned successfully");
+
+          setScannedRows(prevRows => {
+            const updatedRows = [...prevRows, ...response?.data];
+            return updatedRows;
+          });
+
+          setScannedRowsCount(prev => prev + response?.data?.length);
+        }
       })
       .catch(error => {
         console.log("error", error);
-        toastErrorNotify("Scanning item is unsuccessfully");
+        toastErrorNotify(error?.response?.data?.error || "Scanning item is unsuccessfully");
       });
   };
 
@@ -1376,32 +1430,36 @@ function AllOrdersTable() {
               justifyContent: "space-between",
             }}
           >
-            <div>
-              <Button
-                variant="contained"
-                color={countryFilter === "all" ? "primary" : "default"}
-                className={classes.countryFilter}
-                onClick={() => setCountryFilter("all")}
-              >
-                <FormattedMessage id="all" defaultMessage="All" />
-              </Button>
-              <Button
-                variant="contained"
-                color={countryFilter === "usa" ? "primary" : "default"}
-                className={classes.countryFilter}
-                onClick={() => setCountryFilter("usa")}
-              >
-                <FormattedMessage id="usa" defaultMessage="USA" />
-              </Button>
-              <Button
-                variant="contained"
-                color={countryFilter === "international" ? "primary" : "default"}
-                className={classes.countryFilter}
-                onClick={() => setCountryFilter("international")}
-              >
-                <FormattedMessage id="international" defaultMessage="International" />
-              </Button>
-            </div>
+            {localRole !== "workshop_istasyon_a" &&
+            localRole !== "workshop_istasyon_b" &&
+            localRole !== "workshop_istasyon_c" ? (
+              <div>
+                <Button
+                  variant="contained"
+                  color={countryFilter === "all" ? "primary" : "default"}
+                  className={classes.countryFilter}
+                  onClick={() => setCountryFilter("all")}
+                >
+                  <FormattedMessage id="all" defaultMessage="All" />
+                </Button>
+                <Button
+                  variant="contained"
+                  color={countryFilter === "usa" ? "primary" : "default"}
+                  className={classes.countryFilter}
+                  onClick={() => setCountryFilter("usa")}
+                >
+                  <FormattedMessage id="usa" defaultMessage="USA" />
+                </Button>
+                <Button
+                  variant="contained"
+                  color={countryFilter === "international" ? "primary" : "default"}
+                  className={classes.countryFilter}
+                  onClick={() => setCountryFilter("international")}
+                >
+                  <FormattedMessage id="international" defaultMessage="International" />
+                </Button>
+              </div>
+            ) : null}
           </div>
           <div
             style={{
@@ -1419,7 +1477,10 @@ function AllOrdersTable() {
               }}
             >
               {userRole === "workshop_designer" ||
-              userRole === "workshop_designer2" ? null : loading ? (
+              userRole === "workshop_designer2" ||
+              localRole === "workshop_istasyon_a" ||
+              localRole === "workshop_istasyon_b" ||
+              localRole === "workshop_istasyon_c" ? null : loading ? (
                 <FormattedMessage id="updating" />
               ) : (
                 <>
