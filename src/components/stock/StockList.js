@@ -129,18 +129,7 @@ const StockList = () => {
     getData(`${BASE_URL}etsy/stock_list/?limit=${rowsPerPage || 0}&offset=${page * rowsPerPage}`)
       .then(res => {
         setListCount(res?.data?.length);
-        setStockListArr([
-          {
-            id: 30776,
-            receipt_id: "3320871932",
-            buyer: "Dorothy R. Landoll",
-            type: "Linen_Dress_1058",
-            variation_1_value: "M US W",
-            variation_2_value: "Two Si",
-            explanation: "Sara",
-            is_stock_used: false,
-          },
-        ]);
+        setStockListArr(res?.data);
 
         setIsLoaded(true);
       })
