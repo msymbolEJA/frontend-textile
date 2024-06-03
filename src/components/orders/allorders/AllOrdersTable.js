@@ -117,7 +117,7 @@ function AllOrdersTable() {
     (localStorage.getItem("localRole") === "workshop_manager" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
-    !["asya", "umraniye"].includes(localStorage.getItem("workshop")?.toLowerCase());
+    !["asya", "umraniye"]?.includes(localStorage.getItem("workshop")?.toLowerCase());
   const [selected, setSelected] = useState([]);
   const [countryFilter, setCountryFilter] = useState("all");
   const { user } = useContext(AppContext);
@@ -429,7 +429,9 @@ function AllOrdersTable() {
     isInProgress =
       (ordersInProgressLS?.length > 0 &&
         ordersInProgressLS.filter(item => item.id.toString() === id)?.length &&
-        !JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)).includes(id)) ||
+        !JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]")?.includes(
+          id,
+        )) ||
       false;
     if (selectedTag === "shipped") {
       changeOrderStatus(id, "shipped");
@@ -438,12 +440,12 @@ function AllOrdersTable() {
       localStorage.setItem(
         `${localStoragePrefix}-barcode_list`,
         JSON.stringify([
-          ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
+          ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]"),
           id,
         ]),
       );
       setCurrentBarcodeList([
-        ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
+        ...JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]"),
         id,
       ]);
     } else {
@@ -478,16 +480,16 @@ function AllOrdersTable() {
   };
 
   const removeItemfromBarcodeList = id => {
-    const fb = JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)).filter(
-      i => i !== id.toString(),
-    );
+    const fb = JSON.parse(
+      localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]",
+    ).filter(i => i !== id.toString());
     localStorage.setItem(`${localStoragePrefix}-barcode_list`, JSON.stringify(fb));
     setCurrentBarcodeList(fb);
   };
 
   const handleSaveScanned = () => {
     postData(`${BASE_URL}etsy/approved_all_ready/`, {
-      ids: JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`)),
+      ids: JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]"),
     })
       .then(res => {
         toastSuccessNotify("Saved!");
@@ -617,7 +619,7 @@ function AllOrdersTable() {
 
   const handleCheckBoxClick = id => {
     let tempArr;
-    if (selected.includes(id)) {
+    if (selected?.includes(id)) {
       tempArr = selected.filter(item => id?.toString() !== item?.toString());
       setSelected(tempArr);
     } else {
@@ -811,7 +813,7 @@ function AllOrdersTable() {
                   style={{
                     backgroundColor:
                       process.env.REACT_APP_STORE_NAME === "Yildiz Serisi"
-                        ? !["209", "79", "US", "CA"].includes(row["country_id"]) &&
+                        ? !["209", "79", "US", "CA"]?.includes(row["country_id"]) &&
                           row["shop"] === "Shopify"
                           ? "#dad0d4"
                           : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
@@ -835,7 +837,7 @@ function AllOrdersTable() {
                         e.stopPropagation();
                       }}
                     >
-                      <Checkbox checked={selected.includes(row?.id)} />
+                      <Checkbox checked={selected?.includes(row?.id)} />
                     </td>
                   ) : null}
 
@@ -1189,7 +1191,7 @@ function AllOrdersTable() {
           if (barcodes?.length) {
             setScannedBarcodes(prevBarcodes => {
               const newBarcodes = barcodes.reduce((acc, b) => {
-                if (!prevBarcodes.includes(b.rawValue)) {
+                if (!prevBarcodes?.includes(b.rawValue)) {
                   acc.push(b.rawValue);
                   handleSendScanned(b.rawValue);
                 }
@@ -1329,7 +1331,8 @@ function AllOrdersTable() {
               }}
             >
               <FormattedMessage id="totalScanned" />:{" "}
-              {JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`))?.length || 0}
+              {JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]")
+                ?.length || 0}
             </div>
             <div style={{ display: "flex", textAlign: "left" }}>
               <div style={{ display: "inline-block", marginLeft: 16 }}>
@@ -1341,42 +1344,43 @@ function AllOrdersTable() {
                 </Button>
               </div>
               <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
-                {JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`))?.length
-                  ? JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`))?.map(
-                      item => (
-                        <p
-                          key={item}
-                          style={{
-                            border: "1px blue solid",
-                            borderRadius: 4,
-                            color: "blue",
-                            margin: "0 5px",
-                            padding: "0 5px",
-                            fontWeight: "bold",
-                            height: "23px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => removeItemfromBarcodeList(item)}
-                        >
-                          {item}
-                          {currentSiblingList
-                            .filter(cs => cs?.id?.toString() === item?.toString())
-                            .map(s =>
-                              s.siblings.map((m, index) => (
-                                <span
-                                  style={{
-                                    color: "black",
-                                    fontStyle: "italic",
-                                    fontSize: "0.8rem",
-                                  }}
-                                >
-                                  {`-${m}`}
-                                </span>
-                              )),
-                            )}
-                        </p>
-                      ),
-                    )
+                {JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]")
+                  ?.length
+                  ? JSON.parse(
+                      localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]",
+                    )?.map(item => (
+                      <p
+                        key={item}
+                        style={{
+                          border: "1px blue solid",
+                          borderRadius: 4,
+                          color: "blue",
+                          margin: "0 5px",
+                          padding: "0 5px",
+                          fontWeight: "bold",
+                          height: "23px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => removeItemfromBarcodeList(item)}
+                      >
+                        {item}
+                        {currentSiblingList
+                          .filter(cs => cs?.id?.toString() === item?.toString())
+                          .map(s =>
+                            s.siblings.map((m, index) => (
+                              <span
+                                style={{
+                                  color: "black",
+                                  fontStyle: "italic",
+                                  fontSize: "0.8rem",
+                                }}
+                              >
+                                {`-${m}`}
+                              </span>
+                            )),
+                          )}
+                      </p>
+                    ))
                   : null}
               </div>
             </div>
@@ -1493,8 +1497,9 @@ function AllOrdersTable() {
                     <>
                       {" ("}
                       <FormattedMessage id="totalScanned" />:{" "}
-                      {JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`))
-                        ?.length || 0}
+                      {JSON.parse(
+                        localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]",
+                      )?.length || 0}
                       {")"}{" "}
                     </>
                   )}
