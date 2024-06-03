@@ -22,6 +22,7 @@ import { toastErrorNotify, toastSuccessNotify } from "../otheritems/ToastNotify"
 import TextField from "@material-ui/core/TextField";
 import { globalSearch } from "../../helper/PostData";
 import { FormattedMessage, useIntl } from "react-intl";
+import { statusData } from "../../helper/Constants";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -73,6 +74,13 @@ const useStyles = makeStyles({
     height: "fit-content",
     minWidth: "fit-content",
   },
+  opt: {
+    fontSize: "0.9rem",
+    width: "100px",
+    backgroundColor: "transparent",
+    borderColor: "#E0E0E0",
+    marginLeft: 20,
+  },
 });
 const StockList = () => {
   const [stockListArr, setStockListArr] = useState([]);
@@ -121,7 +129,19 @@ const StockList = () => {
     getData(`${BASE_URL}etsy/stock_list/?limit=${rowsPerPage || 0}&offset=${page * rowsPerPage}`)
       .then(res => {
         setListCount(res?.data?.length);
-        setStockListArr(res?.data);
+        setStockListArr([
+          {
+            id: 30776,
+            receipt_id: "3320871932",
+            buyer: "Dorothy R. Landoll",
+            type: "Linen_Dress_1058",
+            variation_1_value: "M US W",
+            variation_2_value: "Two Si",
+            explanation: "Sara",
+            is_stock_used: false,
+          },
+        ]);
+
         setIsLoaded(true);
       })
       .catch(err => {
@@ -134,11 +154,6 @@ const StockList = () => {
     getListFunc();
     // eslint-disable-next-line
   }, [page, rowsPerPage, store]);
-
-  const handleSupplier = e => {
-    setStore(e.currentTarget.id);
-    setPage(0);
-  };
 
   const handleChangePage = (event, newPage) => {
     let currentUrlParams = new URLSearchParams(window.location.search);
@@ -156,82 +171,17 @@ const StockList = () => {
     history.push(history.location.pathname + "?" + currentUrlParams.toString());
   };
 
-  const handleRowChange = useCallback(
-    (id, data) => {
-      putData(`${BASE_URL}/etsy/stock/${id}/`, data)
-        .then(response => {})
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => getListFunc());
-    },
-    [getListFunc],
-  );
-
-  const handleRowClick = useCallback(
-    id => {
-      const currentRow = stockListArr.find(row => row.id === id);
-      if (currentRow) {
-        if (!currentRow.isEditMode) {
-          const newRows = stockListArr?.map(row => {
-            return { ...row, isEditMode: row.id === id };
-          });
-          setStockListArr(newRows);
-        }
-      }
-    },
-    [stockListArr],
-  );
-
-  const handleRowBlur = useCallback(
-    (e, id, item) => {
-      let data = {
-        [e.target.name]: e.target.defaultValue,
-        mapping_id: item.mapping_id,
-        store: item.store,
-      };
-      handleRowChange(id, data);
-    },
-    [handleRowChange],
-  );
-
-  const handleRowKeyDown = useCallback(
-    (e, id, item) => {
-      if (e.key === "Enter") {
-        let data = {
-          [e.target.name]: e.target.defaultValue,
-          mapping_id: item.mapping_id,
-          store: item.store,
-        };
-        handleRowChange(id, data);
-      }
-    },
-    [handleRowChange],
-  );
-
-  const onChange = useCallback(
-    (e, row) => {
-      if (!previous[row.id]) {
-        setPrevious(state => ({ ...state, [row.id]: row }));
-      }
-      const value = e.target.value;
-      const name = e.target.name;
-      const { id } = row;
-      const newRows = stockListArr?.map(row => {
-        if (row.id === id) {
-          return { ...row, [name]: value };
-        }
-        return row;
+  const handleRowChange = useCallback((e, data) => {
+    putData(`${BASE_URL}etsy/mapping/${data?.id}/`, { status: e.target.value })
+      .then(response => {
+        const copyRows = [...stockListArr];
+        const newRows = copyRows?.filter(item => item?.id != data?.id);
+        setStockListArr(newRows);
+      })
+      .catch(error => {
+        console.log(error);
       });
-      setStockListArr(newRows);
-    },
-    [previous, stockListArr],
-  );
-
-  const handleNewStock = () => {
-    //console.log("HandleNewStock");
-    history.push(`/new-stock`);
-  };
+  }, []);
 
   const handleDeleteButton = id => {
     deleteProduct(`${BASE_URL}etsy/stock_used/${id}/`)
@@ -244,23 +194,6 @@ const StockList = () => {
         console.log(error);
         toastErrorNotify("Something went wrong!");
       });
-  };
-
-  const searchKeyPress = event => {
-    if (!(searchKey === "") && event.key === "Enter") {
-      globalSearch(`${BASE_URL}etsy/stock?search=${searchKey}`)
-        .then(response => {
-          console.log(response.data.length);
-          console.log(response.data);
-          setListCount(response.data.length);
-          setStockListArr(response.data?.results || []);
-          //setList(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-          //setList([]);
-        });
-    }
   };
 
   return (
@@ -346,7 +279,8 @@ const StockList = () => {
                 <FormattedMessage id="explanation" defaultMessage="Explanation" />
               </StyledTableCell>
               <StyledTableCell align="center">
-                <FormattedMessage id="delete" defaultMessage="Delete" />
+                <FormattedMessage id="delete" defaultMessage="Delete" /> /
+                <FormattedMessage id="update" defaultMessage="Update" />
               </StyledTableCell>
             </TableRow>
           </TableHead>
@@ -365,7 +299,9 @@ const StockList = () => {
                     // onBlur={e => handleRowBlur(e, item.id, item)}
                     // onKeyDown={e => handleRowKeyDown(e, item.id, item)}
                   >
-                    <StyledTableCell align="center">{item?.id}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      <a href={`/order-details/${item?.id}`}>{item?.id}</a>
+                    </StyledTableCell>
                     <StyledTableCell align="center">{item?.receipt_id}</StyledTableCell>
                     <StyledTableCell align="center">{item?.buyer}</StyledTableCell>
 
@@ -392,6 +328,24 @@ const StockList = () => {
                       >
                         <FormattedMessage id="delete" defaultMessage="Delete" />
                       </Button>
+
+                      <select
+                        // value={row[name]}
+                        onChange={e => handleRowChange(e, item)}
+                        onClick={e => e.stopPropagation()}
+                        className={classes.opt}
+                      >
+                        <optgroup>
+                          {statusData.map((item, index) => (
+                            <option key={`${index}+${item}`} value={item}>
+                              {formatMessage({
+                                id: item === "awaiting" ? "approved" : item,
+                                defaultMessage: item === "awaiting" ? "APPROVED" : item,
+                              })}
+                            </option>
+                          ))}
+                        </optgroup>
+                      </select>
                     </td>
                   </StyledTableRow>
                 );

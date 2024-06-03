@@ -5,7 +5,7 @@ import { useIntl } from "react-intl";
 
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   opt: {
     fontSize: "0.9rem",
     width: "100px",
@@ -23,7 +23,8 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
   let disabledForReadyNProgress =
     !localRole?.includes("workshop") &&
     process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
-    process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" && !NON_SKU &&
+    process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" &&
+    !NON_SKU &&
     (row[name] === "in_progress" || row[name] === "ready");
 
   // console.log("disabledForReadyNProgress", disabledForReadyNProgress)
@@ -34,25 +35,9 @@ const OrderStatus = ({ row, name, onSelectChange }) => {
         className={classes.opt}
         id={name}
         value={row[name]}
-        // disabled={false}
-        /*     disabled={
-          localRole?.includes("workshop")
-            ? true
-            : NON_SKU
-            ? !(
-                (!!row?.variation_1_value && !!row?.variation_2_value)
-                // &&
-                // !!row?.variation_1_name &&
-                // !!row?.variation_2_name
-              )
-            : !(!!row.supplier && !!row.type && !!row.color && !!row.length)
-          //   ||
-          // row[name] === "in_progress" ||
-          // row[name] === "ready"
-        } */
         name={name}
-        onChange={(e) => onSelectChange(e, row)}
-        onClick={(e) => e.stopPropagation()}
+        onChange={e => onSelectChange(e, row)}
+        onClick={e => e.stopPropagation()}
       >
         <optgroup>
           {statusData.map((item, index) => (
