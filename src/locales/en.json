@@ -183,11 +183,13 @@
   "calculator": "Calculator",
   "color_code": "Color Code",
   "stationStatus": "Station Status",
+  "station": "Station",
   "cutting": "Cutting",
   "sewing": "Sewing",
   "package": "Package",
   "receipt_id": "Receipt Id",
   "buyer_name": "Buyer Name",
   "sendToStock2": "Stock",
-  "in_stock": "In Stock"
+  "in_stock": "In Stock",
+  "workload": "Workload Statistics"
 }

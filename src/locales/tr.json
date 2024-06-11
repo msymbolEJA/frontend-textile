@@ -230,11 +230,13 @@
   "calculator": "Hesaplayıcı",
   "color_code": "Renk Kodu",
   "stationStatus": "İstasyon Durumu",
+  "station": "İstasyon",
   "cutting": "Kesim",
   "sewing": "Dikim",
   "package": "Paket",
   "receipt_id": "Makbuz Id",
   "buyer_name": "Alıcı Adı",
   "sendToStock2": "Stok",
-  "in_stock": "Stok Durum"
+  "in_stock": "Stok Durum",
+  "workload": "İş Yükü Dağılımı"
 }

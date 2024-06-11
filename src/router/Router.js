@@ -30,6 +30,7 @@ import StockList from "../components/stock/StockList";
 import NewStock from "../components/stock/NewStock";
 import CostTable from "../components/costtable/CostTable";
 import BestSeller from "../components/best-seller/BestSeller";
+import WorkLoad from "../components/workload/WorkLoad";
 import Favourites from "../components/favourites/Favourites";
 import Favourite from "../components/favourites/Favourite";
 
@@ -89,16 +90,9 @@ const DefaultContainer = () => (
     <PrivateRouter exact path="/ready-orders" component={ReadyOrders} />
     <PrivateRouter exact path="/cargo-list" component={CargoList} />
     <PrivateRouter exact path="/best-seller" component={BestSeller} />
-    <PrivateRouter
-      exact
-      path="/workshop-due-dates"
-      component={WorkshopDueDates}
-    />
-    <PrivateRouter
-      exact
-      path="/shipment-due-dates"
-      component={ShipmentDueDates}
-    />
+    <PrivateRouter exact path="/workload" component={WorkLoad} />
+    <PrivateRouter exact path="/workshop-due-dates" component={WorkshopDueDates} />
+    <PrivateRouter exact path="/shipment-due-dates" component={ShipmentDueDates} />
     <PrivateRouter exact path="/order-details/:id" component={OrderDetails} />
     <PrivateRouter exact path="/cargo-content/:id" component={CargoContent} />
     <PrivateRouter exact path="/stock-list" component={StockList} />

@@ -580,6 +580,14 @@ export default function MenuAppBar() {
                 {(userRole === "admin" ||
                   userRole === "shop_manager" ||
                   userRole === "shop_packer") && (
+                  <MenuItem id="workload" onClick={e => handleDirClick(e)}>
+                    <FormattedMessage id="workload" defaultMessage="workload" />
+                  </MenuItem>
+                )}
+
+                {(userRole === "admin" ||
+                  userRole === "shop_manager" ||
+                  userRole === "shop_packer") && (
                   <div>
                     <MenuItem id="favourites" onClick={e => handleDirClick(e)}>
                       <FormattedMessage id="favourites" defaultMessage="Favourites" />
