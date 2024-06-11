@@ -45,6 +45,7 @@ import { tagsData, repeatReasons } from "../../helper/Constants";
 import { FormattedMessage } from "react-intl";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import { AppContext } from "../../context/Context";
+import ConfirmDialog from "../otheritems/ConfirmModal";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 // const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
@@ -148,6 +149,8 @@ function App({ history }) {
   const [repeatMenuData, setRepeatMenuData] = useState({});
   const [refreshTable, setRefreshTable] = useState(false);
   const { user } = useContext(AppContext);
+
+  const [selectedItem, setSelectedItem] = useState();
 
   const [lastResponse, setLastResponse] = useState(null);
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
@@ -602,7 +605,12 @@ function App({ history }) {
     [],
   );
 
-  const handleSendToStock = async id => {
+  const handleConfirmModal = (e, id, action) => {
+    setSelectedItem({ ...selectedItem, id, action });
+  };
+
+  const handleSendToStock = async () => {
+    const id = selectedItem?.id;
     // handlerRepeatChange(e, row.id, row.is_repeat);
     getData(`${BASE_URL}etsy/send_to_stock/${id}/`)
       .then(response => {
@@ -615,7 +623,8 @@ function App({ history }) {
       .catch(error => {
         console.log("error", error);
         toastErrorNotify("Sending item to stock is not successfull");
-      });
+      })
+      .finally(() => setSelectedItem(null));
   };
 
   // console.log("NON_SKU", NON_SKU);
@@ -1103,7 +1112,7 @@ function App({ history }) {
                         size="small"
                         onClick={e => {
                           e.stopPropagation();
-                          handleSendToStock(row.id);
+                          handleConfirmModal(e, row?.id, "sendToStock2");
                         }}
                         color="primary"
                         variant="contained"
@@ -1425,6 +1434,11 @@ function App({ history }) {
         </Table>
       </TableContainer>
       <ToastContainer style={{ color: "black" }} />
+      <ConfirmDialog
+        handleConfirm={handleSendToStock}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+      />
     </Paper>
   );
 }

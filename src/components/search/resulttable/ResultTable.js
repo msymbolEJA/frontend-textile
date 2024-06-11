@@ -36,6 +36,7 @@ import { repeatReasons } from "../../../helper/Constants";
 import OrderStatus from "../../tableitems/CustomSelectCell";
 import UploadFile from "../../tableitems/UploadFile";
 import ConstantTableCell from "../../tableitems/ConstantTableCell";
+import ConfirmDialog from "../../otheritems/ConfirmModal";
 
 const StyledTableCell = withStyles(theme => ({
   head: {},
@@ -126,6 +127,8 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
   const [rowIdToRepeat, setRowIdToRepeat] = useState();
   const [disableCells, setDisableCells] = useState(false);
   const [repeatMenuData, setRepeatMenuData] = useState({});
+
+  const [selectedItem, setSelectedItem] = useState();
 
   let localRole = localStorage.getItem("localRole");
 
@@ -515,7 +518,13 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
     setSelected(newSelected);
   };
 
-  const handleSendToStock = async id => {
+  const handleConfirmModal = (e, id, action) => {
+    setSelectedItem({ ...selectedItem, id, action });
+  };
+
+  const handleSendToStock = async () => {
+    const id = selectedItem?.id;
+
     // handlerRepeatChange(e, row.id, row.is_repeat);
     getData(`${BASE_URL}etsy/send_to_stock/${id}/`)
       .then(response => {
@@ -527,7 +536,8 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
       .catch(error => {
         console.log("error", error);
         toastErrorNotify("Sending item to stock is not successfull");
-      });
+      })
+      .finally(() => setSelectedItem(null));
   };
 
   return (
@@ -808,7 +818,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                           size="small"
                           onClick={e => {
                             e.stopPropagation();
-                            handleSendToStock(row.id);
+                            handleConfirmModal(e, row?.id, "sendToStock2");
                           }}
                           color="primary"
                           variant="contained"
@@ -1072,6 +1082,11 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
           <h1 className={classes.warn}>Nothing Found</h1>
         </div>
       ) : null}
+      <ConfirmDialog
+        handleConfirm={handleSendToStock}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+      />
     </Paper>
   );
 }
