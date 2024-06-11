@@ -577,13 +577,11 @@ export default function MenuAppBar() {
                     </MenuItem>
                   )}
 
-                {(userRole === "admin" ||
-                  userRole === "shop_manager" ||
-                  userRole === "shop_packer") && (
+                {userRole === "admin" || userRole === "workshop_manager" ? (
                   <MenuItem id="workload" onClick={e => handleDirClick(e)}>
                     <FormattedMessage id="workload" defaultMessage="workload" />
                   </MenuItem>
-                )}
+                ) : null}
 
                 {(userRole === "admin" ||
                   userRole === "shop_manager" ||
