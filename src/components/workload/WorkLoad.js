@@ -4,7 +4,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
@@ -138,12 +138,16 @@ const WorkLoad = () => {
         ?.slice(0, 19)}`,
     )
       .then(({ data: { istatistic, list } }) => {
-        const graphData = Object.entries(istatistic).map(([key, value]) => {
+        const graphData = Object.entries(istatistic ?? {}).map(([key, value]) => {
           return Object.entries(value).map(([key2, value2]) => {
             return { type: key2, count: value2, title: key };
           });
         });
-        setData(prevState => ({ ...prevState, graphData, list }));
+        setData(prevState => ({
+          ...prevState,
+          graphData,
+          list,
+        }));
       })
       .catch(() => {
         // setPlatformsInfo({});
@@ -210,9 +214,15 @@ const WorkLoad = () => {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "auto auto" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: [...Array(data?.graphData?.length).keys()]
+            .map(item => "auto")
+            .join(" "),
+        }}
+      >
         {data?.graphData?.map((item, index) => {
-          console.log("item", item);
           return (
             <div key={index}>
               <ApexChart data={item} title={item?.[0]?.title} />
@@ -237,7 +247,7 @@ const WorkLoad = () => {
                   <TableCell className={classes.boldText} align="center">
                     <FormattedMessage id="user" defaultMessage="User" />
                   </TableCell>
-                  
+
                   <TableCell className={classes.boldText} align="center">
                     <FormattedMessage id="SKU" defaultMessage="SKU" />
                   </TableCell>
