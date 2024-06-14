@@ -126,6 +126,7 @@ const WorkLoad = () => {
     list: [],
     graphData: [],
     isLoading: false,
+    isFetched: false,
   });
 
   const getStatistics = () => {
@@ -153,7 +154,7 @@ const WorkLoad = () => {
         // setPlatformsInfo({});
       })
       .finally(() => {
-        setData(prevState => ({ ...prevState, isLoading: false }));
+        setData(prevState => ({ ...prevState, isLoading: false, isFetched: true }));
       });
   };
 
@@ -231,64 +232,73 @@ const WorkLoad = () => {
         })}
       </div>
 
-      {data?.list?.length ? (
-        <div
-          style={{
-            marginTop: "50px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <TableContainer className={classes.tContainer} component={Paper}>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow className={classes.tableCellHeader}>
-                  <TableCell className={classes.boldText} align="center">
-                    <FormattedMessage id="user" defaultMessage="User" />
-                  </TableCell>
-
-                  <TableCell className={classes.boldText} align="center">
-                    <FormattedMessage id="SKU" defaultMessage="SKU" />
-                  </TableCell>
-
-                  <TableCell className={classes.boldText} align="center">
-                    <FormattedMessage id="station" defaultMessage="station" />
-                  </TableCell>
-
-                  <TableCell className={classes.boldText} align="center">
-                    <FormattedMessage id="date" defaultMessage="Date" />
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data?.list?.map((item, skuIndex) => {
-                  return (
-                    <TableRow
-                      className={skuIndex % 2 === 1 ? classes.darkTableRow : null}
-                      key={skuIndex}
-                    >
-                      <TableCell align="center" className={classes.boldText}>
-                        {item?.user}
+      {data?.isFetched ? (
+        <>
+          {data?.list?.length ? (
+            <div
+              style={{
+                marginTop: "50px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <TableContainer className={classes.tContainer} component={Paper}>
+                <Table className={classes.table}>
+                  <TableHead>
+                    <TableRow className={classes.tableCellHeader}>
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage id="user" defaultMessage="User" />
                       </TableCell>
 
-                      <TableCell align="center" className={classes.boldText}>
-                        {item?.mapping}
-                      </TableCell>
-                      <TableCell align="center" className={classes.boldText}>
-                        {item?.station_updated}
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage id="SKU" defaultMessage="SKU" />
                       </TableCell>
 
-                      <TableCell align="center" className={classes.boldText}>
-                        {moment.utc(item?.timestamp).local().format("MM-DD-YY HH:mm")}
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage id="station" defaultMessage="station" />
+                      </TableCell>
+
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage id="date" defaultMessage="Date" />
                       </TableCell>
                     </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
+                  </TableHead>
+                  <TableBody>
+                    {data?.list?.map((item, skuIndex) => {
+                      return (
+                        <TableRow
+                          className={skuIndex % 2 === 1 ? classes.darkTableRow : null}
+                          key={skuIndex}
+                        >
+                          <TableCell align="center" className={classes.boldText}>
+                            {item?.user}
+                          </TableCell>
+
+                          <TableCell align="center" className={classes.boldText}>
+                            {item?.mapping}
+                          </TableCell>
+                          <TableCell align="center" className={classes.boldText}>
+                            {item?.station_updated}
+                          </TableCell>
+
+                          <TableCell align="center" className={classes.boldText}>
+                            {moment.utc(item?.timestamp).local().format("MM-DD-YY HH:mm")}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          ) : (
+            <h3>
+              {" "}
+              <FormattedMessage id={"noData"} defaultMessage={"No Data"} />
+            </h3>
+          )}
+        </>
       ) : null}
     </div>
   );
