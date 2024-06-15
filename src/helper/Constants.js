@@ -66,6 +66,7 @@ export const USER_TYPE = {
   SHOP_MANAGER: "shop_manager",
   SHOP_PACKER: "shop_packer",
   WORKSHOP_MANAGER: "workshop_manager",
+  WORKSHOP_ADMIN: "workshop_admin",
   WORKSHOP_PACKER: "workshop_packer",
 };
 

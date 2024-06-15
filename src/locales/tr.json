@@ -11,6 +11,7 @@
   "shop_manager": "Mağaza Müdürü",
   "shop_packer": "Mağaza Paketleyicisi",
   "workshop_manager": "Atölye Müdürü",
+  "workshop_admin": "Atölye Yönetici",
   "workshop_packer": "Atölye Paketleyicisi",
   "forgotPassword": "Parolayı unuttum.",
   "dontHaveAccount": "Hesabım yok? Kaydol!",
@@ -238,5 +239,6 @@
   "buyer_name": "Alıcı Adı",
   "sendToStock2": "Stok",
   "in_stock": "Stok Durum",
-  "workload": "İş Yükü Dağılımı"
+  "workload": "İş Yükü Dağılımı",
+  "Order Number": "Sipariş Numarası"
 }

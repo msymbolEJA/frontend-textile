@@ -248,7 +248,7 @@ const WorkLoad = () => {
                   <TableHead>
                     <TableRow className={classes.tableCellHeader}>
                       <TableCell className={classes.boldText} align="center">
-                        <FormattedMessage id="user" defaultMessage="User" />
+                        <FormattedMessage id="Order Number" defaultMessage="Order Number" />
                       </TableCell>
 
                       <TableCell className={classes.boldText} align="center">
@@ -272,7 +272,7 @@ const WorkLoad = () => {
                           key={skuIndex}
                         >
                           <TableCell align="center" className={classes.boldText}>
-                            {item?.user}
+                            {item?.mapping_id}
                           </TableCell>
 
                           <TableCell align="center" className={classes.boldText}>

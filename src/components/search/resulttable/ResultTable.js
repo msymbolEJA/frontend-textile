@@ -779,6 +779,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                         pointerEvents:
                           loading ||
                           (localRole !== "workshop_manager" &&
+                            localRole !== "workshop_admin" &&
                             (row["status"] === "in_progress" || row["status"] === "ready"))
                             ? "none"
                             : "auto",

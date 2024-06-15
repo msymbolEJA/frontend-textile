@@ -225,6 +225,7 @@ export default function MenuAppBar() {
   const localUser = localStorage.getItem("localUser");
   const isBeyazit =
     (localStorage.getItem("localRole") === "workshop_manager" ||
+      localStorage.getItem("localRole") === "workshop_admin" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
     !["asya", "umraniye"].includes(localStorage.getItem("workshop")?.toLowerCase());
@@ -501,6 +502,10 @@ export default function MenuAppBar() {
                 open={open}
                 onClose={handleClose}
               >
+                <MenuItem id="workload" onClick={e => handleDirClick(e)}>
+                  <FormattedMessage id="workload" defaultMessage="workload" />
+                </MenuItem>
+
                 <MenuItem onClick={handleLogout}>
                   <FormattedMessage id="logout" defaultMessage="Logout" />
                 </MenuItem>

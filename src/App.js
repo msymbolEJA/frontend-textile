@@ -45,11 +45,10 @@ function App() {
 
     const isBeyazit =
       (localStorage.getItem("localRole") === "workshop_manager" ||
+        localStorage.getItem("localRole") === "workshop_admin" ||
         !localStorage.getItem("localRole") ||
         localStorage.getItem("localRole") === "null") &&
-      !["asya", "umraniye"].includes(
-        localStorage.getItem("workshop")?.toLowerCase()
-      );
+      !["asya", "umraniye"].includes(localStorage.getItem("workshop")?.toLowerCase());
 
     if (isBeyazit) return;
     getData(`${BASE_URL}etsy/summary_order/`).then((response) => {

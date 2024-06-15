@@ -15,6 +15,7 @@
   "shop_manager": "Shop Manager",
   "shop_packer": "Shop Packer",
   "workshop_manager": "Workshop Manager",
+  "workshop_admin": "Workshop Admin",
   "workshop_packer": "Workshop Packer",
   "alreadyHaveAccount": "Already have an account? Login.",
   "allOrders": "All Orders",
@@ -191,5 +192,6 @@
   "buyer_name": "Buyer Name",
   "sendToStock2": "Stock",
   "in_stock": "In Stock",
-  "workload": "Workload Statistics"
+  "workload": "Workload Statistics",
+  "Order Number": "Order Number"
 }
