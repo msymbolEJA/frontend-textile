@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CostGetter = ({ quantity, calcCost, title }) => {
+const CostGetter = ({ calcCost, title }) => {
   const classes = useStyles();
 
   const mobileView = useMediaQuery("(max-width:1024px)");
@@ -50,15 +50,15 @@ const CostGetter = ({ quantity, calcCost, title }) => {
             <h3>
               {" "}
               <FormattedMessage id="Total Cost" defaultMessage="Total Cost" />
-              {" : $" + calcCost.total_cost.toFixed(2)}
+              {" : $" + calcCost?.total_cost?.toFixed(2)}
             </h3>
             <h3>
-              <FormattedMessage id="Quantity" defaultMessage="Quantity" />
-              {" : " + quantity}
+              <FormattedMessage id="Total Fabric (m)" defaultMessage="Total Fabric (m)" />
+              {" : " + calcCost?.total_fabric?.toFixed(2)} m
             </h3>
             <h3>
-              <FormattedMessage id="Calculated Product" defaultMessage="Calculated Product" />
-              {" : " + calcCost.calculated_product}
+              <FormattedMessage id="Total Product" defaultMessage="Total Product" />
+              {" : " + calcCost.total_product}
             </h3>
           </>
         )}

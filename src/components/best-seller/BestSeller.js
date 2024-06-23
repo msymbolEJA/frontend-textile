@@ -139,9 +139,10 @@ const DateGetter = () => {
 
   const [quantity, setQuantity] = useState(null);
   const [calcCost, setCalcCost] = useState({
-    total_cost: null,
+    total_cost: 0,
     isLoading: false,
-    repeat_count: 0,
+    total_product: 0,
+    total_fabric: 0,
   });
 
   const [missings, setMissings] = useState({
@@ -182,8 +183,9 @@ const DateGetter = () => {
           setCalcCost({
             ...calcCost,
             total_cost: response.data?.product_cost?.total_cost,
+            total_fabric: response.data?.product_cost?.total_fabric,
+            total_product: response.data?.product_cost?.total_product,
             isLoading: false,
-            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
           });
           setBestSeller({
             ...bestSeller,
@@ -202,8 +204,9 @@ const DateGetter = () => {
           setCalcCost({
             ...calcCost,
             total_cost: response.data?.product_cost?.total_cost,
+            total_fabric: response.data?.product_cost?.total_fabric,
+            total_product: response.data?.product_cost?.total_product,
             isLoading: false,
-            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
           });
           setBestSeller({
             ...bestSeller,
@@ -215,20 +218,21 @@ const DateGetter = () => {
         } else if (selectedPlatform === "stocking") {
           setSearchedPlatform("stocking");
           setCategoryVariationValues({
-            variation_1_value: null,
-            variation_2_value: null,
+            variation_1_value: "color",
+            variation_2_value: "style",
           });
 
           setQuantity(response.data?.product_cost?.total_product);
           setCalcCost({
             ...calcCost,
             total_cost: response.data?.product_cost?.total_cost,
+            total_fabric: response.data?.product_cost?.total_fabric,
+            total_product: response.data?.product_cost?.total_product,
             isLoading: false,
-            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
           });
           setBestSeller({
             ...bestSeller,
-            bestRows: null,
+            bestRows: response.data?.per_color,
           });
           setMissings(response.data?.missing_data);
           setCategories(null);
@@ -243,8 +247,9 @@ const DateGetter = () => {
           setCalcCost({
             ...calcCost,
             total_cost: response.data?.product_cost?.total_cost,
+            total_fabric: response.data?.product_cost?.total_fabric,
+            total_product: response.data?.product_cost?.total_product,
             isLoading: false,
-            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
           });
           setBestSeller({
             ...bestSeller,
@@ -263,14 +268,36 @@ const DateGetter = () => {
           setCalcCost({
             ...calcCost,
             total_cost: response.data?.product_cost?.total_cost,
+            total_fabric: response.data?.product_cost?.total_fabric,
+            total_product: response.data?.product_cost?.total_product,
             isLoading: false,
-            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
           });
           setBestSeller({
             ...bestSeller,
             bestRows: response.data?.per_type.map(item => {
               return { ...item, sku: "Curtain" };
             }),
+          });
+          setMissings(response.data?.missing_data);
+          setCategories(null);
+          setPerSKU(null);
+        } else if (selectedPlatform === "table") {
+          setSearchedPlatform("table");
+          setCategoryVariationValues({
+            variation_1_value: "size",
+            variation_2_value: "color",
+          });
+          setQuantity(response.data?.product_cost?.total_product);
+          setCalcCost({
+            ...calcCost,
+            total_cost: response.data?.product_cost?.total_cost,
+            total_fabric: response.data?.product_cost?.total_fabric,
+            total_product: response.data?.product_cost?.total_product,
+            isLoading: false,
+          });
+          setBestSeller({
+            ...bestSeller,
+            bestRows: response.data?.per_sku_size_color,
           });
           setMissings(response.data?.missing_data);
           setCategories(null);
@@ -285,8 +312,9 @@ const DateGetter = () => {
           setCalcCost({
             ...calcCost,
             total_cost: response.data?.product_cost?.total_cost,
+            total_fabric: response.data?.product_cost?.total_fabric,
+            total_product: response.data?.product_cost?.total_product,
             isLoading: false,
-            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
           });
           setBestSeller({
             ...bestSeller,
@@ -305,8 +333,9 @@ const DateGetter = () => {
           setCalcCost({
             ...calcCost,
             total_cost: response.data?.product_cost?.total_cost,
+            total_fabric: response.data?.product_cost?.total_fabric,
+            total_product: response.data?.product_cost?.total_product,
             isLoading: false,
-            calculated_product: response.data?.product_cost?.calculated_product ?? 0,
           });
           setBestSeller({
             ...bestSeller,
@@ -325,8 +354,9 @@ const DateGetter = () => {
           setCalcCost({
             ...calcCost,
             total_cost: response.data?.total_cost,
+            total_fabric: response.data?.total_fabric,
+            total_product: response.data?.total_product,
             isLoading: false,
-            calculated_product: response.data?.calculated_product ?? 0,
           });
           setBestSeller({
             ...bestSeller,
@@ -425,6 +455,7 @@ const DateGetter = () => {
               <PlatformButton label="Curtain" id="curtain" />
               <PlatformButton label="Fabric" id="fabric" />
               <PlatformButton label="Pillow" id="pillow" />
+              <PlatformButton label="Table" id="table" />
               <PlatformButton label="Sku" id="sku" />
               <PlatformButton label="All" id="all" />
             </div>
@@ -479,7 +510,7 @@ const DateGetter = () => {
         {!perSKU &&
         quantity !== null &&
         (userRole === "admin" || user === "Umraniye" || user === "Muhasebe") ? (
-          <CostGetter calcCost={calcCost} quantity={quantity} title={"Calculator"} />
+          <CostGetter calcCost={calcCost} title={"Calculator"} />
         ) : null}
       </div>
 
@@ -618,11 +649,11 @@ const DateGetter = () => {
               return (
                 <CostGetter
                   calcCost={{
-                    total_cost: value.total_cost,
-                    calculated_product: value.calculated_product,
+                    total_cost: value?.total_cost,
+                    total_fabric: value?.total_fabric,
+                    total_product: value?.total_product,
                   }}
                   key={i}
-                  quantity={value?.total_product}
                   title={convertToTitleCase(key)}
                 />
               );

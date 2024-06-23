@@ -73,7 +73,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
               sizes: [{ size, sku_cost, sku_count, total_fabric }],
               sku_cost,
               sku_count,
-              total_fabric
+              total_fabric,
             });
           }
         } else {
@@ -97,7 +97,6 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
         }
       });
 
-   
       return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
     } else if (selectedPlatform === "couch") {
       groupedItems.length = 0;
@@ -115,10 +114,11 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
         });
       });
       return groupedItems.sort((a, b) => b.sku_count - a.sku_count);
-    } else if (selectedPlatform === "stocking") {
-      groupedItems.length = 0;
-      return groupedItems;
-    } else if (selectedPlatform === "curtain") {
+    } else if (
+      selectedPlatform === "curtain" ||
+      selectedPlatform === "stocking" ||
+      selectedPlatform === "table"
+    ) {
       groupedItems.length = 0;
       items.forEach(item => {
         const { sku, variation_2_value, sku_cost, sku_count, variation_1_value, total_fabric } =
@@ -259,7 +259,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
       //      align="center"
       //    >
       //      {sku} <br />
-      //      {`(Total Count: ${sku_count}, Total Cost: $${sku_cost.toFixed(2)})`}
+      //      {`(Total Count: ${sku_count}, Total Cost: $${sku_cost?.toFixed(2)})`}
       //    </TableCell>
       //  </TableRow>;
       return (
@@ -309,7 +309,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
     ) {
       rows.length = 0;
       colors.forEach(colorObj => {
-        const { color, sizes, sku_count, sku_cost , total_fabric: color_total_fabric} = colorObj;
+        const { color, sizes, sku_count, sku_cost, total_fabric: color_total_fabric } = colorObj;
         const sizeCount = sizes.length;
 
         sizes.forEach((sizeObj, i) => {
@@ -330,7 +330,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
                     <span style={{ fontWeight: "normal" }}>
                       <br /> {`Total Count: ${SKU_COUNT}`}
                       <br />
-                      {`Total Cost: $${SKU_COST.toFixed(2)}`}
+                      {`Total Cost: $${SKU_COST?.toFixed(2)}`}
                     </span>
                   </TableCell>
                   <TableCell rowSpan={sizeCount} align="center" className={classes.boldText}>
@@ -340,9 +340,9 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
                         <span style={{ fontWeight: "normal" }}>
                           <br /> {`Total Count: ${sku_count}`}
                           <br />
-                          {`Total Cost: $${sku_cost.toFixed(2)}`}
+                          {`Total Cost: $${sku_cost?.toFixed(2)}`}
                           <br />
-                          {`Total Fabric: ${color_total_fabric.toFixed(2)}m`}
+                          {`Total Fabric: ${color_total_fabric?.toFixed(2)}m`}
                         </span>
                       </>
                     ) : (
@@ -367,7 +367,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
                   backgroundColor: sizeSkuCost ? "" : "#eee685",
                 }}
               >
-                {sizeSkuCost !== null ? `$${sizeSkuCost.toFixed(2)}` : "-"}
+                {sizeSkuCost !== null ? `$${sizeSkuCost?.toFixed(2)}` : "-"}
               </TableCell>
               <TableCell
                 align="center"
@@ -385,7 +385,9 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
                   backgroundColor: sizeSkuCost ? "" : "#eee685",
                 }}
               >
-                {total_fabric !== null && total_fabric !== undefined ? `${total_fabric?.toFixed(2)}m` : ""}
+                {total_fabric !== null && total_fabric !== undefined
+                  ? `${total_fabric?.toFixed(2)}m`
+                  : ""}
               </TableCell>
             </TableRow>,
           );
@@ -434,7 +436,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
               backgroundColor: SKU_COST ? "" : "#eee685",
             }}
           >
-            {SKU_COST !== null ? `$${SKU_COST.toFixed(2)}` : "-"}
+            {SKU_COST !== null ? `$${SKU_COST?.toFixed(2)}` : "-"}
           </TableCell>
           <TableCell
             align="center"
@@ -458,7 +460,11 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
       );
 
       // rowCount += sizeCount;
-    } else if (selectedPlatform === "curtain") {
+    } else if (
+      selectedPlatform === "curtain" ||
+      selectedPlatform === "stocking" ||
+      selectedPlatform === "table"
+    ) {
       rows.length = 0;
 
       rows.push(
@@ -498,7 +504,7 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
               backgroundColor: SKU_COST ? "" : "#eee685",
             }}
           >
-            {SKU_COST !== null ? `$${SKU_COST.toFixed(2)}` : "-"}
+            {SKU_COST !== null ? `$${SKU_COST?.toFixed(2)}` : "-"}
           </TableCell>
           <TableCell
             align="center"
@@ -563,28 +569,26 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
               backgroundColor: SKU_COST ? "" : "#eee685",
             }}
           >
-            {SKU_COST !== null ? `$${SKU_COST.toFixed(2)}` : "-"}
+            {SKU_COST !== null ? `$${SKU_COST?.toFixed(2)}` : "-"}
           </TableCell>
         </TableRow>
       );
 
       // rowCount += sizeCount;
-    } else if (selectedPlatform === "stocking") {
-      rows.length = 0;
     } else if (selectedPlatform === "all") {
       rows.length = 0;
 
-      rows.push(
-        <TableRow className={skuIndex % 2 === 1 ? classes.darkTableRow : null}>
-          <TableCell align="center" className={classes.boldText}>
-            {color}
-          </TableCell>
+      // rows.push(
+      //   <TableRow className={skuIndex % 2 === 1 ? classes.darkTableRow : null}>
+      //     <TableCell align="center" className={classes.boldText}>
+      //       {color}
+      //     </TableCell>
 
-          <TableCell align="center" className={classes.boldText}>
-            {metrage?.toFixed(2)} m
-          </TableCell>
-        </TableRow>,
-      );
+      //     <TableCell align="center" className={classes.boldText}>
+      //       {metrage?.toFixed(2)} m
+      //     </TableCell>
+      //   </TableRow>,
+      // );
 
       // rowCount += sizeCount;
     }
@@ -664,18 +668,20 @@ const SellerTable = ({ bestRows, selectedPlatform, categoryVariationValues }) =>
                     )}
                   </TableRow>
                 ) : (
-                  <TableRow className={classes.tableCellHeader}>
-                    <TableCell className={classes.boldText} align="center">
-                      <FormattedMessage id="color" defaultMessage="Color" />
-                    </TableCell>
+                  <>
+                    {/* <TableRow className={classes.tableCellHeader}>
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage id="color" defaultMessage="Color" />
+                      </TableCell>
 
-                    <TableCell className={classes.boldText} align="center">
-                      <FormattedMessage
-                        id={"total_metrage"}
-                        defaultMessage={convertToTitleCase("total_metrage")}
-                      />
-                    </TableCell>
-                  </TableRow>
+                      <TableCell className={classes.boldText} align="center">
+                        <FormattedMessage
+                          id={"total_metrage"}
+                          defaultMessage={convertToTitleCase("total_metrage")}
+                        />
+                      </TableCell>
+                    </TableRow> */}
+                  </>
                 )}
               </TableHead>
               <TableBody>{renderSkuAndColorRows(groupedBySkuAndColor)}</TableBody>
