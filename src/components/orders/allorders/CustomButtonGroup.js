@@ -57,7 +57,6 @@ const CustomButtonGroup = ({
   const { isAdmin } = useContext(AppContext);
   const isBeyazit =
     (localStorage.getItem("localRole") === "workshop_manager" ||
-    localStorage.getItem("localRole") === "workshop_admin" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
     !["asya", "umraniye"].includes(

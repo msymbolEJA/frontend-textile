@@ -41,7 +41,6 @@ const AppRouter = () => {
 
   const isBeyazit =
     (localStorage.getItem("localRole") === "workshop_manager" ||
-      localStorage.getItem("localRole") === "workshop_admin" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
     !["asya", "umraniye"].includes(localStorage.getItem("workshop")?.toLowerCase());
@@ -53,17 +52,11 @@ const AppRouter = () => {
         <Route path="/reset/:id" component={ResetPassword} />
         <Route path="/forgot" component={ForgetPassword} />
         <Route exact path="/login" component={Login} />
-        {isBeyazit ||
-        localRole === "workshop_designer" ||
-        localRole === "workshop_designer2" ? (
+        {isBeyazit || localRole === "workshop_designer" || localRole === "workshop_designer2" ? (
           <>
             <PrivateRouter component={Navbar} />
             <PrivateRouter exact path="/cargo-list" component={CargoList} />
-            <PrivateRouter
-              exact
-              path="/all-orders"
-              component={AllOrdersTable}
-            />
+            <PrivateRouter exact path="/all-orders" component={AllOrdersTable} />
             <PrivateRouter exact path="/" component={AllOrdersTable} />
           </>
         ) : (

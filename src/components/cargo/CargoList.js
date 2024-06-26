@@ -76,7 +76,6 @@ const useStyles = makeStyles({
 export default function CustomizedTables() {
   const isBeyazit =
     (localStorage.getItem("localRole") === "workshop_manager" ||
-      localStorage.getItem("localRole") === "workshop_admin" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
     !["asya", "umraniye"].includes(localStorage.getItem("workshop")?.toLowerCase());

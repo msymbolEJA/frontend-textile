@@ -115,7 +115,6 @@ function AllOrdersTable() {
   );
   const isBeyazit =
     (localStorage.getItem("localRole") === "workshop_manager" ||
-      localStorage.getItem("localRole") === "workshop_admin" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
     !["asya", "umraniye"]?.includes(localStorage.getItem("workshop")?.toLowerCase());
@@ -710,7 +709,7 @@ function AllOrdersTable() {
                     <FormattedMessage id="color" defaultMessage="Color" />
                   </StyledTableCell>
 
-                  {userRole !== "workshop_manager" && userRole !== "workshop_admin" ? (
+                  {userRole !== "workshop_manager"  ? (
                     <StyledTableCell align="center">
                       <FormattedMessage id="explanationMod" defaultMessage="Mod-Explanation" />{" "}
                     </StyledTableCell>
@@ -929,7 +928,7 @@ function AllOrdersTable() {
                               : "variation_2_value",
                         }}
                       />
-                      {userRole !== "workshop_manager" && userRole !== "workshop_admin" ? (
+                      {userRole !== "workshop_manager" ? (
                         <EditableTableCell
                           onClick={e => e.stopPropagation()}
                           {...{
