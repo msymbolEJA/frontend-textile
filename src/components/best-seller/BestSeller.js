@@ -450,12 +450,24 @@ const DateGetter = () => {
             <div className={classes.platformBtnWrapper}>
               <PlatformButton label="Dress" id="dress" />
               <PlatformButton label="Approne" id="approne" />
+
               <PlatformButton label="Stocking" id="stocking" />
-              <PlatformButton label="Couch" id="couch" />
+
+              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+                <PlatformButton label="Couch" id="couch" />
+              ) : null}
+
               <PlatformButton label="Curtain" id="curtain" />
               <PlatformButton label="Fabric" id="fabric" />
-              <PlatformButton label="Pillow" id="pillow" />
-              <PlatformButton label="Table" id="table" />
+
+              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+                <PlatformButton label="Pillow" id="pillow" />
+              ) : null}
+
+              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+                <PlatformButton label="Table" id="table" />
+              ) : null}
+              
               <PlatformButton label="Sku" id="sku" />
               <PlatformButton label="All" id="all" />
             </div>
