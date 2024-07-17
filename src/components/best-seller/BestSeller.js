@@ -198,7 +198,7 @@ const DateGetter = () => {
           setSearchedPlatform("approne");
           setCategoryVariationValues({
             variation_1_value: "size",
-            variation_2_value: "type",
+            variation_2_value: process.env.REACT_APP_STORE_NAME === "Mina" ? "color" : "type",
           });
           setQuantity(response.data?.product_cost?.total_product);
           setCalcCost({
@@ -261,8 +261,8 @@ const DateGetter = () => {
         } else if (selectedPlatform === "curtain") {
           setSearchedPlatform("curtain");
           setCategoryVariationValues({
-            variation_1_value: "width",
-            variation_2_value: "length",
+            variation_1_value: process.env.REACT_APP_STORE_NAME === "Mina" ? "dimension" : "width",
+            variation_2_value: process.env.REACT_APP_STORE_NAME === "Mina" ? "color" : "length",
           });
           setQuantity(response.data?.product_cost?.total_product);
           setCalcCost({
@@ -467,7 +467,7 @@ const DateGetter = () => {
               {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
                 <PlatformButton label="Table" id="table" />
               ) : null}
-              
+
               <PlatformButton label="Sku" id="sku" />
               <PlatformButton label="All" id="all" />
             </div>

@@ -207,7 +207,7 @@
   "Total Cost": "Toplam Maliyet",
   "Total Count": "Toplam Adet",
   "Total Fabric (m)": "Toplam Kumaş (m)",
- "Total Product": "Toplam Ürün",
+  "Total Product": "Toplam Ürün",
   "Labor Cost": "Labor Maliyet",
   "GoldGr": "Altın GR",
   "MISSING TYPES": "EKSİK TÜR",
@@ -243,5 +243,6 @@
   "sendToStock2": "Stok",
   "in_stock": "Stok Durum",
   "workload": "İş Yükü Dağılımı",
-  "Order Number": "Sipariş Numarası"
+  "Order Number": "Sipariş Numarası",
+  "dimension": "Boyut"
 }
