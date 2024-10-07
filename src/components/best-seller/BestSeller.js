@@ -21,6 +21,10 @@ import { convertToTitleCase } from "../../helper/convertToTitleCase";
 import ApexChart from "./ApexChart";
 import CostGetter from "./CostGetter";
 import SellerTable from "./SellerTable";
+
+import DatePicker from "react-multi-date-picker";
+import Select from 'react-select'
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useStyles = makeStyles(theme => ({
@@ -116,6 +120,9 @@ const useStyles = makeStyles(theme => ({
     width: "fit-content",
     margin: "0 auto",
   },
+  fullWidth: {
+    width: "100%"
+  }
 }));
 
 const DateGetter = () => {
@@ -136,6 +143,26 @@ const DateGetter = () => {
   });
   const [selectedPlatform, setSelectedPlatform] = useState("all");
   const [searchedPlatform, setSearchedPlatform] = useState("");
+
+  const [selectedYear, setSelectedYear] = useState(new Date());
+  const options = [
+    { value: 'january', label: 'Ocak' },
+    { value: 'february', label: 'Şubat' },
+    { value: 'march', label: 'Mart' },
+    { value: 'april', label: 'Nisan' },
+    { value: 'may', label: 'Mayıs' },
+    { value: 'june', label: 'Haziran' },
+    { value: 'july', label: 'Temmuz' },
+    { value: 'august', label: 'Ağustos' },
+    { value: 'september', label: 'Eylül' },
+    { value: 'october', label: 'Ekim' },
+    { value: 'november', label: 'Kasım' },
+    { value: 'december', label: 'Aralık' }
+  ];
+
+  const [months, setMonths] = useState([])
+
+  console.log(months)
 
   const [quantity, setQuantity] = useState(null);
   const [calcCost, setCalcCost] = useState({
@@ -167,8 +194,7 @@ const DateGetter = () => {
     setBestSeller({ ...bestSeller, isLoading: true });
 
     getData(
-      `${BASE_URL}cogs/${selectedPlatform.replace("sku", "all")}/?start_date=${
-        beginnerDateRef.current.value
+      `${BASE_URL}cogs/${selectedPlatform.replace("sku", "all")}/?start_date=${beginnerDateRef.current.value
       }&end_date=${endDateRef.current.value}`,
     )
       .then(response => {
@@ -426,11 +452,24 @@ const DateGetter = () => {
   const bestRows = bestSeller?.bestRows;
 
   const downloadExcel = () => {
-    window.open(
-      `${BASE_URL}cogs/excel/?type=${selectedPlatform}&start_date=${beginnerDateRef.current.value}&end_date=${endDateRef.current.value}`,
-      "_blank",
-    );
+    if (selectedPlatform === "all") {
+      window.open(
+        `${BASE_URL}cogs/monthly-usage-report/?months=${months.map(item => options.findIndex(o => o?.value === item?.value) + 1).join(",")}&year=${selectedYear?.getFullYear()}`,
+        "_blank",
+      );
+    }
+    else {
+
+      window.open(
+        `${BASE_URL}cogs/excel/?type=${selectedPlatform}&start_date=${beginnerDateRef.current.value}&end_date=${endDateRef.current.value}`,
+        "_blank",
+      );
+    }
   };
+
+
+
+
 
   return (
     <div>
@@ -509,7 +548,7 @@ const DateGetter = () => {
                   className={classes.btn}
                   color="primary"
                   disabled={
-                    calcCost.isLoading || selectedPlatform === "all" || selectedPlatform === "sku"
+                    calcCost.isLoading || selectedPlatform === "sku" || (selectedPlatform === "all" && !months.length)
                   }
                   onClick={downloadExcel}
                 >
@@ -517,11 +556,48 @@ const DateGetter = () => {
                 </Button>
               </div>
             </div>
+            {selectedPlatform === "all" ? <div
+              style={{
+                display: mobileView ? "block" : "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                maxWidth: "620px"
+              }}
+            >
+              <div className={classes.inputs} style={{ width: "100%" }}>
+
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 10, width: "100%", justifyContent: "space-between" }}>
+                  <Select
+                    placeholder="Months"
+                    isMulti
+                    value={months}
+                    onChange={(a) => {
+                      setMonths(a)
+                    }}
+                    name="colors"
+                    options={options}
+                    className={classes.fullWidth}
+                    classNamePrefix="select"
+                  />
+                  <DatePicker
+                    value={selectedYear}
+                    onChange={setSelectedYear}
+                    format="YYYY"
+                    type="year"
+                    onlyYearPicker
+                    style={{ width: "100px", height: "31px", textAlign: "center" }}
+                  />
+                </div>
+              </div>
+
+
+            </div> : null}
           </Paper>
         </div>
         {!perSKU &&
-        quantity !== null &&
-        (userRole === "admin" || user === "Umraniye" || user === "Muhasebe") ? (
+          quantity !== null &&
+          (userRole === "admin" || user === "Umraniye" || user === "Muhasebe") ? (
           <CostGetter calcCost={calcCost} title={"Calculator"} />
         ) : null}
       </div>
@@ -554,20 +630,18 @@ const DateGetter = () => {
                                 const links = {
                                   fabric: `order-details/${_id}`,
                                   fabric_price: `${process.env.REACT_APP_BASE_URL}admin/COGS/fabric/${_id}/change/`,
-                                  man_hour: `${
-                                    process.env.REACT_APP_BASE_URL
-                                  }admin/COGS/${selectedPlatform.replace(
-                                    "fabric",
-                                    "meterial",
-                                  )}/${_id}/change/`,
+                                  man_hour: `${process.env.REACT_APP_BASE_URL
+                                    }admin/COGS/${selectedPlatform.replace(
+                                      "fabric",
+                                      "meterial",
+                                    )}/${_id}/change/`,
                                   size_or_sku_error: `order-details/${_id}`,
                                   sku_or_size_error: `order-details/${_id}`,
-                                  unit_fabric: `${
-                                    process.env.REACT_APP_BASE_URL
-                                  }admin/COGS/${selectedPlatform.replace(
-                                    "fabric",
-                                    "meterial",
-                                  )}/${_id}/change/`,
+                                  unit_fabric: `${process.env.REACT_APP_BASE_URL
+                                    }admin/COGS/${selectedPlatform.replace(
+                                      "fabric",
+                                      "meterial",
+                                    )}/${_id}/change/`,
                                   color_code_error: `order-details/${_id}`,
                                   missing_color_code: `order-details/${_id}`,
                                   sku_or_wl_error: `order-details/${_id}`,
