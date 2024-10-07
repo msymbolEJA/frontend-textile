@@ -131,7 +131,6 @@ const DateGetter = () => {
 
   let localRole = localStorage.getItem("localRole");
 
-  console.log("user", user);
 
   const userRole = user?.role || localRole;
   const classes = useStyles();
@@ -145,6 +144,7 @@ const DateGetter = () => {
   const [searchedPlatform, setSearchedPlatform] = useState("");
 
   const [selectedYear, setSelectedYear] = useState(new Date());
+  console.log("selectedYear", selectedYear)
   const options = [
     { value: 'january', label: 'Ocak' },
     { value: 'february', label: 'Şubat' },
@@ -582,7 +582,9 @@ const DateGetter = () => {
                   />
                   <DatePicker
                     value={selectedYear}
-                    onChange={setSelectedYear}
+                    onChange={(date, b) => {
+                      setSelectedYear(new Date(b?.validatedValue?.[0]))
+                    }}
                     format="YYYY"
                     type="year"
                     onlyYearPicker
