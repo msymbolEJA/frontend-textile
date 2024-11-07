@@ -571,7 +571,7 @@ export default function MenuAppBar() {
                   </div>
                 )}
 
-                {localRole !== "workshop_designer" &&
+                {/* {localRole !== "workshop_designer" &&
                   localRole !== "workshop_designer2" &&
                   localRole !== "workshop_istasyon_a" &&
                   localRole !== "workshop_istasyon_b" &&
@@ -579,7 +579,7 @@ export default function MenuAppBar() {
                     <MenuItem id="best-seller" onClick={e => handleDirClick(e)}>
                       <FormattedMessage id="statistics" defaultMessage="Statistics" />
                     </MenuItem>
-                  )}
+                  )} */}
 
                 <MenuItem id="workload" onClick={e => handleDirClick(e)}>
                   <FormattedMessage id="workload" defaultMessage="workload" />

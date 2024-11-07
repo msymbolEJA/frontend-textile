@@ -81,7 +81,7 @@ const DefaultContainer = () => (
     <PrivateRouter exact path="/search" component={Search} />
     <PrivateRouter exact path="/ready-orders" component={ReadyOrders} />
     <PrivateRouter exact path="/cargo-list" component={CargoList} />
-    <PrivateRouter exact path="/best-seller" component={BestSeller} />
+    {/* <PrivateRouter exact path="/best-seller" component={BestSeller} /> */}
     <PrivateRouter exact path="/workload" component={WorkLoad} />
     <PrivateRouter exact path="/workshop-due-dates" component={WorkshopDueDates} />
     <PrivateRouter exact path="/shipment-due-dates" component={ShipmentDueDates} />
@@ -89,7 +89,7 @@ const DefaultContainer = () => (
     <PrivateRouter exact path="/cargo-content/:id" component={CargoContent} />
     <PrivateRouter exact path="/stock-list" component={StockList} />
     <PrivateRouter exact path="/new-stock" component={NewStock} />
-    <PrivateRouter exact path="/cost-table" component={CostTable} />
+    <PrivateRouter exact path="/cost-table" component={BestSeller} />
     <PrivateRouter exact path="/favourites" component={Favourites} />
     <PrivateRouter exact path="/favourites/:id" component={Favourite} />
   </div>
