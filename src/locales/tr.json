@@ -246,5 +246,8 @@
   "Order Number": "Sipariş Numarası",
   "dimension": "Boyut",
   "shippingLabel": "Kargo Etiketi",
-  "packageSize": "Paket Ölçüsü"
+  "packageSize": "Paket Ölçüsü",
+  "getLabels": "Label Al",
+  "getMissingLabels": "Eksik Labelları Getir"
+
 }

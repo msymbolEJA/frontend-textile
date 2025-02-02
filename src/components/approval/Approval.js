@@ -25,12 +25,13 @@ import {
   // ThumbUpAlt as ThumbUpAltIcon,
 } from "@material-ui/icons";
 import {
+  isLabelStore,
   repeatReasonsLinen,
   repeatReasonsMenuItemsLinenia,
   statusData,
 } from "../../helper/Constants";
 
-import { putData, getData, globalSearch } from "../../helper/PostData";
+import { putData, getData, globalSearch, getAllPdf } from "../../helper/PostData";
 import TablePaginationActions from "../tableitems/TablePaginationActions";
 import OrderStatus from "../tableitems/CustomSelectCell";
 import UploadFile from "../tableitems/UploadFile";
@@ -86,6 +87,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    paddingBottom: theme.spacing(2)
   },
   container: {
     overflowX: "initial",
@@ -163,6 +166,41 @@ function App({ history }) {
   const [lastResponse, setLastResponse] = useState(null);
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
 
+    const [getLabelsLoading, setGetLabelsLoading] = useState(false);
+
+      const [allZip, setAllZip] = useState([]);
+
+
+    const getAllZipFunc = () => {
+    getAllPdf(`${BASE_URL}usps/admin_all_zip/`)
+      .then(response => {
+        setAllZip(response.data.a);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+    
+  const cargo = [
+    {
+      label: "USPS",
+      value: "usps",
+    },
+    {
+      label: "DHL",
+      value: "dhl_ecommerce",
+    },
+  ];
+
+   const [selectedCargo, setSelectedCargo] = useState("usps");
+
+  const handleSelectChange = e => {
+    setSelectedCargo(e.target.value);
+  };
+
+
   const [dimensions, setDimensions] = useState({
     weight: 15.99,
     height: 1,
@@ -198,6 +236,50 @@ function App({ history }) {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [hasScrolledToBottom, lastResponse]);
+
+   const handleGetLabels = () => {
+    setGetLabelsLoading(true);
+    postData(`${BASE_URL}usps/createBulkLabel_cargo/?carrier=${selectedCargo || "usps"}`, {
+      ids: rows?.map(item => item?.id),
+    })
+      .then(res => {
+        if (res?.data.zip_url){
+ toastSuccessNotify("Successfully created labels!");
+        console.log(res?.data);
+        window.open(res?.data.zip_url, "_blank");
+        }else {
+          toastErrorNotify("Eror while creating labels");
+        }
+       
+      })
+      .catch(({ response }) => {
+        console.log("response", response);
+      })
+      .finally(() => {
+        getAllZipFunc();
+        getListFunc();
+        setGetLabelsLoading(false);
+      });
+  };
+
+  const handleGetMissingLabels = () => {
+    setGetLabelsLoading(true);
+    getData(`${BASE_URL}usps/find_missing_label/`)
+      .then(res => {
+        console.log(res?.data);
+        // window.open(res?.data.zip_url, "_blank");
+        if (res?.data?.difference?.length) {
+          getAllZipFunc();
+          getListFunc();
+        }
+      })
+      .catch(({ response }) => {
+        console.log("response", response);
+      })
+      .finally(() => {
+        setGetLabelsLoading(false);
+      });
+  };
 
   const getListFunc = () => {
     setloading(true);
@@ -250,6 +332,7 @@ function App({ history }) {
   };
 
   useEffect(() => {
+     if (filters?.status === "label") getAllZipFunc();
     getListFunc();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -263,6 +346,10 @@ function App({ history }) {
     count,
     selectedTag,
   ]);
+
+
+ 
+
 
   useEffect(() => {
     setSelectedTag(filters?.status);
@@ -451,6 +538,9 @@ function App({ history }) {
         toastWarnNotify(response?.data?.detail);
       });
   };
+
+
+
 
   const handleTagChange = e => {
     if (e.currentTarget.id === filters?.status) return;
@@ -1629,6 +1719,82 @@ function App({ history }) {
           </TableFooter>
         </Table>
       </TableContainer>
+
+      {filters?.status === "label" ? (
+        <>
+          <div
+            style={{
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              gap: 10,
+              marginTop: 10
+            }}
+          >
+            <select value={selectedCargo} onChange={handleSelectChange}>
+              {cargo?.map((item, index) => (
+                <option value={item.value} key={index}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.print}
+              onClick={handleGetLabels}
+              disabled={getLabelsLoading}
+              style={{
+                backgroundColor: "#eb6223",
+                color: "#fff",
+              }}
+            >
+              {getLabelsLoading ? (
+                "Loading..."
+              ) : (
+                <FormattedMessage id="getLabels" defaultMessage="getLabels" />
+              )}
+            </Button>
+
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.print}
+              onClick={handleGetMissingLabels}
+              disabled={getLabelsLoading}
+            >
+              {getLabelsLoading ? (
+                "Loading..."
+              ) : (
+                <FormattedMessage id="getMissingLabels" defaultMessage="Get Missing Labels" />
+              )}
+            </Button>
+          </div>
+          <h1 style={{marginTop: 10}}>
+            <FormattedMessage id="labels" defaultMessage="Labels" />
+          </h1>
+          <div style={{ marginBottom: "3rem" }}>
+            {allZip ? (
+              allZip?.map((pdf, index) => (
+                <div key={`${index}${pdf}`}>
+                  <a href={`${BASE_URL}media/easypost/${pdf}`} target="_blank" rel="noreferrer">
+                    {pdf}
+                  </a>
+                </div>
+              ))
+            ) : (
+              <h2>
+                <FormattedMessage id="dontHaveAnyLabel" defaultMessage="Dont have any label!" />
+              </h2>
+            )}
+          </div>
+        </>
+      ) : null}
+
+
+      
       <ToastContainer style={{ color: "black" }} />
       <ConfirmDialog
         handleConfirm={handleSendToStock}
