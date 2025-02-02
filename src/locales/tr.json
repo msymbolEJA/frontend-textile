@@ -244,5 +244,7 @@
   "in_stock": "Stok Durum",
   "workload": "İş Yükü Dağılımı",
   "Order Number": "Sipariş Numarası",
-  "dimension": "Boyut"
+  "dimension": "Boyut",
+  "shippingLabel": "Kargo Etiketi",
+  "packageSize": "Paket Ölçüsü"
 }

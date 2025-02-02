@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect, useState, useCallback, useContext, useRef } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import {
   Button,
   Table,
@@ -17,6 +17,7 @@ import {
   Menu,
   MenuItem,
   ListItemText,
+  TextField,
 } from "@material-ui/core";
 import {
   Flag as FlagIcon,
@@ -42,15 +43,16 @@ import EditableTableCell from "../tableitems/EditableTableCell";
 import SortableTableCell from "./SortableTableCell";
 import CustomButtonGroup from "./CustomButtonGroup";
 import { tagsData, repeatReasons } from "../../helper/Constants";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import { AppContext } from "../../context/Context";
 import ConfirmDialog from "../otheritems/ConfirmModal";
+import BarcodeInput from "../otheritems/BarcodeInput";
+
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 // const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true" || false;
-const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 const STORE_ORJ = process.env.REACT_APP_STORE_NAME_ORJ;
 
 const StyledMenu = withStyles({})(props => (
@@ -105,6 +107,12 @@ const useStyles = makeStyles(theme => ({
     lineHeight: 1,
     fontSize: "small",
   },
+  barcodeBox: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));
 
 const StyledTableRow = withStyles(theme => ({
@@ -117,8 +125,8 @@ const StyledTableRow = withStyles(theme => ({
 
 const StyledTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: "rgb(100, 149, 237)",
-    color: theme.palette.common.black,
+    backgroundColor: props => (props.isLabel ? "#eb6223" : "rgb(100, 149, 237)"),
+    color: theme.palette.common.white,
     fontWeight: "bold",
     fontFamily: "Courier New",
   },
@@ -155,6 +163,18 @@ function App({ history }) {
   const [lastResponse, setLastResponse] = useState(null);
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
 
+  const [dimensions, setDimensions] = useState({
+    weight: 15.99,
+    height: 1,
+    length: 12,
+    width: 10,
+  });
+
+   const barcodeInputRef = useRef ();
+
+    const [barcodeInput, setBarcodeInput] = useState();
+  const { formatMessage } = useIntl();
+
   useEffect(() => {
     const handleScroll = () => {
       if (!hasScrolledToBottom) {
@@ -181,13 +201,21 @@ function App({ history }) {
 
   const getListFunc = () => {
     setloading(true);
-    getData(
-      `${BASE_URL}etsy/mapping/?${filters?.status ? `status=${filters?.status}` : ""}&is_repeat=${
-        filters?.is_repeat
-      }&ordering=${filters?.ordering || "-id"}&limit=${filters?.limit || 0}&offset=${
-        filters?.offset
-      }`,
-    )
+
+    const url = `${BASE_URL}etsy/mapping/?${
+      filters?.status !== "all_orders" && filters?.status !== "repeat"
+        ? `status=${filters?.status}`
+        : ""
+    }${filters?.status === "repeat" ? "&is_repeat=true" : ""}&ordering=${
+      filters?.ordering || "-id"
+    }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
+    
+    const labelUrl = `${BASE_URL}/etsy/orders/?is_label_ready=true&is_label=false&country_filter=all&ordering=${
+      "-id"
+    }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
+
+
+     getData(filters?.status === "label" ? labelUrl : url)
       .then(response => {
         const t = response?.data?.results?.length ? response?.data?.results : [];
         setRows(t);
@@ -260,7 +288,7 @@ function App({ history }) {
     setPage(0);
   };
 
-  const handleRowChange = (id, data) => {
+  const handleRowChange = (id, data, fetchAgain = false) => {
     if (!Object.keys(data)[0]) return;
     if (
       rows?.filter(item => item.id === id)?.[0]?.[Object.keys(data)[0]] === Object.values(data)[0]
@@ -287,6 +315,7 @@ function App({ history }) {
         }
         setloading(false);
         setRefreshTable(!refreshTable);
+         if (fetchAgain) getListFunc();
       });
   };
 
@@ -411,7 +440,7 @@ function App({ history }) {
   const handleApproveSelected = () => {
     // postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
     postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
-      .then(res => {
+      .then(res => {  
         toastWarnNotify("Selected 'PENDING' orders are approved");
         if (filters?.search) {
           history.push(`/approval?search=${filters?.search}`);
@@ -643,10 +672,10 @@ function App({ history }) {
             {/* <hr/> */}
             <span />
             {STORE_ORJ === "Linenia" ||
-            STORE_ORJ === "DALLAS" ||
-            STORE_ORJ === "myra" ||
-            STORE_ORJ === "LinenByMN" ||
-            STORE_ORJ === "ShinyCustomized" ? (
+              STORE_ORJ === "DALLAS" ||
+              STORE_ORJ === "myra" ||
+              STORE_ORJ === "LinenByMN" ||
+              STORE_ORJ === "ShinyCustomized" ? (
               <div>
                 {repeatReasonsMenuItemsLinenia.map(reason => (
                   <StyledMenuItem key={reason.id}>
@@ -775,6 +804,47 @@ function App({ history }) {
     [handleRepeatMenuClose, handleRepeatMenuConfirm, handleRepeatMenuItemClick, repeatAnchorEl],
   );
 
+  const handleError = err => {
+    console.error(err);
+  };
+  const handleScan = data => {
+    setBarcodeInput(data);
+    barcodeInputRef.current.value = data;
+  };
+  useEffect(() => {
+    if (barcodeInput) {
+      const { weight, height, length, width } = dimensions;
+      getData(`${BASE_URL}etsy/orders/${barcodeInput}/`)
+        .then(response => {
+          barcodeInputRef.current.value = null;
+          setBarcodeInput(null);
+          let updatedData = {
+            is_label_ready: true,
+            is_label: false,
+            weight: Number(weight),
+            height: Number(height),
+            length: Number(length),
+            width: Number(width),
+          };
+          handleRowChange(barcodeInput, updatedData, true);
+        })
+        .catch(error => {
+          console.log("error", error);
+          toast.error("Error - Order not found with this id: " + barcodeInput);
+        });
+    }
+    // eslint-disable-next-line
+  }, [barcodeInput]);
+  const handleBarcodeInputKeyDown = e => {
+    if (e.keyCode === 13) setBarcodeInput(barcodeInputRef.current.value);
+  };
+  const handleDimensionChange = e => {
+    setDimensions({
+      ...dimensions,
+      [e.target.name]: e.target?.value,
+    });
+  };
+
   return (
     <Paper className={classes.root}>
       <CustomButtonGroup
@@ -784,6 +854,108 @@ function App({ history }) {
         searchHandler={searchHandler}
         loading={loading}
       />
+
+       {selectedTag === "label" ? (
+        <>
+        <hr />
+          <div className={classes.barcodeBox}>
+            <div style={{ marginRight: "0.5rem" }}>
+              {!loading ? <BarcodeInput onError={handleError} onScan={handleScan} /> : null}
+              <p>
+                <FormattedMessage id="barcode" defaultMessage="Barcode" /> :{" "}
+                {barcodeInput ||
+                  formatMessage({
+                    id: "noResult",
+                    defaultMessage: "-",
+                  })}
+              </p>
+            </div>
+            <div className={classes.print}>
+              <TextField
+                label={formatMessage({
+                  id: "barcode",
+                  defaultMessage: "Barcode",
+                })}
+                disabled={loading}
+                inputRef={barcodeInputRef}
+                id="outlined-size-small"
+                variant="outlined"
+                size="small"
+                onKeyDown={handleBarcodeInputKeyDown}
+              />
+            </div>
+          </div>
+          <div
+            style={{
+              backgroundColor: "#E0E0E0",
+              width: "min-content",
+              margin: "10px auto",
+              padding: 10,
+              borderRadius: 5,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <p style={{ fontSize: 20 }}>
+              
+              <FormattedMessage id="packageSize" defaultMessage="Package Size" />
+            </p>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 5,
+                marginBottom: 10,
+              }}
+            >
+              <input
+                type="number"
+                value={dimensions.weight}
+                onChange={handleDimensionChange}
+                name="weight"
+                placeholder="Weight"
+              />
+              <b>oz</b>
+            </div>
+            <div
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 2 }}
+            >
+              <input
+                type="number"
+                value={dimensions.length}
+                onChange={handleDimensionChange}
+                name="length"
+                placeholder="Length"
+                style={{ width: 42 }}
+              />
+
+              <input
+                type="number"
+                value={dimensions.width}
+                onChange={handleDimensionChange}
+                name="width"
+                placeholder="Width"
+                style={{ width: 42 }}
+              />
+
+              <input
+                type="number"
+                value={dimensions.height}
+                onChange={handleDimensionChange}
+                name="height"
+                placeholder="Height"
+                style={{ width: 42 }}
+              />
+              <b>inch</b>
+            </div>
+          </div>
+        </>
+      ) : null}
+      <hr />
       <div
         style={{
           display: "flex",
@@ -828,6 +1000,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="id"
                 setOrderBy={setOrderBy}
+                 isLabel={filters?.status === "label"}
               />
               <SortableTableCell
                 property="status"
@@ -836,6 +1009,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="status"
                 setOrderBy={setOrderBy}
+                 isLabel={filters?.status === "label"}
               />
               <SortableTableCell
                 property="created_date"
@@ -845,6 +1019,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="createdDate"
                 setOrderBy={setOrderBy}
+                 isLabel={filters?.status === "label"}
               />
               {process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic" ? (
                 <SortableTableCell
@@ -854,13 +1029,14 @@ function App({ history }) {
                   orderBy={orderBy}
                   colName="supplier"
                   setOrderBy={setOrderBy}
+                   isLabel={filters?.status === "label"}
                 />
               ) : null}
               {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-              process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-              process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
-              process.env.REACT_APP_STORE_NAME === "Mina" ||
-              process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
+                process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                process.env.REACT_APP_STORE_NAME === "Mina" ||
+                process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                 <SortableTableCell
                   property="sku"
                   handleRequestSort={handleRequestSort}
@@ -868,6 +1044,7 @@ function App({ history }) {
                   orderBy={orderBy}
                   colName="type"
                   setOrderBy={setOrderBy}
+                   isLabel={filters?.status === "label"}
                 />
               ) : null}
               {NON_SKU ? (
@@ -879,6 +1056,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="Size"
                     setOrderBy={setOrderBy}
+                     isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="variation_2_value"
@@ -887,6 +1065,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="Color"
                     setOrderBy={setOrderBy}
+                     isLabel={filters?.status === "label"}
                   />
                 </>
               ) : (
@@ -898,6 +1077,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="type"
                     setOrderBy={setOrderBy}
+                     isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="length"
@@ -906,6 +1086,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var1"
                     setOrderBy={setOrderBy}
+                     isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="color"
@@ -914,6 +1095,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var2"
                     setOrderBy={setOrderBy}
+                     isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="qty"
@@ -922,6 +1104,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var3"
                     setOrderBy={setOrderBy}
+                     isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="size"
@@ -930,6 +1113,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var4"
                     setOrderBy={setOrderBy}
+                     isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="start"
@@ -938,6 +1122,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var5"
                     setOrderBy={setOrderBy}
+                     isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="space"
@@ -946,6 +1131,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var6"
                     setOrderBy={setOrderBy}
+                     isLabel={filters?.status === "label"}
                   />
                 </>
               )}
@@ -956,6 +1142,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="explanation"
                 setOrderBy={setOrderBy}
+                 isLabel={filters?.status === "label"}
               />
               <StyledTableCell
                 align="center"
@@ -963,6 +1150,7 @@ function App({ history }) {
                   padding: 10,
                   borderRight: "0.5px solid #E0E0E0",
                 }}
+                 isLabel={filters?.status === "label"}
               >
                 <FormattedMessage id="in_stock" defaultMessage="In Stock" />
               </StyledTableCell>
@@ -974,6 +1162,7 @@ function App({ history }) {
                   pointerEvents: selectedTag === "pending" ? "auto" : "none",
                   borderRight: "0.5px solid #E0E0E0",
                 }}
+                 isLabel={filters?.status === "label"}
               >
                 <Button
                   color="primary"
@@ -997,6 +1186,7 @@ function App({ history }) {
                   color="primary"
                   onChange={handleSelectAllClick}
                   inputProps={{ "aria-label": "select all" }}
+                   isLabel={filters?.status === "label"}
                 />
               </StyledTableCell>
               <SortableTableCell
@@ -1006,6 +1196,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="personalization"
                 setOrderBy={setOrderBy}
+                 isLabel={filters?.status === "label"}
               />
               <SortableTableCell
                 property="message_from_buyer"
@@ -1014,10 +1205,11 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="customerNote"
                 setOrderBy={setOrderBy}
+                 isLabel={filters?.status === "label"}
               />
               {user !== "DrMel" &&
-              process.env.REACT_APP_STORE_NAME !== "Mina" &&
-              process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
+                process.env.REACT_APP_STORE_NAME !== "Mina" &&
+                process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
                 <SortableTableCell
                   property="gift_message"
                   handleRequestSort={handleRequestSort}
@@ -1025,6 +1217,7 @@ function App({ history }) {
                   orderBy={orderBy}
                   colName="giftMessage"
                   setOrderBy={setOrderBy}
+                   isLabel={filters?.status === "label"}
                 />
               ) : null}
               <SortableTableCell
@@ -1034,11 +1227,12 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="internalNote"
                 setOrderBy={setOrderBy}
+                 isLabel={filters?.status === "label"}
               />
 
               {process.env.REACT_APP_STORE_NAME === "Linen Serisi" &&
-              (localStorage.getItem("localRole") === "admin" ||
-                localStorage.getItem("localRole") === "shop_manager") ? (
+                (localStorage.getItem("localRole") === "admin" ||
+                  localStorage.getItem("localRole") === "shop_manager") ? (
                 <SortableTableCell
                   property="color_code"
                   handleRequestSort={handleRequestSort}
@@ -1046,6 +1240,7 @@ function App({ history }) {
                   orderBy={orderBy}
                   colName="color_code"
                   setOrderBy={setOrderBy}
+                   isLabel={filters?.status === "label"}
                 />
               ) : null}
 
@@ -1056,6 +1251,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="uploadFile"
                 setOrderBy={setOrderBy}
+                 isLabel={filters?.status === "label"}
               />
             </TableRow>
           </TableHead>
@@ -1073,18 +1269,18 @@ function App({ history }) {
                     style={{
                       pointerEvents:
                         (loading || row["status"] === "in_progress" || row["status"] === "ready") &&
-                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
-                        process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" &&
-                        !NON_SKU
+                          process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+                          process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" &&
+                          !NON_SKU
                           ? "none"
                           : "auto",
                       backgroundColor: row?.get_in_stock
                         ? "#B99470"
                         : (row.status !== "pending") & (row.approved === false)
-                        ? "#FF9494"
-                        : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
-                        ? "#ffef8a"
-                        : null,
+                          ? "#FF9494"
+                          : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
+                            ? "#ffef8a"
+                            : null,
                     }}
                   >
                     <FlagAndFavCell
@@ -1124,8 +1320,8 @@ function App({ history }) {
                       {row?.shop === "Shopify" ? <ShoppingBasketIcon color="secondary" /> : null}
                       <br />
                       {(row["status"] === "in_progress" || row["status"] === "ready") &&
-                      process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
-                      process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" ? null : (
+                        process.env.REACT_APP_STORE_NAME !== "Kalpli Serisi" &&
+                        process.env.REACT_APP_STORE_NAME_ORJ !== "Silveristic" ? null : (
                         <>
                           <RepeatIcon
                             style={{
@@ -1170,10 +1366,10 @@ function App({ history }) {
                       />
                     ) : null}
                     {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-                    process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                    process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
-                    process.env.REACT_APP_STORE_NAME === "Mina" ||
-                    process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
+                      process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                      process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                      process.env.REACT_APP_STORE_NAME === "Mina" ||
+                      process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                       <EditableTableCell
                         style={{ fontWeight: "bold" }}
                         {...{
@@ -1274,10 +1470,10 @@ function App({ history }) {
                         onChange,
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-                          process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                          process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
-                          process.env.REACT_APP_STORE_NAME === "Mina" ||
-                          process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                            process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                            process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                            process.env.REACT_APP_STORE_NAME === "Mina" ||
+                            process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
                             : 0,
                       }}
@@ -1299,8 +1495,8 @@ function App({ history }) {
                           process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic"
                             ? "auto"
                             : row.status === "pending"
-                            ? "auto"
-                            : "none",
+                              ? "auto"
+                              : "none",
                         minWidth: 90,
                       }}
                       onClick={e => {
@@ -1319,25 +1515,25 @@ function App({ history }) {
                         disabled={
                           NON_SKU
                             ? !(
-                                (
-                                  !!row?.variation_1_value?.replace(/\s/g, "") &&
-                                  !!row?.variation_2_value?.replace(/\s/g, "")
-                                )
-                                // &&
-                                // !!row?.variation_1_name?.replace(/\s/g, "") &&
-                                // !!row?.variation_2_name?.replace(/\s/g, "")
+                              (
+                                !!row?.variation_1_value?.replace(/\s/g, "") &&
+                                !!row?.variation_2_value?.replace(/\s/g, "")
                               )
+                              // &&
+                              // !!row?.variation_1_name?.replace(/\s/g, "") &&
+                              // !!row?.variation_2_name?.replace(/\s/g, "")
+                            )
                             : !(
-                                !!row.supplier?.replace(/\s/g, "") &&
-                                !!row.type?.replace(/\s/g, "") &&
-                                !!row.color?.replace(/\s/g, "") &&
-                                !!row.length?.replace(/\s/g, "") &&
-                                !(
-                                  row["type"]?.toLowerCase()?.includes("kolye") &&
-                                  row["type"]?.toLowerCase()?.includes("imza") &&
-                                  !row["image"]
-                                )
+                              !!row.supplier?.replace(/\s/g, "") &&
+                              !!row.type?.replace(/\s/g, "") &&
+                              !!row.color?.replace(/\s/g, "") &&
+                              !!row.length?.replace(/\s/g, "") &&
+                              !(
+                                row["type"]?.toLowerCase()?.includes("kolye") &&
+                                row["type"]?.toLowerCase()?.includes("imza") &&
+                                !row["image"]
                               )
+                            )
                         }
                         color="primary"
                         inputProps={{ "aria-labelledby": labelId }}
@@ -1350,10 +1546,10 @@ function App({ history }) {
                         onChange,
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-                          process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                          process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
-                          process.env.REACT_APP_STORE_NAME === "Mina" ||
-                          process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                            process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                            process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                            process.env.REACT_APP_STORE_NAME === "Mina" ||
+                            process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
                             : 0,
                       }}
@@ -1365,24 +1561,24 @@ function App({ history }) {
                         onChange,
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-                          process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                          process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
-                          process.env.REACT_APP_STORE_NAME === "Mina" ||
-                          process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                            process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                            process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                            process.env.REACT_APP_STORE_NAME === "Mina" ||
+                            process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 150
                             : 0,
                       }}
                     />
                     {user !== "DrMel" &&
-                    process.env.REACT_APP_STORE_NAME !== "Mina" &&
-                    process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
+                      process.env.REACT_APP_STORE_NAME !== "Mina" &&
+                      process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
                       <EditableTableCell {...{ row, name: "gift_message", onChange }} />
                     ) : null}
                     <EditableTableCell {...{ row, name: "note", onChange }} />
 
                     {process.env.REACT_APP_STORE_NAME === "Linen Serisi" &&
-                    (localStorage.getItem("localRole") === "admin" ||
-                      localStorage.getItem("localRole") === "shop_manager") ? (
+                      (localStorage.getItem("localRole") === "admin" ||
+                        localStorage.getItem("localRole") === "shop_manager") ? (
                       <EditableTableCell {...{ row, name: "color_code", onChange }} />
                     ) : null}
 

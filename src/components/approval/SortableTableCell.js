@@ -14,8 +14,8 @@ const useStyles = makeStyles({
 const StyledTableCell = withStyles((theme) => ({
   head: {
     padding: 10,
-    backgroundColor: "rgb(100, 149, 237)",
-    color: theme.palette.common.black,
+    backgroundColor: props => (props.isLabel ? "#eb6223" : "rgb(100, 149, 237)"),
+    color: theme.palette.common.white,
     borderRight: "0.5px solid #E0E0E0",
     fontWeight: "bold",
   },
@@ -34,6 +34,7 @@ const SortableTableCell = ({
   colName,
   setOrderBy,
   style,
+  isLabel
 }) => {
   let customStyle;
   if (property === "explanation") {
@@ -59,6 +60,7 @@ const SortableTableCell = ({
         style={({ ...customStyle }, { ...style })}
         //sortDirection={orderBy === "id" ? order : false}
         onClick={() => setOrderBy(property)}
+         isLabel={isLabel}
       >
         <TableSortLabel
           active={orderBy === property}

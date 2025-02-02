@@ -197,5 +197,7 @@
   "in_stock": "In Stock",
   "workload": "Workload Statistics",
   "Order Number": "Order Number",
-  "dimension": "Dimension"
+  "dimension": "Dimension",
+  "shippingLabel": "Shipping Label",
+  "packageSize": "Package Size"
 }

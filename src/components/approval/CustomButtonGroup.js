@@ -9,6 +9,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import SearchIcon from "@material-ui/icons/Search";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { isLabelStore } from "../../helper/Constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,9 @@ const CustomButtonGroup = ({
   const myInputRef = useRef(null);
   const mobileView = useMediaQuery("(max-width:1024px)");
 
+  const statusTags = [...tagsData];
+  if (isLabelStore && !statusTags.includes("label")) statusTags.splice(3, 0, "label");
+
   return (
     <div>
       <div
@@ -53,7 +57,7 @@ const CustomButtonGroup = ({
         }}
       >
         {" "}
-        {tagsData.map((tag) => (
+        {statusTags.map((tag) => (
           <Button
             className={classes.btn}
             id={tag}
@@ -63,8 +67,7 @@ const CustomButtonGroup = ({
             onClick={(e) => handleTagChange(e)}
             variant="contained"
             style={{
-              backgroundColor: selectedTag === tag ? "#3F51B5" : null,
-              color: selectedTag === tag ? "white" : null,
+              backgroundColor: selectedTag === tag ? (tag === "label" ? "#eb6223" : "#3F51B5") : null, color: selectedTag === tag ? "white" : null,
             }}
           >
             <FormattedMessage

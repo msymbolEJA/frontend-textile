@@ -276,3 +276,5 @@ export const updateDetailsMappingTable = [
   { id: 5, name: "Tracking Url", objKey: "tracking_url", type: "url" },
   { id: 5, name: "Carrier Name", objKey: "carrier_name", type: "text" },
 ];
+
+export const isLabelStore = process.env.REACT_APP_STORE_NAME_ORJ === "Linenia"
