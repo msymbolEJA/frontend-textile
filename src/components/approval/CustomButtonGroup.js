@@ -46,7 +46,7 @@ const CustomButtonGroup = ({
   const mobileView = useMediaQuery("(max-width:1024px)");
 
   const statusTags = [...tagsData];
-  if (isLabelStore && !statusTags.includes("label")) statusTags.splice(3, 0, "label");
+  // if (isLabelStore && !statusTags.includes("label")) statusTags.splice(3, 0, "label");
 
   return (
     <div>

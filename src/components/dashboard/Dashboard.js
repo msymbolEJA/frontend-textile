@@ -14,7 +14,7 @@ import {
 import Button from "@material-ui/core/Button";
 
 import { getData } from "../../helper/PostData";
-import { sortingArrayAdmin, sortingArrayUser } from "../../helper/Constants";
+import { isLabelStore, sortingArrayAdmin, sortingArrayUser } from "../../helper/Constants";
 import FloatingMenu from "./FloatingMenu";
 // import CostGetter from "./CostGetter";
 import { Redirect } from "react-router-dom";
@@ -94,6 +94,9 @@ const Dashboard = ({ history }) => {
         userRole === "admin" || userRole === "shop_manager" || userRole === "shop_packer"
           ? sortingArrayAdmin
           : sortingArrayUser;
+           if (isLabelStore && !currentSortingArray.includes("LABEL"))
+        currentSortingArray.splice(3, 0, "LABEL");
+
       const newResult2 = currentSortingArray.map((object, i) => {
         let currentObject = newResult.find(x => x.cell1 === object);
         if (!currentObject) currentObject = { cell1: object, cell2: 0 };

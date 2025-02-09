@@ -36,6 +36,7 @@ import CustomDialog from "./CustomDialog";
 import CustomTableCell from "./CustomTableCell";
 import TablePaginationActions from "./TablePaginationActions";
 import ViewImageFile from "./ViewImageFile";
+import { toast } from "react-toastify";
 
 // import { BarcodeDetector, setZXingModuleOverrides } from "barcode-detector/pure";
 // import "barcode-detector/side-effects";
@@ -48,7 +49,7 @@ const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
 
 const StyledTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: "rgb(100, 149, 237)",
+    backgroundColor: props => (props.isLabel ? "#eb6223" : "rgb(100, 149, 237)"),
     color: theme.palette.common.black,
     fontWeight: "bold",
   },
@@ -113,6 +114,16 @@ function AllOrdersTable() {
   const [currentSiblingList, setCurrentSiblingList] = useState(
     JSON.parse(localStorage.getItem(`${localStoragePrefix}-sibling_list`) || "[]"),
   );
+
+  const [currentLabelList, setCurrentLabelList] = useState(
+    JSON.parse(localStorage.getItem(`${localStoragePrefix}-label_list`) || "[]"),
+  );
+  const [currentLabelSiblingList, setCurrentLabelSiblingList] = useState(
+    JSON.parse(localStorage.getItem(`${localStoragePrefix}-label_sibling_list`) || "[]"),
+  );
+  const [getLabelsLoading, setGetLabelsLoading] = useState(false);
+
+
   const isBeyazit =
     (localStorage.getItem("localRole") === "workshop_manager" ||
       !localStorage.getItem("localRole") ||
@@ -139,6 +150,11 @@ function AllOrdersTable() {
   const [url, setUrl] = useState(`${BASE_URL}etsy/orders/?status=${filters?.status}`);
   const history = useHistory();
   const [allPdf, setAllPdf] = useState();
+  const [allZip, setAllZip] = useState();
+
+  const [inProgressLoading, setInProgressLoading] = useState(false);
+
+
   const [refreshTable, setRefreshTable] = useState(false);
   const [loading, setloading] = useState(false);
   const [searchWord, setSearchWord] = useState("");
@@ -155,6 +171,8 @@ function AllOrdersTable() {
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
 
   const getOrdersInProgress = () => {
+    setInProgressLoading(true);
+
     getData(`${BASE_URL}etsy/orders/?status=in_progress&limit=${2500}&offset=0`)
       .then(response => {
         const o = response?.data?.results?.length ? response?.data?.results : [];
@@ -162,6 +180,9 @@ function AllOrdersTable() {
       })
       .catch(error => {
         console.log("error", error);
+      })
+      .finally(() => {
+        setInProgressLoading(false);
       });
   };
 
@@ -187,6 +208,19 @@ function AllOrdersTable() {
     };
   }, [hasScrolledToBottom, lastResponse]);
 
+  const [selectedCargo, setSelectedCargo] = useState("usps");
+
+  const handleSelectChange = e => {
+    setSelectedCargo(e.target.value);
+  };
+
+  const [dimensions, setDimensions] = useState({
+    weight: 15.99,
+    height: 1,
+    length: 12,
+    width: 10,
+  });
+
   const getListFunc = () => {
     setloading(true);
     if (!searchWord) {
@@ -194,13 +228,16 @@ function AllOrdersTable() {
         filters.ordering = "-last_updated";
       } else filters.ordering = "-id";
 
-      getData(
-        `${BASE_URL}etsy/orders/?${`status=${filters?.status || "awaiting"}`}&is_repeat=${
-          filters?.is_repeat
-        }&is_followup=${filters?.is_followup}&country_filter=${
-          countryFilter === "all" ? "" : countryFilter
-        }&ordering=${filters?.ordering}&limit=${filters?.limit || 0}&offset=${filters?.offset}`,
-      )
+      const url = `${BASE_URL}etsy/orders/?${filters?.status !== "all_orders" && filters?.status !== "repeat"
+          ? `status=${filters?.status}`
+          : `status=awaiting`
+        }&is_followup=${filters?.is_followup}&country_filter=${filters?.country}&ordering=${filters?.ordering
+        }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
+
+      const labelUrl = `${BASE_URL}/etsy/orders/?is_label_ready=true&is_label=false&country_filter=${filters?.country}&ordering=${filters?.ordering
+        }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
+
+      getData(filters?.status === "label" ? labelUrl : url)
         .then(response => {
           const t = response?.data?.results?.length ? response?.data?.results : [];
 
@@ -243,9 +280,21 @@ function AllOrdersTable() {
       });
   };
 
+  const getAllZipFunc = () => {
+    getAllPdf(`${BASE_URL}usps/all_zip/`)
+      .then(response => {
+        setAllZip(response.data.a);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     if (filters?.status === "awaiting") getAllPdfFunc();
-    if (filters?.status === "ready") getOrdersInProgress();
+    if (filters?.status === "label") getAllZipFunc();
+    if (filters?.status === "ready" || filters?.status === "label") getOrdersInProgress();
     getListFunc();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -261,6 +310,59 @@ function AllOrdersTable() {
     count,
     selectedTag,
   ]);
+
+  const getSiblingsForLabel = async id => {
+    const currentOrder = rows.filter(item => item.id.toString() === id)?.[0];
+    let currentReceiptId = currentOrder?.receipt_id;
+    if (currentOrder?.item_index === "1/1") return null;
+    let siblings = [];
+
+    await globalSearch(`${BASE_URL}etsy/mapping/?receipt__receipt_id=${currentReceiptId}`).then(
+      response => {
+        if (response?.data?.results?.length)
+          siblings = response?.data?.results
+            .map(item => item.id)
+            .filter(item => item.toString() !== id.toString());
+        localStorage.setItem(
+          `${localStoragePrefix}-label_sibling_list`,
+          JSON.stringify([
+            ...currentLabelSiblingList,
+            {
+              id,
+              siblings,
+            },
+          ]),
+        );
+        setCurrentLabelSiblingList([
+          ...currentLabelSiblingList,
+          {
+            id,
+            siblings,
+          },
+        ]);
+      },
+    );
+  };
+
+  const checkLabel = id => {
+    if (!currentLabelList.includes(id)) {
+      getData(`${BASE_URL}etsy/orders/${id}/`)
+        .then(response => {
+          getSiblingsForLabel(id);
+          localStorage.setItem(
+            `${localStoragePrefix}-label_list`,
+            JSON.stringify([...currentLabelList, id]),
+          );
+          setCurrentLabelList([...currentLabelList, id]);
+        })
+        .catch(error => {
+          console.log("error", error);
+        });
+
+      barcodeInputRef.current.value = null;
+      setBarcodeInput(null);
+    }
+  };
 
   useEffect(() => {
     setSelectedTag(filters?.status);
@@ -470,9 +572,37 @@ function AllOrdersTable() {
   };
 
   useEffect(() => {
-    if (barcodeInput) checkOrderIfInProgress(barcodeInput);
+    if (barcodeInput) {
+      if (filters.status === "ready") checkOrderIfInProgress(barcodeInput);
+      else if (filters.status === "label") {
+        const { weight, height, length, width } = dimensions;
+        getData(`${BASE_URL}etsy/orders/${barcodeInput}/`)
+          .then(response => {
+            barcodeInputRef.current.value = null;
+            setBarcodeInput(null);
+            let updatedData = {
+              is_label_ready: true,
+              is_label: false,
+              weight: Number(weight),
+              height: Number(height),
+              length: Number(length),
+              width: Number(width),
+            };
+            handleRowChange(barcodeInput, updatedData, true);
+          })
+          .catch(error => {
+            console.log("error", error);
+            toast.error("Error - Order not found with this id: " + barcodeInput);
+          });
+      }
+    }
     // eslint-disable-next-line
   }, [barcodeInput]);
+
+  const handleClearLabelList = () => {
+    localStorage.setItem(`${localStoragePrefix}-label_list`, "");
+    setCurrentLabelList([]);
+  };
 
   const handleClearBarcodeList = () => {
     localStorage.setItem(`${localStoragePrefix}-barcode_list`, "");
@@ -485,6 +615,12 @@ function AllOrdersTable() {
     ).filter(i => i !== id.toString());
     localStorage.setItem(`${localStoragePrefix}-barcode_list`, JSON.stringify(fb));
     setCurrentBarcodeList(fb);
+  };
+
+  const removeItemfromLabelList = id => {
+    const fb = currentLabelList.filter(i => i !== id.toString());
+    localStorage.setItem(`${localStoragePrefix}-label_list`, JSON.stringify(fb));
+    setCurrentLabelList(fb);
   };
 
   const handleSaveScanned = () => {
@@ -542,7 +678,7 @@ function AllOrdersTable() {
     )
       return;
     putData(`${BASE_URL}etsy/mapping/${id}/`, data)
-      .then(response => {})
+      .then(response => { })
       .catch(error => {
         console.log(error);
         toastErrorNotify("Error, Please try again after refresh the page");
@@ -591,6 +727,14 @@ function AllOrdersTable() {
   const removeFunc = id => {
     changeOrderStatus(id, "in_progress");
     getOrdersInProgress();
+  };
+
+  const removeFuncLabel = id => {
+    handleRowChange(id, { is_label_ready: false });
+
+    setTimeout(() => {
+      getListFunc();
+    }, 500);
   };
 
   const handleLabelUpload = e => {
@@ -661,7 +805,7 @@ function AllOrdersTable() {
           <TableHead>
             <TableRow>
               {filters?.status === "ready" ? (
-                <StyledTableCell align="center">
+                <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                   <Checkbox
                     indeterminate={selected?.length > 0 && selected?.length < rows?.length}
                     checked={rows?.length > 0 && selected?.length === rows?.length}
@@ -670,100 +814,100 @@ function AllOrdersTable() {
                   />
                 </StyledTableCell>
               ) : null}
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                 <FormattedMessage id="receiptId" defaultMessage="Receipt Id" /> /
                 <FormattedMessage id="id" defaultMessage="Id" /> /
                 <FormattedMessage id="index" defaultMessage="Index" />
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                 <FormattedMessage id="createdTSZ" defaultMessage="Created" />
                 {" / "}
                 <FormattedMessage id="ready_date" defaultMessage="Approval Date" />
               </StyledTableCell>
 
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                 <FormattedMessage id="stationStatus" defaultMessage="Station Status" />
               </StyledTableCell>
 
               {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
-                <StyledTableCell align="center">
+                <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                   <FormattedMessage id="buyer" defaultMessage="Buyer" />
                 </StyledTableCell>
               )}
-              {/*                   <StyledTableCell align="center">
+              {/*                   <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                     <FormattedMessage id="supplier" defaultMessage="Supplier" />
                   </StyledTableCell> */}
 
-              {/*               <StyledTableCell align="center">
+              {/*               <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                 <FormattedMessage id="status" defaultMessage="Status" />
               </StyledTableCell> */}
               {NON_SKU ? (
                 <>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                     <FormattedMessage id="type" defaultMessage="Type" />
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                     <FormattedMessage id="size" defaultMessage="Size" />
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                     <FormattedMessage id="color" defaultMessage="Color" />
                   </StyledTableCell>
 
-                  {userRole !== "workshop_manager"  ? (
-                    <StyledTableCell align="center">
+                  {userRole !== "workshop_manager" ? (
+                    <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                       <FormattedMessage id="explanationMod" defaultMessage="Mod-Explanation" />{" "}
                     </StyledTableCell>
                   ) : null}
                 </>
               ) : (
                 <>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                     <FormattedMessage id="type" defaultMessage="Type" />
                   </StyledTableCell>
                   {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
-                    <StyledTableCell align="center">
+                    <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                       <FormattedMessage id="var1" />
                     </StyledTableCell>
                   )}
                   {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
-                    <StyledTableCell align="center">
+                    <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                       <FormattedMessage id="var2" />
                     </StyledTableCell>
                   )}
                   {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
-                    <StyledTableCell align="center">
+                    <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                       <FormattedMessage id="var3" />
                     </StyledTableCell>
                   )}
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                     <FormattedMessage id="var4" />
                   </StyledTableCell>
                   {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
-                    <StyledTableCell align="center">
+                    <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                       <FormattedMessage id="var5" />
                     </StyledTableCell>
                   )}
 
                   {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
-                    <StyledTableCell align="center">
+                    <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                       <FormattedMessage id="var6" />
                     </StyledTableCell>
                   )}
-                  {/*          <StyledTableCell align="center">
+                  {/*          <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                     <FormattedMessage id="goldGr" />
                   </StyledTableCell> */}
                 </>
               )}
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                 <FormattedMessage id="explanation" defaultMessage="Explanation" />
               </StyledTableCell>
               {selectedTag === "in_progress" &&
-              (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
-                process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
-                process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
-                process.env.REACT_APP_STORE_NAME_ORJ === "myra" ||
-                process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
-                <StyledTableCell align="center">
+                (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+                  process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
+                  process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
+                  process.env.REACT_APP_STORE_NAME_ORJ === "myra" ||
+                  process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
+                <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                   <FormattedMessage id="showInGoogleSheet" defaultMessage="Google Sheet?" />
                 </StyledTableCell>
               ) : null}
@@ -773,7 +917,7 @@ function AllOrdersTable() {
                 userRole !== "workshop_designer" &&
                 userRole !== "workshop_designer2" && (
                   <StyledTableCell
-                    align="center"
+                    align="center" isLabel={filters?.status === "label"}
                     onClick={() => sortByGiftMessages()}
                     style={{ cursor: "pointer" }}
                   >
@@ -782,14 +926,14 @@ function AllOrdersTable() {
                 )}
 
               {localRole === "workshop_istasyon_a" ||
-              localRole === "workshop_istasyon_b" ||
-              localRole === "workshop_istasyon_c" ? null : (
+                localRole === "workshop_istasyon_b" ||
+                localRole === "workshop_istasyon_c" ? null : (
                 <>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                     <FormattedMessage id="image" defaultMessage="Image" />
                   </StyledTableCell>
                   {selectedTag === "ready" ? (
-                    <StyledTableCell align="center">
+                    <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                       <FormattedMessage id="remove" defaultMessage="Remove" />
                     </StyledTableCell>
                   ) : null}
@@ -800,8 +944,8 @@ function AllOrdersTable() {
           {rows?.length || scannedRows?.length ? (
             <TableBody>
               {(localRole === "workshop_istasyon_a" ||
-              localRole === "workshop_istasyon_b" ||
-              localRole === "workshop_istasyon_c"
+                localRole === "workshop_istasyon_b" ||
+                localRole === "workshop_istasyon_c"
                 ? scannedRows
                 : rows
               ).map(row => (
@@ -817,11 +961,11 @@ function AllOrdersTable() {
                           row["shop"] === "Shopify"
                           ? "#dad0d4"
                           : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
-                          ? "#ffef8a"
-                          : null
+                            ? "#ffef8a"
+                            : null
                         : row["type"]?.includes("14K") || row["explanation"]?.includes("14K")
-                        ? "#ffef8a"
-                        : null,
+                          ? "#ffef8a"
+                          : null,
                   }}
                 >
                   {filters?.status === "ready" ? (
@@ -938,7 +1082,7 @@ function AllOrdersTable() {
                             minWidth: 250,
                           }}
                         />
-                      ): null}
+                      ) : null}
                     </>
                   ) : (
                     <>
@@ -983,11 +1127,11 @@ function AllOrdersTable() {
                     }}
                   />
                   {selectedTag === "in_progress" &&
-                  (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
-                    process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
-                    process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
-                    process.env.REACT_APP_STORE_NAME_ORJ === "myra" ||
-                    process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
+                    (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+                      process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
+                      process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
+                      process.env.REACT_APP_STORE_NAME_ORJ === "myra" ||
+                      process.env.REACT_APP_STORE_NAME_ORJ === "DALLAS") ? (
                     <td
                       style={{
                         padding: 10,
@@ -1033,8 +1177,8 @@ function AllOrdersTable() {
                     )}
 
                   {localRole === "workshop_istasyon_a" ||
-                  localRole === "workshop_istasyon_b" ||
-                  localRole === "workshop_istasyon_c" ? null : (
+                    localRole === "workshop_istasyon_b" ||
+                    localRole === "workshop_istasyon_c" ? null : (
                     <>
                       <td style={{ padding: 10, borderBottom: "1px solid #e0e0e0" }}>
                         {row?.image ? (
@@ -1061,6 +1205,24 @@ function AllOrdersTable() {
                           </Button>
                         </td>
                       ) : null}
+
+
+                      {selectedTag === "label" ? (
+                        <td>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            className={classes.print}
+                            onClick={e => {
+                              e.stopPropagation();
+                              removeFuncLabel(row.id);
+                            }}
+                            size="small"
+                          >
+                            <FormattedMessage id="remove" defaultMessage="Remove" />
+                          </Button>
+                        </td>
+                      ) : null}
                     </>
                   )}
                 </StyledTableRow>
@@ -1074,27 +1236,28 @@ function AllOrdersTable() {
               </td>
               <td>
                 {localRole === "workshop_istasyon_a" ||
-                localRole === "workshop_istasyon_b" ||
-                localRole === "workshop_istasyon_c"
+                  localRole === "workshop_istasyon_b" ||
+                  localRole === "workshop_istasyon_c"
                   ? scannedRowsCount
                   : count}
               </td>
               <TablePagination
                 rowsPerPageOptions={[150]}
                 colSpan={22}
-                count={
+                count={loading || inProgressLoading ? 0 :
                   localRole === "workshop_istasyon_a" ||
-                  localRole === "workshop_istasyon_b" ||
-                  localRole === "workshop_istasyon_c"
+                    localRole === "workshop_istasyon_b" ||
+                    localRole === "workshop_istasyon_c"
                     ? scannedRowsCount
                     : count
                 }
                 rowsPerPage={
-                  localRole === "workshop_istasyon_a" ||
-                  localRole === "workshop_istasyon_b" ||
-                  localRole === "workshop_istasyon_c"
-                    ? scannedRowsCount
-                    : count
+                  loading || inProgressLoading ? 150 :
+                    localRole === "workshop_istasyon_a" ||
+                      localRole === "workshop_istasyon_b" ||
+                      localRole === "workshop_istasyon_c"
+                      ? scannedRowsCount
+                      : count
                 }
                 page={1}
                 SelectProps={{
@@ -1256,26 +1419,106 @@ function AllOrdersTable() {
     );
   }, [scannedBarcodes, screenSize.width]);
 
+  const handleSaveBarcodes = () => {
+    postData(`${BASE_URL}usps/approved_is_ready_label/`, { ids: currentLabelList })
+      .then(res => {
+        localStorage.setItem(`${localStoragePrefix}-label_list`, []);
+        localStorage.setItem(`${localStoragePrefix}-label_sibling_list`, []);
+
+        setCurrentLabelList([]);
+        setCurrentLabelSiblingList([]);
+
+        console.log(res?.data);
+      })
+      .catch(({ response }) => {
+        console.log("response", response);
+      })
+      .finally(() => {
+        getListFunc();
+      });
+  };
+
+  const handleGetLabels = () => {
+    setGetLabelsLoading(true);
+    postData(`${BASE_URL}usps/createBulkLabel_cargo/?carrier=${selectedCargo || "usps"}`, {
+      ids: rows?.map(item => item?.id),
+    })
+      .then(res => {
+        toastSuccessNotify("Successfully created labels!");
+        console.log(res?.data);
+        window.open(res?.data.zip_url, "_blank");
+      })
+      .catch(({ response }) => {
+        console.log("response", response);
+      })
+      .finally(() => {
+        getOrdersInProgress();
+        getAllZipFunc();
+        getListFunc();
+        setGetLabelsLoading(false);
+      });
+  };
+
+  const handleGetMissingLabels = () => {
+    setGetLabelsLoading(true);
+    getData(`${BASE_URL}usps/find_missing_label/`)
+      .then(res => {
+        console.log(res?.data);
+        // window.open(res?.data.zip_url, "_blank");
+        if (res?.data?.difference?.length) {
+          getOrdersInProgress();
+          getAllZipFunc();
+          getListFunc();
+        }
+      })
+      .catch(({ response }) => {
+        console.log("response", response);
+      })
+      .finally(() => {
+        setGetLabelsLoading(false);
+      });
+  };
+
+  const cargo = [
+    {
+      label: "USPS",
+      value: "usps",
+    },
+    {
+      label: "DHL",
+      value: "dhl_ecommerce",
+    },
+  ];
+
+
+  const handleDimensionChange = e => {
+    setDimensions({
+      ...dimensions,
+      [e.target.name]: e.target?.value,
+    });
+  };
+
+
   return (
     <>
       <div>
         <Paper className={classes.root}>
           {localRole === "workshop_istasyon_a" ||
-          localRole === "workshop_istasyon_b" ||
-          localRole === "workshop_istasyon_c" ? null : (
+            localRole === "workshop_istasyon_b" ||
+            localRole === "workshop_istasyon_c" ? null : (
             <CustomButtonGroup
               selectedTag={filters?.status}
               handleTagChange={handleTagChange}
               tagsData={tagsData}
               nonAdminTagsData={nonAdminTagsData}
               searchHandler={searchHandler}
-              loading={loading}
+              loading={loading || inProgressLoading}
             />
           )}
 
           {localRole === "workshop_istasyon_a" ||
-          localRole === "workshop_istasyon_b" ||
-          localRole === "workshop_istasyon_c" ? (
+            localRole === "workshop_istasyon_b" ||
+            localRole === "workshop_istasyon_c" ? (
             <>
               {renderBarcode}
               <h3>{barcodeInput}</h3>
@@ -1283,8 +1526,9 @@ function AllOrdersTable() {
           ) : selectedTag === "ready" || selectedTag === "shipped" ? (
             <div className={classes.barcodeBox}>
               <div style={{ marginRight: "0.5rem" }}>
-                <BarcodeInput onError={handleError} onScan={handleScan} />
-                <p>
+                {!loading && !inProgressLoading ? (
+                  <BarcodeInput onError={handleError} onScan={handleScan} />
+                ) : null}                <p>
                   <FormattedMessage id="barcode" defaultMessage="Barcode" /> :{" "}
                   {barcodeInput ||
                     formatMessage({
@@ -1304,6 +1548,8 @@ function AllOrdersTable() {
                   variant="outlined"
                   size="small"
                   onKeyDown={handleBarcodeInputKeyDown}
+                  disabled={loading || inProgressLoading}
+
                 />
               </div>
             </div>
@@ -1312,10 +1558,10 @@ function AllOrdersTable() {
           <div
             style={{
               display:
-                filters?.status === "ready" &&
-                localRole !== "workshop_istasyon_a" &&
-                localRole !== "workshop_istasyon_b" &&
-                localRole !== "workshop_istasyon_c"
+                (filters?.status === "ready") &&
+                  localRole !== "workshop_istasyon_a" &&
+                  localRole !== "workshop_istasyon_b" &&
+                  localRole !== "workshop_istasyon_c"
                   ? "block"
                   : "none",
             }}
@@ -1331,24 +1577,26 @@ function AllOrdersTable() {
               }}
             >
               <FormattedMessage id="totalScanned" />:{" "}
-              {JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]")
-                ?.length || 0}
+              {filters?.status === "label" ? currentLabelList?.length : currentBarcodeList?.length}
+
             </div>
             <div style={{ display: "flex", textAlign: "left" }}>
               <div style={{ display: "inline-block", marginLeft: 16 }}>
                 <p style={{ margin: 0 }}>
-                  <FormattedMessage id="lastScannedOrder" />
+                  <FormattedMessage
+                    id={filters?.status === "label" ? "lastScannedLabel" : "lastScannedOrder"}
+                  />
                 </p>
-                <Button color="primary" onClick={handleClearBarcodeList}>
+                <Button color="primary" onClick={
+                  filters?.status === "label" ? handleClearLabelList : handleClearBarcodeList
+                }>
                   <FormattedMessage id="clear" />
                 </Button>
               </div>
               <div style={{ display: "inline-flex", flexWrap: "wrap" }}>
-                {JSON.parse(localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]")
-                  ?.length
-                  ? JSON.parse(
-                      localStorage.getItem(`${localStoragePrefix}-barcode_list`) || "[]",
-                    )?.map(item => (
+                {(filters?.status === "label" ? currentLabelList : currentBarcodeList)?.length
+                  ? (filters?.status === "label" ? currentLabelList : currentBarcodeList)?.map(
+                    item => (
                       <p
                         key={item}
                         style={{
@@ -1361,10 +1609,17 @@ function AllOrdersTable() {
                           height: "23px",
                           cursor: "pointer",
                         }}
-                        onClick={() => removeItemfromBarcodeList(item)}
+                        onClick={() =>
+                          filters?.status === "label"
+                            ? removeItemfromLabelList(item)
+                            : removeItemfromBarcodeList(item)
+                        }
                       >
                         {item}
-                        {currentSiblingList
+                        {(filters?.status === "label"
+                          ? currentLabelSiblingList
+                          : currentSiblingList
+                        )
                           .filter(cs => cs?.id?.toString() === item?.toString())
                           .map(s =>
                             s.siblings.map((m, index) => (
@@ -1380,20 +1635,143 @@ function AllOrdersTable() {
                             )),
                           )}
                       </p>
-                    ))
+                    ),
+                  )
                   : null}
               </div>
             </div>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={handleSaveScanned}
-            >
-              <FormattedMessage id="saveScanned" />
-            </Button>
+            {filters?.status === "ready" ? (
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={handleSaveScanned}
+                disabled={loading || inProgressLoading}
+              >
+                <FormattedMessage id="saveScanned" />
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                variant="contained"
+                // color="primary"
+                style={{
+                  backgroundColor: "#eb6223",
+                  color: "#fff",
+                }}
+                className={classes.submit}
+                onClick={handleSaveBarcodes}
+                disabled={loading || inProgressLoading}
+              >
+                <FormattedMessage id="saveLabels" defaultMessage="Save Labels" />
+              </Button>
+            )}
           </div>
+
+          {selectedTag === "label" ? (
+            <>
+              <hr />
+              <div className={classes.barcodeBox}>
+                <div style={{ marginRight: "0.5rem" }}>
+                  {!loading ? <BarcodeInput onError={handleError} onScan={handleScan} /> : null}
+                  <p>
+                    <FormattedMessage id="barcode" defaultMessage="Barcode" /> :{" "}
+                    {barcodeInput ||
+                      formatMessage({
+                        id: "noResult",
+                        defaultMessage: "-",
+                      })}
+                  </p>
+                </div>
+                <div className={classes.print}>
+                  <TextField
+                    label={formatMessage({
+                      id: "barcode",
+                      defaultMessage: "Barcode",
+                    })}
+                    disabled={loading || inProgressLoading}
+                    inputRef={barcodeInputRef}
+                    id="outlined-size-small"
+                    variant="outlined"
+                    size="small"
+                    onKeyDown={handleBarcodeInputKeyDown}
+
+                  />
+                </div>
+              </div>
+              <div
+                style={{
+                  backgroundColor: "#E0E0E0",
+                  width: "min-content",
+                  margin: "10px auto",
+                  padding: 10,
+                  borderRadius: 5,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <p style={{ fontSize: 20 }}>
+
+                  <FormattedMessage id="packageSize" defaultMessage="Package Size" />
+                </p>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 5,
+                    marginBottom: 10,
+                  }}
+                >
+                  <input
+                    type="number"
+                    value={dimensions.weight}
+                    onChange={handleDimensionChange}
+                    name="weight"
+                    placeholder="Weight"
+                  />
+                  <b>oz</b>
+                </div>
+                <div
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 2 }}
+                >
+                  <input
+                    type="number"
+                    value={dimensions.length}
+                    onChange={handleDimensionChange}
+                    name="length"
+                    placeholder="Length"
+                    style={{ width: 42 }}
+                  />
+
+                  <input
+                    type="number"
+                    value={dimensions.width}
+                    onChange={handleDimensionChange}
+                    name="width"
+                    placeholder="Width"
+                    style={{ width: 42 }}
+                  />
+
+                  <input
+                    type="number"
+                    value={dimensions.height}
+                    onChange={handleDimensionChange}
+                    name="height"
+                    placeholder="Height"
+                    style={{ width: 42 }}
+                  />
+                  <b>inch</b>
+                </div>
+              </div>
+            </>
+          ) : null}
+
+
           <hr />
           {selectedTag === "in_progress" &&
             userRole !== "workshop_designer" &&
@@ -1419,11 +1797,11 @@ function AllOrdersTable() {
             style={{
               display:
                 process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
-                process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-                process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
-                process.env.REACT_APP_STORE_NAME === "Mina" ||
-                process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
+                  process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                  process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+                  process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                  process.env.REACT_APP_STORE_NAME === "Mina" ||
+                  process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                   ? "flex"
                   : "none",
               color: "#001A33",
@@ -1434,8 +1812,8 @@ function AllOrdersTable() {
             }}
           >
             {localRole !== "workshop_istasyon_a" &&
-            localRole !== "workshop_istasyon_b" &&
-            localRole !== "workshop_istasyon_c" ? (
+              localRole !== "workshop_istasyon_b" &&
+              localRole !== "workshop_istasyon_c" ? (
               <div>
                 <Button
                   variant="contained"
@@ -1480,12 +1858,12 @@ function AllOrdersTable() {
               }}
             >
               {userRole === "workshop_designer" ||
-              userRole === "workshop_designer2" ||
-              localRole === "workshop_istasyon_a" ||
-              localRole === "workshop_istasyon_b" ||
-              localRole === "workshop_istasyon_c" ? null : loading ? (
-                <FormattedMessage id="updating" />
-              ) : (
+                userRole === "workshop_designer2" ||
+                localRole === "workshop_istasyon_a" ||
+                localRole === "workshop_istasyon_b" ||
+                localRole === "workshop_istasyon_c" ? null : loading || inProgressLoading ? (
+                  <FormattedMessage id="updating" />
+                ) : (
                 <>
                   <FormattedMessage id="total" defaultMessage="Total" />{" "}
                   <FormattedMessage
@@ -1528,9 +1906,9 @@ function AllOrdersTable() {
         {printError ? <h1>{printError}</h1> : null}
 
         {filters?.status === "ready" &&
-        localRole !== "workshop_istasyon_a" &&
-        localRole !== "workshop_istasyon_b" &&
-        localRole !== "workshop_istasyon_c" ? (
+          localRole !== "workshop_istasyon_a" &&
+          localRole !== "workshop_istasyon_b" &&
+          localRole !== "workshop_istasyon_c" ? (
           <CargoPage
             getListFunc={getListFunc}
             setRefreshTable={setRefreshTable}
@@ -1565,6 +1943,78 @@ function AllOrdersTable() {
                 <FormattedMessage id="dontHaveAnyLabel" defaultMessage="Dont have any label!" />
               </h2>
             )}
+          </>
+        ) : null}
+
+        {filters?.status === "label" ? (
+          <>
+            <div
+              style={{
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+                gap: 10,
+              }}
+            >
+              <select value={selectedCargo} onChange={handleSelectChange}>
+                {cargo?.map((item, index) => (
+                  <option value={item.value} key={index}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.print}
+                onClick={handleGetLabels}
+                disabled={getLabelsLoading}
+                style={{
+                  backgroundColor: "#eb6223",
+                  color: "#fff",
+                }}
+              >
+                {getLabelsLoading ? (
+                  "Loading..."
+                ) : (
+                  <FormattedMessage id="getLabels" defaultMessage="getLabels" />
+                )}
+              </Button>
+
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.print}
+                onClick={handleGetMissingLabels}
+                disabled={getLabelsLoading}
+              >
+                {getLabelsLoading ? (
+                  "Loading..."
+                ) : (
+                  <FormattedMessage id="getMissingLabels" defaultMessage="Get Missing Labels" />
+                )}
+              </Button>
+            </div>
+            <h1>
+              <FormattedMessage id="labels" defaultMessage="Labels" />
+            </h1>
+            <div style={{ marginBottom: "3rem" }}>
+              {allZip ? (
+                allZip?.map((pdf, index) => (
+                  <div key={`${index}${pdf}`}>
+                    <a href={`${BASE_URL}media/easypost/${pdf}`} target="_blank" rel="noreferrer">
+                      {pdf}
+                    </a>
+                  </div>
+                ))
+              ) : (
+                <h2>
+                  <FormattedMessage id="dontHaveAnyLabel" defaultMessage="Dont have any label!" />
+                </h2>
+              )}
+            </div>
           </>
         ) : null}
       </div>
