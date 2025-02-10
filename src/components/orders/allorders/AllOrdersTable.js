@@ -1813,7 +1813,7 @@ function AllOrdersTable() {
           >
             {localRole !== "workshop_istasyon_a" &&
               localRole !== "workshop_istasyon_b" &&
-              localRole !== "workshop_istasyon_c" ? (
+              localRole !== "workshop_istasyon_c" && filters?.status !== "label" ? (
               <div>
                 <Button
                   variant="contained"
