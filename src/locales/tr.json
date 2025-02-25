@@ -248,6 +248,8 @@
   "shippingLabel": "Kargo Etiketi",
   "packageSize": "Paket Ölçüsü",
   "getLabels": "Label Al",
-  "getMissingLabels": "Eksik Labelları Getir"
+  "getMissingLabels": "Eksik Labelları Getir",
+  "bulkExcel": "Toplu Excel Yükle"
+
 
 }

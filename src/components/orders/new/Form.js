@@ -10,6 +10,9 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
+import { useRef, useState } from "react";
+import { postData } from "../../../helper/PostData";
+import { toastErrorNotify, toastSuccessNotify } from "../../otheritems/ToastNotify";
 
 const STORE_NAME = process.env.REACT_APP_STORE_NAME;
 
@@ -54,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+
 export default function InputForm({
   handleSubmit,
   handleChange,
@@ -62,6 +68,35 @@ export default function InputForm({
 }) {
   const classes = useStyles();
   const { formatMessage } = useIntl();
+
+    const uploadLabelRef = useRef();
+
+      const [isUploadingFile, setIsUploadingFile] = useState(false);
+    
+
+        const handleLabelUpload = e => {
+          e.stopPropagation();
+          let fs = e.target.files[0];
+          setIsUploadingFile(true);
+      
+          var data = new FormData();
+          data.append("file", fs);
+      
+          let path = `${BASE_URL}etsy/bulk_order_upload/`;
+          postData(path, data)
+            .then(res => {
+              console.log(res);
+              toastSuccessNotify(res?.data?.response || "Success uploading file");
+            })
+            .catch(err => {
+              console.log(err.response);
+              toastErrorNotify(err?.response?.response || "Error uploading file");
+            })
+            .finally(() => {
+              setIsUploadingFile(false);
+            });
+        };
+  
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -75,6 +110,22 @@ export default function InputForm({
             <Typography>
               <FormattedMessage id="fillAllFields" defaultMessage="Please fill all the fields!" />
             </Typography>
+          </div>
+
+          <div>
+
+              <Button color="primary" variant="contained" style={{marginTop:5}} disabled={isUploadingFile} size="small" onClick={() => uploadLabelRef.current.click()}>
+                  <FormattedMessage id={isUploadingFile ? "loading" : "bulkExcel"} />
+                </Button>
+                <input
+                  onChange={e => handleLabelUpload(e)}
+                  onClick={event => event.stopPropagation()}
+                  id="myInput"
+                  style={{ display: "none" }}
+                  type={"file"}
+                  accept=".xlsx, .xls, .csv" 
+                  ref={uploadLabelRef}
+                />
           </div>
           <form className={classes.form} onSubmit={handleSubmit}>
             <TextField

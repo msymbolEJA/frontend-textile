@@ -201,6 +201,7 @@
   "shippingLabel": "Shipping Label",
   "packageSize": "Package Size",
   "getLabels": "Get Label",
-  "getMissingLabels": "Get Missing Label"
+  "getMissingLabels": "Get Missing Label",
+  "bulkExcel": "Upload Bulk Excel"
 
 }
