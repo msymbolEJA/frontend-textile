@@ -8,6 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import CustomTableCell from "../CustomTableCell";
 import { FormattedMessage } from "react-intl";
+import { Typography } from "@material-ui/core";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -71,6 +72,10 @@ function Orders({ list }) {
 
   return (
     <Paper className={classes.root}>
+        {process.env.REACT_APP_STORE_NAME === "SWETTER" && rows?.[0]?.isExcel ? 
+        <Typography component="h1" variant="h5">
+            Total Orders Count: {rows?.length}
+          </Typography> : null}
       <Table className={classes.table} aria-label="caption table" size="small">
         <TableHead>
           <TableRow>
