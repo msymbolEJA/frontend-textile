@@ -65,6 +65,7 @@ export default function InputForm({
   handleChange,
   info,
   typeOptions,
+  setList
 }) {
   const classes = useStyles();
   const { formatMessage } = useIntl();
@@ -83,10 +84,13 @@ export default function InputForm({
           data.append("file", fs);
       
           let path = `${BASE_URL}etsy/bulk_order_upload/`;
+
+       
           postData(path, data)
             .then(res => {
               console.log(res);
               toastSuccessNotify(res?.data?.response || "Success uploading file");
+              setList(res?.data?.mappings?.map(i => ({...i, isExcel: true})))
             })
             .catch(err => {
               console.log(err.response);
@@ -159,7 +163,7 @@ export default function InputForm({
               </InputLabel>
               {STORE_NAME === "Linen Serisi" ||
               STORE_NAME === "Kadife-1" ||
-              STORE_NAME === "NAKIŞ-1" ||
+              STORE_NAME === "SWEETER" ||
               STORE_NAME === "Mina" ||
               STORE_NAME === "Güneş Tekstil" ? (
                 <Select
@@ -193,7 +197,7 @@ export default function InputForm({
             {STORE_NAME === "Linen Serisi" ||
             STORE_NAME === "Kadife-1" ||
             STORE_NAME === "Mina" ||
-            STORE_NAME === "NAKIŞ-1" ||
+            STORE_NAME === "SWEETER" ||
             STORE_NAME === "Güneş Tekstil" ? (
               <>
                 <TextField

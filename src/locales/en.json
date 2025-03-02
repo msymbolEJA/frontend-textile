@@ -202,6 +202,9 @@
   "packageSize": "Package Size",
   "getLabels": "Get Label",
   "getMissingLabels": "Get Missing Label",
-  "bulkExcel": "Upload Bulk Excel"
+  "bulkExcel": "Upload Bulk Excel",
+  "store": "Store",
+  "close": "close"
+
 
 }

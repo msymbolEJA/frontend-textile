@@ -213,6 +213,27 @@ function App({ history }) {
     const [barcodeInput, setBarcodeInput] = useState();
   const { formatMessage } = useIntl();
 
+      const options = [
+    "Nilester",
+    "GiftedbyLINDA",
+    "Botonoz",
+    "TrendNest",
+    "Katelyn Store",
+    "Nyda Custom Chic",
+    "Hug in a Box",
+    "COZYNEST",
+    "BRIGHT",
+    "ZAGERA",
+    "PureTee",
+    "COMFORTZone Tee",
+    "MyraGiftnDecor",
+    "New Amazon D.Textile",
+    "CPDESIGNusa",
+    "WillowWishing"
+  ];
+
+  const [selectedOption, setSelectedOption] = useState("all");
+
   useEffect(() => {
     const handleScroll = () => {
       if (!hasScrolledToBottom) {
@@ -290,7 +311,7 @@ function App({ history }) {
         : ""
     }${filters?.status === "repeat" ? "&is_repeat=true" : ""}&ordering=${
       filters?.ordering || "-id"
-    }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
+    }&store_filter=${selectedOption}&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
     
     const labelUrl = `${BASE_URL}/etsy/orders/?is_label_ready=true&is_label=false&country_filter=all&ordering=${
       "-id"
@@ -345,6 +366,7 @@ function App({ history }) {
     filters.search,
     count,
     selectedTag,
+    selectedOption
   ]);
 
 
@@ -935,6 +957,8 @@ function App({ history }) {
     });
   };
 
+
+
   return (
     <Paper className={classes.root}>
       <CustomButtonGroup
@@ -1061,15 +1085,38 @@ function App({ history }) {
           <>
             {filters?.search ? (
               <>
-                <FormattedMessage id="searchResult" />
+                <FormattedMessage id="searchResult" /> : {count}
               </>
             ) : (
               <>
-                <FormattedMessage id="total" defaultMessage="Total" />{" "}
-                <FormattedMessage id={filters?.status || "result"} />
+               <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", gap: 2}}
+               >
+                 <div style={{display: "flex" , alignItems: "center"}}>
+                  <label htmlFor="store-select" >Store:</label>
+      <select
+        id="store-select"
+        value={selectedOption}
+        onChange={(e) => setSelectedOption(e.target.value)}
+      >
+        <option value="all" disabled>All</option>
+        {options.map((option, index) => (
+          <option key={index} value={option}>{option}</option>
+        ))}
+      </select>
+                  </div> 
+
+
+              <div>
+                  <FormattedMessage id="total" defaultMessage="Total" />{" "}
+                <FormattedMessage id={filters?.status || "result"} /> : {count}
+              </div>
+               </div>
+                
+
+
               </>
             )}{" "}
-            : {count}
+            
           </>
         )}
       </div>
@@ -1103,11 +1150,19 @@ function App({ history }) {
               />
               <SortableTableCell
                 property="created_date"
-                property3="buyer"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
                 colName="createdDate"
+                setOrderBy={setOrderBy}
+                 isLabel={filters?.status === "label"}
+              />
+               <SortableTableCell
+                property="buyer"
+                handleRequestSort={handleRequestSort}
+                order={order}
+                orderBy={orderBy}
+                colName="buyer"
                 setOrderBy={setOrderBy}
                  isLabel={filters?.status === "label"}
               />
@@ -1124,7 +1179,7 @@ function App({ history }) {
               ) : null}
               {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                 process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                process.env.REACT_APP_STORE_NAME === "SWEETER" ||
                 process.env.REACT_APP_STORE_NAME === "Mina" ||
                 process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                 <SortableTableCell
@@ -1311,11 +1366,11 @@ function App({ history }) {
                 />
               ) : null}
               <SortableTableCell
-                property="note"
+                property="store"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
-                colName="internalNote"
+                colName="store"
                 setOrderBy={setOrderBy}
                  isLabel={filters?.status === "label"}
               />
@@ -1445,7 +1500,8 @@ function App({ history }) {
                       /> */}
                       <OrderStatus {...{ row, name: "status", onSelectChange }} />
                     </td>
-                    <ConstantTableCell {...{ row, name: "created_date", name3: "buyer" }} />
+                    <ConstantTableCell {...{ row, name: "created_date" }} />
+                    <EditableTableCell   {...{ row, name: "buyer" , onChange }} />
                     {process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic" ? (
                       <EditableTableCell
                         {...{
@@ -1457,7 +1513,7 @@ function App({ history }) {
                     ) : null}
                     {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                       process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                      process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                      process.env.REACT_APP_STORE_NAME === "SWEETER" ||
                       process.env.REACT_APP_STORE_NAME === "Mina" ||
                       process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                       <EditableTableCell
@@ -1561,7 +1617,7 @@ function App({ history }) {
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                             process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                            process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                            process.env.REACT_APP_STORE_NAME === "SWEETER" ||
                             process.env.REACT_APP_STORE_NAME === "Mina" ||
                             process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
@@ -1637,7 +1693,7 @@ function App({ history }) {
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                             process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                            process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                            process.env.REACT_APP_STORE_NAME === "SWEETER" ||
                             process.env.REACT_APP_STORE_NAME === "Mina" ||
                             process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
@@ -1652,7 +1708,7 @@ function App({ history }) {
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                             process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                            process.env.REACT_APP_STORE_NAME === "NAKIŞ-1" ||
+                            process.env.REACT_APP_STORE_NAME === "SWEETER" ||
                             process.env.REACT_APP_STORE_NAME === "Mina" ||
                             process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 150
@@ -1664,7 +1720,7 @@ function App({ history }) {
                       process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
                       <EditableTableCell {...{ row, name: "gift_message", onChange }} />
                     ) : null}
-                    <EditableTableCell {...{ row, name: "note", onChange }} />
+                    <ConstantTableCell {...{ row, name: "store", onChange }} />
 
                     {process.env.REACT_APP_STORE_NAME === "Linen Serisi" &&
                       (localStorage.getItem("localRole") === "admin" ||

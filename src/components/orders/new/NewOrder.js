@@ -12,7 +12,7 @@ const initialValue = {
   customer: "",
   supplier:
     STORE_NAME === "Linen Serisi" ||
-    STORE_NAME === "NAKIŞ-1" ||
+    STORE_NAME === "SWEETER" ||
     STORE_NAME === "Kadife-1" ||
     STORE_NAME === "Mina" ||
     STORE_NAME === "Güneş Tekstil"
@@ -64,6 +64,7 @@ function NewOrder() {
       <Form
         handleSubmit={handleSubmit}
         handleChange={handleChange}
+        setList={setList}
         info={info}
         typeOptions={response?.results || []}
       />

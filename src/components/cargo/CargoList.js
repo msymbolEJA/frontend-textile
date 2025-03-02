@@ -20,6 +20,7 @@ import api from "../../helper/api";
 import ConfirmDialog from "../otheritems/ConfirmModal";
 import { toastSuccessNotify } from "../otheritems/ToastNotify";
 import DownloadFile from "@material-ui/icons/GetApp";
+import { cyan } from "@material-ui/core/colors";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -49,6 +50,17 @@ const StyledTableRow = withStyles(theme => ({
     },
   },
 }))(TableRow);
+
+const ColorButton2 = withStyles(theme => ({
+  root: {
+    backgroundColor: cyan[500],
+    whiteSpace: "nowrap",
+    color: "#fff",
+    "&:hover": {
+      backgroundColor: cyan[700],
+    },
+  },
+}))(Button);
 
 const useStyles = makeStyles({
   table: {
@@ -158,6 +170,8 @@ export default function CustomizedTables() {
         ? `/etsy/undoCargo/${selectedItem?.id}/`
         : selectedItem?.action === "delete"
         ? `/etsy/cancelCargo/${selectedItem?.id}/`
+        : selectedItem?.action === "close"
+        ? `/usps/bulk_close_orders/${selectedItem?.id}/`
         : null;
     api(url, "get")
       .then(response => {
@@ -400,6 +414,21 @@ export default function CustomizedTables() {
                         >
                           <FormattedMessage id="delete" defaultMessage="Delete" />
                         </Button>
+
+                         <br />
+                            <br />
+                            <ColorButton2
+                              variant="contained"
+                              size="small"
+                              onClick={e => handleConfirmModal(e, row.id, "close")}
+                              color=""
+                            >
+                              <FormattedMessage id="close" defaultMessage="close" />
+                            </ColorButton2>
+                            <br />
+                            <br />
+
+
                       </StyledTableCell>
                     )}
                   </StyledTableRow>

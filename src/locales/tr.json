@@ -249,7 +249,10 @@
   "packageSize": "Paket Ölçüsü",
   "getLabels": "Label Al",
   "getMissingLabels": "Eksik Labelları Getir",
-  "bulkExcel": "Toplu Excel Yükle"
+  "bulkExcel": "Toplu Excel Yükle",
+  "store": "Mağaza",
+    "close": "Kapama"
+
 
 
 }

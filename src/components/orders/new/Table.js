@@ -74,6 +74,9 @@ function Orders({ list }) {
       <Table className={classes.table} aria-label="caption table" size="small">
         <TableHead>
           <TableRow>
+             <StyledTableCell align="center">
+              <FormattedMessage id="id" defaultMessage="id" />
+            </StyledTableCell>
             <StyledTableCell align="center">
               <FormattedMessage id="customer" defaultMessage="Customer" />
             </StyledTableCell>
@@ -110,11 +113,12 @@ function Orders({ list }) {
           {rows
             ? rows.map((row) => (
                 <StyledTableRow key={row.temp_id}>
+                  <CustomTableCell {...{ row, name: "id", onChange }} />
                   <CustomTableCell {...{ row, name: "customer", onChange }} />
                   <CustomTableCell {...{ row, name: "supplier", onChange }} />
                   <CustomTableCell {...{ row, name: "type", onChange }} />
-                  <CustomTableCell {...{ row, name: "length", onChange }} />
-                  <CustomTableCell {...{ row, name: "color", onChange }} />
+                 {row?.isExcel ?  <CustomTableCell {...{ row, name: "variation_1_value", onChange }} /> :  <CustomTableCell {...{ row, name: "length", onChange }} />}
+                 {row?.isExcel ?  <CustomTableCell {...{ row, name: "variation_2_value", onChange }} /> :  <CustomTableCell {...{ row, name: "color", onChange }} />}
                   <CustomTableCell {...{ row, name: "qty", onChange }} />
                   <CustomTableCell {...{ row, name: "size", onChange }} />
                   <CustomTableCell {...{ row, name: "start", onChange }} />
