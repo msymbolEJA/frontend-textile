@@ -1179,7 +1179,7 @@ function App({ history }) {
               ) : null}
               {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                 process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                process.env.REACT_APP_STORE_NAME === "SWEETER" ||
+                process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                 process.env.REACT_APP_STORE_NAME === "Mina" ||
                 process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                 <SortableTableCell
@@ -1513,7 +1513,7 @@ function App({ history }) {
                     ) : null}
                     {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                       process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                      process.env.REACT_APP_STORE_NAME === "SWEETER" ||
+                      process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                       process.env.REACT_APP_STORE_NAME === "Mina" ||
                       process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
                       <EditableTableCell
@@ -1617,7 +1617,7 @@ function App({ history }) {
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                             process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                            process.env.REACT_APP_STORE_NAME === "SWEETER" ||
+                            process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                             process.env.REACT_APP_STORE_NAME === "Mina" ||
                             process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
@@ -1693,7 +1693,7 @@ function App({ history }) {
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                             process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                            process.env.REACT_APP_STORE_NAME === "SWEETER" ||
+                            process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                             process.env.REACT_APP_STORE_NAME === "Mina" ||
                             process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 250
@@ -1708,7 +1708,7 @@ function App({ history }) {
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
                             process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
-                            process.env.REACT_APP_STORE_NAME === "SWEETER" ||
+                            process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                             process.env.REACT_APP_STORE_NAME === "Mina" ||
                             process.env.REACT_APP_STORE_NAME === "Güneş Tekstil"
                             ? 150

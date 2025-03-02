@@ -592,7 +592,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                   setOrderBy={setOrderBy}
                 />
                 {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-                process.env.REACT_APP_STORE_NAME === "SWEETER" ||
+                process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                 process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                 process.env.REACT_APP_STORE_NAME === "Mina" ||
                 process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (
@@ -868,7 +868,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                         }}
                       />
                       {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-                      process.env.REACT_APP_STORE_NAME === "SWEETER" ||
+                      process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                       process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                       process.env.REACT_APP_STORE_NAME === "Mina" ||
                       process.env.REACT_APP_STORE_NAME === "Güneş Tekstil" ? (

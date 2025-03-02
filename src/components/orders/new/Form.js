@@ -163,7 +163,7 @@ export default function InputForm({
               </InputLabel>
               {STORE_NAME === "Linen Serisi" ||
               STORE_NAME === "Kadife-1" ||
-              STORE_NAME === "SWEETER" ||
+              STORE_NAME === "SWETTER" ||
               STORE_NAME === "Mina" ||
               STORE_NAME === "Güneş Tekstil" ? (
                 <Select
@@ -197,7 +197,7 @@ export default function InputForm({
             {STORE_NAME === "Linen Serisi" ||
             STORE_NAME === "Kadife-1" ||
             STORE_NAME === "Mina" ||
-            STORE_NAME === "SWEETER" ||
+            STORE_NAME === "SWETTER" ||
             STORE_NAME === "Güneş Tekstil" ? (
               <>
                 <TextField

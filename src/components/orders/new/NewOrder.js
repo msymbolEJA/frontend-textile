@@ -12,7 +12,7 @@ const initialValue = {
   customer: "",
   supplier:
     STORE_NAME === "Linen Serisi" ||
-    STORE_NAME === "SWEETER" ||
+    STORE_NAME === "SWETTER" ||
     STORE_NAME === "Kadife-1" ||
     STORE_NAME === "Mina" ||
     STORE_NAME === "Güneş Tekstil"
