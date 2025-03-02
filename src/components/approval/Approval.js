@@ -232,7 +232,7 @@ function App({ history }) {
     "WillowWishing"
   ];
 
-  const [selectedOption, setSelectedOption] = useState("all");
+  const [selectedOption, setSelectedOption] = useState(process.env.REACT_APP_STORE_NAME === "SWETTER" ? "all": "");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -311,7 +311,7 @@ function App({ history }) {
         : ""
     }${filters?.status === "repeat" ? "&is_repeat=true" : ""}&ordering=${
       filters?.ordering || "-id"
-    }&store_filter=${selectedOption}&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
+    }&${selectedOption ? `store_filter=${selectedOption}&` : ""}limit=${filters?.limit || 0}&offset=${filters?.offset}`;
     
     const labelUrl = `${BASE_URL}/etsy/orders/?is_label_ready=true&is_label=false&country_filter=all&ordering=${
       "-id"
@@ -1091,19 +1091,19 @@ function App({ history }) {
               <>
                <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", gap: 2}}
                >
-                 <div style={{display: "flex" , alignItems: "center"}}>
+               {process.env.REACT_APP_STORE_NAME === "SWETTER" ?  <div style={{display: "flex" , alignItems: "center"}}>
                   <label htmlFor="store-select" >Store:</label>
       <select
         id="store-select"
         value={selectedOption}
         onChange={(e) => setSelectedOption(e.target.value)}
       >
-        <option value="all" disabled>All</option>
+        <option value="all">All</option>
         {options.map((option, index) => (
           <option key={index} value={option}>{option}</option>
         ))}
       </select>
-                  </div> 
+                  </div>  : null}
 
 
               <div>

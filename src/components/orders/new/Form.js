@@ -116,7 +116,7 @@ export default function InputForm({
             </Typography>
           </div>
 
-          <div>
+         {process.env.REACT_APP_STORE_NAME === "SWETTER" ?  <div>
 
               <Button color="primary" variant="contained" style={{marginTop:5}} disabled={isUploadingFile} size="small" onClick={() => uploadLabelRef.current.click()}>
                   <FormattedMessage id={isUploadingFile ? "loading" : "bulkExcel"} />
@@ -130,7 +130,7 @@ export default function InputForm({
                   accept=".xlsx, .xls, .csv" 
                   ref={uploadLabelRef}
                 />
-          </div>
+          </div>: null}
           <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
               variant="outlined"

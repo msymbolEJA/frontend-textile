@@ -415,7 +415,7 @@ export default function CustomizedTables() {
                           <FormattedMessage id="delete" defaultMessage="Delete" />
                         </Button>
 
-                         <br />
+                        {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? <> <br />
                             <br />
                             <ColorButton2
                               variant="contained"
@@ -426,7 +426,7 @@ export default function CustomizedTables() {
                               <FormattedMessage id="close" defaultMessage="close" />
                             </ColorButton2>
                             <br />
-                            <br />
+                            <br /> </> : null}
 
 
                       </StyledTableCell>

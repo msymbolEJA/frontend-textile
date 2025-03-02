@@ -91,6 +91,8 @@ export default function CustomizedTables({ match }) {
           <TableRow>
             <StyledTableCell align="center">ORDER ID</StyledTableCell>
             <StyledTableCell align="center">RECEIPT ID</StyledTableCell>
+            {process.env.REACT_APP_STORE_NAME === "SWETTER" && <StyledTableCell align="center">STORE</StyledTableCell>}
+            
             <StyledTableCell align="center">CUSTOMER</StyledTableCell>
             <StyledTableCell align="center">ITEM INDEX</StyledTableCell>
             <StyledTableCell align="center">TYPE</StyledTableCell>
@@ -117,6 +119,10 @@ export default function CustomizedTables({ match }) {
                   <StyledTableCell align="center">
                     {row?.receipt_id}
                   </StyledTableCell>
+                   {process.env.REACT_APP_STORE_NAME === "SWETTER" &&  <StyledTableCell align="center">
+                    {row?.store}
+                  </StyledTableCell>}
+
                   <StyledTableCell align="center">{row?.name}</StyledTableCell>
                   <StyledTableCell align="center">
                     {row?.item_index}
