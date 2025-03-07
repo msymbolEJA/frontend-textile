@@ -124,7 +124,7 @@ function AllOrdersTable() {
   const [getLabelsLoading, setGetLabelsLoading] = useState(false);
 
 
-  const isBeyazit =
+  const isBeyazit = 
     (localStorage.getItem("localRole") === "workshop_manager" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
@@ -134,7 +134,7 @@ function AllOrdersTable() {
   const { user } = useContext(AppContext);
 
   const paramsQuery = getQueryParams();
-  const filters = { ...paramsQuery, limit: 150, offset: 0, status: paramsQuery?.status };
+  const filters = { ...paramsQuery, limit: 150, offset: 0, status: paramsQuery?.status   };
 
   const [scannedBarcodes, setScannedBarcodes] = useState([]);
   const barcodeInputRef = useRef();
@@ -231,14 +231,14 @@ function AllOrdersTable() {
       const url = `${BASE_URL}etsy/orders/?${filters?.status !== "all_orders" && filters?.status !== "repeat"
           ? `status=${filters?.status}`
           : `status=awaiting`
-        }&is_followup=${filters?.is_followup}&country_filter=${filters?.country}&ordering=${filters?.ordering
+        }&is_followup=${filters?.is_followup}&country_filter=${countryFilter}&ordering=${filters?.ordering
         }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
 
-      const labelUrl = `${BASE_URL}/etsy/orders/?is_label_ready=true&is_label=false&country_filter=${filters?.country}&ordering=${filters?.ordering
+      const labelUrl = `${BASE_URL}/etsy/orders/?is_label_ready=true&is_label=false&country_filter=${countryFilter}&ordering=${filters?.ordering
         }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
 
       getData(filters?.status === "label" ? labelUrl : url)
-        .then(response => {
+        .then(response => { 
           const t = response?.data?.results?.length ? response?.data?.results : [];
 
           setRows(t);
@@ -580,6 +580,7 @@ function AllOrdersTable() {
           .then(response => {
             barcodeInputRef.current.value = null;
             setBarcodeInput(null);
+             if (response?.data?.error) toast.error(response?.data?.error || "Error");
             let updatedData = {
               is_label_ready: true,
               is_label: false,
@@ -589,10 +590,11 @@ function AllOrdersTable() {
               width: Number(width),
             };
             handleRowChange(barcodeInput, updatedData, true);
+           
           })
           .catch(error => {
             console.log("error", error);
-            toast.error("Error - Order not found with this id: " + barcodeInput);
+            toast.error(error?.response?.data?.error || "Error - Order not found with this id: " + barcodeInput);
           });
       }
     }

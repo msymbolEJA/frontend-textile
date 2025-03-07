@@ -107,7 +107,7 @@ function Orders({ list }) {
               <FormattedMessage id="start" defaultMessage="Start" />
             </StyledTableCell>
             <StyledTableCell align="center">
-              <FormattedMessage id="space" defaultMessage="Space" />
+              <FormattedMessage id="space" defaultMessage="Space" yarn dta/>
             </StyledTableCell>
             <StyledTableCell align="center">
               <FormattedMessage id="explanation" defaultMessage="Explanation" />

@@ -585,6 +585,20 @@ const OrderDetails = ({ match }) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {(process.env.REACT_APP_STORE_NAME === "Linen Serisi") &&
+      rows?.[0]?.tracking_label_url ? (
+        <div>
+          <a
+            href={rows?.[0]?.tracking_label_url}
+            className={classes.printSubmit}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FormattedMessage id="shippingLabel" defaultMessage="Shipping Label" />
+          </a>
+        </div>
+      ) : null}
     </div>
   );
 };
