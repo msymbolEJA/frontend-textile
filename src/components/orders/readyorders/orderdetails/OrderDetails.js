@@ -476,6 +476,20 @@ const OrderDetails = ({ match }) => {
         </>
       ) : null}
 
+       {(process.env.REACT_APP_STORE_NAME === "Linen Serisi") &&
+      rows?.[0]?.tracking_label_url ? (
+        <div>
+          <a
+            href={rows?.[0]?.tracking_label_url}
+            className={classes.printSubmit}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FormattedMessage id="shippingLabel" defaultMessage="Shipping Label" />
+          </a>
+        </div>
+      ) : null}
+
       {["in_progress", "ready", "in_transit", "shipped"].includes(
         rows[0]?.status
       ) && isPdfExist ? (
@@ -586,19 +600,7 @@ const OrderDetails = ({ match }) => {
         </Table>
       </TableContainer>
 
-      {(process.env.REACT_APP_STORE_NAME === "Linen Serisi") &&
-      rows?.[0]?.tracking_label_url ? (
-        <div>
-          <a
-            href={rows?.[0]?.tracking_label_url}
-            className={classes.printSubmit}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FormattedMessage id="shippingLabel" defaultMessage="Shipping Label" />
-          </a>
-        </div>
-      ) : null}
+     
     </div>
   );
 };

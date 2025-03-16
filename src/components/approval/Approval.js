@@ -18,6 +18,7 @@ import {
   MenuItem,
   ListItemText,
   TextField,
+  Box,
 } from "@material-ui/core";
 import {
   Flag as FlagIcon,
@@ -116,6 +117,18 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
   },
+   package: {
+    display: "flex",
+    gap: 4,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    background: "#fff",
+    position: "fixed",
+    width: "100%",
+    bottom: 0,
+    fontSize: 20,
+  },
 }));
 
 const StyledTableRow = withStyles(theme => ({
@@ -171,6 +184,9 @@ function App({ history }) {
       const [allZip, setAllZip] = useState([]);
 
 
+        const [selectedForPackage, setSelectedForPackage] = useState([]);
+
+
     const getAllZipFunc = () => {
     getAllPdf(`${BASE_URL}usps/admin_all_zip/`)
       .then(response => {
@@ -182,7 +198,56 @@ function App({ history }) {
       });
   };
 
-    
+    const handlePackage = () => {
+    setGetLabelsLoading(true);
+    postData(`${BASE_URL}usps/admin_create_cargo_label/?carrier=${selectedCargo || "usps"}`, {
+      ids: selectedForPackage,
+    })
+      .then(res => {
+        toastSuccessNotify("Successfully created labels!");
+        console.log(res?.data);
+        window.open(res?.data.zip_url, "_blank");
+        setSelectedForPackage([]);
+      })
+      .catch(({ response }) => {
+        console.log("response", response);
+      })
+      .finally(() => {
+        getAllZipFunc();
+        setGetLabelsLoading(false);
+      });
+  };
+
+      const handleSelectAllClickForPackage = event => {
+    if (event.target.checked) {
+      const newSelecteds = rows?.slice(0, 20).map(row => row?.id);
+      setSelectedForPackage(newSelecteds);
+      return;
+    }
+    setSelectedForPackage([]);
+  };
+
+
+  
+  const handleCheckBoxClickForPackage = (event, id, row) => {
+    const selectedIndex = selectedForPackage?.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = selectedForPackage.slice().concat(id);
+
+      // if (newSelected.length > 20) {
+      //   newSelected.shift();
+      // }
+    } else {
+      newSelected = selectedForPackage
+        .slice(0, selectedIndex)
+        .concat(selectedForPackage.slice(selectedIndex + 1));
+    }
+
+    setSelectedForPackage(newSelected);
+  };
+
   const cargo = [
     {
       label: "USPS",
@@ -1139,6 +1204,33 @@ function App({ history }) {
                 setOrderBy={setOrderBy}
                  isLabel={filters?.status === "label"}
               />
+
+
+              {isLabelStore ? (
+                <StyledTableCell
+                  align="center"
+                  style={{
+                    padding: 10,
+                    borderRight: "0.5px solid #E0E0E0",
+                  }}
+                  isLabel={filters?.status === "label"}
+                >
+                  <FormattedMessage id="package" defaultMessage="Package" />
+
+                  <br />
+                  <Checkbox
+                    indeterminate={
+                      selectedForPackage?.length > 0 && selectedForPackage?.length < 20
+                    }
+                    checked={rows?.length > 0 && selectedForPackage?.length === 20}
+                    color="primary"
+                    onChange={handleSelectAllClickForPackage}
+                    inputProps={{ "aria-label": "select all" }}
+                  />
+                </StyledTableCell>
+              ) : null}
+
+
               <SortableTableCell
                 property="status"
                 handleRequestSort={handleRequestSort}
@@ -1438,6 +1530,35 @@ function App({ history }) {
                         handlerFlagRepeatChange,
                       }}
                     />
+
+                      {isLabelStore ? (
+                      <td
+                        style={{
+                          padding: 10,
+                          minWidth: 90,
+                          pointerEvents: "auto",
+                          background: row?.tracking_code_orders ? "#00ee00" : "",
+                        }}
+                        onClick={e => {
+                          e.stopPropagation();
+                          handleCheckBoxClickForPackage(e, row.id, row);
+                        }}
+                        onBlur={e => {
+                          e.stopPropagation();
+                        }}
+                        onChange={e => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <Checkbox
+                          checked={selectedForPackage?.indexOf(row.id) !== -1}
+                          color="primary"
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </td>
+                    ) : null}
+
+
                     <td
                       onClick={e => {
                         e.stopPropagation();
@@ -1852,6 +1973,37 @@ function App({ history }) {
 
       
       <ToastContainer style={{ color: "black" }} />
+
+      {console.log(isLabelStore , selectedForPackage)}
+
+       {isLabelStore && selectedForPackage?.length ? (
+        <Box component={Paper} elevation={2} className={classes.package}>
+          Get Label for {selectedForPackage?.length} Items{" "}
+          <select value={selectedCargo} onChange={handleSelectChange}>
+            {cargo?.map((item, index) => (
+              <option value={item.value} key={index}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+          <Button
+            color="primary"
+            variant="contained"
+            size="large"
+            style={{ marginLeft: 20 }}
+            onClick={handlePackage}
+            disabled={getLabelsLoading}
+          >
+            {getLabelsLoading ? (
+              "Loading..."
+            ) : (
+              <FormattedMessage id="getLabels" defaultMessage="getLabels" />
+            )}
+          </Button>
+        </Box>
+      ) : null}
+
+
       <ConfirmDialog
         handleConfirm={handleSendToStock}
         selectedItem={selectedItem}

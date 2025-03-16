@@ -683,7 +683,7 @@ function AllOrdersTable() {
       .then(response => { })
       .catch(error => {
         console.log(error);
-        toastErrorNotify("Error, Please try again after refresh the page");
+        toastErrorNotify(error?.response?.data?.error || "Error, Please try again after refresh the page");
       })
       .finally(() => {
         if (filters?.search) {
