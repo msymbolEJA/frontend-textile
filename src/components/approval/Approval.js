@@ -1898,7 +1898,7 @@ function App({ history }) {
         </Table>
       </TableContainer>
 
-      {filters?.status === "pending" ? (
+      {isLabelStore && filters?.status === "pending" ? (
         <>
           <h1 style={{marginTop: 10}}>
             <FormattedMessage id="labels" defaultMessage="Labels" />
