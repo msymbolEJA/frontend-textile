@@ -228,6 +228,7 @@ function App({ history }) {
   };
 
 
+
   
   const handleCheckBoxClickForPackage = (event, id, row) => {
     const selectedIndex = selectedForPackage?.indexOf(id);
@@ -418,7 +419,7 @@ function App({ history }) {
   };
 
   useEffect(() => {
-     if (filters?.status === "label") getAllZipFunc();
+     if (filters?.status === "pending") getAllZipFunc();
     getListFunc();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1897,58 +1898,8 @@ function App({ history }) {
         </Table>
       </TableContainer>
 
-      {filters?.status === "label" ? (
+      {filters?.status === "pending" ? (
         <>
-          <div
-            style={{
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              display: "flex",
-              gap: 10,
-              marginTop: 10
-            }}
-          >
-            <select value={selectedCargo} onChange={handleSelectChange}>
-              {cargo?.map((item, index) => (
-                <option value={item.value} key={index}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.print}
-              onClick={handleGetLabels}
-              disabled={getLabelsLoading}
-              style={{
-                backgroundColor: "#eb6223",
-                color: "#fff",
-              }}
-            >
-              {getLabelsLoading ? (
-                "Loading..."
-              ) : (
-                <FormattedMessage id="getLabels" defaultMessage="getLabels" />
-              )}
-            </Button>
-
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.print}
-              onClick={handleGetMissingLabels}
-              disabled={getLabelsLoading}
-            >
-              {getLabelsLoading ? (
-                "Loading..."
-              ) : (
-                <FormattedMessage id="getMissingLabels" defaultMessage="Get Missing Labels" />
-              )}
-            </Button>
-          </div>
           <h1 style={{marginTop: 10}}>
             <FormattedMessage id="labels" defaultMessage="Labels" />
           </h1>

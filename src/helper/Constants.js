@@ -272,7 +272,7 @@ export const updateDetailsMappingTable = [
       { id: 12, name: "PLT", value: "PLT" },
     ],
   },
-  { id: 5, name: "Tracking Code", objKey: "tracking_code", type: "text" },
+  { id: 5, name: "Tracking Code", objKey: "tracking_code", type: "editable" },
   { id: 5, name: "Tracking Url", objKey: "tracking_url", type: "url" },
   { id: 5, name: "Carrier Name", objKey: "carrier_name", type: "text" },
 ];
