@@ -20,7 +20,7 @@ import printJS from "print-js";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useHistory } from "react-router-dom";
 import { AppContext } from "../../../context/Context";
-import { nonAdminTagsData, tagsData } from "../../../helper/Constants";
+import { isLabelStore, nonAdminTagsData, tagsData } from "../../../helper/Constants";
 import { getAllPdf, getData, globalSearch, postData, putData } from "../../../helper/PostData";
 import { getQueryParams } from "../../../helper/getQueryParams";
 import BarcodeInput from "../../otheritems/BarcodeInput";
@@ -37,6 +37,7 @@ import CustomTableCell from "./CustomTableCell";
 import TablePaginationActions from "./TablePaginationActions";
 import ViewImageFile from "./ViewImageFile";
 import { toast } from "react-toastify";
+import WarningIcon from '@material-ui/icons/Warning';
 
 // import { BarcodeDetector, setZXingModuleOverrides } from "barcode-detector/pure";
 // import "barcode-detector/side-effects";
@@ -827,9 +828,14 @@ function AllOrdersTable() {
                 <FormattedMessage id="ready_date" defaultMessage="Approval Date" />
               </StyledTableCell>
 
-              <StyledTableCell align="center" isLabel={filters?.status === "label"}>
+                <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                 <FormattedMessage id="stationStatus" defaultMessage="Station Status" />
               </StyledTableCell>
+
+
+              {isLabelStore && filters?.status === "ready"? <StyledTableCell align="center" isLabel={filters?.status === "label"}>
+                <FormattedMessage id="needLabel" defaultMessage="Need Label?" />
+              </StyledTableCell>: null}
 
               {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                 <StyledTableCell align="center" isLabel={filters?.status === "label"}>
@@ -1043,6 +1049,16 @@ function AllOrdersTable() {
                       <Checkbox disabled checked={row?.station_3} />
                     </div>
                   </td>
+
+                  {isLabelStore && filters?.status === "ready" ?  <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                     {row?.is_need_shipping_label &&<WarningIcon style={{color: "red"}} />} 
+                    </div>: null}
                   {/*   <CustomTableCell {...{ row, name: "ready_date" }} /> */}
 
                   {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (

@@ -21,7 +21,8 @@ import ConfirmDialog from "../otheritems/ConfirmModal";
 import { toastSuccessNotify } from "../otheritems/ToastNotify";
 import DownloadFile from "@material-ui/icons/GetApp";
 import { cyan } from "@material-ui/core/colors";
-
+import { isLabelStore } from "../../helper/Constants";
+import WarningIcon from '@material-ui/icons/Warning';
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const StyledTableCell = withStyles(theme => ({
@@ -107,12 +108,12 @@ export default function CustomizedTables() {
       let dataObj = response.data;
       const formattedData = dataObj
         ? Object.keys(dataObj).flatMap(key => {
-            return Object.keys(dataObj[key]).map(key2 => ({
-              ...dataObj[key][key2],
-              refNumber: key2,
-              supplier: isBeyazit ? "" : key,
-            }));
-          })
+          return Object.keys(dataObj[key]).map(key2 => ({
+            ...dataObj[key][key2],
+            refNumber: key2,
+            supplier: isBeyazit ? "" : key,
+          }));
+        })
         : [];
       setCargoList(formattedData.sort((a, b) => b.id - a.id));
     });
@@ -169,10 +170,10 @@ export default function CustomizedTables() {
       selectedItem.action === "undo"
         ? `/etsy/undoCargo/${selectedItem?.id}/`
         : selectedItem?.action === "delete"
-        ? `/etsy/cancelCargo/${selectedItem?.id}/`
-        : selectedItem?.action === "close"
-        ? `/usps/bulk_close_orders/${selectedItem?.id}/`
-        : null;
+          ? `/etsy/cancelCargo/${selectedItem?.id}/`
+          : selectedItem?.action === "close"
+            ? `/usps/bulk_close_orders/${selectedItem?.id}/`
+            : null;
     api(url, "get")
       .then(response => {
         toastSuccessNotify(response?.data);
@@ -191,7 +192,7 @@ export default function CustomizedTables() {
         .catch(({ response }) => {
           console.log(response.data.Failed);
         })
-        .finally(() => {});
+        .finally(() => { });
   };
 
   const handleConfirmModal = (e, id, action) => {
@@ -200,8 +201,7 @@ export default function CustomizedTables() {
 
   const handleDownload = async row => {
     window.open(
-      `${BASE_URL}etsy/generate-excell/?paket_no=${row?.id}&ref_no=${
-        row?.refNumber?.split(" ")?.[0]
+      `${BASE_URL}etsy/generate-excell/?paket_no=${row?.id}&ref_no=${row?.refNumber?.split(" ")?.[0]
       }&items=${row?.content?.map(item => item?.split(",")?.[0])?.join(",")}`,
       "_blank",
     );
@@ -272,9 +272,9 @@ export default function CustomizedTables() {
                 <FormattedMessage id="trackingNumber" defaultMessage="Tracking Number" />
               </StyledTableCell>
               {process.env.REACT_APP_IS_DHL_ENABLED === "true" &&
-              (userRole === "admin" ||
-                userRole === "shop_manager" ||
-                userRole === "shop_packer") ? (
+                (userRole === "admin" ||
+                  userRole === "shop_manager" ||
+                  userRole === "shop_packer") ? (
                 <StyledTableCell align="center">
                   <FormattedMessage id="download" defaultMessage="Download" />
                 </StyledTableCell>
@@ -341,16 +341,18 @@ export default function CustomizedTables() {
                               e.stopPropagation();
                             }}
                             style={{
+
                               color:
                                 !key ||
-                                key.toString().split(",")[1].includes("None") ||
-                                key.toString().split(",")[1] === " 209" ||
-                                key.toString().split(",")[1] === " US"
+                                  key.toString().split(",")[1].includes("None") ||
+                                  key.toString().split(",")[1] === " 209" ||
+                                  key.toString().split(",")[1] === " US"
                                   ? "black"
                                   : "red",
                             }}
                           >
-                            {key.toString().split(",")[0]}
+                           {key.toString().split(",")[0]}{key.toString().split(",")[2]?.trim() === "True" && isLabelStore ? <WarningIcon style={{ color: "red", fontSize: 15 , marginBottom: -3}} fontSize={"10px"} />: null}
+
                           </a>
                           {row?.content?.length === i + 1 ? "" : <span>&nbsp; {"|"} &nbsp;</span>}
                         </span>
@@ -373,9 +375,9 @@ export default function CustomizedTables() {
                       }}
                     />
                     {process.env.REACT_APP_IS_DHL_ENABLED === "true" &&
-                    (userRole === "admin" ||
-                      userRole === "shop_manager" ||
-                      userRole === "shop_packer") ? (
+                      (userRole === "admin" ||
+                        userRole === "shop_manager" ||
+                        userRole === "shop_packer") ? (
                       <StyledTableCell align="center" onClick={e => e.stopPropagation()}>
                         {!row?.is_label ? (
                           <Button
@@ -416,17 +418,17 @@ export default function CustomizedTables() {
                         </Button>
 
                         {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? <> <br />
-                            <br />
-                            <ColorButton2
-                              variant="contained"
-                              size="small"
-                              onClick={e => handleConfirmModal(e, row.id, "close")}
-                              color=""
-                            >
-                              <FormattedMessage id="close" defaultMessage="close" />
-                            </ColorButton2>
-                            <br />
-                            <br /> </> : null}
+                          <br />
+                          <ColorButton2
+                            variant="contained"
+                            size="small"
+                            onClick={e => handleConfirmModal(e, row.id, "close")}
+                            color=""
+                          >
+                            <FormattedMessage id="close" defaultMessage="close" />
+                          </ColorButton2>
+                          <br />
+                          <br /> </> : null}
 
 
                       </StyledTableCell>
