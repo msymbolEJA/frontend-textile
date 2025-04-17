@@ -351,7 +351,7 @@ export default function CustomizedTables() {
                                   : "red",
                             }}
                           >
-                           {key.toString().split(",")[0]}{key.toString().split(",")[2]?.trim() === "True" && isLabelStore ? <WarningIcon style={{ color: "red", fontSize: 15 , marginBottom: -3}} fontSize={"10px"} />: null}
+                            {key.toString().split(",")[0]}{key.toString().split(",")[2]?.trim() === "True" && isLabelStore ? <WarningIcon style={{ color: "red", fontSize: 15, marginBottom: -3 }} fontSize={"10px"} /> : null}
 
                           </a>
                           {row?.content?.length === i + 1 ? "" : <span>&nbsp; {"|"} &nbsp;</span>}

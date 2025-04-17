@@ -326,9 +326,7 @@ function App({ history }) {
 
    const handleGetLabels = () => {
     setGetLabelsLoading(true);
-    postData(`${BASE_URL}usps/createBulkLabel_cargo/?carrier=${selectedCargo || "usps"}`, {
-      ids: rows?.map(item => item?.id),
-    })
+    postData(`${BASE_URL}usps/admin_create_cargo_label/?carrier=${selectedCargo || "usps"}`)
       .then(res => {
         if (res?.data.zip_url){
  toastSuccessNotify("Successfully created labels!");
@@ -349,24 +347,6 @@ function App({ history }) {
       });
   };
 
-  const handleGetMissingLabels = () => {
-    setGetLabelsLoading(true);
-    getData(`${BASE_URL}usps/find_missing_label/`)
-      .then(res => {
-        console.log(res?.data);
-        // window.open(res?.data.zip_url, "_blank");
-        if (res?.data?.difference?.length) {
-          getAllZipFunc();
-          getListFunc();
-        }
-      })
-      .catch(({ response }) => {
-        console.log("response", response);
-      })
-      .finally(() => {
-        setGetLabelsLoading(false);
-      });
-  };
 
   const getListFunc = () => {
     setloading(true);
@@ -379,7 +359,7 @@ function App({ history }) {
       filters?.ordering || "-id"
     }&${selectedOption ? `store_filter=${selectedOption}&` : ""}limit=${filters?.limit || 0}&offset=${filters?.offset}`;
     
-    const labelUrl = `${BASE_URL}/etsy/orders/?is_label_ready=true&is_label=false&country_filter=all&ordering=${
+    const labelUrl = `${BASE_URL}/etsy/orders/?is_admin_label_ready=true&is_admin_label=false&country_filter=all&ordering=${
       "-id"
     }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
 
@@ -419,7 +399,7 @@ function App({ history }) {
   };
 
   useEffect(() => {
-     if (filters?.status === "pending") getAllZipFunc();
+     if (filters?.status === "label") getAllZipFunc();
     getListFunc();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -997,8 +977,8 @@ function App({ history }) {
           barcodeInputRef.current.value = null;
           setBarcodeInput(null);
           let updatedData = {
-            is_label_ready: true,
-            is_label: false,
+            is_admin_label_ready: true,
+            is_admin_label: false,
             weight: Number(weight),
             height: Number(height),
             length: Number(length),
@@ -1898,8 +1878,46 @@ function App({ history }) {
         </Table>
       </TableContainer>
 
-      {isLabelStore && filters?.status === "pending" ? (
+      {isLabelStore && filters?.status === "label" ? (
         <>
+         <div
+                    style={{
+                      width: "100%",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      display: "flex",
+                      gap: 10,
+                    }}
+                  >
+                    <select value={selectedCargo} onChange={handleSelectChange}>
+                      {cargo?.map((item, index) => (
+                        <option value={item.value} key={index}>
+                          {item.label}
+                        </option>
+                      ))}
+                    </select>
+      
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.print}
+                      onClick={handleGetLabels}
+                      disabled={getLabelsLoading}
+                      style={{
+                        backgroundColor: "#eb6223",
+                        color: "#fff",
+                      }}
+                    >
+                      {getLabelsLoading ? (
+                        "Loading..."
+                      ) : (
+                        <FormattedMessage id="getLabels" defaultMessage="getLabels" />
+                      )}
+                    </Button>
+      
+                  </div>
+
+
           <h1 style={{marginTop: 10}}>
             <FormattedMessage id="labels" defaultMessage="Labels" />
           </h1>
@@ -1920,7 +1938,6 @@ function App({ history }) {
           </div>
         </>
       ) : null}
-
 
       
       <ToastContainer style={{ color: "black" }} />
