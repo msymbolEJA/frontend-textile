@@ -171,6 +171,8 @@ function AllOrdersTable() {
   const [lastResponse, setLastResponse] = useState(null);
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
 
+  const [printLoading, setPrintLoading] = useState(false)
+
   const getOrdersInProgress = () => {
     setInProgressLoading(true);
 
@@ -417,6 +419,7 @@ function AllOrdersTable() {
   };
 
   const printHandler = () => {
+    setPrintLoading(true)
     const data = "";
     let urlPrint;
     if (countryFilter === "usa") {
@@ -444,6 +447,8 @@ function AllOrdersTable() {
         setUrl(`${BASE_URL}etsy/orders/?status=awaiting`);
         getAllPdfFunc();
         getListFunc();
+        setPrintLoading(false)
+
       });
   };
 
@@ -1942,6 +1947,7 @@ function AllOrdersTable() {
               color="primary"
               className={classes.print}
               onClick={printHandler}
+              disabled={printLoading}
             >
               <FormattedMessage id="print" defaultMessage="Print" />
             </Button>
