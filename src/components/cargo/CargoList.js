@@ -207,6 +207,18 @@ export default function CustomizedTables() {
     );
   };
 
+  const handleOpen = async row => {
+    getData(`${BASE_URL}etsy/shipment_mergent_labels/${row.id}/`)
+      .then(response => {
+        window.open(response.data.merged_pdf_url, "_blank",);
+        console.log(response)
+      })
+      .catch(({ response }) => {
+        console.log(response.data.Failed);
+      })
+      .finally(() => { });
+  };
+
   return (
     <>
       <TableContainer component={Paper} className={classes.root}>
@@ -311,6 +323,19 @@ export default function CustomizedTables() {
                       >
                         Download
                       </Button>
+                      <br />
+                      <Button
+                        onClick={e => {
+                          e.stopPropagation();
+                          handleOpen(row);
+                        }}
+                        color="primary"
+                        variant="contained"
+                        size="small"
+                        style={{ marginTop: 4 }}
+                      >
+                        Open
+                      </Button>
                     </StyledTableCell>
                     <StyledTableCell align="center" component="th" scope="row">
                       {row?.refNumber.split("**")[0]}
@@ -327,36 +352,64 @@ export default function CustomizedTables() {
                       }}
                     />
                     <StyledTableCell align="center" className={classes.spanHref}>
-                      {row.content.map((key, i) => (
-                        <span
-                          key={i}
-                          onClick={e => {
-                            e.stopPropagation();
-                          }}
-                        >
-                          <a
-                            href={`/order-details/${key.toString().split(",")[0]}/`}
-                            key={i}
-                            onClick={e => {
-                              e.stopPropagation();
-                            }}
-                            style={{
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        {/* ÜST: True olanlar */}
+                        <div style={{ borderBottom: "1px solid #ccc", paddingBottom: 4 }}>
+                          {row.content
+                            .filter(key => key.toString().split(",")[2]?.trim() === "True")
+                            .map((key, i, arr) => (
+                              <span key={`top-${i}`} onClick={e => e.stopPropagation()}>
+                                <a
+                                  href={`/order-details/${key.toString().split(",")[0]}/`}
+                                  onClick={e => e.stopPropagation()}
+                                  style={{
+                                    color:
+                                      !key ||
+                                        key.toString().split(",")[1].includes("None") ||
+                                        key.toString().split(",")[1] === " 209" ||
+                                        key.toString().split(",")[1] === " US"
+                                        ? "black"
+                                        : "red",
+                                  }}
+                                >
+                                  {key.toString().split(",")[0]}
+                                  {isLabelStore && (
+                                    <WarningIcon
+                                      style={{ color: "red", fontSize: 15, marginBottom: -3 }}
+                                    />
+                                  )}
+                                </a>
+                                {arr.length !== i + 1 && <span>&nbsp;|&nbsp;</span>}
+                              </span>
+                            ))}
+                        </div>
 
-                              color:
-                                !key ||
-                                  key.toString().split(",")[1].includes("None") ||
-                                  key.toString().split(",")[1] === " 209" ||
-                                  key.toString().split(",")[1] === " US"
-                                  ? "black"
-                                  : "red",
-                            }}
-                          >
-                            {key.toString().split(",")[0]}{key.toString().split(",")[2]?.trim() === "True" && isLabelStore ? <WarningIcon style={{ color: "red", fontSize: 15, marginBottom: -3 }} fontSize={"10px"} /> : null}
-
-                          </a>
-                          {row?.content?.length === i + 1 ? "" : <span>&nbsp; {"|"} &nbsp;</span>}
-                        </span>
-                      ))}
+                        {/* ALT: False veya tanımsız olanlar */}
+                        <div style={{ paddingTop: 4 }}>
+                          {row.content
+                            .filter(key => key.toString().split(",")[2]?.trim() !== "True")
+                            .map((key, i, arr) => (
+                              <span key={`bottom-${i}`} onClick={e => e.stopPropagation()}>
+                                <a
+                                  href={`/order-details/${key.toString().split(",")[0]}/`}
+                                  onClick={e => e.stopPropagation()}
+                                  style={{
+                                    color:
+                                      !key ||
+                                        key.toString().split(",")[1].includes("None") ||
+                                        key.toString().split(",")[1] === " 209" ||
+                                        key.toString().split(",")[1] === " US"
+                                        ? "black"
+                                        : "red",
+                                  }}
+                                >
+                                  {key.toString().split(",")[0]}
+                                </a>
+                                {arr.length !== i + 1 && <span>&nbsp;|&nbsp;</span>}
+                              </span>
+                            ))}
+                        </div>
+                      </div>
                     </StyledTableCell>
                     <StyledTableCell align="center">{row.content.length}</StyledTableCell>
                     <StyledTableCell align="center">

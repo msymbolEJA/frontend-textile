@@ -219,6 +219,7 @@ function AllOrdersTable() {
 
   const [dimensions, setDimensions] = useState({
     weight: 15.99,
+    gr: 453.59,
     height: 1,
     length: 12,
     width: 10,
@@ -1518,6 +1519,8 @@ function AllOrdersTable() {
     setDimensions({
       ...dimensions,
       [e.target.name]: e.target?.value,
+      ...(e.target.name === "gr" && {weight: parseFloat(e.target?.value) / 28.3495}),
+      ...(e.target.name === "weight" && {gr: parseFloat(e.target?.value) * 28.3495})
     });
   };
 
@@ -1752,6 +1755,24 @@ function AllOrdersTable() {
                 >
                   <input
                     type="number"
+                    value={dimensions.gr}
+                    onChange={handleDimensionChange}
+                    name="gr"
+                    placeholder="Weight"
+                  />
+                  <b>gr</b>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 5,
+                    marginBottom: 10,
+                  }}
+                >
+                  <input
+                    type="number"
                     value={dimensions.weight}
                     onChange={handleDimensionChange}
                     name="weight"
@@ -1812,7 +1833,27 @@ function AllOrdersTable() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Open Google Sheet
+                  HEDİYE NOTU ÇEK
+                </a>
+              </div>
+            )}
+            {selectedTag === "in_progress" &&
+            userRole !== "workshop_designer" &&
+            userRole !== "workshop_designer2" &&
+            process.env.REACT_APP_GOOGLE_SHEET_ADDRESS_LINK && (
+              <div
+                style={{
+                  marginRight: "10px",
+                  textAlign: "right",
+                }}
+              >
+                <a
+                  style={{ fontSize: "1rem", marginTop: "10px" }}
+                  href={process.env.REACT_APP_GOOGLE_SHEET_ADDRESS_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  AYNI ADRESLERİ ÇEK
                 </a>
               </div>
             )}

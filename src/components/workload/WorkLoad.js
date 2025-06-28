@@ -206,7 +206,7 @@ const WorkLoad = () => {
 
   const handleExcel = () => {
     window.open(
-      `${BASE_URL}etsy/export-workflow-history/${excelFilter?.user}/?start_date=${new Date(beginnerDateRef.current.value)
+      `${BASE_URL}etsy/export-workflow-history/${excelFilter?.user || "ALL"}/?start_date=${new Date(beginnerDateRef.current.value)
         ?.toISOString()
         ?.slice(0, 19)}&end_date=${new Date(endDateRef.current.value)
           ?.toISOString()
@@ -362,7 +362,7 @@ const WorkLoad = () => {
                   className={classes.btn}
                   color="secondary"
                   onClick={handleExcel}
-                  disabled={data.isLoading || !excelFilter?.station || !excelFilter?.user}
+                  disabled={data.isLoading}
                 >
                   Excel
                 </Button>

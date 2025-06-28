@@ -36,7 +36,7 @@ const ApexChart = ({ data, title }) => {
 
   return (
     <div style={{ marginTop: 40, marginBottom: 20 }}>
-      <h3>{title}</h3>
+      <h3>{title}({totalCount})</h3>
       <CanvasJSChart options={options}  />
       <style>{`.canvasjs-chart-credit { display: none; }`}</style>
     </div>
