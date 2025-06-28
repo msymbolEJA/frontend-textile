@@ -1833,27 +1833,7 @@ function AllOrdersTable() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  HEDİYE NOTU ÇEK
-                </a>
-              </div>
-            )}
-            {selectedTag === "in_progress" &&
-            userRole !== "workshop_designer" &&
-            userRole !== "workshop_designer2" &&
-            process.env.REACT_APP_GOOGLE_SHEET_ADDRESS_LINK && (
-              <div
-                style={{
-                  marginRight: "10px",
-                  textAlign: "right",
-                }}
-              >
-                <a
-                  style={{ fontSize: "1rem", marginTop: "10px" }}
-                  href={process.env.REACT_APP_GOOGLE_SHEET_ADDRESS_LINK}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  AYNI ADRESLERİ ÇEK
+                  Open Google Sheet
                 </a>
               </div>
             )}

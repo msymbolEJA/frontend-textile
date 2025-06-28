@@ -352,7 +352,8 @@ export default function CustomizedTables() {
                       }}
                     />
                     <StyledTableCell align="center" className={classes.spanHref}>
-                      <div style={{ display: "flex", flexDirection: "column" }}>
+                      <div style={{ display: "flex", flexDirection: "column", paddingBottom: 6 }}>
+                        <div style={{ fontWeight: "bold", marginBottom: 4 }}>Label Olmayanlar</div>
                         {/* ÜST: True olanlar */}
                         <div style={{ borderBottom: "1px solid #ccc", paddingBottom: 4 }}>
                           {row.content
@@ -373,11 +374,6 @@ export default function CustomizedTables() {
                                   }}
                                 >
                                   {key.toString().split(",")[0]}
-                                  {isLabelStore && (
-                                    <WarningIcon
-                                      style={{ color: "red", fontSize: 15, marginBottom: -3 }}
-                                    />
-                                  )}
                                 </a>
                                 {arr.length !== i + 1 && <span>&nbsp;|&nbsp;</span>}
                               </span>
@@ -386,6 +382,7 @@ export default function CustomizedTables() {
 
                         {/* ALT: False veya tanımsız olanlar */}
                         <div style={{ paddingTop: 4 }}>
+                          <div style={{ fontWeight: "bold", marginBottom: 4 }}>Label Olanlar</div>
                           {row.content
                             .filter(key => key.toString().split(",")[2]?.trim() !== "True")
                             .map((key, i, arr) => (
