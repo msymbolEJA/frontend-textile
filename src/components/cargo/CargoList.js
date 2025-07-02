@@ -334,7 +334,7 @@ export default function CustomizedTables() {
                         size="small"
                         style={{ marginTop: 4 }}
                       >
-                        Open
+                        Merged Label Download
                       </Button>
                     </StyledTableCell>
                     <StyledTableCell align="center" component="th" scope="row">
