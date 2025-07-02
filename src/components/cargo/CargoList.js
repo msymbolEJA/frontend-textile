@@ -210,7 +210,8 @@ export default function CustomizedTables() {
   const handleOpen = async row => {
     getData(`${BASE_URL}etsy/shipment_mergent_labels/${row.id}/`)
       .then(response => {
-        window.open(response.data.merged_pdf_url, "_blank",);
+        const newWindow = window.open('', '_blank'); 
+        newWindow.location.href = response.data.merged_pdf_url;
         console.log(response)
       })
       .catch(({ response }) => {
