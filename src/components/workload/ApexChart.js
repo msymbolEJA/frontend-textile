@@ -35,8 +35,8 @@ const ApexChart = ({ data, title }) => {
   };
 
   return (
-    <div style={{ marginTop: 40, marginBottom: 20 }}>
-      <h3>{title}({totalCount})</h3>
+    <div style={{ marginTop: 40, marginBottom: 20 }}>  
+      {title} {process.env.REACT_APP_STORE_NAME === "Linen Serisi" && `(${totalCount})`}
       <CanvasJSChart options={options}  />
       <style>{`.canvasjs-chart-credit { display: none; }`}</style>
     </div>

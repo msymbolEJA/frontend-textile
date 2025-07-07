@@ -125,7 +125,7 @@ function AllOrdersTable() {
   const [getLabelsLoading, setGetLabelsLoading] = useState(false);
 
 
-  const isBeyazit = 
+  const isBeyazit =
     (localStorage.getItem("localRole") === "workshop_manager" ||
       !localStorage.getItem("localRole") ||
       localStorage.getItem("localRole") === "null") &&
@@ -135,7 +135,7 @@ function AllOrdersTable() {
   const { user } = useContext(AppContext);
 
   const paramsQuery = getQueryParams();
-  const filters = { ...paramsQuery, limit: 150, offset: 0, status: paramsQuery?.status   };
+  const filters = { ...paramsQuery, limit: 150, offset: 0, status: paramsQuery?.status };
 
   const [scannedBarcodes, setScannedBarcodes] = useState([]);
   const barcodeInputRef = useRef();
@@ -233,8 +233,8 @@ function AllOrdersTable() {
       } else filters.ordering = "-id";
 
       const url = `${BASE_URL}etsy/orders/?${filters?.status !== "all_orders" && filters?.status !== "repeat"
-          ? `status=${filters?.status}`
-          : `status=awaiting`
+        ? `status=${filters?.status}`
+        : `status=awaiting`
         }&is_followup=${filters?.is_followup}&country_filter=${countryFilter}&ordering=${filters?.ordering
         }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
 
@@ -242,7 +242,7 @@ function AllOrdersTable() {
         }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
 
       getData(filters?.status === "label" ? labelUrl : url)
-        .then(response => { 
+        .then(response => {
           const t = response?.data?.results?.length ? response?.data?.results : [];
 
           setRows(t);
@@ -587,7 +587,7 @@ function AllOrdersTable() {
           .then(response => {
             barcodeInputRef.current.value = null;
             setBarcodeInput(null);
-             if (response?.data?.error) toast.error(response?.data?.error || "Error");
+            if (response?.data?.error) toast.error(response?.data?.error || "Error");
             let updatedData = {
               is_label_ready: true,
               is_label: false,
@@ -597,7 +597,7 @@ function AllOrdersTable() {
               width: Number(width),
             };
             handleRowChange(barcodeInput, updatedData, true);
-           
+
           })
           .catch(error => {
             console.log("error", error);
@@ -834,14 +834,14 @@ function AllOrdersTable() {
                 <FormattedMessage id="ready_date" defaultMessage="Approval Date" />
               </StyledTableCell>
 
-                <StyledTableCell align="center" isLabel={filters?.status === "label"}>
+              <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                 <FormattedMessage id="stationStatus" defaultMessage="Station Status" />
               </StyledTableCell>
 
 
-              {isLabelStore && filters?.status === "ready"? <StyledTableCell align="center" isLabel={filters?.status === "label"}>
+              {isLabelStore && filters?.status === "ready" ? <StyledTableCell align="center" isLabel={filters?.status === "label"}>
                 <FormattedMessage id="needLabel" defaultMessage="Need Label?" />
-              </StyledTableCell>: null}
+              </StyledTableCell> : null}
 
               {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
                 <StyledTableCell align="center" isLabel={filters?.status === "label"}>
@@ -1056,15 +1056,15 @@ function AllOrdersTable() {
                     </div>
                   </td>
 
-                  {isLabelStore && filters?.status === "ready" ?  <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                     {row?.is_need_shipping_label &&<WarningIcon style={{color: "red"}} />} 
-                    </div>: null}
+                  {isLabelStore && filters?.status === "ready" ? <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {row?.is_need_shipping_label && <WarningIcon style={{ color: "red" }} />}
+                  </div> : null}
                   {/*   <CustomTableCell {...{ row, name: "ready_date" }} /> */}
 
                   {userRole !== "workshop_designer" && userRole !== "workshop_designer2" && (
@@ -1519,8 +1519,8 @@ function AllOrdersTable() {
     setDimensions({
       ...dimensions,
       [e.target.name]: e.target?.value,
-      ...(e.target.name === "gr" && {weight: parseFloat(e.target?.value) / 28.3495}),
-      ...(e.target.name === "weight" && {gr: parseFloat(e.target?.value) * 28.3495})
+      ...(process.env.REACT_APP_STORE_NAME === "Linen Serisi" && e.target.name === "gr" && { weight: parseFloat(e.target?.value) / 28.3495 }),
+      ...(process.env.REACT_APP_STORE_NAME === "Linen Serisi" && e.target.name === "weight" && { gr: parseFloat(e.target?.value) * 28.3495 })
     });
   };
 
@@ -1744,24 +1744,28 @@ function AllOrdersTable() {
                   <FormattedMessage id="packageSize" defaultMessage="Package Size" />
                 </p>
 
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 5,
-                    marginBottom: 10,
-                  }}
-                >
-                  <input
-                    type="number"
-                    value={dimensions.gr}
-                    onChange={handleDimensionChange}
-                    name="gr"
-                    placeholder="Weight"
-                  />
-                  <b>gr</b>
-                </div>
+                {process.env.REACT_APP_STORE_NAME === "Linen Serisi"
+                  &&
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 5,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <input
+                      type="number"
+                      value={dimensions.gr}
+                      onChange={handleDimensionChange}
+                      name="gr"
+                      placeholder="Weight"
+                    />
+                    <b>gr</b>
+                  </div>
+                }
+                
                 <div
                   style={{
                     display: "flex",
