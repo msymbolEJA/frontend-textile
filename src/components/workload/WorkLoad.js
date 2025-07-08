@@ -348,7 +348,8 @@ const WorkLoad = () => {
                   <option value="" selected> {formatMessage({
                     id: "user",
                     defaultMessage: "User",
-                  }).toUpperCase()}                </option>
+                  }).toUpperCase()}                
+                  </option>
 
                   {data?.graphData?.flat().filter(item => item?.title === excelFilter?.station).map(item => (
                     <option value={item?.type} ket={item?.type}>{item.type?.toUpperCase()}</option>
