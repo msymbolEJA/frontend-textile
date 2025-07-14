@@ -206,7 +206,7 @@ const WorkLoad = () => {
 
   const handleExcel = () => {
     window.open(
-      `${BASE_URL}etsy/export-workflow-history/${(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Mina") ? excelFilter?.user : (excelFilter?.user || "ALL")}/?start_date=${new Date(beginnerDateRef.current.value)
+      `${BASE_URL}etsy/export-workflow-history/${(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Mina") ?  (excelFilter?.user || "ALL") : excelFilter?.user}/?start_date=${new Date(beginnerDateRef.current.value)
         ?.toISOString()
         ?.slice(0, 19)}&end_date=${new Date(endDateRef.current.value)
           ?.toISOString()
