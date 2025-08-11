@@ -365,7 +365,7 @@ const OrderDetails = ({ match }) => {
                     defaultMessage="Explanation"
                   />
                 </StyledTableCell>
-                {process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ?
+                {process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" && process.env.REACT_APP_STORE_NAME !== "Uludag" ?
                   <StyledTableCell align="center">
                     <FormattedMessage
                       id="giftMessage"
@@ -420,7 +420,7 @@ const OrderDetails = ({ match }) => {
                       </>
                     )}
                     <CustomTableCell {...{ row, name: "explanation" }} />
-                    {process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? <CustomTableCell {...{ row, name: "gift_message" }} /> : null}
+                    {process.env.REACT_APP_STORE_NAME !== "Mina" && process.env.REACT_APP_STORE_NAME !== "Linen Serisi" && process.env.REACT_APP_STORE_NAME !== "Uludag" ? <CustomTableCell {...{ row, name: "gift_message" }} /> : null}
 
                     <CustomTableCell {...{ row, name: "note" }} />
                   </StyledTableRow>
@@ -476,7 +476,7 @@ const OrderDetails = ({ match }) => {
         </>
       ) : null}
 
-       {(process.env.REACT_APP_STORE_NAME === "Linen Serisi") &&
+       {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME !== "Uludag") &&
       rows?.[0]?.tracking_label_url ? (
         <div>
           <a

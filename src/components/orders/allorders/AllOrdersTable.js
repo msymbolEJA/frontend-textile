@@ -917,6 +917,7 @@ function AllOrdersTable() {
               </StyledTableCell>
               {selectedTag === "in_progress" &&
                 (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+                  process.env.REACT_APP_STORE_NAME_ORJ === "Uludag" ||
                   process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
                   process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
                   process.env.REACT_APP_STORE_NAME_ORJ === "myra" ||
@@ -928,6 +929,7 @@ function AllOrdersTable() {
               {!isBeyazit &&
                 process.env.REACT_APP_STORE_NAME !== "Mina" &&
                 process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
+                process.env.REACT_APP_STORE_NAME !== "Uludag" &&
                 userRole !== "workshop_designer" &&
                 userRole !== "workshop_designer2" && (
                   <StyledTableCell
@@ -1152,6 +1154,7 @@ function AllOrdersTable() {
                   />
                   {selectedTag === "in_progress" &&
                     (process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" ||
+                      process.env.REACT_APP_STORE_NAME_ORJ === "Uludag" ||
                       process.env.REACT_APP_STORE_NAME_ORJ === "ShinyCustomized" ||
                       process.env.REACT_APP_STORE_NAME_ORJ === "LinenByMN" ||
                       process.env.REACT_APP_STORE_NAME_ORJ === "myra" ||
@@ -1180,6 +1183,7 @@ function AllOrdersTable() {
                   {!isBeyazit &&
                     process.env.REACT_APP_STORE_NAME !== "Mina" &&
                     process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
+                    process.env.REACT_APP_STORE_NAME !== "Uludag" &&
                     userRole !== "workshop_designer" &&
                     userRole !== "workshop_designer2" && (
                       <CustomTableCell
@@ -1519,8 +1523,8 @@ function AllOrdersTable() {
     setDimensions({
       ...dimensions,
       [e.target.name]: e.target?.value,
-      ...(process.env.REACT_APP_STORE_NAME === "Linen Serisi" && e.target.name === "gr" && { weight: parseFloat(e.target?.value) / 28.3495 }),
-      ...(process.env.REACT_APP_STORE_NAME === "Linen Serisi" && e.target.name === "weight" && { gr: parseFloat(e.target?.value) * 28.3495 })
+      ...((process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag") && e.target.name === "gr" && { weight: parseFloat(e.target?.value) / 28.3495 }),
+      ...((process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag") && e.target.name === "weight" && { gr: parseFloat(e.target?.value) * 28.3495 })
     });
   };
 
@@ -1744,7 +1748,7 @@ function AllOrdersTable() {
                   <FormattedMessage id="packageSize" defaultMessage="Package Size" />
                 </p>
 
-                {process.env.REACT_APP_STORE_NAME === "Linen Serisi"
+                {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag")
                   &&
                   <div
                     style={{
@@ -1846,6 +1850,7 @@ function AllOrdersTable() {
               display:
                 process.env.REACT_APP_STORE_NAME === "Hilal Serisi" ||
                   process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                  process.env.REACT_APP_STORE_NAME === "Uludag" ||
                   process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                   process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                   process.env.REACT_APP_STORE_NAME === "Mina" ||

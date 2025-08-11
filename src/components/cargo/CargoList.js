@@ -324,7 +324,7 @@ export default function CustomizedTables() {
                       >
                         Download
                       </Button>
-                      {process.env.REACT_APP_STORE_NAME === "Linen Serisi"
+                      {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag") 
                         && (<><br /><Button
                           onClick={e => {
                             e.stopPropagation();
@@ -355,7 +355,7 @@ export default function CustomizedTables() {
                       }}
                     />
                     <StyledTableCell align="center" className={classes.spanHref}>
-                      {process.env.REACT_APP_STORE_NAME === "Linen Serisi"
+                      {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag")
                         ?
                         <div style={{ display: "flex", flexDirection: "column", paddingBottom: 6 }}>
                           <div style={{ fontWeight: "bold", marginBottom: 4 }}>Label Olmayanlar</div>
@@ -504,7 +504,7 @@ export default function CustomizedTables() {
                           <FormattedMessage id="delete" defaultMessage="Delete" />
                         </Button>
 
-                        {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? <> <br />
+                        {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag") ? <> <br />
                           <br />
                           <ColorButton2
                             variant="contained"

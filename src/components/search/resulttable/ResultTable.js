@@ -592,6 +592,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                   setOrderBy={setOrderBy}
                 />
                 {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                process.env.REACT_APP_STORE_NAME === "Uludag" ||
                 process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                 process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                 process.env.REACT_APP_STORE_NAME === "Mina" ||
@@ -734,7 +735,8 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                   setOrderBy={setOrderBy}
                 />
                 {process.env.REACT_APP_STORE_NAME !== "Mina" &&
-                process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
+                process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
+                process.env.REACT_APP_STORE_NAME !== "Uludag" ? (
                   <SortableTableCell
                     property="gift_message"
                     handleRequestSort={handleRequestSort}
@@ -868,6 +870,7 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                         }}
                       />
                       {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                      process.env.REACT_APP_STORE_NAME === "Uludag" ||
                       process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                       process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                       process.env.REACT_APP_STORE_NAME === "Mina" ||
@@ -1029,7 +1032,8 @@ function ResultTable({ list, history, refreshSearch, loading, setLoading }) {
                       <ConstantTableCell {...{ row, name: "personalization", onChange }} />
                       <ConstantTableCell {...{ row, name: "message_from_buyer", onChange }} />
                       {process.env.REACT_APP_STORE_NAME !== "Mina" &&
-                      process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
+                      process.env.REACT_APP_STORE_NAME !== "Linen Serisi"&&
+                      process.env.REACT_APP_STORE_NAME !== "Uludag" ? (
                         <EditableTableCell
                           {...{
                             row,

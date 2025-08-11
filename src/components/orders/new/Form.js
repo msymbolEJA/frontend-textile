@@ -162,6 +162,7 @@ export default function InputForm({
                 })}
               </InputLabel>
               {STORE_NAME === "Linen Serisi" ||
+              STORE_NAME === "Uludag" ||
               STORE_NAME === "Kadife-1" ||
               STORE_NAME === "SWETTER" ||
               STORE_NAME === "Mina" ||
@@ -195,6 +196,7 @@ export default function InputForm({
               )}
             </FormControl>
             {STORE_NAME === "Linen Serisi" ||
+            STORE_NAME === "Uludag" ||
             STORE_NAME === "Kadife-1" ||
             STORE_NAME === "Mina" ||
             STORE_NAME === "SWETTER" ||

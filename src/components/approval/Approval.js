@@ -830,6 +830,7 @@ function App({ history }) {
             {/* <hr/> */}
             <span />
             {STORE_ORJ === "Linenia" ||
+              STORE_ORJ === "Uludag" ||
               STORE_ORJ === "DALLAS" ||
               STORE_ORJ === "myra" ||
               STORE_ORJ === "LinenByMN" ||
@@ -1251,6 +1252,7 @@ function App({ history }) {
                 />
               ) : null}
               {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+              process.env.REACT_APP_STORE_NAME === "Uludag" ||
                 process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                 process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                 process.env.REACT_APP_STORE_NAME === "Mina" ||
@@ -1427,7 +1429,8 @@ function App({ history }) {
               />
               {user !== "DrMel" &&
                 process.env.REACT_APP_STORE_NAME !== "Mina" &&
-                process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
+                process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
+                process.env.REACT_APP_STORE_NAME !== "Uludag" ? (
                 <SortableTableCell
                   property="gift_message"
                   handleRequestSort={handleRequestSort}
@@ -1448,7 +1451,7 @@ function App({ history }) {
                  isLabel={filters?.status === "label"}
               />
 
-              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" &&
+              {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag") &&
                 (localStorage.getItem("localRole") === "admin" ||
                   localStorage.getItem("localRole") === "shop_manager") ? (
                 <SortableTableCell
@@ -1614,6 +1617,7 @@ function App({ history }) {
                       />
                     ) : null}
                     {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                      process.env.REACT_APP_STORE_NAME === "Uludag" ||
                       process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                       process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                       process.env.REACT_APP_STORE_NAME === "Mina" ||
@@ -1718,6 +1722,7 @@ function App({ history }) {
                         onChange,
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                            process.env.REACT_APP_STORE_NAME === "Uludag" ||
                             process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                             process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                             process.env.REACT_APP_STORE_NAME === "Mina" ||
@@ -1794,6 +1799,7 @@ function App({ history }) {
                         onChange,
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                            process.env.REACT_APP_STORE_NAME === "Uludag" ||
                             process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                             process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                             process.env.REACT_APP_STORE_NAME === "Mina" ||
@@ -1809,6 +1815,7 @@ function App({ history }) {
                         onChange,
                         minWidth:
                           process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+                            process.env.REACT_APP_STORE_NAME === "Uludag" ||
                             process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                             process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                             process.env.REACT_APP_STORE_NAME === "Mina" ||
@@ -1819,12 +1826,13 @@ function App({ history }) {
                     />
                     {user !== "DrMel" &&
                       process.env.REACT_APP_STORE_NAME !== "Mina" &&
-                      process.env.REACT_APP_STORE_NAME !== "Linen Serisi" ? (
+                      process.env.REACT_APP_STORE_NAME !== "Linen Serisi" &&
+                      process.env.REACT_APP_STORE_NAME !== "Uludag" ? (
                       <EditableTableCell {...{ row, name: "gift_message", onChange }} />
                     ) : null}
                     <ConstantTableCell {...{ row, name: "store", onChange }} />
 
-                    {process.env.REACT_APP_STORE_NAME === "Linen Serisi" &&
+                    {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag") &&
                       (localStorage.getItem("localRole") === "admin" ||
                         localStorage.getItem("localRole") === "shop_manager") ? (
                       <EditableTableCell {...{ row, name: "color_code", onChange }} />

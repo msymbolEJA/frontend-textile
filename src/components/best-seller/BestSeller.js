@@ -492,18 +492,18 @@ const DateGetter = () => {
 
               <PlatformButton label="Stocking" id="stocking" />
 
-              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+              {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag") ? (
                 <PlatformButton label="Couch" id="couch" />
               ) : null}
 
               <PlatformButton label="Curtain" id="curtain" />
               <PlatformButton label="Fabric" id="fabric" />
 
-              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+              {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag") ? (
                 <PlatformButton label="Pillow" id="pillow" />
               ) : null}
 
-              {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ? (
+              {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag") ? (
                 <PlatformButton label="Table" id="table" />
               ) : null}
 
