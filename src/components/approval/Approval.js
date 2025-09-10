@@ -1910,7 +1910,7 @@ function App({ history }) {
                       color="primary"
                       className={classes.print}
                       onClick={handleGetLabels}
-                      disabled={getLabelsLoading}
+                      disabled={getLabelsLoading || !selectedForPackage?.length}
                       style={{
                         backgroundColor: "#eb6223",
                         color: "#fff",

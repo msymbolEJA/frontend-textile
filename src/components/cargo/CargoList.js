@@ -220,6 +220,19 @@ export default function CustomizedTables() {
       .finally(() => { });
   };
 
+    const handleInvoiceList = async row => {
+    getData(`${BASE_URL}etsy/shipment_invoice/${row.id}/`)
+      .then(response => {
+        const newWindow = window.open('', '_blank');
+        newWindow.location.href = response.data.excel_url;
+        console.log(response)
+      })
+      .catch(({ response }) => {
+        console.log(response.data.Failed);
+      })
+      .finally(() => { });
+  };
+
   return (
     <>
       <TableContainer component={Paper} className={classes.root}>
@@ -337,6 +350,23 @@ export default function CustomizedTables() {
                         >
                           Merged Label Download
                         </Button></>
+                        )
+                      }
+                      {process.env.REACT_APP_STORE_NAME === "Linen Serisi" 
+                        && (<><br />
+                        <Button
+                          onClick={e => {
+                            e.stopPropagation();
+                            handleInvoiceList(row);
+                          }}
+                          color="primary"
+                          variant="contained"
+                          size="small"
+                          style={{ marginTop: 4 }}
+                        >
+                          Invoice List
+                        </Button>
+                        </>
                         )
                       }
                     </StyledTableCell>

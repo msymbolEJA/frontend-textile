@@ -1841,7 +1841,7 @@ function AllOrdersTable() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Open Google Sheet
+                  Order List
                 </a>
               </div>
             )}
@@ -1894,6 +1894,40 @@ function AllOrdersTable() {
                 </Button>
               </div>
             ) : null}
+
+        
+        
+          {selectedTag === "awaiting" &&
+            userRole !== "workshop_designer" &&
+            userRole !== "workshop_designer2" &&
+            process.env.REACT_APP_DAILY_ORDER_LIST_LINK && 
+            (
+              process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
+              process.env.REACT_APP_STORE_NAME === "Uludag" ||
+              process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
+              process.env.REACT_APP_STORE_NAME === "SWETTER" ||
+              process.env.REACT_APP_STORE_NAME === "Mina"
+            ) &&
+            (  
+            <>
+              <hr />
+              <div
+                style={{
+                  marginRight: "10px",
+                  textAlign: "right",
+                }}
+              >
+                <a
+                  style={{ fontSize: "1rem", marginTop: "10px" }}
+                  href={process.env.REACT_APP_DAILY_ORDER_LIST_LINK}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Daily Order List
+                </a>
+              </div>
+            </>
+            )}
           </div>
           <div
             style={{
