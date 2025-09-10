@@ -278,4 +278,4 @@ export const updateDetailsMappingTable = [
   { id: 5, name: "Carrier Name", objKey: "carrier_name", type: "text" },
 ];
 
-export const isLabelStore = process.env.REACT_APP_STORE_NAME_ORJ === "Linenia" || "Uludag"
+export const isLabelStore = process.env.REACT_APP_STORE_NAME_ORJ === "Linenia"
