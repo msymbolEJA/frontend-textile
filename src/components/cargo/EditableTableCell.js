@@ -64,7 +64,7 @@ const EditableTableCell = ({ row, name, onChange, trackingNumber }) => {
       />
       {trackingNumber && trackingNumber !== "---" && (
         <a
-          href={trackingNumber}
+          href={`https://www.fedex.com/fedextrack/?trknbr=${trackingNumber}`}
           target="_blank"
           rel="noreferrer"
           onClick={(e) => {
