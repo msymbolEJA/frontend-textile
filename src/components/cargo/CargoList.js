@@ -321,7 +321,7 @@ export default function CustomizedTables() {
             ) : (
               cargoList.map((row, i) => {
                 return (
-                  <StyledTableRow key={i} onClick={() => handleRowClick(row.id)}>
+                  <StyledTableRow key={i}>
                     <StyledTableCell align="center">
                       {row.id}
                       <br />({row.supplier})
@@ -370,12 +370,19 @@ export default function CustomizedTables() {
                         )
                       }
                     </StyledTableCell>
-                    <StyledTableCell align="center" component="th" scope="row">
+                    <StyledTableCell align="center" component="th" scope="row" onClick={() => handleRowClick(row.id)}>
                       {row?.refNumber.split("**")[0]}
                     </StyledTableCell>
-                    <StyledTableCell align="center" component="th" scope="row">
-                      {row?.refNumber.split("**")[1]}
-                    </StyledTableCell>
+                    <EditableTableCell
+                      align="center"
+                      row={{ ...row, description: row?.refNumber?.split("**")[1] ?? "" }} // gösterilecek değer
+                      name="description"
+                      onChange={(e, id) => {
+                        const firstPart = (row?.refNumber ?? "").split("**")[0] ?? "";
+                        const newSecondPart = e.target.innerText ?? "";
+                        handleRowChange(id, { ref_number: `${firstPart}**${newSecondPart}` });
+                      }}
+                    />
                     <EditableTableCell
                       align="center"
                       {...{
