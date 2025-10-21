@@ -43,7 +43,7 @@ const CustomTableCell = ({ row, name, name2, onChange }) => {
           onChange={(e) => onChange(e, row)}
           className={classes.input}
         />
-      ) : name === "created_date" ? (
+      ) : name === "creation_tsz" ? (
         moment(row[name]).format("MM-DD-YY HH:mm") === "Invalid date" ? (
           row[name]
         ) : (

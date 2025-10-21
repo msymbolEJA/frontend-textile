@@ -1886,7 +1886,7 @@ function App({ history }) {
         </Table>
       </TableContainer>
 
-      {isLabelStore && filters?.status === "label" ? (
+      {(isLabelStore || process.env.REACT_APP_STORE_NAME_ORJ === "Uludag") && filters?.status === "label" ? (
         <>
          <div
                     style={{

@@ -386,7 +386,7 @@ const OrderDetails = ({ match }) => {
                     <CustomTableCell
                       {...{ row, name: "receipt_id", name2: "is_repeat" }}
                     />
-                    <CustomTableCell {...{ row, name: "created_date" }} />
+                    <CustomTableCell {...{ row, name: "creation_tsz" }} />
                     <CustomTableCell {...{ row, name: "status" }} />
                     {userRole === "admin" ||
                       userRole === "shop_manager" ||
