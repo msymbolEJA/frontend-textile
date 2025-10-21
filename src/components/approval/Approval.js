@@ -1188,7 +1188,7 @@ function App({ history }) {
               />
 
 
-              {isLabelStore ? (
+              {isLabelStore || process.env.REACT_APP_STORE_NAME === "Uludag" ? (
                 <StyledTableCell
                   align="center"
                   style={{
@@ -1515,7 +1515,7 @@ function App({ history }) {
                       }}
                     />
 
-                      {isLabelStore ? (
+                      {isLabelStore || process.env.REACT_APP_STORE_NAME === "Uludag" ? (
                       <td
                         style={{
                           padding: 10,
@@ -1952,7 +1952,7 @@ function App({ history }) {
 
       {console.log(isLabelStore , selectedForPackage)}
 
-       {isLabelStore && selectedForPackage?.length ? (
+       {(isLabelStore || process.env.REACT_APP_STORE_NAME === "Uludag") && selectedForPackage?.length ? (
         <Box component={Paper} elevation={2} className={classes.package}>
           Get Label for {selectedForPackage?.length} Items{" "}
           <select value={selectedCargo} onChange={handleSelectChange}>
