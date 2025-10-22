@@ -316,28 +316,28 @@ function App({ history }) {
     };
   }, [hasScrolledToBottom, lastResponse]);
 
-  const handleGetLabels = () => {
-    setGetLabelsLoading(true);
-    postData(`${BASE_URL}usps/admin_create_cargo_label/?carrier=${selectedCargo || "usps"}`)
-      .then(res => {
-        if (res?.data.zip_url) {
-          toastSuccessNotify("Successfully created labels!");
-          console.log(res?.data);
-          window.open(res?.data.zip_url, "_blank");
-        } else {
-          toastErrorNotify("Eror while creating labels");
-        }
+  // const handleGetLabels = () => {
+  //   setGetLabelsLoading(true);
+  //   postData(`${BASE_URL}usps/admin_create_cargo_label/?carrier=${selectedCargo || "usps"}`)
+  //     .then(res => {
+  //       if (res?.data.zip_url) {
+  //         toastSuccessNotify("Successfully created labels!");
+  //         console.log(res?.data);
+  //         window.open(res?.data.zip_url, "_blank");
+  //       } else {
+  //         toastErrorNotify("Eror while creating labels");
+  //       }
 
-      })
-      .catch(({ response }) => {
-        console.log("response", response);
-      })
-      .finally(() => {
-        getAllZipFunc();
-        getListFunc();
-        setGetLabelsLoading(false);
-      });
-  };
+  //     })
+  //     .catch(({ response }) => {
+  //       console.log("response", response);
+  //     })
+  //     .finally(() => {
+  //       getAllZipFunc();
+  //       getListFunc();
+  //       setGetLabelsLoading(false);
+  //     });
+  // };
 
 
   const getListFunc = () => {
@@ -1875,7 +1875,7 @@ function App({ history }) {
         </Table>
       </TableContainer>
 
-      {(isLabelStore || process.env.REACT_APP_STORE_NAME_ORJ === "Uludag") && filters?.status === "label" ? (
+      {/* {(isLabelStore || process.env.REACT_APP_STORE_NAME_ORJ === "Uludag") && filters?.status === "label" ? (
         <>
           <div
             style={{
@@ -1934,7 +1934,7 @@ function App({ history }) {
             )}
           </div>
         </>
-      ) : null}
+      ) : null} */}
 
 
       <ToastContainer style={{ color: "black" }} />
