@@ -117,7 +117,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
   },
-   package: {
+  package: {
     display: "flex",
     gap: 4,
     justifyContent: "center",
@@ -173,21 +173,15 @@ function App({ history }) {
   const [repeatMenuData, setRepeatMenuData] = useState({});
   const [refreshTable, setRefreshTable] = useState(false);
   const { user } = useContext(AppContext);
-
   const [selectedItem, setSelectedItem] = useState();
-
   const [lastResponse, setLastResponse] = useState(null);
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
-
-    const [getLabelsLoading, setGetLabelsLoading] = useState(false);
-
-      const [allZip, setAllZip] = useState([]);
-
-
-        const [selectedForPackage, setSelectedForPackage] = useState([]);
+  const [getLabelsLoading, setGetLabelsLoading] = useState(false);
+  const [allZip, setAllZip] = useState([]);
+  const [selectedForPackage, setSelectedForPackage] = useState([]);
 
 
-    const getAllZipFunc = () => {
+  const getAllZipFunc = () => {
     getAllPdf(`${BASE_URL}usps/admin_all_zip/`)
       .then(response => {
         setAllZip(response.data.a);
@@ -198,7 +192,7 @@ function App({ history }) {
       });
   };
 
-    const handlePackage = () => {
+  const handlePackage = () => {
     setGetLabelsLoading(true);
     postData(`${BASE_URL}usps/admin_create_cargo_label/?carrier=${selectedCargo || "usps"}`, {
       ids: selectedForPackage,
@@ -214,11 +208,12 @@ function App({ history }) {
       })
       .finally(() => {
         getAllZipFunc();
+        getListFunc();
         setGetLabelsLoading(false);
       });
   };
 
-      const handleSelectAllClickForPackage = event => {
+  const handleSelectAllClickForPackage = event => {
     if (event.target.checked) {
       const newSelecteds = rows?.slice(0, 20).map(row => row?.id);
       setSelectedForPackage(newSelecteds);
@@ -227,9 +222,6 @@ function App({ history }) {
     setSelectedForPackage([]);
   };
 
-
-
-  
   const handleCheckBoxClickForPackage = (event, id, row) => {
     const selectedIndex = selectedForPackage?.indexOf(id);
     let newSelected = [];
@@ -260,7 +252,7 @@ function App({ history }) {
     },
   ];
 
-   const [selectedCargo, setSelectedCargo] = useState("usps");
+  const [selectedCargo, setSelectedCargo] = useState("usps");
 
   const handleSelectChange = e => {
     setSelectedCargo(e.target.value);
@@ -274,12 +266,12 @@ function App({ history }) {
     width: 10,
   });
 
-   const barcodeInputRef = useRef ();
+  const barcodeInputRef = useRef();
 
-    const [barcodeInput, setBarcodeInput] = useState();
+  const [barcodeInput, setBarcodeInput] = useState();
   const { formatMessage } = useIntl();
 
-      const options = [
+  const options = [
     "Nilester",
     "GiftedbyLINDA",
     "Botonoz",
@@ -298,7 +290,7 @@ function App({ history }) {
     "WillowWishing"
   ];
 
-  const [selectedOption, setSelectedOption] = useState(process.env.REACT_APP_STORE_NAME === "SWETTER" ? "all": "");
+  const [selectedOption, setSelectedOption] = useState(process.env.REACT_APP_STORE_NAME === "SWETTER" ? "all" : "");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -324,18 +316,18 @@ function App({ history }) {
     };
   }, [hasScrolledToBottom, lastResponse]);
 
-   const handleGetLabels = () => {
+  const handleGetLabels = () => {
     setGetLabelsLoading(true);
     postData(`${BASE_URL}usps/admin_create_cargo_label/?carrier=${selectedCargo || "usps"}`)
       .then(res => {
-        if (res?.data.zip_url){
- toastSuccessNotify("Successfully created labels!");
-        console.log(res?.data);
-        window.open(res?.data.zip_url, "_blank");
-        }else {
+        if (res?.data.zip_url) {
+          toastSuccessNotify("Successfully created labels!");
+          console.log(res?.data);
+          window.open(res?.data.zip_url, "_blank");
+        } else {
           toastErrorNotify("Eror while creating labels");
         }
-       
+
       })
       .catch(({ response }) => {
         console.log("response", response);
@@ -351,20 +343,17 @@ function App({ history }) {
   const getListFunc = () => {
     setloading(true);
 
-    const url = `${BASE_URL}etsy/mapping/?${
-      filters?.status !== "all_orders" && filters?.status !== "repeat"
+    const url = `${BASE_URL}etsy/mapping/?${filters?.status !== "all_orders" && filters?.status !== "repeat"
         ? `status=${filters?.status}`
         : ""
-    }${filters?.status === "repeat" ? "&is_repeat=true" : ""}&ordering=${
-      filters?.ordering || "-id"
-    }&${selectedOption ? `store_filter=${selectedOption}&` : ""}limit=${filters?.limit || 0}&offset=${filters?.offset}`;
-    
-    const labelUrl = `${BASE_URL}/etsy/orders/?is_admin_label_ready=true&is_admin_label=false&country_filter=all&ordering=${
-      "-id"
-    }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
+      }${filters?.status === "repeat" ? "&is_repeat=true" : ""}&ordering=${filters?.ordering || "-id"
+      }&${selectedOption ? `store_filter=${selectedOption}&` : ""}limit=${filters?.limit || 0}&offset=${filters?.offset}`;
+
+    const labelUrl = `${BASE_URL}/etsy/orders/?is_admin_label_ready=true&is_admin_label=false&country_filter=all&ordering=${"-id"
+      }&limit=${filters?.limit || 0}&offset=${filters?.offset}`;
 
 
-     getData(filters?.status === "label" ? labelUrl : url)
+    getData(filters?.status === "label" ? labelUrl : url)
       .then(response => {
         const t = response?.data?.results?.length ? response?.data?.results : [];
         setRows(t);
@@ -399,7 +388,7 @@ function App({ history }) {
   };
 
   useEffect(() => {
-     if (filters?.status === "label") getAllZipFunc();
+    if (filters?.status === "label") getAllZipFunc();
     getListFunc();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -416,7 +405,7 @@ function App({ history }) {
   ]);
 
 
- 
+
 
 
   useEffect(() => {
@@ -470,7 +459,7 @@ function App({ history }) {
         }
         setloading(false);
         setRefreshTable(!refreshTable);
-         if (fetchAgain) getListFunc();
+        if (fetchAgain) getListFunc();
       });
   };
 
@@ -595,7 +584,7 @@ function App({ history }) {
   const handleApproveSelected = () => {
     // postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
     postData(`${BASE_URL}etsy/approved_all/`, { ids: selected })
-      .then(res => {  
+      .then(res => {
         toastWarnNotify("Selected 'PENDING' orders are approved");
         if (filters?.search) {
           history.push(`/approval?search=${filters?.search}`);
@@ -1016,9 +1005,9 @@ function App({ history }) {
         loading={loading}
       />
 
-       {selectedTag === "label" ? (
+      {selectedTag === "label" ? (
         <>
-        <hr />
+          <hr />
           <div className={classes.barcodeBox}>
             <div style={{ marginRight: "0.5rem" }}>
               {!loading ? <BarcodeInput onError={handleError} onScan={handleScan} /> : null}
@@ -1060,7 +1049,7 @@ function App({ history }) {
             }}
           >
             <p style={{ fontSize: 20 }}>
-              
+
               <FormattedMessage id="packageSize" defaultMessage="Package Size" />
             </p>
 
@@ -1136,34 +1125,34 @@ function App({ history }) {
               </>
             ) : (
               <>
-               <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", gap: 2}}
-               >
-               {process.env.REACT_APP_STORE_NAME === "SWETTER" ?  <div style={{display: "flex" , alignItems: "center"}}>
-                  <label htmlFor="store-select" >Store:</label>
-      <select
-        id="store-select"
-        value={selectedOption}
-        onChange={(e) => setSelectedOption(e.target.value)}
-      >
-        <option value="all">All</option>
-        {options.map((option, index) => (
-          <option key={index} value={option}>{option}</option>
-        ))}
-      </select>
-                  </div>  : null}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start", gap: 2 }}
+                >
+                  {process.env.REACT_APP_STORE_NAME === "SWETTER" ? <div style={{ display: "flex", alignItems: "center" }}>
+                    <label htmlFor="store-select" >Store:</label>
+                    <select
+                      id="store-select"
+                      value={selectedOption}
+                      onChange={(e) => setSelectedOption(e.target.value)}
+                    >
+                      <option value="all">All</option>
+                      {options.map((option, index) => (
+                        <option key={index} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  </div> : null}
 
 
-              <div>
-                  <FormattedMessage id="total" defaultMessage="Total" />{" "}
-                <FormattedMessage id={filters?.status || "result"} /> : {count}
-              </div>
-               </div>
-                
+                  <div>
+                    <FormattedMessage id="total" defaultMessage="Total" />{" "}
+                    <FormattedMessage id={filters?.status || "result"} /> : {count}
+                  </div>
+                </div>
+
 
 
               </>
             )}{" "}
-            
+
           </>
         )}
       </div>
@@ -1184,7 +1173,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="id"
                 setOrderBy={setOrderBy}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               />
 
 
@@ -1220,7 +1209,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="status"
                 setOrderBy={setOrderBy}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               />
               <SortableTableCell
                 property="created_date"
@@ -1229,16 +1218,16 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="createdDate"
                 setOrderBy={setOrderBy}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               />
-               <SortableTableCell
+              <SortableTableCell
                 property="buyer"
                 handleRequestSort={handleRequestSort}
                 order={order}
                 orderBy={orderBy}
                 colName="buyer"
                 setOrderBy={setOrderBy}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               />
               {process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic" ? (
                 <SortableTableCell
@@ -1248,11 +1237,11 @@ function App({ history }) {
                   orderBy={orderBy}
                   colName="supplier"
                   setOrderBy={setOrderBy}
-                   isLabel={filters?.status === "label"}
+                  isLabel={filters?.status === "label"}
                 />
               ) : null}
               {process.env.REACT_APP_STORE_NAME === "Linen Serisi" ||
-              process.env.REACT_APP_STORE_NAME === "Uludag" ||
+                process.env.REACT_APP_STORE_NAME === "Uludag" ||
                 process.env.REACT_APP_STORE_NAME === "Kadife-1" ||
                 process.env.REACT_APP_STORE_NAME === "SWETTER" ||
                 process.env.REACT_APP_STORE_NAME === "Mina" ||
@@ -1264,7 +1253,7 @@ function App({ history }) {
                   orderBy={orderBy}
                   colName="type"
                   setOrderBy={setOrderBy}
-                   isLabel={filters?.status === "label"}
+                  isLabel={filters?.status === "label"}
                 />
               ) : null}
               {NON_SKU ? (
@@ -1276,7 +1265,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="Size"
                     setOrderBy={setOrderBy}
-                     isLabel={filters?.status === "label"}
+                    isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="variation_2_value"
@@ -1285,7 +1274,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="Color"
                     setOrderBy={setOrderBy}
-                     isLabel={filters?.status === "label"}
+                    isLabel={filters?.status === "label"}
                   />
                 </>
               ) : (
@@ -1297,7 +1286,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="type"
                     setOrderBy={setOrderBy}
-                     isLabel={filters?.status === "label"}
+                    isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="length"
@@ -1306,7 +1295,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var1"
                     setOrderBy={setOrderBy}
-                     isLabel={filters?.status === "label"}
+                    isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="color"
@@ -1315,7 +1304,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var2"
                     setOrderBy={setOrderBy}
-                     isLabel={filters?.status === "label"}
+                    isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="qty"
@@ -1324,7 +1313,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var3"
                     setOrderBy={setOrderBy}
-                     isLabel={filters?.status === "label"}
+                    isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="size"
@@ -1333,7 +1322,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var4"
                     setOrderBy={setOrderBy}
-                     isLabel={filters?.status === "label"}
+                    isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="start"
@@ -1342,7 +1331,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var5"
                     setOrderBy={setOrderBy}
-                     isLabel={filters?.status === "label"}
+                    isLabel={filters?.status === "label"}
                   />
                   <SortableTableCell
                     property="space"
@@ -1351,7 +1340,7 @@ function App({ history }) {
                     orderBy={orderBy}
                     colName="var6"
                     setOrderBy={setOrderBy}
-                     isLabel={filters?.status === "label"}
+                    isLabel={filters?.status === "label"}
                   />
                 </>
               )}
@@ -1362,7 +1351,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="explanation"
                 setOrderBy={setOrderBy}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               />
               <StyledTableCell
                 align="center"
@@ -1370,7 +1359,7 @@ function App({ history }) {
                   padding: 10,
                   borderRight: "0.5px solid #E0E0E0",
                 }}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               >
                 <FormattedMessage id="in_stock" defaultMessage="In Stock" />
               </StyledTableCell>
@@ -1382,7 +1371,7 @@ function App({ history }) {
                   pointerEvents: selectedTag === "pending" ? "auto" : "none",
                   borderRight: "0.5px solid #E0E0E0",
                 }}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               >
                 <Button
                   color="primary"
@@ -1406,7 +1395,7 @@ function App({ history }) {
                   color="primary"
                   onChange={handleSelectAllClick}
                   inputProps={{ "aria-label": "select all" }}
-                   isLabel={filters?.status === "label"}
+                  isLabel={filters?.status === "label"}
                 />
               </StyledTableCell>
               <SortableTableCell
@@ -1416,7 +1405,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="personalization"
                 setOrderBy={setOrderBy}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               />
               <SortableTableCell
                 property="message_from_buyer"
@@ -1425,7 +1414,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="customerNote"
                 setOrderBy={setOrderBy}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               />
               {user !== "DrMel" &&
                 process.env.REACT_APP_STORE_NAME !== "Mina" &&
@@ -1438,7 +1427,7 @@ function App({ history }) {
                   orderBy={orderBy}
                   colName="giftMessage"
                   setOrderBy={setOrderBy}
-                   isLabel={filters?.status === "label"}
+                  isLabel={filters?.status === "label"}
                 />
               ) : null}
               <SortableTableCell
@@ -1448,7 +1437,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="store"
                 setOrderBy={setOrderBy}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               />
 
               {(process.env.REACT_APP_STORE_NAME === "Linen Serisi" || process.env.REACT_APP_STORE_NAME === "Uludag") &&
@@ -1461,7 +1450,7 @@ function App({ history }) {
                   orderBy={orderBy}
                   colName="color_code"
                   setOrderBy={setOrderBy}
-                   isLabel={filters?.status === "label"}
+                  isLabel={filters?.status === "label"}
                 />
               ) : null}
 
@@ -1472,7 +1461,7 @@ function App({ history }) {
                 orderBy={orderBy}
                 colName="uploadFile"
                 setOrderBy={setOrderBy}
-                 isLabel={filters?.status === "label"}
+                isLabel={filters?.status === "label"}
               />
             </TableRow>
           </TableHead>
@@ -1515,7 +1504,7 @@ function App({ history }) {
                       }}
                     />
 
-                      {isLabelStore || process.env.REACT_APP_STORE_NAME === "Uludag" ? (
+                    {isLabelStore || process.env.REACT_APP_STORE_NAME === "Uludag" ? (
                       <td
                         style={{
                           padding: 10,
@@ -1606,7 +1595,7 @@ function App({ history }) {
                       <OrderStatus {...{ row, name: "status", onSelectChange }} />
                     </td>
                     <ConstantTableCell {...{ row, name: "created_date" }} />
-                    <EditableTableCell   {...{ row, name: "buyer" , onChange }} />
+                    <EditableTableCell   {...{ row, name: "buyer", onChange }} />
                     {process.env.REACT_APP_STORE_NAME_ORJ === "Silveristic" ? (
                       <EditableTableCell
                         {...{
@@ -1888,45 +1877,45 @@ function App({ history }) {
 
       {(isLabelStore || process.env.REACT_APP_STORE_NAME_ORJ === "Uludag") && filters?.status === "label" ? (
         <>
-         <div
-                    style={{
-                      width: "100%",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      display: "flex",
-                      gap: 10,
-                    }}
-                  >
-                    <select value={selectedCargo} onChange={handleSelectChange}>
-                      {cargo?.map((item, index) => (
-                        <option value={item.value} key={index}>
-                          {item.label}
-                        </option>
-                      ))}
-                    </select>
-      
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.print}
-                      onClick={handleGetLabels}
-                      disabled={getLabelsLoading || !selectedForPackage?.length}
-                      style={{
-                        backgroundColor: "#eb6223",
-                        color: "#fff",
-                      }}
-                    >
-                      {getLabelsLoading ? (
-                        "Loading..."
-                      ) : (
-                        <FormattedMessage id="getLabels" defaultMessage="getLabels" />
-                      )}
-                    </Button>
-      
-                  </div>
+          <div
+            style={{
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              gap: 10,
+            }}
+          >
+            <select value={selectedCargo} onChange={handleSelectChange}>
+              {cargo?.map((item, index) => (
+                <option value={item.value} key={index}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.print}
+              onClick={handleGetLabels}
+              disabled={getLabelsLoading || !selectedForPackage?.length}
+              style={{
+                backgroundColor: "#eb6223",
+                color: "#fff",
+              }}
+            >
+              {getLabelsLoading ? (
+                "Loading..."
+              ) : (
+                <FormattedMessage id="getLabels" defaultMessage="getLabels" />
+              )}
+            </Button>
+
+          </div>
 
 
-          <h1 style={{marginTop: 10}}>
+          <h1 style={{ marginTop: 10 }}>
             <FormattedMessage id="labels" defaultMessage="Labels" />
           </h1>
           <div style={{ marginBottom: "3rem" }}>
@@ -1947,12 +1936,12 @@ function App({ history }) {
         </>
       ) : null}
 
-      
+
       <ToastContainer style={{ color: "black" }} />
 
-      {console.log(isLabelStore , selectedForPackage)}
+      {console.log(isLabelStore, selectedForPackage)}
 
-       {(isLabelStore || process.env.REACT_APP_STORE_NAME === "Uludag") && selectedForPackage?.length ? (
+      {(isLabelStore || process.env.REACT_APP_STORE_NAME === "Uludag") && selectedForPackage?.length ? (
         <Box component={Paper} elevation={2} className={classes.package}>
           Get Label for {selectedForPackage?.length} Items{" "}
           <select value={selectedCargo} onChange={handleSelectChange}>
