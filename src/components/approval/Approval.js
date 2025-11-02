@@ -745,14 +745,16 @@ function App({ history }) {
     }
   };
 
+  // Repeat true yapılınca bir daha false yapılamasın
   const handlerRepeatChange = (e, id, is_repeat) => {
-    if (is_repeat) {
-      let data = { is_repeat: false };
-      handleRowChange(id, data);
-    } else {
+    // if (is_repeat) {
+    //   let data = { is_repeat: false };
+    //   handleRowChange(id, data);
+    // } else 
+    //   {
       setRowIdToRepeat(id);
       setRepeatAnchorEl(e.currentTarget);
-    }
+    // }
   };
 
   const handleRepeatMenuClose = useCallback(() => {
@@ -1566,6 +1568,7 @@ function App({ history }) {
                             style={{
                               color: row["is_repeat"] ? "red" : "grey",
                               cursor: "pointer",
+                              disabled: row["is_repeat"] ? true : false,
                             }}
                             onClick={e => {
                               e.stopPropagation();
