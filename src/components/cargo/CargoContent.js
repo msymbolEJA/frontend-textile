@@ -52,7 +52,8 @@ export default function CustomizedTables({ match }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("");
 
-  const isSwetterStore = process.env.REACT_APP_STORE_NAME === "SWETTER";
+  const isSwetterStore = process.env.REACT_APP_STORE_NAME === "SWETTER";  
+  const isLinen = process.env.REACT_APP_STORE_NAME === "Linen Serisi";
 
   const handleSort = (property) => {
     if (!isSwetterStore) return; // Sadece SWETTER'da sıralama aktif
@@ -142,6 +143,9 @@ export default function CustomizedTables({ match }) {
             <StyledTableCell align="center" onClick={() => handleSort("is_label")}>
               HAS LABEL? {isSwetterStore && orderBy === "is_label" ? (order === "asc" ? "▲" : "▼") : ""}
             </StyledTableCell>
+            { isLinen && <StyledTableCell align="center" onClick={() => handleSort("order_close")}>
+              MARK AS SHIPPED {isSwetterStore && orderBy === "order_close" ? (order === "asc" ? "▲" : "▼") : ""}
+            </StyledTableCell>}
             <StyledTableCell align="center" onClick={() => handleSort("tracking_code")}>
               TRACKING ID {isSwetterStore && orderBy === "tracking_code" ? (order === "asc" ? "▲" : "▼") : ""}
             </StyledTableCell>
@@ -184,6 +188,7 @@ export default function CustomizedTables({ match }) {
                       "N/A"
                     )}
                   </StyledTableCell>
+                  { isLinen && <StyledTableCell align="center">{row?.order_close ? "✔️" : "❌"}</StyledTableCell>}
                   <StyledTableCell align="center">
                     {row?.tracking_code}
                     {row.tracking_code ? (
