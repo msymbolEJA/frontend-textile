@@ -204,7 +204,7 @@
   "getMissingLabels": "Get Missing Label",
   "bulkExcel": "Upload Bulk Excel",
   "store": "Store",
-  "close": "close"
-
+  "close": "close",
+  "totalWeight": "Total Weight"
 
 }

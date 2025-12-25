@@ -47,6 +47,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 // const BASE_URL_MAPPING = process.env.REACT_APP_BASE_URL_MAPPING;
 const PAGE_ROW_NUMBER = process.env.REACT_APP_PAGE_ROW_NUMBER || 25;
 const NON_SKU = process.env.REACT_APP_NON_SKU === "true";
+const isLinen = process.env.REACT_APP_STORE_NAME_ORJ === "Linenia";
 
 const StyledTableCell = withStyles(theme => ({
   head: {
@@ -173,6 +174,8 @@ function AllOrdersTable() {
 
   const [printLoading, setPrintLoading] = useState(false)
 
+  const [totalWeight, setTotalWeight] = useState(0);
+
   const getOrdersInProgress = () => {
     setInProgressLoading(true);
 
@@ -180,6 +183,21 @@ function AllOrdersTable() {
       .then(response => {
         const o = response?.data?.results?.length ? response?.data?.results : [];
         setInProggressItems(o);
+      })
+      .catch(error => {
+        console.log("error", error);
+      })
+      .finally(() => {
+        setInProgressLoading(false);
+      });
+  };
+
+  const getTotalWeight = () => {
+    setInProgressLoading(true);
+    getData(`${BASE_URL}etsy/label-ready/weight_sum/`)
+      .then(response => {
+        setTotalWeight(response.data.total_weight_kg);
+        setInProggressItems(response.data.total_weight_kg);
       })
       .catch(error => {
         console.log("error", error);
@@ -298,7 +316,7 @@ function AllOrdersTable() {
   useEffect(() => {
     if (filters?.status === "awaiting") getAllPdfFunc();
     if (filters?.status === "label") getAllZipFunc();
-    if (filters?.status === "ready" || filters?.status === "label") getOrdersInProgress();
+    if (filters?.status === "ready" || filters?.status === "label") { getOrdersInProgress(); isLinen && getTotalWeight(); };
     getListFunc();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1958,6 +1976,9 @@ function AllOrdersTable() {
                     defaultMessage={filters?.status?.toUpperCase() || "Result".toUpperCase()}
                   />{" "}
                   : {count}
+
+                  {isLinen && (<><span style={{ marginLeft: 16, }}>|</span><FormattedMessage id="totalWeight" defaultMessage="Total Weight" />:{totalWeight} kg.</>)}
+
                   {selectedTag === "in_progress" && (
                     <>
                       {" ("}
@@ -1971,6 +1992,7 @@ function AllOrdersTable() {
                 </>
               )}
             </div>
+
             {selectedTag === "shipped" ? (
               <>
                 <Button color="secondary" onClick={() => uploadLabelRef.current.click()}>
