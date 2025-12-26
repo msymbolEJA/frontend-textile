@@ -2043,15 +2043,17 @@ function AllOrdersTable() {
         <CustomDialog open={dialog?.open} handleDialogClose={handleDialogClose} dialog={dialog} />
         {filters?.status === "awaiting" ? (
           <>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.print}
-              onClick={printHandler}
-              disabled={printLoading}
-            >
-              <FormattedMessage id="print" defaultMessage="Print" />
-            </Button>
+            {(userRole === "workshop_manager" || userRole === "admin") &&
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.print}
+                onClick={printHandler}
+                disabled={printLoading}
+              >
+                <FormattedMessage id="print" defaultMessage="Print" />
+              </Button>
+            }
             <h1>
               <FormattedMessage id="labels" defaultMessage="Labels" />
             </h1>
