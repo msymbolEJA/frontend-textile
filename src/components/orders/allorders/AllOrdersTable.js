@@ -1486,7 +1486,15 @@ function AllOrdersTable() {
 
   const handleGetLabels = () => {
     setGetLabelsLoading(true);
-    postData(`${BASE_URL}usps/createBulkLabel_cargo/?carrier=${selectedCargo || "usps"}`, {
+
+    const carrier = selectedCargo || "usps";
+
+    const url =
+      (carrier === "fedex" && isLinen)
+        ? `${BASE_URL}usps/test_shipment_label/?carrier=fedex`
+        : `${BASE_URL}usps/createBulkLabel_cargo/?carrier=${carrier}`;
+
+    postData(url, {
       ids: rows?.map(item => item?.id),
     })
       .then(res => {
@@ -1525,7 +1533,7 @@ function AllOrdersTable() {
       });
   };
 
-  const cargo = [
+  const cargoAll = [
     {
       label: "USPS",
       value: "usps",
@@ -1534,8 +1542,15 @@ function AllOrdersTable() {
       label: "DHL",
       value: "dhl_ecommerce",
     },
+    {
+      label: "FEDEX",
+      value: "fedex",
+    },
   ];
 
+  const cargo = isLinen
+  ? cargoAll
+  : cargoAll.filter(item => item.value !== "fedex");
 
   const handleDimensionChange = e => {
     setDimensions({
